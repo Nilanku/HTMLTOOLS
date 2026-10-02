@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS Minifier &amp; Compressor — Free Online Tool | Toolyard</title>
+  <meta name="description" content="Minify and compress CSS stylesheets online. Strip comments, whitespace, and redundant zeros with real-time compression savings and 100% private in-browser optimization.">
+  <meta property="og:title" content="CSS Minifier &amp; Compressor — Free Online Tool | Toolyard">
+  <meta property="og:description" content="Compress CSS stylesheets to reduce file transfer size and improve Core Web Vitals with zero server uploads.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    /* Tool Workspace & Grid Layout */
+    .tool-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      min-height: 480px;
+      background: var(--line);
+      gap: 1px;
+    }
+    @media (max-width: 860px) {
+      .tool-grid { grid-template-columns: 1fr; }
+    }
+    .tool-pane {
+      background: var(--paper-2);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      min-width: 0;
+      overflow: hidden;
+    }
+    .tool-pane-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      background: var(--paper);
+      border-bottom: 1px solid var(--line);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink-soft);
+      min-width: 0;
+    }
+    .tool-pane-header .title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+    .tool-pane-header .actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    .tool-textarea {
+      flex: 1;
+      width: 100%;
+      min-height: 420px;
+      padding: 18px;
+      border: none;
+      outline: none;
+      resize: vertical;
+      background: var(--editor-bg);
+      color: var(--ink);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13.5px;
+      line-height: 1.65;
+      tab-size: 2;
+      white-space: pre;
+      overflow: auto;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+    .tool-textarea:focus {
+      background: var(--paper-2);
+    }
+    .tool-output-box {
+      flex: 1;
+      width: 100%;
+      min-height: 420px;
+      padding: 18px;
+      background: var(--editor-bg);
+      color: var(--ink);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13.5px;
+      line-height: 1.65;
+      overflow-y: auto;
+      overflow-x: hidden;
+      white-space: pre-wrap;
+      word-break: break-all;
+      overflow-wrap: anywhere;
+      user-select: text;
+      margin: 0;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+    .tool-output-box.empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-soft);
+      font-style: italic;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+    }
+    .error-banner {
+      display: none;
+      padding: 12px 18px;
+      background: rgba(229, 72, 77, 0.12);
+      color: var(--error);
+      border-bottom: 1px solid rgba(229, 72, 77, 0.25);
+      font-size: 13px;
+      font-family: 'IBM Plex Mono', monospace;
+      line-height: 1.5;
+    }
+    .error-banner.show {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .stat-saved {
+      color: var(--signal);
+      font-weight: 700;
+    }
+    .checkbox-opt {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--ink);
+      cursor: pointer;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER & NAVIGATION -->
+  <header class="site">
+    <div class="wrap nav-row">
+      <a href="/" class="logo"><span class="logo-mark">&gt;_</span>Tool<span class="accent">yard</span></a>
+      <nav class="main-nav" id="mainNav">
+        <div class="nav-item">
+          <button type="button">Tools <span class="chev"></span></button>
+          <div class="mega">
+            <a href="/categories/css/"><span class="cat-name">CSS</span><span class="cat-sub">Format &amp; minify stylesheets</span></a>
+            <a href="/categories/json-data/"><span class="cat-name">JSON &amp; Data</span><span class="cat-sub">6 formatters, minifiers &amp; converters</span></a>
+            <a href="/categories/html-web/"><span class="cat-name">HTML &amp; Web</span><span class="cat-sub">10 formatters &amp; extractors</span></a>
+            <a href="/#other-cats"><span class="cat-name">Text</span><span class="cat-sub">Clean, count, transform</span></a>
+            <a href="/#other-cats"><span class="cat-name">Images</span><span class="cat-sub">Resize &amp; compress</span></a>
+            <a href="/#other-cats"><span class="cat-name">Files</span><span class="cat-sub">Document utilities</span></a>
+          </div>
+        </div>
+        <div class="nav-item">
+          <button type="button">Converters <span class="chev"></span></button>
+          <div class="mega">
+            <a href="/tools/html-to-css/"><span class="cat-name">HTML to CSS</span><span class="cat-sub">Extract classes, IDs & styles</span></a>
+            <a href="/tools/json-to-yaml/"><span class="cat-name">JSON to YAML</span><span class="cat-sub">Convert JSON to YAML config</span></a>
+            <a href="/tools/yaml-to-json/"><span class="cat-name">YAML to JSON</span><span class="cat-sub">Convert YAML to JSON data</span></a>
+            <a href="/tools/json-to-csv/"><span class="cat-name">JSON to CSV</span><span class="cat-sub">Convert JSON array to tabular CSV</span></a>
+            <a href="/tools/csv-to-json/"><span class="cat-name">CSV to JSON</span><span class="cat-sub">Parse CSV into JSON objects</span></a>
+            <a href="/tools/html-to-markdown/"><span class="cat-name">HTML to Markdown</span><span class="cat-sub">Convert markup to Markdown</span></a>
+            <a href="/tools/html-to-jsx/"><span class="cat-name">HTML to JSX</span><span class="cat-sub">Convert HTML to React JSX</span></a>
+            <a href="/tools/html-to-text/"><span class="cat-name">HTML to Text</span><span class="cat-sub">Extract readable plain text</span></a>
+            <a href="/tools/html-entity-encoder/"><span class="cat-name">HTML Entity Encoder</span><span class="cat-sub">Encode & decode entities</span></a>
+          </div>
+        </div>
+      </nav>
+
+      <div class="nav-right">
+        <button type="button" class="icon-btn" id="themeToggle" aria-label="Toggle dark mode">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <button type="button" class="icon-btn mobile-toggle" id="mobileNavToggle" aria-label="Open menu">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE DRAWER -->
+  <div class="mobile-nav-drawer" id="mobileNavDrawer">
+    <div class="mobile-nav-head">
+      <a href="/" class="logo"><span class="logo-mark">&gt;_</span>Tool<span class="accent">yard</span></a>
+      <button type="button" class="icon-btn" id="closeMobileDrawer">✕</button>
+    </div>
+    <div class="mobile-nav-links">
+      <div class="mobile-nav-group-title">CSS Tools</div>
+      <a href="/tools/css-minifier/">CSS Minifier</a>
+      <a href="/tools/css-formatter/">CSS Formatter</a>
+      <a href="/tools/html-to-css/">HTML to CSS Extractor</a>
+      <div class="mobile-nav-group-title">JSON &amp; Data</div>
+      <a href="/tools/json-minifier/">JSON Minifier</a>
+      <a href="/tools/json-formatter/">JSON Formatter</a>
+      <a href="/tools/json-to-yaml/">JSON to YAML</a>
+      <a href="/tools/yaml-to-json/">YAML to JSON</a>
+      <a href="/tools/json-to-csv/">JSON to CSV</a>
+      <a href="/tools/csv-to-json/">CSV to JSON</a>
+    </div>
+  </div>
+
+  <!-- BREADCRUMBS -->
+  <div class="breadcrumb-bar">
+    <div class="wrap">
+      <div class="breadcrumbs">
+        <a href="/">Home</a>
+        <span class="sep">/</span>
+        <a href="/categories/css/">CSS</a>
+        <span class="sep">/</span>
+        <span class="current">CSS Minifier &amp; Compressor</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOOL INTRO -->
+  <section class="tool-intro">
+    <div class="wrap tool-intro-content">
+      <span class="eyebrow">CSS OPTIMIZER</span>
+      <h1>CSS Minifier &amp; Compressor</h1>
+      <p class="lead">Compress CSS stylesheets by removing whitespace, comments, redundant semicolons, and zero units. Speed up page load times and improve Google Core Web Vitals.</p>
+      <div class="tool-meta-badge">
+        <span class="dot"></span> 100% Private · In-browser CSS compression with instant savings calculation
+      </div>
+    </div>
+  </section>
+
+  <!-- CALCULATOR / WORKSPACE -->
+  <section class="tool-app-section">
+    <div class="wrap">
+      <div class="tool-workspace">
+        <div id="errorBanner" class="error-banner"></div>
+
+        <div class="tool-toolbar">
+          <div class="tool-toolbar-left" style="gap: 12px; flex-wrap: wrap;">
+            <button type="button" class="btn btn-amber" id="minifyBtn">Minify CSS</button>
+            <label class="checkbox-opt">
+              <input type="checkbox" id="shortenZeroCheck" checked>
+              <span>Shorten Zero Values (0px → 0)</span>
+            </label>
+            <label class="checkbox-opt">
+              <input type="checkbox" id="shortenColorsCheck" checked>
+              <span>Shorten Hex Colors (#ffffff → #fff)</span>
+            </label>
+            <label class="checkbox-opt">
+              <input type="checkbox" id="stripCommentsCheck" checked>
+              <span>Remove Comments</span>
+            </label>
+            <label class="checkbox-opt">
+              <input type="checkbox" id="removeLastSemiCheck" checked>
+              <span>Remove Last Semicolon</span>
+            </label>
+          </div>
+          <div class="tool-toolbar-right">
+            <button type="button" class="btn btn-ghost btn-sm" id="exampleBtn">Load Example</button>
+            <button type="button" class="btn btn-danger btn-sm" id="clearBtn">Clear</button>
+          </div>
+        </div>
+
+        <div class="tool-grid">
+          <!-- Left Input Pane -->
+          <div class="tool-pane">
+            <div class="tool-pane-header">
+              <span class="title">Original CSS Input</span>
+              <span class="badge">Raw Stylesheet</span>
+            </div>
+            <textarea id="cssInput" class="tool-textarea" placeholder="Paste your formatted CSS stylesheet here to compress into production-ready minified code..." spellcheck="false"></textarea>
+          </div>
+
+          <!-- Right Output Pane -->
+          <div class="tool-pane">
+            <div class="tool-pane-header">
+              <span class="title">Minified CSS Output</span>
+              <div class="actions">
+                <button type="button" class="btn btn-sm btn-outline" id="copyBtn">Copy CSS</button>
+                <button type="button" class="btn btn-sm btn-ghost" id="downloadBtn">Download .min.css</button>
+              </div>
+            </div>
+            <div id="cssOutput" class="tool-output-box empty"><em>Minified CSS output will appear here...</em></div>
+          </div>
+        </div>
+
+        <div class="tool-stats-bar">
+          <div class="tool-stats-items">
+            <div class="tool-stat-badge">Original: <b id="statOrig">0 B</b></div>
+            <div class="tool-stat-badge">Minified: <b id="statMin">0 B</b></div>
+            <div class="tool-stat-badge">Savings: <b id="statReduction" class="stat-saved">0% saved (0 B)</b></div>
+          </div>
+          <div>CSS3 / CSS4 Standard · 100% Client-Side</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. ABOUT THIS TOOL SECTION -->
+  <section class="tool-content-section" style="padding: 56px 0; border-top: 1px solid var(--line); background: var(--paper-2);">
+    <div class="wrap">
+      <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">◆ ABOUT THIS TOOL</span>
+      <h2 style="font-size: 26px; margin: 0 0 6px;">Why Minify &amp; Compress CSS?</h2>
+      <p style="color: var(--ink-soft); font-size: 14.5px; margin: 0 0 32px;">Eliminate render-blocking overhead, reduce byte transfers, and accelerate website performance.</p>
+
+      <div class="about-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 36px; font-size: 14.5px; line-height: 1.7; color: var(--ink-soft);">
+        <div>
+          <p style="margin: 0;">CSS is a render-blocking resource. Before a web browser can draw the First Contentful Paint (FCP) or Largest Contentful Paint (LCP) on the screen, it must download and parse every referenced stylesheet. Multi-space indentations, explanatory comments, and trailing characters add unnecessary weight to network transfers.</p>
+        </div>
+        <div>
+          <p style="margin: 0;">The Toolyard CSS Minifier collapses all non-essential formatting into a compact single-line stream. It safely preserves CSS variables, <code>calc()</code> functions, and complex selectors while compressing colors, zero units, and redundant semicolons—delivering up to 40% bandwidth reduction with zero risk to visual layout.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. KEY RULES SECTION -->
+  <section class="tool-content-section" style="padding: 56px 0; border-top: 1px solid var(--line); background: var(--paper);">
+    <div class="wrap">
+      <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">⚙ COMPRESSION RULES</span>
+      <h2 style="font-size: 26px; margin: 0 0 6px;">How CSS Compression Works</h2>
+      <p style="color: var(--ink-soft); font-size: 14.5px; margin: 0 0 28px;">Understanding safe token minification, comment stripping, and unit reduction.</p>
+
+      <div class="rules-list" style="display: flex; flex-direction: column; gap: 14px;">
+        <div class="rule-card" style="display: flex; align-items: flex-start; gap: 16px; padding: 20px 22px; background: var(--paper-2); border: 1px solid var(--line); border-radius: 12px;">
+          <div class="rule-icon" style="width: 36px; height: 36px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;">0</div>
+          <div>
+            <h3 style="font-size: 15.5px; margin: 0 0 6px; color: var(--ink);">Zero Unit Collapse (0px → 0)</h3>
+            <p style="margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ink-soft);">Converts <code>0px</code>, <code>0em</code>, <code>0rem</code>, and <code>0%</code> to a unitless <code>0</code>, collapsing multi-zero margins and padding declarations while safely preserving keyframe selectors and time units.</p>
+          </div>
+        </div>
+
+        <div class="rule-card" style="display: flex; align-items: flex-start; gap: 16px; padding: 20px 22px; background: var(--paper-2); border: 1px solid var(--line); border-radius: 12px;">
+          <div class="rule-icon" style="width: 36px; height: 36px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;">/* */</div>
+          <div>
+            <h3 style="font-size: 15.5px; margin: 0 0 6px; color: var(--ink);">Comment &amp; Whitespace Stripping</h3>
+            <p style="margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ink-soft);">Strips all CSS block comments (<code>/* ... */</code>), redundant line breaks, and space characters surrounding colons, braces, and semicolons.</p>
+          </div>
+        </div>
+
+        <div class="rule-card" style="display: flex; align-items: flex-start; gap: 16px; padding: 20px 22px; background: var(--paper-2); border: 1px solid var(--line); border-radius: 12px;">
+          <div class="rule-icon" style="width: 36px; height: 36px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;">; }</div>
+          <div>
+            <h3 style="font-size: 15.5px; margin: 0 0 6px; color: var(--ink);">Trailing Semicolon Removal</h3>
+            <p style="margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ink-soft);">Under W3C CSS specifications, the final semicolon preceding a closing curly bracket (<code>;}</code>) is optional and safely eliminated.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. HOW TO USE -->
+  <section class="section-navy" style="padding: 64px 0; position: relative; overflow: hidden; background: var(--navy-900);">
+    <div class="wrap" style="position: relative;">
+      <span class="eyebrow" style="background: rgba(240,169,59,0.18); color: var(--amber); margin-bottom: 12px; display: inline-flex;">◐ THREE STEPS</span>
+      <h2 style="font-size: 26px; color: #fff; margin: 0 0 6px;">How to Use</h2>
+      <p style="color: #9096B8; font-size: 14.5px; margin: 0 0 32px;">Minify and compress CSS stylesheets in three quick steps.</p>
+
+      <div class="steps">
+        <div class="step" data-n="01">
+          <div class="num">1</div>
+          <h3 style="color: #fff;">Paste CSS Code</h3>
+          <p>Paste formatted CSS into the left input pane, or click "Load Example" to test with a stylesheet.</p>
+        </div>
+        <div class="step" data-n="02">
+          <div class="num">2</div>
+          <h3 style="color: #fff;">Configure Options</h3>
+          <p>Toggle zero unit shortening, color shortening, comment removal, and trailing semicolon stripping.</p>
+        </div>
+        <div class="step" data-n="03">
+          <div class="num">3</div>
+          <h3 style="color: #fff;">Copy or Download</h3>
+          <p>Copy the minified CSS to your clipboard or download it directly as a <code>.min.css</code> file.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. WHY USE TOOLYARD (6-CARD GRID) -->
+  <section class="tool-content-section" style="padding: 60px 0; background: var(--paper-2); border-top: 1px solid var(--line);">
+    <div class="wrap">
+      <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">✓ FEATURES</span>
+      <h2 style="font-size: 26px; margin: 0 0 6px;">Why Use Toolyard CSS Minifier</h2>
+      <p style="color: var(--ink-soft); font-size: 14.5px; margin: 0 0 32px;">Engineered for fast, reliable, and secure CSS stylesheet optimization.</p>
+
+      <div class="why-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--line); gap: 1px;">
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">0</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">Shorten Zero Values</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Converts <code>0px</code>, <code>0em</code>, <code>0rem</code>, and <code>0%</code> to <code>0</code> and collapses multi-value zero lists.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">🔒</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">100% Client-Side Privacy</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">All CSS minification runs inside your browser sandbox. Proprietary stylesheets are never uploaded to any server.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">⚡</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">Boost Core Web Vitals</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Reduce render-blocking CSS payload size to speed up First Contentful Paint (FCP) and improve PageSpeed scores.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">📊</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">Real-Time Savings Metrics</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Calculates exact original byte size, minified size, and percentage bandwidth saved immediately upon conversion.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">↓</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">Download .min.css</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Export your compressed stylesheet directly to a production-ready <code style="font-size:12px;">styles.min.css</code> file.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">⧉</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">Fast Clipboard Copy</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Copy the single-line minified CSS string to your clipboard instantly with clear visual confirmation.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. FREQUENTLY ASKED QUESTIONS -->
+  <section class="tool-content-section" style="padding: 64px 0; background: var(--paper); border-top: 1px solid var(--line);">
+    <div class="wrap">
+      <div style="text-align: center; margin-bottom: 36px;">
+        <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">FAQ</span>
+        <h2 style="font-size: 28px; margin: 0;">Frequently Asked Questions</h2>
+      </div>
+
+      <div class="faq" id="faqList" style="max-width: 860px; margin: 0 auto;">
+        <div class="faq-item">
+          <button type="button">Why can units on zero values be removed in CSS?<span class="plus">+</span></button>
+          <div class="faq-a"><p>In CSS length declarations (such as <code>margin</code>, <code>padding</code>, and <code>border-width</code>), <code>0px</code>, <code>0em</code>, <code>0rem</code>, and <code>0%</code> represent identical zero distances. Dropping the unit identifier preserves exact browser layout while saving file bytes.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Are keyframes like "0%" protected from zero shortening?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Yes! Keyframe animation step selectors such as <code>0% { opacity: 0; }</code> and duration units like <code>0s</code> or <code>0ms</code> require explicit units under W3C specifications and are protected from unit removal.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Does CSS minification change how my webpage looks?<span class="plus">+</span></button>
+          <div class="faq-a"><p>No. Minification only strips non-semantic whitespace and comments, and optimizes redundant syntax (such as zero units and hex colors). The rendered layout is 100% identical.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Why is whitespace inside calc() preserved?<span class="plus">+</span></button>
+          <div class="faq-a"><p>In CSS math functions like <code>calc(100% - 20px)</code>, spaces surrounding the <code>+</code> and <code>-</code> operators are mandatory per CSS specifications to distinguish subtraction from negative numbers. Our compressor strictly protects these required spaces.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. RELATED CSS TOOLS -->
+  <section class="related-tools-section" style="padding: 56px 0; background: var(--paper-2); border-top: 1px solid var(--line);">
+    <div class="wrap">
+      <div style="margin-bottom: 24px;">
+        <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">📎 RELATED</span>
+      </div>
+      <div class="section-head" style="margin-bottom: 28px;">
+        <div>
+          <h2 style="font-size: 26px; margin: 0 0 6px;">Related CSS &amp; Web Tools</h2>
+          <p class="desc" style="margin: 0;">More utilities for formatting and optimizing stylesheets and markup.</p>
+        </div>
+        <a class="view-all" href="/categories/css/">All CSS Tools →</a>
+      </div>
+
+      <div class="grid grid-3" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+        <a class="tool-card" href="/tools/css-formatter/">
+          <div class="top-row"><span class="badge">Formatter</span></div>
+          <h3>CSS Formatter</h3>
+          <p>Beautify, indent, and organize messy stylesheets with selector line controls.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/html-to-css/">
+          <div class="top-row"><span class="badge">Extractor</span></div>
+          <h3>HTML to CSS Extractor</h3>
+          <p>Extract all classes, IDs, inline styles, and embedded CSS from HTML markup.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/html-minifier/">
+          <div class="top-row"><span class="badge">Optimizer</span></div>
+          <h3>HTML Minifier</h3>
+          <p>Strip unnecessary whitespace, comments, and line breaks to compress HTML payloads.</p>
+          <span class="open">Open tool →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="wrap">
+      <div class="foot-grid">
+        <div class="foot-brand">
+          <a href="/" class="logo"><span class="logo-mark">&gt;_</span>Tool<span class="accent" style="color:var(--amber);">yard</span></a>
+          <p>Free, fast, and private browser-based utilities for developers and creators. No server processing, zero trackers.</p>
+        </div>
+        <div class="foot-col">
+          <h4>CSS Tools</h4>
+          <a href="/tools/css-minifier/">CSS Minifier</a>
+          <a href="/tools/css-formatter/">CSS Formatter</a>
+          <a href="/tools/html-to-css/">HTML to CSS</a>
+        </div>
+        <div class="foot-col">
+          <h4>JSON &amp; Data</h4>
+          <a href="/tools/json-minifier/">JSON Minifier</a>
+          <a href="/tools/json-formatter/">JSON Formatter</a>
+          <a href="/tools/json-to-yaml/">JSON to YAML</a>
+          <a href="/tools/yaml-to-json/">YAML to JSON</a>
+          <a href="/tools/json-to-csv/">JSON to CSV</a>
+          <a href="/tools/csv-to-json/">CSV to JSON</a>
+        </div>
+        <div class="foot-col">
+          <h4>HTML &amp; Web</h4>
+          <a href="/tools/html-minifier/">HTML Minifier</a>
+          <a href="/tools/html-formatter/">HTML Formatter</a>
+          <a href="/tools/html-to-markdown/">HTML to Markdown</a>
+          <a href="/tools/html-entity-encoder/">Entity Encoder</a>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <span>© 2026 Toolyard. All rights reserved. 100% Client-Side Privacy.</span>
+        <span>Space Grotesk · Inter · IBM Plex Mono</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JAVASCRIPT ENGINE -->
+  <script>
+    (function() {
+      // 1. Navigation & Theme Setup
+      const themeToggle = document.getElementById('themeToggle');
+      const mobileToggle = document.getElementById('mobileNavToggle');
+      const closeDrawer = document.getElementById('closeMobileDrawer');
+      const drawer = document.getElementById('mobileNavDrawer');
+
+      if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+          const current = document.documentElement.getAttribute('data-theme');
+          document.documentElement.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+        });
+      }
+      if (mobileToggle && drawer) mobileToggle.addEventListener('click', () => drawer.classList.add('open'));
+      if (closeDrawer && drawer) closeDrawer.addEventListener('click', () => drawer.classList.remove('open'));
+
+      document.querySelectorAll('.nav-item > button').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const item = btn.parentElement;
+          const isOpen = item.classList.contains('open');
+          document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('open'));
+          if (!isOpen) item.classList.add('open');
+        });
+      });
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.nav-item')) {
+          document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('open'));
+        }
+      });
+
+      // FAQ Accordion
+      document.querySelectorAll('.faq-item button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const item = btn.parentElement;
+          const isOpen = item.classList.contains('open');
+          document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+          if (!isOpen) item.classList.add('open');
+        });
+      });
+
+      // 2. CSS Minifier Engine
+      function formatBytes(bytes) {
+        if (bytes === 0) return '0 B';
+        if (bytes < 1024) return bytes + ' B';
+        return (bytes / 1024).toFixed(2) + ' KB';
+      }
+
+      function compressCSS(css, stripComments, shortenColors, shortenZero, removeLastSemi) {
+        const tokens = [];
+        let tokenIndex = 0;
+
+        function saveToken(val) {
+          const key = `___TOKEN_${tokenIndex++}___`;
+          tokens.push({ id: key, value: val });
+          return key;
+        }
+
+        let s = css;
+
+        // 1. Preserve strings
+        s = s.replace(/(["'])(?:(?=(\\?))\2[\s\S])*?\1/g, m => saveToken(m));
+
+        // 2. Preserve URLs
+        s = s.replace(/url\([^)]+\)/gi, m => saveToken(m));
+
+        // 3. Preserve calc() expressions with required operator spaces
+        s = s.replace(/calc\(([^()]+(?:\([^()]*\)[^()]*)*)\)/gi, (match) => {
+          const normalizedCalc = match.replace(/\s*([+\-])\s*/g, ' $1 ');
+          return saveToken(normalizedCalc);
+        });
+
+        // 4. Protect keyframe percentage selectors (0% { or 0%,)
+        s = s.replace(/(^|[^\w-])0%(?=\s*[{,])/g, (match, prefix) => {
+          return prefix + saveToken('0%');
+        });
+
+        // 5. Strip comments if enabled
+        if (stripComments) {
+          s = s.replace(/\/\*[\s\S]*?\*\//g, '');
+        }
+
+        // 6. Normalize and strip redundant whitespace
+        s = s.replace(/\s+/g, ' ');
+        s = s.replace(/\s*([\{\}\:\;\,\>\~\+])\s*/g, '$1');
+        s = s.replace(/;+/g, ';');
+        s = s.replace(/\{\s+/g, '{');
+        s = s.replace(/\s+\}/g, '}');
+
+        // 7. Shorten zero units if enabled (0px -> 0, 0.0rem -> 0)
+        if (shortenZero) {
+          const zeroUnits = '(?:px|em|rem|%|in|cm|mm|pt|pc|vh|vw|vmin|vmax|ex|ch|cqw|cqh|dvh|dvw)';
+          
+          // Match 0px after :, whitespace, comma, or open paren
+          const zeroRegex = new RegExp(`([:\\s,(])-?0(?:\\.0+)?${zeroUnits}(?=[;\\s,)}\\!]|\$)`, 'gi');
+          s = s.replace(zeroRegex, '$10');
+
+          // Lookbehind pass for consecutive occurrences
+          s = s.replace(/(?<=[:\s,(])-?0(?:\.0+)?(?:px|em|rem|%|in|cm|mm|pt|pc|vh|vw|vmin|vmax|ex|ch|cqw|cqh|dvh|dvw)(?=[;\s,)}\!]|$)/gi, '0');
+
+          // Collapse multi-zero patterns in margin/padding (e.g. margin:0 0 0 0 -> margin:0)
+          s = s.replace(/:(0\s+){3}0(?=[;!}])/gi, ':0');
+          s = s.replace(/:(0\s+){2}0(?=[;!}])/gi, ':0');
+          s = s.replace(/:0\s+0(?=[;!}])/gi, ':0');
+
+          // Strip leading zero on decimal numbers (e.g. 0.5rem -> .5rem)
+          s = s.replace(/([:\s,(])-?0\.(\d+)/g, '$1.$2');
+        }
+
+        // 8. Shorten hex colors if requested (e.g. #ffffff -> #fff)
+        if (shortenColors) {
+          s = s.replace(/#([0-9a-fA-F])\1([0-9a-fA-F])\2([0-9a-fA-F])\3(?![0-9a-fA-F])/g, '#$1$2$3');
+        }
+
+        // 9. Remove last semicolon preceding closing brace
+        if (removeLastSemi) {
+          s = s.replace(/;\}/g, '}');
+        }
+
+        // 10. Restore tokens
+        for (let t = tokens.length - 1; t >= 0; t--) {
+          s = s.replace(tokens[t].id, tokens[t].value);
+        }
+
+        return s.trim();
+      }
+
+      const inputEl = document.getElementById('cssInput');
+      const outputEl = document.getElementById('cssOutput');
+      const errorBanner = document.getElementById('errorBanner');
+      const minifyBtn = document.getElementById('minifyBtn');
+      const shortenZeroCheck = document.getElementById('shortenZeroCheck');
+      const shortenColorsCheck = document.getElementById('shortenColorsCheck');
+      const stripCommentsCheck = document.getElementById('stripCommentsCheck');
+      const removeLastSemiCheck = document.getElementById('removeLastSemiCheck');
+      const clearBtn = document.getElementById('clearBtn');
+      const exampleBtn = document.getElementById('exampleBtn');
+      const copyBtn = document.getElementById('copyBtn');
+      const downloadBtn = document.getElementById('downloadBtn');
+      const statOrig = document.getElementById('statOrig');
+      const statMin = document.getElementById('statMin');
+      const statReduction = document.getElementById('statReduction');
+
+      function hideError() {
+        if (errorBanner) {
+          errorBanner.className = 'error-banner';
+          errorBanner.textContent = '';
+        }
+      }
+
+      function showError(msg) {
+        if (errorBanner) {
+          errorBanner.textContent = 'CSS Error: ' + msg;
+          errorBanner.className = 'error-banner show';
+        }
+      }
+
+      function runMinify() {
+        const src = inputEl ? inputEl.value.trim() : '';
+        hideError();
+
+        if (!src) {
+          if (outputEl) {
+            outputEl.textContent = '';
+            outputEl.classList.add('empty');
+            outputEl.innerHTML = '<em>Minified CSS output will appear here...</em>';
+          }
+          if (statOrig) statOrig.textContent = '0 B';
+          if (statMin) statMin.textContent = '0 B';
+          if (statReduction) statReduction.textContent = '0% saved (0 B)';
+          return;
+        }
+
+        try {
+          const stripComments = stripCommentsCheck ? stripCommentsCheck.checked : true;
+          const shortenColors = shortenColorsCheck ? shortenColorsCheck.checked : true;
+          const shortenZero = shortenZeroCheck ? shortenZeroCheck.checked : true;
+          const removeLastSemi = removeLastSemiCheck ? removeLastSemiCheck.checked : true;
+
+          const minified = compressCSS(src, stripComments, shortenColors, shortenZero, removeLastSemi);
+
+          if (outputEl) {
+            outputEl.textContent = minified;
+            outputEl.classList.remove('empty');
+          }
+
+          const origB = new Blob([src]).size;
+          const minB = new Blob([minified]).size;
+          const savedB = Math.max(0, origB - minB);
+          const pct = origB > 0 ? ((savedB / origB) * 100).toFixed(1) : 0;
+
+          if (statOrig) statOrig.textContent = formatBytes(origB);
+          if (statMin) statMin.textContent = formatBytes(minB);
+          if (statReduction) statReduction.textContent = `${pct}% saved (${formatBytes(savedB)})`;
+        } catch (err) {
+          showError(err.message || 'Error minifying CSS.');
+        }
+      }
+
+      if (minifyBtn) minifyBtn.addEventListener('click', runMinify);
+      if (shortenZeroCheck) shortenZeroCheck.addEventListener('change', runMinify);
+      if (shortenColorsCheck) shortenColorsCheck.addEventListener('change', runMinify);
+      if (stripCommentsCheck) stripCommentsCheck.addEventListener('change', runMinify);
+      if (removeLastSemiCheck) removeLastSemiCheck.addEventListener('change', runMinify);
+
+      if (inputEl) {
+        inputEl.addEventListener('input', () => {
+          if (errorBanner && errorBanner.classList.contains('show')) {
+            hideError();
+          }
+        });
+      }
+
+      if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+          if (inputEl) inputEl.value = '';
+          hideError();
+          if (outputEl) {
+            outputEl.textContent = '';
+            outputEl.classList.add('empty');
+            outputEl.innerHTML = '<em>Minified CSS output will appear here...</em>';
+          }
+          if (statOrig) statOrig.textContent = '0 B';
+          if (statMin) statMin.textContent = '0 B';
+          if (statReduction) statReduction.textContent = '0% saved (0 B)';
+          if (inputEl) inputEl.focus();
+        });
+      }
+
+      // Load Example
+      if (exampleBtn) {
+        exampleBtn.addEventListener('click', () => {
+          if (inputEl) {
+            inputEl.value = `/* Main Application Theme */\n:root {\n  --primary: #3b82f6;\n  --bg-dark: #000000;\n  --card-bg: #ffffff;\n  --padding: 0.50rem;\n}\n\n/* Card Styles */\n.card {\n  display: flex;\n  flex-direction: column;\n  padding: 24px 0px;\n  margin: 0px 0px 0px 0px;\n  background: var(--card-bg);\n  border: 1px solid #e2e8f0;\n  border-radius: 8px;\n  box-shadow: 0px 4px 6px -1px rgba(0, 0, 0, 0.10);\n}\n\n.card:hover {\n  transform: translateY(-2px);\n  transition: all 0.20s ease;\n}\n\n@keyframes fadeIn {\n  0% {\n    opacity: 0;\n    transform: scale(0.95);\n  }\n  100% {\n    opacity: 1;\n    transform: scale(1);\n  }\n}\n\n@media (max-width: 768px) {\n  .card {\n    padding: 16px;\n    width: 100%;\n  }\n}`;
+            runMinify();
+            inputEl.focus();
+          }
+        });
+      }
+
+      // Copy Output
+      if (copyBtn) {
+        copyBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const text = outputEl ? outputEl.textContent : '';
+          if (!text || (outputEl && outputEl.classList.contains('empty'))) return;
+
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(() => {
+              const orig = copyBtn.textContent;
+              copyBtn.textContent = 'Copied!';
+              setTimeout(() => { copyBtn.textContent = orig; }, 1500);
+            }).catch(() => fallbackCopy(text));
+          } else {
+            fallbackCopy(text);
+          }
+        });
+      }
+
+      function fallbackCopy(text) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+          document.execCommand('copy');
+          const orig = copyBtn.textContent;
+          copyBtn.textContent = 'Copied!';
+          setTimeout(() => { copyBtn.textContent = orig; }, 1500);
+        } catch (err) {}
+        document.body.removeChild(ta);
+      }
+
+      // Download Output as .min.css
+      if (downloadBtn) {
+        downloadBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const text = outputEl ? outputEl.textContent : '';
+          if (!text || (outputEl && outputEl.classList.contains('empty'))) return;
+          const blob = new Blob([text], { type: 'text/css;charset=utf-8;' });
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = 'styles.min.css';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

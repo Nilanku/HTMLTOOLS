@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS Formatter &amp; Beautifier — Free Online Tool | Toolyard</title>
+  <meta name="description" content="Format, beautify, and clean messy or minified CSS stylesheets online. Configure indentation, one selector per line, and rule layout with 100% private in-browser formatting.">
+  <meta property="og:title" content="CSS Formatter &amp; Beautifier — Free Online Tool | Toolyard">
+  <meta property="og:description" content="Beautify, indent, and organize CSS stylesheets directly in your browser with zero server uploads.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    /* Tool Workspace & Grid Layout */
+    .tool-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      min-height: 480px;
+      background: var(--line);
+      gap: 1px;
+    }
+    @media (max-width: 860px) {
+      .tool-grid { grid-template-columns: 1fr; }
+    }
+    .tool-pane {
+      background: var(--paper-2);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      min-width: 0;
+      overflow: hidden;
+    }
+    .tool-pane-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      background: var(--paper);
+      border-bottom: 1px solid var(--line);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink-soft);
+      min-width: 0;
+    }
+    .tool-pane-header .title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+    .tool-pane-header .actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    .tool-textarea {
+      flex: 1;
+      width: 100%;
+      min-height: 420px;
+      padding: 18px;
+      border: none;
+      outline: none;
+      resize: vertical;
+      background: var(--editor-bg);
+      color: var(--ink);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13.5px;
+      line-height: 1.65;
+      tab-size: 2;
+      white-space: pre;
+      overflow: auto;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+    .tool-textarea:focus {
+      background: var(--paper-2);
+    }
+    .tool-output-box {
+      flex: 1;
+      width: 100%;
+      min-height: 420px;
+      padding: 18px;
+      background: var(--editor-bg);
+      color: var(--ink);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13.5px;
+      line-height: 1.65;
+      overflow-y: auto;
+      overflow-x: auto;
+      white-space: pre;
+      user-select: text;
+      margin: 0;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+    .tool-output-box.empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-soft);
+      font-style: italic;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      white-space: normal;
+    }
+    .error-banner {
+      display: none;
+      padding: 12px 18px;
+      background: rgba(229, 72, 77, 0.12);
+      color: var(--error);
+      border-bottom: 1px solid rgba(229, 72, 77, 0.25);
+      font-size: 13px;
+      font-family: 'IBM Plex Mono', monospace;
+      line-height: 1.5;
+    }
+    .error-banner.show {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .select-opt {
+      padding: 6px 10px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--paper);
+      color: var(--ink);
+      font-size: 13px;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      cursor: pointer;
+    }
+    .checkbox-opt {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--ink);
+      cursor: pointer;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER & NAVIGATION -->
+  <header class="site">
+    <div class="wrap nav-row">
+      <a href="/" class="logo"><span class="logo-mark">&gt;_</span>Tool<span class="accent">yard</span></a>
+      <nav class="main-nav" id="mainNav">
+        <div class="nav-item">
+          <button type="button">Tools <span class="chev"></span></button>
+          <div class="mega">
+            <a href="/categories/css/"><span class="cat-name">CSS</span><span class="cat-sub">Format &amp; minify stylesheets</span></a>
+            <a href="/categories/json-data/"><span class="cat-name">JSON &amp; Data</span><span class="cat-sub">6 formatters, minifiers &amp; converters</span></a>
+            <a href="/categories/html-web/"><span class="cat-name">HTML &amp; Web</span><span class="cat-sub">10 formatters &amp; extractors</span></a>
+            <a href="/#other-cats"><span class="cat-name">Text</span><span class="cat-sub">Clean, count, transform</span></a>
+            <a href="/#other-cats"><span class="cat-name">Images</span><span class="cat-sub">Resize &amp; compress</span></a>
+            <a href="/#other-cats"><span class="cat-name">Files</span><span class="cat-sub">Document utilities</span></a>
+          </div>
+        </div>
+        <div class="nav-item">
+          <button type="button">Converters <span class="chev"></span></button>
+          <div class="mega">
+            <a href="/tools/html-to-css/"><span class="cat-name">HTML to CSS</span><span class="cat-sub">Extract classes, IDs & styles</span></a>
+            <a href="/tools/json-to-yaml/"><span class="cat-name">JSON to YAML</span><span class="cat-sub">Convert JSON to YAML config</span></a>
+            <a href="/tools/yaml-to-json/"><span class="cat-name">YAML to JSON</span><span class="cat-sub">Convert YAML to JSON data</span></a>
+            <a href="/tools/json-to-csv/"><span class="cat-name">JSON to CSV</span><span class="cat-sub">Convert JSON array to tabular CSV</span></a>
+            <a href="/tools/csv-to-json/"><span class="cat-name">CSV to JSON</span><span class="cat-sub">Parse CSV into JSON objects</span></a>
+            <a href="/tools/html-to-markdown/"><span class="cat-name">HTML to Markdown</span><span class="cat-sub">Convert markup to Markdown</span></a>
+            <a href="/tools/html-to-jsx/"><span class="cat-name">HTML to JSX</span><span class="cat-sub">Convert HTML to React JSX</span></a>
+            <a href="/tools/html-to-text/"><span class="cat-name">HTML to Text</span><span class="cat-sub">Extract readable plain text</span></a>
+            <a href="/tools/html-entity-encoder/"><span class="cat-name">HTML Entity Encoder</span><span class="cat-sub">Encode & decode entities</span></a>
+          </div>
+        </div>
+      </nav>
+
+      <div class="nav-right">
+        <button type="button" class="icon-btn" id="themeToggle" aria-label="Toggle dark mode">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <button type="button" class="icon-btn mobile-toggle" id="mobileNavToggle" aria-label="Open menu">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE DRAWER -->
+  <div class="mobile-nav-drawer" id="mobileNavDrawer">
+    <div class="mobile-nav-head">
+      <a href="/" class="logo"><span class="logo-mark">&gt;_</span>Tool<span class="accent">yard</span></a>
+      <button type="button" class="icon-btn" id="closeMobileDrawer">✕</button>
+    </div>
+    <div class="mobile-nav-links">
+      <div class="mobile-nav-group-title">CSS Tools</div>
+      <a href="/tools/css-formatter/">CSS Formatter</a>
+      <a href="/tools/css-minifier/">CSS Minifier</a>
+      <a href="/tools/html-to-css/">HTML to CSS Extractor</a>
+      <div class="mobile-nav-group-title">JSON &amp; Data</div>
+      <a href="/tools/json-formatter/">JSON Formatter</a>
+      <a href="/tools/json-minifier/">JSON Minifier</a>
+      <a href="/tools/json-to-yaml/">JSON to YAML</a>
+      <a href="/tools/yaml-to-json/">YAML to JSON</a>
+      <a href="/tools/json-to-csv/">JSON to CSV</a>
+      <a href="/tools/csv-to-json/">CSV to JSON</a>
+    </div>
+  </div>
+
+  <!-- BREADCRUMBS -->
+  <div class="breadcrumb-bar">
+    <div class="wrap">
+      <div class="breadcrumbs">
+        <a href="/">Home</a>
+        <span class="sep">/</span>
+        <a href="/categories/css/">CSS</a>
+        <span class="sep">/</span>
+        <span class="current">CSS Formatter &amp; Beautifier</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOOL INTRO -->
+  <section class="tool-intro">
+    <div class="wrap tool-intro-content">
+      <span class="eyebrow">STYLESHEET BEAUTIFIER</span>
+      <h1>CSS Formatter &amp; Beautifier</h1>
+      <p class="lead">Beautify, format, and organize messy or minified CSS stylesheets. Clean up indentation, split multi-selector groups onto individual lines, and align rules with zero server uploads.</p>
+      <div class="tool-meta-badge">
+        <span class="dot"></span> 100% Private · In-browser CSS lexer with selector splitting &amp; variable support
+      </div>
+    </div>
+  </section>
+
+  <!-- CALCULATOR / WORKSPACE -->
+  <section class="tool-app-section">
+    <div class="wrap">
+      <div class="tool-workspace">
+        <div id="errorBanner" class="error-banner"></div>
+
+        <div class="tool-toolbar">
+          <div class="tool-toolbar-left" style="gap: 12px; flex-wrap: wrap;">
+            <button type="button" class="btn btn-amber" id="formatBtn">Format CSS</button>
+            <div style="display:flex; align-items:center; gap:6px;">
+              <label for="indentSelect" style="font-size:13px; color:var(--ink-soft);">Indent:</label>
+              <select id="indentSelect" class="select-opt">
+                <option value="2" selected>2 Spaces</option>
+                <option value="4">4 Spaces</option>
+                <option value="tab">Tab</option>
+              </select>
+            </div>
+            <div style="display:flex; align-items:center; gap:6px;">
+              <label for="ruleModeSelect" style="font-size:13px; color:var(--ink-soft);">Rule Style:</label>
+              <select id="ruleModeSelect" class="select-opt">
+                <option value="expanded" selected>Expanded (Multi-line)</option>
+                <option value="compact">Compact (Single-line)</option>
+              </select>
+            </div>
+            <label class="checkbox-opt">
+              <input type="checkbox" id="selectorNewLineCheckbox" checked>
+              <span>One Selector Per Line</span>
+            </label>
+            <label class="checkbox-opt">
+              <input type="checkbox" id="blankLinesCheck" checked>
+              <span>Blank Line Between Rules</span>
+            </label>
+          </div>
+          <div class="tool-toolbar-right">
+            <button type="button" class="btn btn-ghost btn-sm" id="exampleBtn">Load Example</button>
+            <button type="button" class="btn btn-danger btn-sm" id="clearBtn">Clear</button>
+          </div>
+        </div>
+
+        <div class="tool-grid">
+          <!-- Left Input Pane -->
+          <div class="tool-pane">
+            <div class="tool-pane-header">
+              <span class="title">Raw CSS Input</span>
+              <span class="badge">Messy / Minified CSS</span>
+            </div>
+            <textarea id="cssInput" class="tool-textarea" placeholder="Paste your unformatted or minified CSS here (e.g. h1,h2,h3{font-family:sans-serif;color:#333})..." spellcheck="false"></textarea>
+          </div>
+
+          <!-- Right Output Pane -->
+          <div class="tool-pane">
+            <div class="tool-pane-header">
+              <span class="title">Formatted CSS Output</span>
+              <div class="actions">
+                <button type="button" class="btn btn-sm btn-outline" id="copyBtn">Copy CSS</button>
+                <button type="button" class="btn btn-sm btn-ghost" id="downloadBtn">Download .css</button>
+              </div>
+            </div>
+            <div id="cssOutput" class="tool-output-box empty"><em>Formatted CSS output will appear here...</em></div>
+          </div>
+        </div>
+
+        <div class="tool-stats-bar">
+          <div class="tool-stats-items">
+            <div class="tool-stat-badge">Rules: <b id="statRules">0 rules</b></div>
+            <div class="tool-stat-badge">Lines: <b id="statLines">0 lines</b></div>
+            <div class="tool-stat-badge">Size: <b id="statSize">0 B</b></div>
+          </div>
+          <div>CSS3 / CSS4 Standard · 100% Client-Side</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. ABOUT THIS TOOL SECTION -->
+  <section class="tool-content-section" style="padding: 56px 0; border-top: 1px solid var(--line); background: var(--paper-2);">
+    <div class="wrap">
+      <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">◆ ABOUT THIS TOOL</span>
+      <h2 style="font-size: 26px; margin: 0 0 6px;">Why Format &amp; Beautify CSS?</h2>
+      <p style="color: var(--ink-soft); font-size: 14.5px; margin: 0 0 32px;">Improve readability, standardize codebases, and simplify stylesheet debugging.</p>
+
+      <div class="about-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 36px; font-size: 14.5px; line-height: 1.7; color: var(--ink-soft);">
+        <div>
+          <p style="margin: 0;">During web development, CSS files frequently become cluttered with inconsistent spacing, unaligned curly braces, arbitrary indentation, and mixed declaration lines. When inspecting production websites or debugging third-party libraries, minified stylesheets can be nearly impossible to read.</p>
+        </div>
+        <div>
+          <p style="margin: 0;">The Toolyard CSS Formatter restores consistent indentation and hierarchy across all CSS rules, media queries (<code>@media</code>), keyframe animations (<code>@keyframes</code>), CSS custom properties (variables), and multi-selector chains—executing 100% locally in your browser with zero network latency.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. KEY RULES SECTION -->
+  <section class="tool-content-section" style="padding: 56px 0; border-top: 1px solid var(--line); background: var(--paper);">
+    <div class="wrap">
+      <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">⚙ FORMATTING RULES</span>
+      <h2 style="font-size: 26px; margin: 0 0 6px;">How CSS Beautification Works</h2>
+      <p style="color: var(--ink-soft); font-size: 14.5px; margin: 0 0 28px;">Understanding rule parsing, selector splitting, and nesting indentation.</p>
+
+      <div class="rules-list" style="display: flex; flex-direction: column; gap: 14px;">
+        <div class="rule-card" style="display: flex; align-items: flex-start; gap: 16px; padding: 20px 22px; background: var(--paper-2); border: 1px solid var(--line); border-radius: 12px;">
+          <div class="rule-icon" style="width: 36px; height: 36px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;">↵</div>
+          <div>
+            <h3 style="font-size: 15.5px; margin: 0 0 6px; color: var(--ink);">One Selector Per Line Option</h3>
+            <p style="margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ink-soft);">Splits grouped selector lists (e.g. <code>h1, h2, h3</code>) onto individual lines with trailing commas for maximum Git diff readability.</p>
+          </div>
+        </div>
+
+        <div class="rule-card" style="display: flex; align-items: flex-start; gap: 16px; padding: 20px 22px; background: var(--paper-2); border: 1px solid var(--line); border-radius: 12px;">
+          <div class="rule-icon" style="width: 36px; height: 36px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;">{ }</div>
+          <div>
+            <h3 style="font-size: 15.5px; margin: 0 0 6px; color: var(--ink);">Nested At-Rule Indentation</h3>
+            <p style="margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ink-soft);">Automatically indents selectors and declarations situated inside nested blocks like <code>@media</code>, <code>@supports</code>, <code>@container</code>, and <code>@keyframes</code>.</p>
+          </div>
+        </div>
+
+        <div class="rule-card" style="display: flex; align-items: flex-start; gap: 16px; padding: 20px 22px; background: var(--paper-2); border: 1px solid var(--line); border-radius: 12px;">
+          <div class="rule-icon" style="width: 36px; height: 36px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;">/* */</div>
+          <div>
+            <h3 style="font-size: 15.5px; margin: 0 0 6px; color: var(--ink);">Comment &amp; String Protection</h3>
+            <p style="margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ink-soft);">Preserves block comments (<code>/* comment */</code>), <code>calc()</code> expressions, base64 data URIs, and font family string literals without corruption.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. HOW TO USE -->
+  <section class="section-navy" style="padding: 64px 0; position: relative; overflow: hidden; background: var(--navy-900);">
+    <div class="wrap" style="position: relative;">
+      <span class="eyebrow" style="background: rgba(240,169,59,0.18); color: var(--amber); margin-bottom: 12px; display: inline-flex;">◐ THREE STEPS</span>
+      <h2 style="font-size: 26px; color: #fff; margin: 0 0 6px;">How to Use</h2>
+      <p style="color: #9096B8; font-size: 14.5px; margin: 0 0 32px;">Format and beautify stylesheets in three simple steps.</p>
+
+      <div class="steps">
+        <div class="step" data-n="01">
+          <div class="num">1</div>
+          <h3 style="color: #fff;">Paste CSS Stylesheet</h3>
+          <p>Paste messy, unformatted, or minified CSS into the left pane, or click "Load Example".</p>
+        </div>
+        <div class="step" data-n="02">
+          <div class="num">2</div>
+          <h3 style="color: #fff;">Choose Formatting Options</h3>
+          <p>Select indentation size, toggle "One Selector Per Line", and choose multi-line or compact rule styles.</p>
+        </div>
+        <div class="step" data-n="03">
+          <div class="num">3</div>
+          <h3 style="color: #fff;">Copy or Download</h3>
+          <p>Copy the clean, beautified stylesheet to your clipboard or download it as a <code>.css</code> file.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. WHY USE TOOLYARD (6-CARD GRID) -->
+  <section class="tool-content-section" style="padding: 60px 0; background: var(--paper-2); border-top: 1px solid var(--line);">
+    <div class="wrap">
+      <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">✓ FEATURES</span>
+      <h2 style="font-size: 26px; margin: 0 0 6px;">Why Use Toolyard CSS Formatter</h2>
+      <p style="color: var(--ink-soft); font-size: 14.5px; margin: 0 0 32px;">Engineered for fast, reliable, and standards-compliant stylesheet beautification.</p>
+
+      <div class="why-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--line); gap: 1px;">
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">🔒</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">Zero Server Processing</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">All stylesheet lexing runs in your browser runtime. Proprietary stylesheets and tokens never leave your machine.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">↵</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">One Selector Per Line</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Format grouped class, tag, and ID selectors onto separate lines for cleaner source code and readable git diffs.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">📱</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">Media Query Nesting</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Correctly indents responsive breakpoints, container queries, and nested selector blocks.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">⚙</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">Custom Spacing Options</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Choose between 2 spaces, 4 spaces, or tab indentation, with optional blank lines separating rules.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">↓</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">Download .css File</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Export your formatted stylesheet directly to a clean <code style="font-size:12px;">style.css</code> file with one click.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">⧉</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">One-Click Copy</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Copy the beautified CSS code directly to your system clipboard for fast pasting into your IDE.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. FREQUENTLY ASKED QUESTIONS -->
+  <section class="tool-content-section" style="padding: 64px 0; background: var(--paper); border-top: 1px solid var(--line);">
+    <div class="wrap">
+      <div style="text-align: center; margin-bottom: 36px;">
+        <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">FAQ</span>
+        <h2 style="font-size: 28px; margin: 0;">Frequently Asked Questions</h2>
+      </div>
+
+      <div class="faq" id="faqList" style="max-width: 860px; margin: 0 auto;">
+        <div class="faq-item">
+          <button type="button">What does the "One Selector Per Line" option do?<span class="plus">+</span></button>
+          <div class="faq-a"><p>When enabled, comma-separated selector groups such as <code>.btn, .btn-primary, .btn-large</code> are formatted with each selector on its own line, improving readability and making version control line diffs much easier to review.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Does formatting change how my CSS renders in the browser?<span class="plus">+</span></button>
+          <div class="faq-a"><p>No. CSS formatting strictly adjusts non-semantic whitespace, newlines, and indentation outside of strings. The visual rendering, specificity, and cascading behavior of your stylesheet remain 100% identical.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Can this tool format CSS with media queries and keyframes?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Yes! The formatter recognizes nested curly brace scopes and indents the child rules inside <code>@media</code> queries, <code>@keyframes</code>, <code>@supports</code>, and <code>@layer</code> rules appropriately.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Can I minify my CSS stylesheet after editing?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Yes! You can use the Toolyard CSS Minifier tool to compress your stylesheet, strip all whitespace and comments, and reduce bundle size for production deployment.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. RELATED CSS TOOLS -->
+  <section class="related-tools-section" style="padding: 56px 0; background: var(--paper-2); border-top: 1px solid var(--line);">
+    <div class="wrap">
+      <div style="margin-bottom: 24px;">
+        <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">📎 RELATED</span>
+      </div>
+      <div class="section-head" style="margin-bottom: 28px;">
+        <div>
+          <h2 style="font-size: 26px; margin: 0 0 6px;">Related CSS &amp; Web Tools</h2>
+          <p class="desc" style="margin: 0;">More utilities for formatting and optimizing stylesheets and markup.</p>
+        </div>
+        <a class="view-all" href="/categories/css/">All CSS Tools →</a>
+      </div>
+
+      <div class="grid grid-3" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+        <a class="tool-card" href="/tools/css-minifier/">
+          <div class="top-row"><span class="badge">Optimizer</span></div>
+          <h3>CSS Minifier</h3>
+          <p>Compress CSS stylesheets by removing whitespace, comments, and redundant units.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/html-to-css/">
+          <div class="top-row"><span class="badge">Extractor</span></div>
+          <h3>HTML to CSS Extractor</h3>
+          <p>Extract all classes, IDs, inline styles, and embedded CSS from HTML markup.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/html-formatter/">
+          <div class="top-row"><span class="badge">Formatter</span></div>
+          <h3>HTML Formatter</h3>
+          <p>Beautify and format messy HTML markup with clean indentation and tag alignment.</p>
+          <span class="open">Open tool →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="wrap">
+      <div class="foot-grid">
+        <div class="foot-brand">
+          <a href="/" class="logo"><span class="logo-mark">&gt;_</span>Tool<span class="accent" style="color:var(--amber);">yard</span></a>
+          <p>Free, fast, and private browser-based utilities for developers and creators. No server processing, zero trackers.</p>
+        </div>
+        <div class="foot-col">
+          <h4>CSS Tools</h4>
+          <a href="/tools/css-formatter/">CSS Formatter</a>
+          <a href="/tools/css-minifier/">CSS Minifier</a>
+          <a href="/tools/html-to-css/">HTML to CSS</a>
+        </div>
+        <div class="foot-col">
+          <h4>JSON &amp; Data</h4>
+          <a href="/tools/json-formatter/">JSON Formatter</a>
+          <a href="/tools/json-minifier/">JSON Minifier</a>
+          <a href="/tools/json-to-yaml/">JSON to YAML</a>
+          <a href="/tools/yaml-to-json/">YAML to JSON</a>
+          <a href="/tools/json-to-csv/">JSON to CSV</a>
+          <a href="/tools/csv-to-json/">CSV to JSON</a>
+        </div>
+        <div class="foot-col">
+          <h4>HTML &amp; Web</h4>
+          <a href="/tools/html-formatter/">HTML Formatter</a>
+          <a href="/tools/html-minifier/">HTML Minifier</a>
+          <a href="/tools/html-to-markdown/">HTML to Markdown</a>
+          <a href="/tools/html-entity-encoder/">Entity Encoder</a>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <span>© 2026 Toolyard. All rights reserved. 100% Client-Side Privacy.</span>
+        <span>Space Grotesk · Inter · IBM Plex Mono</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JAVASCRIPT ENGINE -->
+  <script>
+    (function() {
+      // 1. Navigation & Theme Setup
+      const themeToggle = document.getElementById('themeToggle');
+      const mobileToggle = document.getElementById('mobileNavToggle');
+      const closeDrawer = document.getElementById('closeMobileDrawer');
+      const drawer = document.getElementById('mobileNavDrawer');
+
+      if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+          const current = document.documentElement.getAttribute('data-theme');
+          document.documentElement.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+        });
+      }
+      if (mobileToggle && drawer) mobileToggle.addEventListener('click', () => drawer.classList.add('open'));
+      if (closeDrawer && drawer) closeDrawer.addEventListener('click', () => drawer.classList.remove('open'));
+
+      document.querySelectorAll('.nav-item > button').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const item = btn.parentElement;
+          const isOpen = item.classList.contains('open');
+          document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('open'));
+          if (!isOpen) item.classList.add('open');
+        });
+      });
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.nav-item')) {
+          document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('open'));
+        }
+      });
+
+      // FAQ Accordion
+      document.querySelectorAll('.faq-item button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const item = btn.parentElement;
+          const isOpen = item.classList.contains('open');
+          document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+          if (!isOpen) item.classList.add('open');
+        });
+      });
+
+      // 2. CSS Beautifier Engine
+      function formatBytes(bytes) {
+        if (bytes === 0) return '0 B';
+        if (bytes < 1024) return bytes + ' B';
+        return (bytes / 1024).toFixed(2) + ' KB';
+      }
+
+      function formatSelector(sel, onePerLine, indentStr) {
+        if (!onePerLine || sel.startsWith('@')) return sel;
+        // Split by comma outside parentheses
+        const parts = [];
+        let cur = '';
+        let parenDepth = 0;
+        for (let i = 0; i < sel.length; i++) {
+          const c = sel[i];
+          if (c === '(') parenDepth++;
+          else if (c === ')') parenDepth = Math.max(0, parenDepth - 1);
+
+          if (c === ',' && parenDepth === 0) {
+            parts.push(cur.trim());
+            cur = '';
+          } else {
+            cur += c;
+          }
+        }
+        if (cur.trim()) parts.push(cur.trim());
+
+        if (parts.length <= 1) return sel;
+        return parts.join(',\n' + indentStr);
+      }
+
+      function beautifyCSS(css, indentUnit, isCompact, addBlankLine, onePerLine) {
+        // Protect comments and strings
+        const tokens = [];
+        let clean = css.replace(/\/\*[\s\S]*?\*\//g, m => {
+          tokens.push(m);
+          return `___COMMENT_${tokens.length - 1}___`;
+        });
+        clean = clean.replace(/(["'])(?:(?=(\\?))\2[\s\S])*?\1/g, m => {
+          tokens.push(m);
+          return `___STR_${tokens.length - 1}___`;
+        });
+
+        // Normalize basic whitespace
+        clean = clean.replace(/\s+/g, ' ')
+                     .replace(/\s*{\s*/g, ' { ')
+                     .replace(/\s*}\s*/g, ' } ')
+                     .replace(/\s*;\s*/g, '; ')
+                     .replace(/\s*:\s*/g, ': ')
+                     .replace(/\s*,\s*/g, ', ');
+
+        let level = 0;
+        let out = '';
+        let i = 0;
+        const len = clean.length;
+        let ruleCount = 0;
+
+        function getIndent(lvl) {
+          return indentUnit.repeat(lvl);
+        }
+
+        let buffer = '';
+        while (i < len) {
+          const char = clean[i];
+
+          if (char === '{') {
+            const rawSelector = buffer.trim();
+            buffer = '';
+            if (rawSelector) {
+              const formattedSelector = formatSelector(rawSelector, onePerLine, getIndent(level));
+              out += (out && !out.endsWith('\n') ? '\n' : '') + getIndent(level) + formattedSelector + ' {\n';
+              ruleCount++;
+            }
+            level++;
+            i++;
+          } else if (char === '}') {
+            const decl = buffer.trim();
+            buffer = '';
+            if (decl) {
+              out += getIndent(level) + decl + (decl.endsWith(';') ? '' : ';') + '\n';
+            }
+            level = Math.max(0, level - 1);
+            out += getIndent(level) + '}' + (addBlankLine && level === 0 ? '\n\n' : '\n');
+            i++;
+          } else if (char === ';') {
+            buffer += ';';
+            const statement = buffer.trim();
+            buffer = '';
+            if (isCompact && level > 0) {
+              out += (out.endsWith('{ ') || out.endsWith('{\n') ? getIndent(level) : ' ') + statement;
+            } else {
+              out += getIndent(level) + statement + '\n';
+            }
+            i++;
+          } else {
+            buffer += char;
+            i++;
+          }
+        }
+
+        if (buffer.trim()) {
+          out += getIndent(level) + buffer.trim() + '\n';
+        }
+
+        // Restore strings and comments
+        out = out.replace(/___COMMENT_(\d+)___/g, (_, idx) => tokens[parseInt(idx, 10)] || '');
+        out = out.replace(/___STR_(\d+)___/g, (_, idx) => tokens[parseInt(idx, 10)] || '');
+
+        return { formatted: out.trim(), rules: ruleCount };
+      }
+
+      const inputEl = document.getElementById('cssInput');
+      const outputEl = document.getElementById('cssOutput');
+      const errorBanner = document.getElementById('errorBanner');
+      const formatBtn = document.getElementById('formatBtn');
+      const indentSelect = document.getElementById('indentSelect');
+      const ruleModeSelect = document.getElementById('ruleModeSelect');
+      const selectorNewLineCheckbox = document.getElementById('selectorNewLineCheckbox');
+      const blankLinesCheck = document.getElementById('blankLinesCheck');
+      const clearBtn = document.getElementById('clearBtn');
+      const exampleBtn = document.getElementById('exampleBtn');
+      const copyBtn = document.getElementById('copyBtn');
+      const downloadBtn = document.getElementById('downloadBtn');
+      const statRules = document.getElementById('statRules');
+      const statLines = document.getElementById('statLines');
+      const statSize = document.getElementById('statSize');
+
+      function hideError() {
+        if (errorBanner) {
+          errorBanner.className = 'error-banner';
+          errorBanner.textContent = '';
+        }
+      }
+
+      function showError(msg) {
+        if (errorBanner) {
+          errorBanner.textContent = 'CSS Formatting Notice: ' + msg;
+          errorBanner.className = 'error-banner show';
+        }
+      }
+
+      function runFormat() {
+        const src = inputEl ? inputEl.value.trim() : '';
+        hideError();
+
+        if (!src) {
+          if (outputEl) {
+            outputEl.textContent = '';
+            outputEl.classList.add('empty');
+            outputEl.innerHTML = '<em>Formatted CSS output will appear here...</em>';
+          }
+          if (statRules) statRules.textContent = '0 rules';
+          if (statLines) statLines.textContent = '0 lines';
+          if (statSize) statSize.textContent = '0 B';
+          return;
+        }
+
+        try {
+          const indentVal = indentSelect ? indentSelect.value : '2';
+          const indentUnit = indentVal === '4' ? '    ' : indentVal === 'tab' ? '\t' : '  ';
+          const isCompact = ruleModeSelect ? ruleModeSelect.value === 'compact' : false;
+          const addBlankLine = blankLinesCheck ? blankLinesCheck.checked : true;
+          const onePerLine = selectorNewLineCheckbox ? selectorNewLineCheckbox.checked : true;
+
+          const result = beautifyCSS(src, indentUnit, isCompact, addBlankLine, onePerLine);
+
+          if (outputEl) {
+            outputEl.textContent = result.formatted;
+            outputEl.classList.remove('empty');
+          }
+
+          const cssB = new Blob([result.formatted]).size;
+          const lineCount = result.formatted.split('\n').length;
+
+          if (statRules) statRules.textContent = `${result.rules} rule${result.rules !== 1 ? 's' : ''}`;
+          if (statLines) statLines.textContent = `${lineCount} line${lineCount !== 1 ? 's' : ''}`;
+          if (statSize) statSize.textContent = formatBytes(cssB);
+        } catch (err) {
+          showError(err.message || 'Unable to parse CSS structure.');
+        }
+      }
+
+      if (formatBtn) formatBtn.addEventListener('click', runFormat);
+      if (indentSelect) indentSelect.addEventListener('change', runFormat);
+      if (ruleModeSelect) ruleModeSelect.addEventListener('change', runFormat);
+      if (selectorNewLineCheckbox) selectorNewLineCheckbox.addEventListener('change', runFormat);
+      if (blankLinesCheck) blankLinesCheck.addEventListener('change', runFormat);
+
+      if (inputEl) {
+        inputEl.addEventListener('input', () => {
+          if (errorBanner && errorBanner.classList.contains('show')) {
+            hideError();
+          }
+        });
+      }
+
+      if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+          if (inputEl) inputEl.value = '';
+          hideError();
+          if (outputEl) {
+            outputEl.textContent = '';
+            outputEl.classList.add('empty');
+            outputEl.innerHTML = '<em>Formatted CSS output will appear here...</em>';
+          }
+          if (statRules) statRules.textContent = '0 rules';
+          if (statLines) statLines.textContent = '0 lines';
+          if (statSize) statSize.textContent = '0 B';
+          if (inputEl) inputEl.focus();
+        });
+      }
+
+      // Load Example
+      if (exampleBtn) {
+        exampleBtn.addEventListener('click', () => {
+          if (inputEl) {
+            inputEl.value = `:root{--primary:#3b82f6;--radius:8px}.btn,.btn-primary,.btn-secondary,.btn-danger{display:inline-flex;align-items:center;justify-content:center;padding:10px 18px;border-radius:var(--radius);font-weight:600;cursor:pointer}.btn:hover,.btn:focus{transform:translateY(-1px);transition:all 0.15s ease}@media(max-width:768px){.btn,.btn-primary{width:100%;margin-bottom:8px}}`;
+            runFormat();
+            inputEl.focus();
+          }
+        });
+      }
+
+      // Copy Output
+      if (copyBtn) {
+        copyBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const text = outputEl ? outputEl.textContent : '';
+          if (!text || (outputEl && outputEl.classList.contains('empty'))) return;
+
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(() => {
+              const orig = copyBtn.textContent;
+              copyBtn.textContent = 'Copied!';
+              setTimeout(() => { copyBtn.textContent = orig; }, 1500);
+            }).catch(() => fallbackCopy(text));
+          } else {
+            fallbackCopy(text);
+          }
+        });
+      }
+
+      function fallbackCopy(text) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+          document.execCommand('copy');
+          const orig = copyBtn.textContent;
+          copyBtn.textContent = 'Copied!';
+          setTimeout(() => { copyBtn.textContent = orig; }, 1500);
+        } catch (err) {}
+        document.body.removeChild(ta);
+      }
+
+      // Download Output as .css
+      if (downloadBtn) {
+        downloadBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const text = outputEl ? outputEl.textContent : '';
+          if (!text || (outputEl && outputEl.classList.contains('empty'))) return;
+          const blob = new Blob([text], { type: 'text/css;charset=utf-8;' });
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = 'formatted.css';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

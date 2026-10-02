@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toolyard — Free Browser-Based Tools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" class="rel">
+
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap nav-row">
+    <a href="#" class="logo"><span class="logo-mark">&gt;_</span>Tool<span class="accent">yard</span></a>
+
+    <nav class="main-nav" id="mainNav">
+      <div class="nav-item">
+        <button>Tools <span class="chev"></span></button>
+        <div class="mega">
+          <a href="#html-web"><span class="cat-name">HTML &amp; Web</span><span class="cat-sub">Format, clean, convert markup</span></a>
+          <a href="#"><span class="cat-name">JSON &amp; Data</span><span class="cat-sub">Structured data utilities</span></a>
+          <a href="#"><span class="cat-name">CSS</span><span class="cat-sub">Generate &amp; optimize styles</span></a>
+          <a href="#"><span class="cat-name">Text</span><span class="cat-sub">Clean, count, transform copy</span></a>
+          <a href="#"><span class="cat-name">Images</span><span class="cat-sub">Resize, compress, convert</span></a>
+          <a href="#"><span class="cat-name">Files</span><span class="cat-sub">Common document formats</span></a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <button>Converters <span class="chev"></span></button>
+        <div class="mega">
+          <a href="#"><span class="cat-name">HTML Converters</span><span class="cat-sub">Markup ⇄ other formats</span></a>
+          <a href="#"><span class="cat-name">Data Converters</span><span class="cat-sub">JSON, CSV, XML, YAML</span></a>
+          <a href="#"><span class="cat-name">Image Converters</span><span class="cat-sub">Format &amp; size conversion</span></a>
+          <a href="#"><span class="cat-name">Text Converters</span><span class="cat-sub">Case, encoding, structure</span></a>
+          <a href="#"><span class="cat-name">File Converters</span><span class="cat-sub">Everyday document formats</span></a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <button>Generators <span class="chev"></span></button>
+        <div class="mega">
+          <a href="#"><span class="cat-name">HTML Generators</span><span class="cat-sub">Tables, forms, boilerplate</span></a>
+          <a href="#"><span class="cat-name">CSS Generators</span><span class="cat-sub">Gradients, shadows, grids</span></a>
+          <a href="#"><span class="cat-name">SEO Generators</span><span class="cat-sub">Meta tags &amp; sitemaps</span></a>
+          <a href="#"><span class="cat-name">Developer Generators</span><span class="cat-sub">IDs, tokens, placeholders</span></a>
+          <a href="#"><span class="cat-name">General Generators</span><span class="cat-sub">Everyday utilities</span></a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <button>Developer <span class="chev"></span></button>
+        <div class="mega">
+          <a href="#"><span class="cat-name">HTML Tools</span><span class="cat-sub">Parse &amp; inspect markup</span></a>
+          <a href="#"><span class="cat-name">JSON Tools</span><span class="cat-sub">Validate, diff, format</span></a>
+          <a href="#"><span class="cat-name">CSS Tools</span><span class="cat-sub">Debug &amp; minify styles</span></a>
+          <a href="#"><span class="cat-name">JavaScript Tools</span><span class="cat-sub">Format, minify, beautify</span></a>
+          <a href="#"><span class="cat-name">Encoding Tools</span><span class="cat-sub">Base64, hashing, escaping</span></a>
+          <a href="#"><span class="cat-name">Data Tools</span><span class="cat-sub">Lookup, compare, transform</span></a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <button>SEO <span class="chev"></span></button>
+        <div class="mega">
+          <a href="#"><span class="cat-name">Meta Tools</span><span class="cat-sub">Titles, descriptions, tags</span></a>
+          <a href="#"><span class="cat-name">Social Preview Tools</span><span class="cat-sub">OG &amp; card previews</span></a>
+          <a href="#"><span class="cat-name">Schema Tools</span><span class="cat-sub">Structured data markup</span></a>
+          <a href="#"><span class="cat-name">Technical SEO Tools</span><span class="cat-sub">Crawlability &amp; indexing</span></a>
+          <a href="#"><span class="cat-name">URL Tools</span><span class="cat-sub">Slugs, redirects, params</span></a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="nav-right">
+      <button class="icon-btn" aria-label="Search" onclick="document.getElementById('heroSearch').focus(); window.scrollTo({top:0,behavior:'smooth'});">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+      <button class="icon-btn" id="themeToggle" aria-label="Toggle dark mode">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" style="padding-top:56px;">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">● 5 tools live · 45+ mapped out</span>
+      <h1>Free online tools that<br>run <span class="hl">in your browser.</span></h1>
+      <p class="lead">Convert, format, generate, edit and analyze text, code, images and files — nothing leaves your device unless you choose to save it.</p>
+
+      <div class="search-box">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#7A80A8" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="heroSearch" type="text" placeholder="Search for a tool… e.g. “json formatter”">
+        <button>Search</button>
+      </div>
+      <div class="popular-row">
+        <a href="#html-web">HTML Formatter</a>
+        <a href="#">JSON Formatter</a>
+        <a href="#">Image Compressor</a>
+        <a href="#">Word Counter</a>
+        <a href="#html-web">HTML to Markdown</a>
+      </div>
+    </div>
+
+    <div class="console">
+      <div class="console-bar">
+        <span></span><span></span><span></span>
+        <div class="tab"><b>run.js</b><span>local · no upload</span></div>
+      </div>
+      <div class="console-body" id="consoleBody"></div>
+      <div class="console-foot">
+        <div class="status"><span class="dot"></span> processed on-device</div>
+        <div>0.00s server time</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUICK CATEGORIES -->
+<div class="quickcats">
+  <div class="wrap">
+    <div class="qc-row">
+      <a class="qc-item" href="#html-web"><span class="ico">🌐</span>HTML &amp; Web</a>
+      <a class="qc-item" href="#other-cats"><span class="ico">{ }</span>JSON &amp; Data</a>
+      <a class="qc-item" href="#other-cats"><span class="ico">🎨</span>CSS</a>
+      <a class="qc-item" href="#other-cats"><span class="ico">✎</span>Text</a>
+      <a class="qc-item" href="#other-cats"><span class="ico">🖼</span>Images</a>
+      <a class="qc-item" href="#other-cats"><span class="ico">📁</span>Files</a>
+      <a class="qc-item" href="#other-cats"><span class="ico">🔍</span>SEO</a>
+      <a class="qc-item" href="#other-cats"><span class="ico">⌨</span>Developer</a>
+    </div>
+  </div>
+</div>
+
+<!-- POPULAR TOOLS -->
+<section id="popular" class="section-tint">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow" style="margin-bottom:10px; display:inline-flex;">◆ Most opened this week</span>
+        <h2 style="margin-top:10px;">Popular tools</h2>
+        <p class="desc">The most-used tools on Toolyard right now, based on daily traffic.</p>
+      </div>
+      <a class="view-all" href="#all-tools">View all tools →</a>
+    </div>
+    <div class="grid grid-5" id="popularGrid"></div>
+  </div>
+</section>
+
+<!-- HTML & WEB TOOLS -->
+<section id="html-web" style="background:var(--navy-800); border-top:1px solid var(--line); border-bottom:1px solid var(--line); position:relative; overflow:hidden;">
+  <div style="position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px); background-size:36px 36px; mask-image:radial-gradient(ellipse at 100% 0%, black 0%, transparent 65%);"></div>
+  <div class="wrap" style="position:relative;">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow" style="margin-bottom:10px; display:inline-flex; background:rgba(240,169,59,0.18); color:var(--amber);">● First category live</span>
+        <h2 style="margin-top:10px; color:#fff;">HTML &amp; Web Tools</h2>
+        <p class="desc" style="color:#9096B8;">Tools for formatting, converting, cleaning and extracting HTML.</p>
+      </div>
+      <a class="view-all" href="#" style="color:var(--amber);">View all HTML &amp; Web Tools →</a>
+    </div>
+    <div id="htmlCompactList" style="display:grid; grid-template-columns:repeat(2,1fr); gap:10px;"></div>
+  </div>
+</section>
+
+<!-- OTHER CATEGORIES -->
+<section id="other-cats">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>More categories, on the way</h2>
+        <p class="desc">Toolyard is built to grow to 50–100+ tools. Here's what's next.</p>
+      </div>
+    </div>
+    <div class="catgrid" id="catGrid"></div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section-navy" style="position:relative; overflow:hidden;">
+  <div style="position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px); background-size:36px 36px; mask-image:radial-gradient(ellipse at 10% 100%, black 0%, transparent 60%);"></div>
+  <div class="wrap" style="position:relative;">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow" style="background:rgba(240,169,59,0.18); color:var(--amber);">◐ Three steps, every tool</span>
+        <h2 style="margin-top:12px;">How it works</h2>
+      </div>
+    </div>
+    <div class="steps">
+      <div class="step" data-n="01"><div class="num">1</div><h3>Choose a tool</h3><p>Search or browse by category — no signup, no setup.</p></div>
+      <div class="step" data-n="02"><div class="num">2</div><h3>Enter or upload your content</h3><p>Paste text, code, or drop a file straight into the tool.</p></div>
+      <div class="step" data-n="03"><div class="num">3</div><h3>Get your result</h3><p>Copy or download the output instantly. That's it.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section class="section-tint">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow" style="margin-bottom:10px; display:inline-flex;">✓ The short version</span>
+        <h2 style="margin-top:10px;">Why use these tools</h2>
+      </div>
+    </div>
+    <div class="feat-grid" id="featGrid"></div>
+  </div>
+</section>
+
+<!-- ALL TOOLS -->
+<section id="all-tools" class="section-tint">
+  <div class="wrap">
+    <div class="section-head"><div><h2>All tools</h2><p class="desc">Browse everything by category. New tools are added here as they launch.</p></div></div>
+    <div class="alltools-tabs" id="atTabs"></div>
+    <div id="atPanels"></div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section>
+  <div class="wrap">
+    <div class="section-head" style="justify-content:center; text-align:center; flex-direction:column; align-items:center;">
+      <span class="eyebrow">FAQ</span>
+      <h2 style="margin-top:12px;">Common questions</h2>
+    </div>
+    <div class="faq" id="faqList"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="#" class="logo"><span class="logo-mark">&gt;_</span>Tool<span class="accent" style="color:var(--amber);">yard</span></a>
+        <p>A growing collection of free, browser-based tools for text, code, images and files. No accounts, no uploads to a server unless a tool says otherwise.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Tools</h4>
+        <a href="#html-web">HTML &amp; Web</a><a href="#">JSON &amp; Data</a><a href="#">CSS</a><a href="#">Text</a><a href="#">Images</a><a href="#">Files</a>
+      </div>
+      <div class="foot-col">
+        <h4>Converters</h4>
+        <a href="#">HTML Converters</a><a href="#">Data Converters</a><a href="#">Image Converters</a><a href="#">Text Converters</a>
+      </div>
+      <div class="foot-col">
+        <h4>Generators</h4>
+        <a href="#">SEO Generators</a><a href="#">CSS Generators</a><a href="#">Developer Generators</a>
+      </div>
+      <div class="foot-col">
+        <h4>Website</h4>
+        <a href="#">About</a><a href="#">Contact</a><a href="#">Privacy Policy</a><a href="#">Terms</a><a href="#">Disclaimer</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Toolyard. All tools run client-side unless stated otherwise.</span>
+      <span class="mono">50+ tools mapped · 5 live</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ---------- DATA ----------
+const htmlTools = [
+  {name:"HTML Formatter", desc:"Beautify messy markup with consistent indentation.", badge:"Formatter"},
+  {name:"HTML Minifier", desc:"Strip whitespace and comments to shrink file size.", badge:"Optimizer"},
+  {name:"HTML to Markdown", desc:"Convert markup into clean, portable Markdown.", badge:"Converter"},
+  {name:"HTML to Plain Text", desc:"Extract readable text from any HTML document.", badge:"Extractor"},
+  {name:"HTML to JSX", desc:"Turn HTML snippets into React-ready JSX.", badge:"Converter"},
+];
+
+const categories = [
+  {name:"JSON & Data", desc:"Format, convert and transform structured data.", status:"soon"},
+  {name:"CSS", desc:"Generate, format and optimize CSS.", status:"soon"},
+  {name:"Text", desc:"Clean, transform and analyze text.", status:"soon"},
+  {name:"Images", desc:"Resize, compress, convert and edit images.", status:"soon"},
+  {name:"Files", desc:"Work with common document and file formats.", status:"soon"},
+  {name:"SEO", desc:"Generate and inspect website SEO elements.", status:"soon"},
+  {name:"Developer", desc:"Utilities for developers and web creators.", status:"soon"},
+  {name:"HTML & Web", desc:"Format, convert, clean and extract HTML.", status:"live"},
+];
+
+const features = [
+  {ico:"◆", h:"Free to use", p:"Every tool is free — no tiers, no locked features."},
+  {ico:"○", h:"No account required", p:"Open a tool and start working immediately."},
+  {ico:"▣", h:"Browser-based processing", p:"Most tools run entirely on your device."},
+  {ico:"↓", h:"No unnecessary uploads", p:"Your content stays local unless a tool needs a server."},
+  {ico:"⚡", h:"Fast results", p:"No queues, no loading spinners for basic operations."},
+  {ico:"⧉", h:"Copy and download", p:"Grab your output in one click, in the format you need."},
+];
+
+const faqs = [
+  {q:"Are these tools free?", a:"Yes — every tool on Toolyard is free to use, with no usage limits or hidden tiers."},
+  {q:"Do I need an account?", a:"No. All tools are open and usable immediately, with nothing to sign up for."},
+  {q:"Are my files uploaded?", a:"Most tools process everything locally in your browser. Any tool that needs a server will say so clearly."},
+  {q:"Can I use the tools on mobile?", a:"Yes, the site and every tool are designed to work on phones and tablets."},
+  {q:"Do the tools work offline?", a:"Browser-based tools generally keep working once the page has loaded, even without a connection."},
+  {q:"What types of tools are available?", a:"Formatters, converters, generators and analyzers for HTML, data, CSS, text, images and files — with more categories launching soon."},
+];
+
+// ---------- RENDER: popular (5 real tools) ----------
+const popularGrid = document.getElementById('popularGrid');
+htmlTools.forEach(t=>{
+  popularGrid.insertAdjacentHTML('beforeend', `
+    <div class="tool-card">
+      <div class="top-row"><span class="badge">${t.badge}</span></div>
+      <h3>${t.name}</h3>
+      <p>${t.desc}</p>
+      <span class="open">Open tool →</span>
+    </div>`);
+});
+
+// ---------- RENDER: html compact list ----------
+const htmlCompact = document.getElementById('htmlCompactList');
+htmlTools.forEach(t=>{
+  htmlCompact.insertAdjacentHTML('beforeend', `
+    <a class="tool-compact on-dark" href="#">
+      <div><div class="name">${t.name}</div><div class="desc">${t.desc}</div></div>
+      <span class="arrow">→</span>
+    </a>`);
+});
+
+// ---------- RENDER: category grid ----------
+const catGrid = document.getElementById('catGrid');
+categories.forEach(c=>{
+  catGrid.insertAdjacentHTML('beforeend', `
+    <div class="cat-card">
+      <span class="status-pill ${c.status==='live'?'status-live':'status-soon'}">${c.status==='live'?'Live':'Coming soon'}</span>
+      <h3 style="margin-top:12px;">${c.name}</h3>
+      <p>${c.desc}</p>
+      <span class="view-all" style="font-size:12.5px;">${c.status==='live'?'Browse tools →':'Notify me →'}</span>
+    </div>`);
+});
+
+// ---------- RENDER: features ----------
+const featGrid = document.getElementById('featGrid');
+features.forEach(f=>{
+  featGrid.insertAdjacentHTML('beforeend', `
+    <div class="feat"><div class="ico">${f.ico}</div><h3>${f.h}</h3><p>${f.p}</p></div>`);
+});
+
+// ---------- RENDER: all tools tabs ----------
+const allToolsData = {
+  "HTML & Web": htmlTools,
+  "JSON & Data": [], "CSS": [], "Text": [], "Images": [], "Files": [], "SEO": [], "Developer": []
+};
+const atTabs = document.getElementById('atTabs');
+const atPanels = document.getElementById('atPanels');
+Object.keys(allToolsData).forEach((cat,i)=>{
+  atTabs.insertAdjacentHTML('beforeend', `<button data-cat="${cat}" class="${i===0?'active':''}">${cat} <span style="opacity:.6;">(${allToolsData[cat].length})</span></button>`);
+  const tools = allToolsData[cat];
+  const items = tools.length ? tools.map(t=>`
+      <a class="tool-compact" href="#">
+        <div><div class="name">${t.name}</div><div class="desc">${t.desc}</div></div>
+        <span class="arrow">→</span>
+      </a>`).join('') : `<div class="at-empty">No tools published yet in ${cat} — check back soon.</div>`;
+  atPanels.insertAdjacentHTML('beforeend', `<div class="alltools-panel ${i===0?'active':''}" data-panel="${cat}">${items}</div>`);
+});
+atTabs.addEventListener('click', e=>{
+  const btn = e.target.closest('button'); if(!btn) return;
+  atTabs.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  atPanels.querySelectorAll('.alltools-panel').forEach(p=>p.classList.toggle('active', p.dataset.panel===btn.dataset.cat));
+});
+
+// ---------- RENDER: FAQ ----------
+const faqList = document.getElementById('faqList');
+faqs.forEach(f=>{
+  faqList.insertAdjacentHTML('beforeend', `
+    <div class="faq-item">
+      <button>${f.q}<span class="plus">+</span></button>
+      <div class="faq-a"><p>${f.a}</p></div>
+    </div>`);
+});
+faqList.addEventListener('click', e=>{
+  const btn = e.target.closest('button'); if(!btn) return;
+  btn.parentElement.classList.toggle('open');
+});
+
+// ---------- NAV dropdowns ----------
+document.querySelectorAll('.nav-item').forEach(item=>{
+  const btn = item.querySelector('button');
+  btn.addEventListener('click', ()=>{
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('open'));
+    if(!isOpen) item.classList.add('open');
+  });
+});
+document.addEventListener('click', e=>{
+  if(!e.target.closest('.nav-item')) document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('open'));
+});
+
+// ---------- Dark mode ----------
+const themeToggle = document.getElementById('themeToggle');
+themeToggle.addEventListener('click', ()=>{
+  const html = document.documentElement;
+  html.dataset.theme = html.dataset.theme === 'dark' ? 'light' : 'dark';
+});
+
+// ---------- Console signature animation ----------
+const demos = [
+  {label:"HTML Formatter", inLine:"<div><p>hi</p></div>", out:["<div>", "  <p>hi</p>", "</div>"]},
+  {label:"JSON Formatter", inLine:'{"a":1,"b":[2,3]}', out:["{", '  "a": 1,', '  "b": [2, 3]', "}"]},
+  {label:"HTML Minifier", inLine:"<div>\\n  <p>hi</p>\\n</div>", out:["<div><p>hi</p></div>"]},
+];
+const consoleBody = document.getElementById('consoleBody');
+let demoIndex = 0;
+
+function typeLine(text, cls, cb){
+  let i=0;
+  const row = document.createElement('div');
+  row.className = cls;
+  consoleBody.appendChild(row);
+  const iv = setInterval(()=>{
+    row.textContent = text.slice(0,i+1);
+    i++;
+    if(i>=text.length){ clearInterval(iv); cb && cb(); }
+  }, 18);
+}
+
+function runDemo(){
+  consoleBody.innerHTML = '';
+  const demo = demos[demoIndex % demos.length];
+  const inRow = document.createElement('div');
+  inRow.innerHTML = `<span class="ln">$</span> <span class="console-in">${demo.label.toLowerCase().replace(/\\s+/g,'-')} --input</span>`;
+  consoleBody.appendChild(inRow);
+
+  const pasted = document.createElement('div');
+  pasted.className = 'ln';
+  pasted.style.margin = '8px 0 10px';
+  pasted.textContent = demo.inLine;
+  consoleBody.appendChild(pasted);
+
+  setTimeout(()=>{
+    const outHead = document.createElement('div');
+    outHead.innerHTML = '<span class="ln">→ output</span>';
+    consoleBody.appendChild(outHead);
+    let li = 0;
+    function nextLine(){
+      if(li >= demo.out.length){
+        const caretRow = document.createElement('div');
+        caretRow.innerHTML = '<span class="caret"></span>';
+        consoleBody.appendChild(caretRow);
+        setTimeout(()=>{ demoIndex++; runDemo(); }, 2200);
+        return;
+      }
+      typeLine(demo.out[li], 'console-out', ()=>{ li++; nextLine(); });
+    }
+    nextLine();
+  }, 500);
+}
+runDemo();
+</script>
+</body>
+</html>

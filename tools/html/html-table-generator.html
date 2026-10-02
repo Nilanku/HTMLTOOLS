@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML Table Generator - Interactive Table Builder Online | Toolyard</title>
+  <meta name="description" content="Generate clean, semantic HTML5 tables visually online. Edit rows and columns interactively, add headers and captions, and copy or download responsive HTML table code.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    /* Workspace Grid & Table Editor Layout */
+    .tool-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+      min-height: 480px;
+      background: var(--line);
+      gap: 1px;
+    }
+    @media (max-width: 860px) {
+      .tool-grid { grid-template-columns: 1fr; }
+    }
+    .tool-pane {
+      background: var(--paper-2);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      min-width: 0;
+      overflow: hidden;
+    }
+    .tool-pane-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      background: var(--paper);
+      border-bottom: 1px solid var(--line);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink-soft);
+      min-width: 0;
+    }
+    .tool-pane-header .title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+    .tool-pane-header .actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    .table-editor-wrap {
+      flex: 1;
+      padding: 18px;
+      overflow: auto;
+      background: var(--editor-bg);
+      min-height: 380px;
+    }
+    .grid-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--paper-2);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .grid-table th, .grid-table td {
+      padding: 4px;
+      border: 1px solid var(--line);
+      min-width: 90px;
+    }
+    .grid-table th {
+      background: var(--paper);
+      font-weight: 600;
+      text-align: left;
+    }
+    .cell-input {
+      width: 100%;
+      border: 1px solid transparent;
+      background: transparent;
+      padding: 7px 9px;
+      color: var(--ink);
+      font-family: inherit;
+      font-size: 13px;
+      border-radius: 4px;
+      box-sizing: border-box;
+      outline: none;
+      transition: border-color .15s, background .15s;
+    }
+    .cell-input:focus {
+      border-color: var(--amber);
+      background: var(--paper-2);
+    }
+    .grid-table th .cell-input {
+      font-weight: 600;
+      color: var(--ink);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12.5px;
+    }
+    .tool-textarea {
+      flex: 1;
+      width: 100%;
+      min-height: 380px;
+      padding: 18px;
+      border: none;
+      outline: none;
+      resize: vertical;
+      background: var(--editor-bg);
+      color: var(--ink);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13.5px;
+      line-height: 1.65;
+      tab-size: 2;
+      white-space: pre;
+      overflow: auto;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+    .tool-textarea:focus {
+      background: var(--paper-2);
+    }
+    .tool-input {
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--line);
+      background: var(--paper-2);
+      color: var(--ink);
+      font-family: inherit;
+      font-size: 13px;
+      outline: none;
+      transition: border-color .15s;
+    }
+    .tool-input:focus {
+      border-color: var(--amber);
+    }
+    .tool-checkbox-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--ink);
+      cursor: pointer;
+      user-select: none;
+    }
+    .tool-checkbox-label input[type="checkbox"] {
+      accent-color: var(--amber);
+      width: 15px;
+      height: 15px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER & NAVIGATION -->
+  <header class="site">
+    <div class="wrap nav-row">
+      <a href="#" class="logo"><span class="logo-mark">&gt;_</span>Tool<span class="accent">yard</span></a>
+      <nav class="main-nav" id="mainNav">
+        <div class="nav-item">
+          <button type="button">Tools <span class="chev"></span></button>
+          <div class="mega">
+            <a href="#"><span class="cat-name">HTML &amp; Web</span><span class="cat-sub">10 formatters &amp; extractors</span></a>
+            <a href="#"><span class="cat-name">JSON &amp; Data</span><span class="cat-sub">Format &amp; validate data</span></a>
+            <a href="#"><span class="cat-name">CSS</span><span class="cat-sub">Generate &amp; optimize styles</span></a>
+            <a href="#"><span class="cat-name">Text</span><span class="cat-sub">Clean, count, transform</span></a>
+            <a href="#"><span class="cat-name">Images</span><span class="cat-sub">Resize &amp; compress</span></a>
+            <a href="#"><span class="cat-name">Files</span><span class="cat-sub">Document utilities</span></a>
+          </div>
+        </div>
+        <div class="nav-item">
+          <button type="button">Converters <span class="chev"></span></button>
+          <div class="mega">
+            <a href="#"><span class="cat-name">HTML to Markdown</span><span class="cat-sub">Convert markup to Markdown</span></a>
+            <a href="#"><span class="cat-name">HTML to JSX</span><span class="cat-sub">Convert to React JSX</span></a>
+            <a href="#"><span class="cat-name">HTML to Text</span><span class="cat-sub">Extract readable text</span></a>
+            <a href="#"><span class="cat-name">HTML to CSS</span><span class="cat-sub">Extract classes &amp; IDs</span></a>
+          </div>
+        </div>
+      </nav>
+
+      <div class="nav-right">
+        <button type="button" class="icon-btn" id="themeToggle" aria-label="Toggle dark mode">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <button type="button" class="icon-btn mobile-toggle" id="mobileNavToggle" aria-label="Open menu">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE DRAWER -->
+  <div class="mobile-nav-drawer" id="mobileNavDrawer">
+    <div class="mobile-nav-head">
+      <a href="#" class="logo"><span class="logo-mark">&gt;_</span>Tool<span class="accent">yard</span></a>
+      <button type="button" class="icon-btn" id="closeMobileDrawer">✕</button>
+    </div>
+    <div class="mobile-nav-links">
+      <div class="mobile-nav-group-title">HTML &amp; Web</div>
+      <a href="#">HTML Formatter</a>
+      <a href="#">HTML Minifier</a>
+      <a href="#">HTML to Markdown</a>
+      <a href="#">HTML to JSX</a>
+      <a href="#">HTML to Plain Text</a>
+      <a href="#">HTML to CSS Extractor</a>
+      <a href="#">HTML Link Extractor</a>
+      <a href="#">HTML Image Extractor</a>
+      <a href="#">HTML Table Generator</a>
+    </div>
+  </div>
+
+  <!-- BREADCRUMBS -->
+  <div class="breadcrumb-bar">
+    <div class="wrap">
+      <div class="breadcrumbs">
+        <a href="#">Home</a>
+        <span class="sep">/</span>
+        <a href="#">HTML &amp; Web</a>
+        <span class="sep">/</span>
+        <span class="current">HTML Table Generator</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOOL INTRO -->
+  <section class="tool-intro">
+    <div class="wrap tool-intro-content">
+      <span class="eyebrow">TABLE GENERATOR</span>
+      <h1>HTML Table Generator</h1>
+      <p class="lead">Visually edit rows, columns, headers, and captions in an interactive spreadsheet grid. Generate semantic, accessible HTML5 table code ready for your website.</p>
+      <div class="tool-meta-badge">
+        <span class="dot"></span> 100% Private · Processed locally in your browser
+      </div>
+    </div>
+  </section>
+
+  <!-- CALCULATOR / WORKSPACE -->
+  <section class="tool-app-section">
+    <div class="wrap">
+      <div class="tool-workspace">
+        <div class="tool-toolbar">
+          <div class="tool-toolbar-left" style="gap: 10px;">
+            <button type="button" class="btn btn-outline btn-sm" id="addRowBtn">+ Add Row</button>
+            <button type="button" class="btn btn-outline btn-sm" id="addColBtn">+ Add Column</button>
+            <button type="button" class="btn btn-danger btn-sm" id="delRowBtn">- Row</button>
+            <button type="button" class="btn btn-danger btn-sm" id="delColBtn">- Column</button>
+            <label class="tool-checkbox-label">
+              <input type="checkbox" id="hasHeader" checked>
+              <span>Include Header (&lt;thead&gt;)</span>
+            </label>
+            <input type="text" id="captionInput" class="tool-input" placeholder="Caption (optional)" style="width: 170px;">
+          </div>
+          <div class="tool-toolbar-right">
+            <button type="button" class="btn btn-ghost btn-sm" id="exampleBtn">Load Example</button>
+            <button type="button" class="btn btn-danger btn-sm" id="resetBtn">Reset</button>
+          </div>
+        </div>
+
+        <div class="tool-grid">
+          <!-- Left Visual Spreadsheet Pane -->
+          <div class="tool-pane">
+            <div class="tool-pane-header">
+              <span class="title">Visual Spreadsheet Editor</span>
+              <span class="badge">Interactive Grid</span>
+            </div>
+            <div class="table-editor-wrap">
+              <table class="grid-table" id="editorTable">
+                <tbody id="editorBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Right Generated HTML Output Pane -->
+          <div class="tool-pane">
+            <div class="tool-pane-header">
+              <span class="title">Generated HTML Code</span>
+              <div class="actions">
+                <button type="button" class="btn btn-sm btn-outline" id="copyBtn">Copy HTML</button>
+                <button type="button" class="btn btn-sm btn-ghost" id="downloadBtn">Download .html</button>
+              </div>
+            </div>
+            <textarea id="htmlOutput" class="tool-textarea" spellcheck="false" readonly></textarea>
+          </div>
+        </div>
+
+        <div class="tool-stats-bar">
+          <div class="tool-stats-items">
+            <div class="tool-stat-badge">Rows: <b id="statRows">4</b></div>
+            <div class="tool-stat-badge">Columns: <b id="statCols">3</b></div>
+          </div>
+          <div>Semantic HTML5 Output · 100% Client-Side</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. ABOUT THIS TOOL SECTION -->
+  <section class="tool-content-section" style="padding: 56px 0; border-top: 1px solid var(--line); background: var(--paper-2);">
+    <div class="wrap">
+      <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">◆ ABOUT THIS TOOL</span>
+      <h2 style="font-size: 26px; margin: 0 0 6px;">About HTML Table Generation</h2>
+      <p style="color: var(--ink-soft); font-size: 14.5px; margin: 0 0 32px;">Build tabular data structures cleanly without manually typing dozens of markup tags.</p>
+
+      <div class="about-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 36px; font-size: 14.5px; line-height: 1.7; color: var(--ink-soft);">
+        <div>
+          <p style="margin: 0;">Writing HTML tables by hand is notoriously tedious and error-prone. A simple four-column table requires dozens of opening and closing <code>&lt;tr&gt;</code>, <code>&lt;th&gt;</code>, and <code>&lt;td&gt;</code> tags where a single misplaced tag can break your entire page layout.</p>
+        </div>
+        <div>
+          <p style="margin: 0;">The Toolyard HTML Table Generator provides a spreadsheet-like visual canvas where you can add rows, append columns, configure headers, and type cell values effortlessly. It automatically compiles your grid into valid, accessible, semantic HTML5 markup ready to paste into your projects.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. KEY EXTRACTION RULES SECTION -->
+  <section class="tool-content-section" style="padding: 56px 0; border-top: 1px solid var(--line); background: var(--paper);">
+    <div class="wrap">
+      <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">⚙ ANATOMY &amp; ACCESSIBILITY</span>
+      <h2 style="font-size: 26px; margin: 0 0 6px;">Semantic Table Structure</h2>
+      <p style="color: var(--ink-soft); font-size: 14.5px; margin: 0 0 28px;">How HTML elements are structured for optimal accessibility and search engine compliance.</p>
+
+      <div class="rules-list" style="display: flex; flex-direction: column; gap: 14px;">
+        <div class="rule-card" style="display: flex; align-items: flex-start; gap: 16px; padding: 20px 22px; background: var(--paper-2); border: 1px solid var(--line); border-radius: 12px;">
+          <div class="rule-icon" style="width: 36px; height: 36px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;">▦</div>
+          <div>
+            <h3 style="font-size: 15.5px; margin: 0 0 6px; color: var(--ink);">Header Separation (&lt;thead&gt; &amp; &lt;tbody&gt;)</h3>
+            <p style="margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ink-soft);">Separates top header cells into semantic <code>&lt;thead&gt;&lt;tr&gt;&lt;th&gt;</code> blocks and data cells into <code>&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;</code> sections for screen reader support.</p>
+          </div>
+        </div>
+
+        <div class="rule-card" style="display: flex; align-items: flex-start; gap: 16px; padding: 20px 22px; background: var(--paper-2); border: 1px solid var(--line); border-radius: 12px;">
+          <div class="rule-icon" style="width: 36px; height: 36px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;">📝</div>
+          <div>
+            <h3 style="font-size: 15.5px; margin: 0 0 6px; color: var(--ink);">Table Caption (&lt;caption&gt;)</h3>
+            <p style="margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ink-soft);">Attaches an optional accessible <code>&lt;caption&gt;</code> element to the top of the table definition to clearly describe the dataset's purpose to users and web crawlers.</p>
+          </div>
+        </div>
+
+        <div class="rule-card" style="display: flex; align-items: flex-start; gap: 16px; padding: 20px 22px; background: var(--paper-2); border: 1px solid var(--line); border-radius: 12px;">
+          <div class="rule-icon" style="width: 36px; height: 36px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;">⚡</div>
+          <div>
+            <h3 style="font-size: 15.5px; margin: 0 0 6px; color: var(--ink);">Clean Indentation &amp; Formatting</h3>
+            <p style="margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ink-soft);">Produces pristine, 2-space indented markup that is easy to read, modify, and drop directly into any web framework or CMS.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. HOW TO USE (DARK BLUE BACKGROUND LIKE HOMEPAGE STEPS) -->
+  <section class="section-navy" style="padding: 64px 0; position: relative; overflow: hidden; background: var(--navy-900);">
+    <div class="wrap" style="position: relative;">
+      <span class="eyebrow" style="background: rgba(240,169,59,0.18); color: var(--amber); margin-bottom: 12px; display: inline-flex;">◐ THREE STEPS</span>
+      <h2 style="font-size: 26px; color: #fff; margin: 0 0 6px;">How to Use</h2>
+      <p style="color: #9096B8; font-size: 14.5px; margin: 0 0 32px;">Build and export custom HTML tables in under a minute.</p>
+
+      <div class="steps">
+        <div class="step" data-n="01">
+          <div class="num">1</div>
+          <h3 style="color: #fff;">Adjust Grid Dimensions</h3>
+          <p>Click "+ Add Row" or "+ Add Column" to define your table size, or load a pre-filled financial example.</p>
+        </div>
+        <div class="step" data-n="02">
+          <div class="num">2</div>
+          <h3 style="color: #fff;">Enter Your Data</h3>
+          <p>Type header names and data values into the interactive spreadsheet cells in the left editor panel.</p>
+        </div>
+        <div class="step" data-n="03">
+          <div class="num">3</div>
+          <h3 style="color: #fff;">Copy or Download</h3>
+          <p>Click "Copy HTML" to paste the generated code into your clipboard, or "Download .html" to save the file.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. WHY USE TOOLYARD TABLE GENERATOR (6-CARD BORDERED GRID) -->
+  <section class="tool-content-section" style="padding: 60px 0; background: var(--paper-2); border-top: 1px solid var(--line);">
+    <div class="wrap">
+      <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">✓ FEATURES</span>
+      <h2 style="font-size: 26px; margin: 0 0 6px;">Why Use Toolyard HTML Table Generator</h2>
+      <p style="color: var(--ink-soft); font-size: 14.5px; margin: 0 0 32px;">Engineered for fast, reliable, and accessible table creation.</p>
+
+      <div class="why-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--line); gap: 1px;">
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">◆</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">100% Private</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">All table editing and HTML generation execute locally in your browser. No data is ever transmitted to a server.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">⌨</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">Live Real-Time Sync</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">The HTML markup updates automatically as you type into spreadsheet cells with zero lag or delay.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">♿</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">Accessible Markup</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Generates fully semantic markup with appropriate <code>&lt;caption&gt;</code>, <code>&lt;thead&gt;</code>, and <code>&lt;th&gt;</code> tags.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">📊</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">Dimension Tracking</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Real-time status badges keep track of total rows and columns as you expand or shrink your dataset.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">↓</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">Download .html File</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Export your generated table directly as a standalone <code style="color:var(--ink); font-size:12px;">table.html</code> file with a single click.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">⧉</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">Fast Clipboard Copy</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Copy the complete HTML table code instantly to your clipboard with visual confirmation.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. FREQUENTLY ASKED QUESTIONS -->
+  <section class="tool-content-section" style="padding: 64px 0; background: var(--paper); border-top: 1px solid var(--line);">
+    <div class="wrap">
+      <div style="text-align: center; margin-bottom: 36px;">
+        <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">FAQ</span>
+        <h2 style="font-size: 28px; margin: 0;">Frequently Asked Questions</h2>
+      </div>
+
+      <div class="faq" id="faqList" style="max-width: 860px; margin: 0 auto;">
+        <div class="faq-item">
+          <button type="button">Is the generated table HTML5 compliant?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Yes. The output uses standard HTML5 tags (<code>&lt;table&gt;</code>, <code>&lt;caption&gt;</code>, <code>&lt;thead&gt;</code>, <code>&lt;tbody&gt;</code>, <code>&lt;tr&gt;</code>, <code>&lt;th&gt;</code>, and <code>&lt;td&gt;</code>) without deprecated presentational attributes like <code>cellpadding</code> or <code>border</code>.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">How do I style the generated table with CSS?<span class="plus">+</span></button>
+          <div class="faq-a"><p>You can style the output using standard CSS utility frameworks like Tailwind CSS or by writing custom CSS rules targeting <code>table</code>, <code>th</code>, and <code>td</code> elements.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Can I create tables without headers?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Yes. Unchecking the "Include Header (&lt;thead&gt;)" box will format all rows as standard <code>&lt;td&gt;</code> data cells inside the <code>&lt;tbody&gt;</code>.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Does this table builder send my data to a server?<span class="plus">+</span></button>
+          <div class="faq-a"><p>No. All data manipulation and code generation run 100% locally in your web browser. Your table entries remain completely confidential.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Can I use this generated table in WordPress or other CMSs?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Yes! Simply click "Copy HTML" and paste the markup directly into any Custom HTML block, Markdown file, or website source code.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. RELATED HTML TOOLS -->
+  <section class="related-tools-section" style="padding: 56px 0; background: var(--paper-2); border-top: 1px solid var(--line);">
+    <div class="wrap">
+      <div style="margin-bottom: 24px;">
+        <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">📎 RELATED</span>
+      </div>
+      <div class="section-head" style="margin-bottom: 28px;">
+        <div>
+          <h2 style="font-size: 26px; margin: 0 0 6px;">Related HTML Tools</h2>
+          <p class="desc" style="margin: 0;">More utilities for working with web markup.</p>
+        </div>
+        <a class="view-all" href="#">All HTML Tools →</a>
+      </div>
+
+      <div class="grid grid-3" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+        <a class="tool-card" href="#">
+          <div class="top-row"><span class="badge">Formatter</span></div>
+          <h3>HTML Formatter</h3>
+          <p>Beautify messy or compressed HTML with clean indentation and proper nesting.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="#">
+          <div class="top-row"><span class="badge">Converter</span></div>
+          <h3>HTML to Markdown</h3>
+          <p>Transform HTML markup into clean, portable Markdown syntax for documentation.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="#">
+          <div class="top-row"><span class="badge">Converter</span></div>
+          <h3>HTML to JSX</h3>
+          <p>Convert HTML markup into React JSX with camelCase attributes and self-closing tags.</p>
+          <span class="open">Open tool →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="wrap">
+      <div class="foot-grid">
+        <div class="foot-brand">
+          <a href="#" class="logo"><span class="logo-mark">&gt;_</span>Tool<span class="accent" style="color:var(--amber);">yard</span></a>
+          <p>Free, fast, and private browser-based utilities for developers and creators. No server processing, zero trackers.</p>
+        </div>
+        <div class="foot-col">
+          <h4>HTML &amp; Web</h4>
+          <a href="#">HTML Formatter</a>
+          <a href="#">HTML Minifier</a>
+          <a href="#">HTML to Markdown</a>
+          <a href="#">HTML to JSX</a>
+          <a href="#">HTML to Plain Text</a>
+          <a href="#">HTML Table Generator</a>
+        </div>
+        <div class="foot-col">
+          <h4>JSON &amp; Data</h4>
+          <a href="#">JSON Formatter</a>
+          <a href="#">JSON Minifier</a>
+        </div>
+        <div class="foot-col">
+          <h4>Website</h4>
+          <a href="#">About</a>
+          <a href="#">FAQ</a>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <span>© 2026 Toolyard. All rights reserved. 100% Client-Side Privacy.</span>
+        <span>Space Grotesk · Inter · IBM Plex Mono</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JAVASCRIPT ENGINE -->
+  <script>
+    (function() {
+      // 1. Navigation & Theme Toggle
+      const themeToggle = document.getElementById('themeToggle');
+      const mobileToggle = document.getElementById('mobileNavToggle');
+      const closeDrawer = document.getElementById('closeMobileDrawer');
+      const drawer = document.getElementById('mobileNavDrawer');
+
+      if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+          const current = document.documentElement.getAttribute('data-theme');
+          document.documentElement.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+        });
+      }
+      if (mobileToggle && drawer) mobileToggle.addEventListener('click', () => drawer.classList.add('open'));
+      if (closeDrawer && drawer) closeDrawer.addEventListener('click', () => drawer.classList.remove('open'));
+
+      document.querySelectorAll('.nav-item > button').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const item = btn.parentElement;
+          const isOpen = item.classList.contains('open');
+          document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('open'));
+          if (!isOpen) item.classList.add('open');
+        });
+      });
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.nav-item')) {
+          document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('open'));
+        }
+      });
+
+      // FAQ Accordion
+      document.querySelectorAll('.faq-item button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const item = btn.parentElement;
+          const isOpen = item.classList.contains('open');
+          document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+          if (!isOpen) item.classList.add('open');
+        });
+      });
+
+      // 2. Interactive Table Generator Engine
+      let data = [
+        ['Product', 'Category', 'Price'],
+        ['Mechanical Keyboard', 'Hardware', '$120'],
+        ['4K IPS Monitor', 'Display', '$350'],
+        ['Ergonomic Mouse', 'Accessories', '$85']
+      ];
+
+      const editorBody = document.getElementById('editorBody');
+      const htmlOutput = document.getElementById('htmlOutput');
+      const addRowBtn = document.getElementById('addRowBtn');
+      const addColBtn = document.getElementById('addColBtn');
+      const delRowBtn = document.getElementById('delRowBtn');
+      const delColBtn = document.getElementById('delColBtn');
+      const hasHeaderCb = document.getElementById('hasHeader');
+      const captionInput = document.getElementById('captionInput');
+      const exampleBtn = document.getElementById('exampleBtn');
+      const resetBtn = document.getElementById('resetBtn');
+      const copyBtn = document.getElementById('copyBtn');
+      const downloadBtn = document.getElementById('downloadBtn');
+      const statRows = document.getElementById('statRows');
+      const statCols = document.getElementById('statCols');
+
+      function generateHTML() {
+        const hasHead = hasHeaderCb ? hasHeaderCb.checked : true;
+        const caption = captionInput ? captionInput.value.trim() : '';
+        let out = '<table>\n';
+        if (caption) {
+          out += '  <caption>' + caption.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</caption>\n';
+        }
+
+        if (hasHead && data.length > 0) {
+          out += '  <thead>\n    <tr>\n';
+          data[0].forEach(function(c) {
+            const val = (c || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            out += '      <th>' + val + '</th>\n';
+          });
+          out += '    </tr>\n  </thead>\n';
+        }
+
+        const bodyRows = hasHead ? data.slice(1) : data;
+        if (bodyRows.length > 0) {
+          out += '  <tbody>\n';
+          bodyRows.forEach(function(row) {
+            out += '    <tr>\n';
+            row.forEach(function(c) {
+              const val = (c || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+              out += '      <td>' + val + '</td>\n';
+            });
+            out += '    </tr>\n';
+          });
+          out += '  </tbody>\n';
+        }
+        out += '</table>';
+        if (htmlOutput) htmlOutput.value = out;
+      }
+
+      function renderEditor() {
+        if (!editorBody) return;
+        editorBody.innerHTML = '';
+        const hasHead = hasHeaderCb ? hasHeaderCb.checked : true;
+
+        data.forEach(function(row, rIdx) {
+          const tr = document.createElement('tr');
+          row.forEach(function(cell, cIdx) {
+            const isHeader = rIdx === 0 && hasHead;
+            const el = document.createElement(isHeader ? 'th' : 'td');
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'cell-input';
+            input.value = cell;
+            input.placeholder = isHeader ? 'Header ' + (cIdx + 1) : 'Cell ' + (rIdx + 1) + ',' + (cIdx + 1);
+            input.addEventListener('input', function(e) {
+              data[rIdx][cIdx] = e.target.value;
+              generateHTML();
+            });
+            el.appendChild(input);
+            tr.appendChild(el);
+          });
+          editorBody.appendChild(tr);
+        });
+
+        if (statRows) statRows.textContent = data.length;
+        if (statCols) statCols.textContent = data[0] ? data[0].length : 0;
+        generateHTML();
+      }
+
+      if (addRowBtn) {
+        addRowBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          const colCount = data[0] ? data[0].length : 3;
+          data.push(Array(colCount).fill(''));
+          renderEditor();
+        });
+      }
+
+      if (addColBtn) {
+        addColBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          const hasHead = hasHeaderCb ? hasHeaderCb.checked : true;
+          data.forEach(function(row, i) {
+            row.push(i === 0 && hasHead ? 'Col ' + (row.length + 1) : '');
+          });
+          renderEditor();
+        });
+      }
+
+      if (delRowBtn) {
+        delRowBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          if (data.length > 1) {
+            data.pop();
+            renderEditor();
+          }
+        });
+      }
+
+      if (delColBtn) {
+        delColBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          if (data[0] && data[0].length > 1) {
+            data.forEach(function(row) { row.pop(); });
+            renderEditor();
+          }
+        });
+      }
+
+      if (hasHeaderCb) {
+        hasHeaderCb.addEventListener('change', renderEditor);
+      }
+
+      if (captionInput) {
+        captionInput.addEventListener('input', generateHTML);
+      }
+
+      if (resetBtn) {
+        resetBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          data = [['Header 1', 'Header 2', 'Header 3'], ['', '', ''], ['', '', '']];
+          if (captionInput) captionInput.value = '';
+          renderEditor();
+        });
+      }
+
+      if (exampleBtn) {
+        exampleBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          if (captionInput) captionInput.value = 'Quarterly Financial Summary';
+          data = [
+            ['Quarter', 'Revenue', 'Expenses', 'Profit'],
+            ['Q1 2026', '$120,000', '$80,000', '$40,000'],
+            ['Q2 2026', '$145,000', '$90,000', '$55,000'],
+            ['Q3 2026', '$160,000', '$95,000', '$65,000'],
+            ['Q4 2026', '$210,000', '$110,000', '$100,000']
+          ];
+          renderEditor();
+        });
+      }
+
+      // Copy HTML
+      if (copyBtn) {
+        copyBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          const text = htmlOutput ? htmlOutput.value : '';
+          if (!text) return;
+
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(function() {
+              const orig = copyBtn.textContent;
+              copyBtn.textContent = 'Copied!';
+              setTimeout(function() { copyBtn.textContent = orig; }, 1500);
+            }).catch(function() {
+              fallbackCopy(text);
+            });
+          } else {
+            fallbackCopy(text);
+          }
+        });
+      }
+
+      function fallbackCopy(text) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+          document.execCommand('copy');
+          const orig = copyBtn.textContent;
+          copyBtn.textContent = 'Copied!';
+          setTimeout(function() { copyBtn.textContent = orig; }, 1500);
+        } catch (err) {}
+        document.body.removeChild(ta);
+      }
+
+      // Download HTML
+      if (downloadBtn) {
+        downloadBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          const text = htmlOutput ? htmlOutput.value : '';
+          if (!text) return;
+          const blob = new Blob([text], { type: 'text/html;charset=utf-8;' });
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = 'table.html';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        });
+      }
+
+      renderEditor();
+    })();
+  </script>
+</body>
+</html>

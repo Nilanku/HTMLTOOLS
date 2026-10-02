@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS Tools — Free Online Utilities | Toolyard</title>
+  <meta name="description" content="Free, browser-based CSS stylesheet utilities. Beautify, format, indent, and compress CSS with 100% private in-browser execution.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site">
+    <div class="wrap nav-row">
+      <a href="/" class="logo"><span class="logo-mark">&gt;_</span>Tool<span class="accent">yard</span></a>
+
+      <nav class="main-nav" id="mainNav">
+        <!-- 1. Tools Menu -->
+        <div class="nav-item">
+          <button type="button">Tools <span class="chev"></span></button>
+          <div class="mega">
+            <a href="/categories/html-web.html"><span class="cat-name">HTML &amp; Web</span><span class="cat-sub">10 tools live</span></a>
+            <a href="/categories/json-data.html"><span class="cat-name">JSON &amp; Data</span><span class="cat-sub">6 tools live</span></a>
+            <a href="/categories/css.html"><span class="cat-name">CSS</span><span class="cat-sub">2 tools live</span></a>
+            <a href="/categories/text.html"><span class="cat-name">Text</span><span class="cat-sub">Clean, count, transform</span></a>
+            <a href="/categories/images.html"><span class="cat-name">Images</span><span class="cat-sub">Resize &amp; compress</span></a>
+            <a href="/categories/files.html"><span class="cat-name">Files</span><span class="cat-sub">Document utilities</span></a>
+          </div>
+        </div>
+
+        <!-- 2. Converters Menu -->
+        <div class="nav-item">
+          <button type="button">Converters <span class="chev"></span></button>
+          <div class="mega">
+            <a href="/tools/json-data/json-to-yaml.html"><span class="cat-name">JSON to YAML</span><span class="cat-sub">Convert JSON to YAML config</span></a>
+            <a href="/tools/json-data/yaml-to-json.html"><span class="cat-name">YAML to JSON</span><span class="cat-sub">Convert YAML to JSON data</span></a>
+            <a href="/tools/json-data/json-to-csv.html"><span class="cat-name">JSON to CSV</span><span class="cat-sub">Convert JSON array to tabular CSV</span></a>
+            <a href="/tools/json-data/csv-to-json.html"><span class="cat-name">CSV to JSON</span><span class="cat-sub">Parse CSV into JSON objects</span></a>
+            <a href="/tools/html/html-to-markdown.html"><span class="cat-name">HTML to Markdown</span><span class="cat-sub">Convert markup to Markdown</span></a>
+            <a href="/tools/html/html-to-jsx.html"><span class="cat-name">HTML to JSX</span><span class="cat-sub">Convert HTML to React JSX</span></a>
+            <a href="/tools/html/html-to-text.html"><span class="cat-name">HTML to Text</span><span class="cat-sub">Extract readable plain text</span></a>
+            <a href="/tools/html/html-to-css.html"><span class="cat-name">HTML to CSS</span><span class="cat-sub">Extract classes, IDs &amp; styles</span></a>
+            <a href="/tools/html/html-entity-encoder.html"><span class="cat-name">HTML Entity Encoder</span><span class="cat-sub">Encode &amp; decode entities</span></a>
+          </div>
+        </div>
+
+        <!-- 3. Generators Menu -->
+        <div class="nav-item">
+          <button type="button">Generators <span class="chev"></span></button>
+          <div class="mega">
+            <a href="/tools/html/html-table-generator.html"><span class="cat-name">HTML Generators</span><span class="cat-sub">Tables, forms, boilerplate</span></a>
+            <a href="/tools/css/css-formatter.html"><span class="cat-name">CSS Generators</span><span class="cat-sub">Stylesheets, beautifiers &amp; grids</span></a>
+            <a href="#category-seo" class="cat-nav-link" data-category="SEO"><span class="cat-name">SEO Generators</span><span class="cat-sub">Meta tags &amp; sitemaps</span></a>
+            <a href="#category-developer" class="cat-nav-link" data-category="Developer"><span class="cat-name">Developer Generators</span><span class="cat-sub">IDs, tokens, placeholders</span></a>
+            <a href="#all-tools"><span class="cat-name">General Generators</span><span class="cat-sub">Everyday utilities</span></a>
+          </div>
+        </div>
+
+        <!-- 4. Developer Menu -->
+        <div class="nav-item">
+          <button type="button">Developer <span class="chev"></span></button>
+          <div class="mega">
+            <a href="/tools/json-data/json-formatter.html"><span class="cat-name">JSON Formatter</span><span class="cat-sub">Validate &amp; format JSON</span></a>
+            <a href="/tools/json-data/json-minifier.html"><span class="cat-name">JSON Minifier</span><span class="cat-sub">Compress JSON structures</span></a>
+            <a href="/tools/json-data/json-to-yaml.html"><span class="cat-name">JSON to YAML</span><span class="cat-sub">Manifests &amp; configs</span></a>
+            <a href="/tools/json-data/yaml-to-json.html"><span class="cat-name">YAML to JSON</span><span class="cat-sub">YAML syntax validator</span></a>
+            <a href="/tools/css/css-formatter.html"><span class="cat-name">CSS Formatter</span><span class="cat-sub">Beautify stylesheets</span></a>
+            <a href="/tools/css/css-minifier.html"><span class="cat-name">CSS Minifier</span><span class="cat-sub">Compress CSS bundle size</span></a>
+          </div>
+        </div>
+
+        <!-- 5. SEO Menu -->
+        <div class="nav-item">
+          <button type="button">SEO <span class="chev"></span></button>
+          <div class="mega">
+            <a href="/tools/html/html-link-extractor.html"><span class="cat-name">Link Audit</span><span class="cat-sub">Extract internal &amp; external links</span></a>
+            <a href="/tools/html/html-image-extractor.html"><span class="cat-name">Image Alt Audit</span><span class="cat-sub">Find missing alt attributes</span></a>
+            <a href="#category-seo" class="cat-nav-link" data-category="SEO"><span class="cat-name">Meta Tools</span><span class="cat-sub">Titles, descriptions, tags</span></a>
+            <a href="#category-seo" class="cat-nav-link" data-category="SEO"><span class="cat-name">Social Preview Tools</span><span class="cat-sub">OG &amp; card previews</span></a>
+            <a href="#category-seo" class="cat-nav-link" data-category="SEO"><span class="cat-name">Sitemaps</span><span class="cat-sub">URL mapping &amp; verification</span></a>
+          </div>
+        </div>
+      </nav>
+
+      <div class="nav-right">
+        <button type="button" class="icon-btn" id="themeToggle" aria-label="Toggle dark mode">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <button type="button" class="icon-btn mobile-toggle" id="mobileNavToggle" aria-label="Open menu">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- BREADCRUMBS -->
+  <div class="breadcrumb-bar" style="padding:14px 0; border-bottom:1px solid var(--line); background:var(--paper);">
+    <div class="wrap" style="font-size:13px; color:var(--ink-soft); display:flex; gap:8px;">
+      <a href="/" style="color:var(--ink-soft); text-decoration:none;">Home</a>
+      <span>/</span>
+      <span style="color:var(--ink); font-weight:600;">CSS</span>
+    </div>
+  </div>
+
+  <!-- HERO SECTION -->
+  <section class="tool-intro">
+    <div class="wrap tool-intro-content">
+      <span class="eyebrow">Category · 2 Live Tools</span>
+      <h1>CSS Tools</h1>
+      <p class="lead">A collection of browser-native tools to format, beautify, organize, and compress CSS stylesheets without sending code to a remote server.</p>
+      <div class="tool-meta-badge">
+        <span class="dot"></span> 2 tools available · 100% Client-side
+      </div>
+    </div>
+  </section>
+
+  <!-- TOOLS GRID -->
+  <section style="padding:56px 0; background:var(--paper);">
+    <div class="wrap">
+      <!-- Search / Filter within category -->
+      <div style="max-width:400px; margin-bottom: 28px;">
+        <input type="text" id="categoryFilter" placeholder="Filter tools in CSS…" style="width:100%; padding:10px 14px; border-radius:8px; border:1px solid var(--line); background:var(--paper-2); color:var(--ink); font-size:14px; outline:none; box-sizing:border-box;">
+      </div>
+
+      <div class="grid grid-3" id="toolsGrid" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:18px;">
+        
+        <!-- Tool 1 -->
+        <a class="tool-card" href="/tools/css/css-formatter.html">
+          <div class="top-row"><span class="badge">Formatter</span></div>
+          <h3>CSS Formatter</h3>
+          <p>Beautify, indent, and organize messy stylesheets with customizable indentation, rule styles, and one selector per line.</p>
+          <span class="open">Open tool →</span>
+        </a>
+
+        <!-- Tool 2 -->
+        <a class="tool-card" href="/tools/css/css-minifier.html">
+          <div class="top-row"><span class="badge">Optimizer</span></div>
+          <h3>CSS Minifier</h3>
+          <p>Compress stylesheets by removing whitespace, comments, zero units, and redundant semicolons to speed up page loads.</p>
+          <span class="open">Open tool →</span>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="wrap">
+      <div class="foot-grid">
+        <div class="foot-brand">
+          <a href="/" class="logo"><span class="logo-mark">&gt;_</span>Tool<span class="accent" style="color:var(--amber);">yard</span></a>
+          <p>Free, fast, and private browser-based utilities for developers and creators. No server processing, zero trackers.</p>
+        </div>
+        <div class="foot-col">
+          <h4>HTML &amp; Web</h4>
+          <a href="/tools/html/html-formatter.html">HTML Formatter</a>
+          <a href="/tools/html/html-minifier.html">HTML Minifier</a>
+          <a href="/tools/html/html-to-markdown.html">HTML to Markdown</a>
+          <a href="/tools/html/html-to-jsx.html">HTML to JSX</a>
+          <a href="/tools/html/html-entity-encoder.html">HTML Entity Encoder</a>
+        </div>
+        <div class="foot-col">
+          <h4>JSON &amp; Data</h4>
+          <a href="/tools/json-data/json-formatter.html">JSON Formatter</a>
+          <a href="/tools/json-data/json-minifier.html">JSON Minifier</a>
+          <a href="/tools/json-data/json-to-yaml.html">JSON to YAML</a>
+          <a href="/tools/json-data/yaml-to-json.html">YAML to JSON</a>
+          <a href="/tools/json-data/json-to-csv.html">JSON to CSV</a>
+          <a href="/tools/json-data/csv-to-json.html">CSV to JSON</a>
+        </div>
+        <div class="foot-col">
+          <h4>CSS Tools</h4>
+          <a href="/tools/css/css-formatter.html">CSS Formatter</a>
+          <a href="/tools/css/css-minifier.html">CSS Minifier</a>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <span>© 2026 Toolyard. All rights reserved. 100% Client-Side Privacy.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Theme toggle
+    const themeToggle = document.getElementById('themeToggle');
+    if (themeToggle) {
+      themeToggle.addEventListener('click', () => {
+        const cur = document.documentElement.getAttribute('data-theme');
+        document.documentElement.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+      });
+    }
+
+    // Dropdowns
+    document.querySelectorAll('.nav-item > button').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const item = btn.parentElement;
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('open'));
+        if (!isOpen) item.classList.add('open');
+      });
+    });
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.nav-item')) {
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('open'));
+      }
+    });
+
+    // Interactive category search/filter
+    const filterInput = document.getElementById('categoryFilter');
+    const cards = document.querySelectorAll('#toolsGrid .tool-card');
+    if (filterInput) {
+      filterInput.addEventListener('input', (e) => {
+        const q = e.target.value.toLowerCase().trim();
+        cards.forEach(card => {
+          const title = card.querySelector('h3').textContent.toLowerCase();
+          const desc = card.querySelector('p').textContent.toLowerCase();
+          card.style.display = (title.includes(q) || desc.includes(q)) ? 'flex' : 'none';
+        });
+      });
+    }
+  </script>
+</body>
+</html>
