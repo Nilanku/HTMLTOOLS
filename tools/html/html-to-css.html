@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML to CSS Extractor - Extract Selectors &amp; Styles Online | Toolyard</title>
+  <meta name="description" content="Extract CSS rules, class selectors, ID selectors, inline style attributes, and embedded style blocks from HTML markup online. Fast, clean, and 100% private in-browser tool.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/tools-data.js"></script>
+  <script src="/js/layout.js"></script>
+  <style>
+    /* Calculator Grid & Layout Safeguards */
+    .tool-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      min-height: 480px;
+      background: var(--line);
+      gap: 1px;
+    }
+    @media (max-width: 860px) {
+      .tool-grid { grid-template-columns: 1fr; }
+    }
+    .tool-pane {
+      background: var(--paper-2);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      min-width: 0;
+      overflow: hidden;
+    }
+    .tool-pane-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      background: var(--paper);
+      border-bottom: 1px solid var(--line);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink-soft);
+      min-width: 0;
+    }
+    .tool-pane-header .title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+    .tool-pane-header .actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    .tool-textarea {
+      flex: 1;
+      width: 100%;
+      min-height: 380px;
+      padding: 18px;
+      border: none;
+      outline: none;
+      resize: vertical;
+      background: var(--editor-bg);
+      color: var(--ink);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13.5px;
+      line-height: 1.65;
+      tab-size: 2;
+      white-space: pre;
+      overflow: auto;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+    .tool-textarea:focus {
+      background: var(--paper-2);
+    }
+    .tool-output-box {
+      flex: 1;
+      width: 100%;
+      min-height: 380px;
+      padding: 18px;
+      background: var(--editor-bg);
+      color: var(--ink);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13.5px;
+      line-height: 1.65;
+      overflow-y: auto;
+      overflow-x: hidden;
+      white-space: pre-wrap;
+      word-break: break-all;
+      overflow-wrap: anywhere;
+      user-select: text;
+      margin: 0;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+    .tool-output-box.empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-soft);
+      font-style: italic;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+    }
+    .tool-checkbox-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--ink);
+      cursor: pointer;
+      user-select: none;
+    }
+    .tool-checkbox-label input[type="checkbox"] {
+      accent-color: var(--amber);
+      width: 15px;
+      height: 15px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body data-tool="html-to-css">
+
+  <!-- SHARED HEADER, MOBILE MENU & BREADCRUMBS (rendered by /js/layout.js) -->
+  <div id="site-header"></div>
+  <div id="site-breadcrumbs"></div>
+
+  <!-- TOOL INTRO -->
+  <section class="tool-intro">
+    <div class="wrap tool-intro-content">
+      <span class="eyebrow">CSS EXTRACTOR</span>
+      <h1>HTML to CSS Extractor</h1>
+      <p class="lead">Extract class selectors, ID selectors, inline CSS attributes, and embedded &lt;style&gt; blocks from HTML markup. Generate clean boilerplate stylesheets in seconds.</p>
+      <div class="tool-meta-badge">
+        <span class="dot"></span> 100% Private · Processed locally in your browser
+      </div>
+    </div>
+  </section>
+
+  <!-- CALCULATOR / WORKSPACE -->
+  <section class="tool-app-section">
+    <div class="wrap">
+      <div class="tool-workspace">
+        <div class="tool-toolbar">
+          <div class="tool-toolbar-left" style="gap: 16px;">
+            <button type="button" class="btn btn-amber" id="extractBtn">Extract CSS</button>
+            <label class="tool-checkbox-label">
+              <input type="checkbox" id="extractClasses" checked>
+              <span>Classes</span>
+            </label>
+            <label class="tool-checkbox-label">
+              <input type="checkbox" id="extractIds" checked>
+              <span>IDs</span>
+            </label>
+            <label class="tool-checkbox-label">
+              <input type="checkbox" id="extractInline" checked>
+              <span>Inline Styles</span>
+            </label>
+            <label class="tool-checkbox-label">
+              <input type="checkbox" id="extractEmbedded" checked>
+              <span>Embedded &lt;style&gt;</span>
+            </label>
+          </div>
+          <div class="tool-toolbar-right">
+            <button type="button" class="btn btn-ghost btn-sm" id="exampleBtn">Load Example</button>
+            <button type="button" class="btn btn-danger btn-sm" id="clearBtn">Clear</button>
+          </div>
+        </div>
+
+        <div class="tool-grid">
+          <!-- Left Input Pane -->
+          <div class="tool-pane">
+            <div class="tool-pane-header">
+              <span class="title">HTML Input</span>
+              <span class="badge">Raw Markup</span>
+            </div>
+            <textarea id="cssInput" class="tool-textarea" placeholder="Paste HTML markup here to extract CSS styles, classes, and IDs..." spellcheck="false"></textarea>
+          </div>
+
+          <!-- Right Output Pane -->
+          <div class="tool-pane">
+            <div class="tool-pane-header">
+              <span class="title">Extracted CSS</span>
+              <div class="actions">
+                <button type="button" class="btn btn-sm btn-outline" id="copyBtn">Copy</button>
+                <button type="button" class="btn btn-sm btn-ghost" id="downloadBtn">Download .css</button>
+              </div>
+            </div>
+            <pre id="cssOutput" class="tool-output-box empty"><em>Extracted CSS will appear here...</em></pre>
+          </div>
+        </div>
+
+        <div class="tool-stats-bar">
+          <div class="tool-stats-items">
+            <div class="tool-stat-badge">Classes: <b id="statClasses">0</b></div>
+            <div class="tool-stat-badge">IDs: <b id="statIds">0</b></div>
+            <div class="tool-stat-badge">Rules: <b id="statRules">0</b></div>
+          </div>
+          <div>100% Client-Side Engine</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. ABOUT THIS TOOL SECTION -->
+  <section class="tool-content-section" style="padding: 56px 0; border-top: 1px solid var(--line); background: var(--paper-2);">
+    <div class="wrap">
+      <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">◆ ABOUT THIS TOOL</span>
+      <h2 style="font-size: 26px; margin: 0 0 6px;">About HTML to CSS Extraction</h2>
+      <p style="color: var(--ink-soft); font-size: 14.5px; margin: 0 0 32px;">Quickly scaffold clean stylesheet declarations from HTML layouts and templates.</p>
+
+      <div class="about-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 36px; font-size: 14.5px; line-height: 1.7; color: var(--ink-soft);">
+        <div>
+          <p style="margin: 0;">When building new web components or converting templates, you often start with an HTML structure full of classes and IDs that have no corresponding CSS stylesheet yet. Manually typing out each selector and converting inline style rules takes valuable time.</p>
+        </div>
+        <div>
+          <p style="margin: 0;">The Toolyard HTML to CSS Extractor analyzes the DOM of your markup, extracts all distinct class names and unique IDs, pulls out inline <code>style="..."</code> declarations into organized rulesets, and gathers embedded <code>&lt;style&gt;</code> blocks into a centralized, ready-to-use <code>.css</code> file.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. KEY EXTRACTION RULES SECTION -->
+  <section class="tool-content-section" style="padding: 56px 0; border-top: 1px solid var(--line); background: var(--paper);">
+    <div class="wrap">
+      <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">⚙ EXTRACTION ENGINE</span>
+      <h2 style="font-size: 26px; margin: 0 0 6px;">Supported Selectors &amp; Extractors</h2>
+      <p style="color: var(--ink-soft); font-size: 14.5px; margin: 0 0 28px;">How the extractor processes selectors and style blocks from your markup.</p>
+
+      <div class="rules-list" style="display: flex; flex-direction: column; gap: 14px;">
+        <div class="rule-card" style="display: flex; align-items: flex-start; gap: 16px; padding: 20px 22px; background: var(--paper-2); border: 1px solid var(--line); border-radius: 12px;">
+          <div class="rule-icon" style="width: 36px; height: 36px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;">🏷</div>
+          <div>
+            <h3 style="font-size: 15.5px; margin: 0 0 6px; color: var(--ink);">Class Selectors (<code>.classname</code>)</h3>
+            <p style="margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ink-soft);">Finds all classes across elements and creates clean CSS rule blocks with comments indicating the total number of times each class was utilized in the markup.</p>
+          </div>
+        </div>
+
+        <div class="rule-card" style="display: flex; align-items: flex-start; gap: 16px; padding: 20px 22px; background: var(--paper-2); border: 1px solid var(--line); border-radius: 12px;">
+          <div class="rule-icon" style="width: 36px; height: 36px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;">#</div>
+          <div>
+            <h3 style="font-size: 15.5px; margin: 0 0 6px; color: var(--ink);">ID Selectors (<code>#id</code>)</h3>
+            <p style="margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ink-soft);">Detects every <code>id="..."</code> attribute and generates dedicated hashtag ID selector rulesets ready for custom styling.</p>
+          </div>
+        </div>
+
+        <div class="rule-card" style="display: flex; align-items: flex-start; gap: 16px; padding: 20px 22px; background: var(--paper-2); border: 1px solid var(--line); border-radius: 12px;">
+          <div class="rule-icon" style="width: 36px; height: 36px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;">✎</div>
+          <div>
+            <h3 style="font-size: 15.5px; margin: 0 0 6px; color: var(--ink);">Inline Styles &amp; Embedded &lt;style&gt;</h3>
+            <p style="margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ink-soft);">Converts inline <code>style="..."</code> strings into external CSS declarations attached to compound element selectors, and extracts internal <code>&lt;style&gt;</code> blocks.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. HOW TO USE (DARK BLUE BACKGROUND LIKE HOMEPAGE STEPS) -->
+  <section class="section-navy" style="padding: 64px 0; position: relative; overflow: hidden; background: var(--navy-900);">
+    <div class="wrap" style="position: relative;">
+      <span class="eyebrow" style="background: rgba(240,169,59,0.18); color: var(--amber); margin-bottom: 12px; display: inline-flex;">◐ THREE STEPS</span>
+      <h2 style="font-size: 26px; color: #fff; margin: 0 0 6px;">How to Use</h2>
+      <p style="color: #9096B8; font-size: 14.5px; margin: 0 0 32px;">Extract CSS rules from HTML markup in three simple steps.</p>
+
+      <div class="steps">
+        <div class="step" data-n="01">
+          <div class="num">1</div>
+          <h3 style="color: #fff;">Paste HTML Code</h3>
+          <p>Paste HTML templates, snippets, or web pages into the left box, or click "Load Example" to test the tool.</p>
+        </div>
+        <div class="step" data-n="02">
+          <div class="num">2</div>
+          <h3 style="color: #fff;">Choose Selectors &amp; Extract</h3>
+          <p>Select which targets to extract (Classes, IDs, Inline Styles, Embedded styles) and click "Extract CSS".</p>
+        </div>
+        <div class="step" data-n="03">
+          <div class="num">3</div>
+          <h3 style="color: #fff;">Copy or Download</h3>
+          <p>Click "Copy" to put the extracted stylesheet into your clipboard, or "Download .css" to save a stylesheet file.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. WHY USE TOOLYARD CSS EXTRACTOR (6-CARD BORDERED GRID) -->
+  <section class="tool-content-section" style="padding: 60px 0; background: var(--paper-2); border-top: 1px solid var(--line);">
+    <div class="wrap">
+      <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">✓ FEATURES</span>
+      <h2 style="font-size: 26px; margin: 0 0 6px;">Why Use Toolyard HTML to CSS Extractor</h2>
+      <p style="color: var(--ink-soft); font-size: 14.5px; margin: 0 0 32px;">Engineered for fast, reliable, and clean CSS boilerplate extraction.</p>
+
+      <div class="why-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--line); gap: 1px;">
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">◆</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">100% Private</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">All DOM parsing occurs in your browser's local memory. No HTML code is sent to external servers.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">⚡</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">Dynamic Option Toggles</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Toggling checkboxes updates your extracted stylesheet in real-time without needing to re-paste input.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">📊</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">Usage Frequency Counts</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Comments beside selectors indicate exactly how many elements in the DOM share that specific class or ID.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">🎨</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">Inline Style Refactoring</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Quickly refactors messy inline styling attributes into clean external CSS stylesheets for better maintainability.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">↓</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">Download .css File</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Download the generated rules directly as a <code style="color:var(--ink); font-size:12px;">styles.css</code> file with a single click.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">⧉</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">Fast Clipboard Copy</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Copy all extracted CSS selectors with one click and visual feedback.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. FREQUENTLY ASKED QUESTIONS -->
+  <section class="tool-content-section" style="padding: 64px 0; background: var(--paper); border-top: 1px solid var(--line);">
+    <div class="wrap">
+      <div style="text-align: center; margin-bottom: 36px;">
+        <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">FAQ</span>
+        <h2 style="font-size: 28px; margin: 0;">Frequently Asked Questions</h2>
+      </div>
+
+      <div class="faq" id="faqList" style="max-width: 860px; margin: 0 auto;">
+        <div class="faq-item">
+          <button type="button">Does this tool duplicate repeated class selectors?<span class="plus">+</span></button>
+          <div class="faq-a"><p>No. Each unique class name is extracted only once in the stylesheet, accompanied by a comment showing its total usage frequency throughout the HTML.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">What happens to inline style attributes?<span class="plus">+</span></button>
+          <div class="faq-a"><p>When the "Inline Styles" option is enabled, declarations within <code>style="..."</code> are parsed and converted into proper CSS rules using appropriate element, class, and ID selectors.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Can I extract styles from multiple embedded &lt;style&gt; tags?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Yes. All internal <code>&lt;style&gt;</code> blocks inside the document are extracted and preserved with block index headers.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Does this tool send my HTML code to any server?<span class="plus">+</span></button>
+          <div class="faq-a"><p>No. All DOM parsing and selector extraction run 100% locally in your browser through client-side JavaScript. Your code never leaves your device.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Can I extract CSS from incomplete HTML snippets?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Yes! You can paste full HTML documents (from <code>&lt;!DOCTYPE html&gt;</code>) or small copied HTML components like navbars, cards, and forms.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. RELATED HTML TOOLS -->
+  <section class="related-tools-section" style="padding: 56px 0; background: var(--paper-2); border-top: 1px solid var(--line);">
+    <div class="wrap">
+      <div style="margin-bottom: 24px;">
+        <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">📎 RELATED</span>
+      </div>
+      <div class="section-head" style="margin-bottom: 28px;">
+        <div>
+          <h2 style="font-size: 26px; margin: 0 0 6px;">Related HTML Tools</h2>
+          <p class="desc" style="margin: 0;">More utilities for working with web markup.</p>
+        </div>
+        <a class="view-all" href="/categories/html-web/">All HTML Tools →</a>
+      </div>
+
+      <div class="grid grid-3" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+        <a class="tool-card" href="/tools/html/html-formatter.html">
+          <div class="top-row"><span class="badge">Formatter</span></div>
+          <h3>HTML Formatter</h3>
+          <p>Beautify messy or compressed HTML with clean indentation and proper nesting.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/html/html-to-jsx.html">
+          <div class="top-row"><span class="badge">Converter</span></div>
+          <h3>HTML to JSX</h3>
+          <p>Convert HTML markup into React JSX with camelCase attributes and self-closing tags.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/html/html-minifier.html">
+          <div class="top-row"><span class="badge">Optimizer</span></div>
+          <h3>HTML Minifier</h3>
+          <p>Strip unnecessary whitespace and comments to reduce file payload size for production.</p>
+          <span class="open">Open tool →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHARED FOOTER (rendered by /js/layout.js) -->
+  <div id="site-footer"></div>
+
+  <!-- JAVASCRIPT ENGINE -->
+  <script>
+    (function() {
+      // Header, mega menus, mobile drawer & dark mode are handled by /js/layout.js
+
+      // FAQ Accordion
+      document.querySelectorAll('.faq-item button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const item = btn.parentElement;
+          const isOpen = item.classList.contains('open');
+          document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+          if (!isOpen) item.classList.add('open');
+        });
+      });
+
+      // 2. HTML to CSS Analyzer Engine
+      function analyzeHTMLForCSS(html, options) {
+        if (!html || !html.trim()) {
+          return { fullCSS: '', stats: { totalClasses: 0, totalIds: 0, totalRules: 0 } };
+        }
+
+        const extractClasses = options && options.extractClasses !== undefined ? options.extractClasses : true;
+        const extractIds = options && options.extractIds !== undefined ? options.extractIds : true;
+        const extractInline = options && options.extractInline !== undefined ? options.extractInline : true;
+        const extractEmbedded = options && options.extractEmbedded !== undefined ? options.extractEmbedded : true;
+
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+
+        const embeddedStyles = Array.prototype.slice.call(doc.querySelectorAll('style')).map(function(st, i) {
+          return { index: i + 1, content: st.textContent.trim() };
+        }).filter(function(s) { return s.content.length > 0; });
+
+        const classCountMap = new Map();
+        const idCountMap = new Map();
+        const inlineStylesList = [];
+
+        doc.querySelectorAll('*').forEach(function(el) {
+          if (el.classList && el.classList.length > 0) {
+            for (let i = 0; i < el.classList.length; i++) {
+              const c = el.classList[i].trim();
+              if (c) classCountMap.set(c, (classCountMap.get(c) || 0) + 1);
+            }
+          }
+          const id = el.getAttribute('id');
+          if (id && id.trim()) {
+            const idTrimmed = id.trim();
+            idCountMap.set(idTrimmed, (idCountMap.get(idTrimmed) || 0) + 1);
+          }
+          const styleAttr = el.getAttribute('style');
+          if (styleAttr && styleAttr.trim()) {
+            const tag = el.tagName.toLowerCase();
+            const idPart = el.id ? '#' + el.id : '';
+            const classes = Array.prototype.slice.call(el.classList);
+            const classPart = classes.length ? '.' + classes.join('.') : '';
+            inlineStylesList.push({ selector: (tag + idPart + classPart) || tag, declarations: styleAttr.trim() });
+          }
+        });
+
+        const classes = Array.from(classCountMap.entries()).map(function(entry) { return { name: entry[0], count: entry[1] }; });
+        const ids = Array.from(idCountMap.entries()).map(function(entry) { return { name: entry[0], count: entry[1] }; });
+
+        let cssLines = [];
+        let totalRules = 0;
+
+        if (extractEmbedded && embeddedStyles.length > 0) {
+          cssLines.push('/* --- EMBEDDED <style> BLOCKS --- */');
+          embeddedStyles.forEach(function(eb) {
+            cssLines.push('/* Style Block #' + eb.index + ' */\n' + eb.content + '\n');
+            totalRules++;
+          });
+        }
+
+        if (extractInline && inlineStylesList.length > 0) {
+          cssLines.push('/* --- EXTRACTED INLINE STYLES --- */');
+          inlineStylesList.forEach(function(item) {
+            cssLines.push(item.selector + ' {');
+            item.declarations.split(';').map(function(d) { return d.trim(); }).filter(Boolean).forEach(function(d) {
+              cssLines.push('  ' + d + ';');
+            });
+            cssLines.push('}\n');
+            totalRules++;
+          });
+        }
+
+        if (extractClasses && classes.length > 0) {
+          cssLines.push('/* --- FOUND CLASS SELECTORS --- */');
+          classes.forEach(function(c) {
+            cssLines.push('.' + c.name + ' {\n  /* Used in ' + c.count + ' element' + (c.count > 1 ? 's' : '') + ' */\n}\n');
+            totalRules++;
+          });
+        }
+
+        if (extractIds && ids.length > 0) {
+          cssLines.push('/* --- FOUND ID SELECTORS --- */');
+          ids.forEach(function(item) {
+            cssLines.push('#' + item.name + ' {\n  /* Used in ' + item.count + ' element' + (item.count > 1 ? 's' : '') + ' */\n}\n');
+            totalRules++;
+          });
+        }
+
+        const fullCSS = cssLines.length ? cssLines.join('\n') : '/* No CSS, classes, IDs, or inline styles detected based on current options. */';
+        return { fullCSS: fullCSS, stats: { totalClasses: classes.length, totalIds: ids.length, totalRules: totalRules } };
+      }
+
+      const exampleHTML = '<style>\n  .navbar { display: flex; align-items: center; justify-content: space-between; }\n  .btn { border-radius: 6px; font-weight: 600; cursor: pointer; }\n</style>\n\n<header id="main-header" class="navbar" style="background-color: #12142a; padding: 16px 24px;">\n  <div class="logo-container">\n    <a href="/" class="brand-logo" style="color: #f0a93b; font-size: 18px;">Toolyard</a>\n  </div>\n  \n  <nav class="nav-menu" id="primary-nav">\n    <a class="nav-link active" href="/tools">All Tools</a>\n    <a class="nav-link" href="/converters">Converters</a>\n    <button id="cta-signup" class="btn btn-primary" style="background: #f0a93b; border: none; padding: 8px 16px;">Sign Up</button>\n  </nav>\n</header>';
+
+      // 3. Bind UI & Calculator Elements
+      const inputEl = document.getElementById('cssInput');
+      const outputEl = document.getElementById('cssOutput');
+      const extractBtn = document.getElementById('extractBtn');
+      const clearBtn = document.getElementById('clearBtn');
+      const exampleBtn = document.getElementById('exampleBtn');
+      const copyBtn = document.getElementById('copyBtn');
+      const downloadBtn = document.getElementById('downloadBtn');
+
+      const extractClassesCb = document.getElementById('extractClasses');
+      const extractIdsCb = document.getElementById('extractIds');
+      const extractInlineCb = document.getElementById('extractInline');
+      const extractEmbeddedCb = document.getElementById('extractEmbedded');
+
+      const statClassesEl = document.getElementById('statClasses');
+      const statIdsEl = document.getElementById('statIds');
+      const statRulesEl = document.getElementById('statRules');
+
+      function runExtract() {
+        if (!inputEl || !outputEl) return;
+        const source = inputEl.value || '';
+
+        if (!source.trim()) {
+          outputEl.textContent = '';
+          outputEl.classList.add('empty');
+          outputEl.innerHTML = '<em>Extracted CSS will appear here...</em>';
+          if (statClassesEl) statClassesEl.textContent = '0';
+          if (statIdsEl) statIdsEl.textContent = '0';
+          if (statRulesEl) statRulesEl.textContent = '0';
+          return;
+        }
+
+        const analysis = analyzeHTMLForCSS(source, {
+          extractClasses: extractClassesCb ? extractClassesCb.checked : true,
+          extractIds: extractIdsCb ? extractIdsCb.checked : true,
+          extractInline: extractInlineCb ? extractInlineCb.checked : true,
+          extractEmbedded: extractEmbeddedCb ? extractEmbeddedCb.checked : true
+        });
+
+        outputEl.textContent = analysis.fullCSS;
+        outputEl.classList.remove('empty');
+        if (statClassesEl) statClassesEl.textContent = analysis.stats.totalClasses;
+        if (statIdsEl) statIdsEl.textContent = analysis.stats.totalIds;
+        if (statRulesEl) statRulesEl.textContent = analysis.stats.totalRules;
+      }
+
+      // Dynamically update output if the user has already extracted CSS
+      function handleOptionChange() {
+        if (outputEl && !outputEl.classList.contains('empty') && inputEl && inputEl.value.trim()) {
+          runExtract();
+        }
+      }
+
+      if (extractClassesCb) extractClassesCb.addEventListener('change', handleOptionChange);
+      if (extractIdsCb) extractIdsCb.addEventListener('change', handleOptionChange);
+      if (extractInlineCb) extractInlineCb.addEventListener('change', handleOptionChange);
+      if (extractEmbeddedCb) extractEmbeddedCb.addEventListener('change', handleOptionChange);
+
+      // Initial execution on button click
+      if (extractBtn) {
+        extractBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          runExtract();
+        });
+      }
+
+      // Clear button: resets input and output
+      if (clearBtn) {
+        clearBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          if (inputEl) inputEl.value = '';
+          if (outputEl) {
+            outputEl.textContent = '';
+            outputEl.classList.add('empty');
+            outputEl.innerHTML = '<em>Extracted CSS will appear here...</em>';
+          }
+          if (statClassesEl) statClassesEl.textContent = '0';
+          if (statIdsEl) statIdsEl.textContent = '0';
+          if (statRulesEl) statRulesEl.textContent = '0';
+          if (inputEl) inputEl.focus();
+        });
+      }
+
+      // Load Example: puts sample into input and resets output until user clicks Extract
+      if (exampleBtn) {
+        exampleBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          if (inputEl) {
+            inputEl.value = exampleHTML;
+            if (outputEl) {
+              outputEl.textContent = '';
+              outputEl.classList.add('empty');
+              outputEl.innerHTML = '<em>Extracted CSS will appear here...</em>';
+            }
+            if (statClassesEl) statClassesEl.textContent = '0';
+            if (statIdsEl) statIdsEl.textContent = '0';
+            if (statRulesEl) statRulesEl.textContent = '0';
+            inputEl.focus();
+          }
+        });
+      }
+
+      // Copy to Clipboard
+      if (copyBtn) {
+        copyBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          const text = outputEl ? outputEl.textContent : '';
+          if (!text || (outputEl && outputEl.classList.contains('empty'))) return;
+
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(function() {
+              const orig = copyBtn.textContent;
+              copyBtn.textContent = 'Copied!';
+              setTimeout(function() { copyBtn.textContent = orig; }, 1500);
+            }).catch(function() {
+              fallbackCopy(text);
+            });
+          } else {
+            fallbackCopy(text);
+          }
+        });
+      }
+
+      function fallbackCopy(text) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+          document.execCommand('copy');
+          const orig = copyBtn.textContent;
+          copyBtn.textContent = 'Copied!';
+          setTimeout(function() { copyBtn.textContent = orig; }, 1500);
+        } catch (err) {}
+        document.body.removeChild(ta);
+      }
+
+      // Download Output as .css
+      if (downloadBtn) {
+        downloadBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          const text = outputEl ? outputEl.textContent : '';
+          if (!text || (outputEl && outputEl.classList.contains('empty'))) return;
+          const blob = new Blob([text], { type: 'text/css;charset=utf-8' });
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = 'styles.css';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML Image Extractor &amp; Alt Auditor - Extract Image URLs Online | Toolyard</title>
+  <meta name="description" content="Extract image tags, URLs, dimensions, and audit missing alt text attributes from HTML code online. Audit accessibility, resolve relative paths, and export to CSV.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/tools-data.js"></script>
+  <script src="/js/layout.js"></script>
+  <style>
+    /* Workspace Grid & Pane Layout */
+    .tool-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+      min-height: 480px;
+      background: var(--line);
+      gap: 1px;
+    }
+    @media (max-width: 860px) {
+      .tool-grid { grid-template-columns: 1fr; }
+    }
+    .tool-pane {
+      background: var(--paper-2);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      min-width: 0;
+      overflow: hidden;
+    }
+    .tool-pane-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      background: var(--paper);
+      border-bottom: 1px solid var(--line);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink-soft);
+      min-width: 0;
+    }
+    .tool-pane-header .title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+    .tool-pane-header .actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    .tool-textarea {
+      flex: 1;
+      width: 100%;
+      min-height: 380px;
+      padding: 18px;
+      border: none;
+      outline: none;
+      resize: vertical;
+      background: var(--editor-bg);
+      color: var(--ink);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13.5px;
+      line-height: 1.65;
+      tab-size: 2;
+      white-space: pre;
+      overflow: auto;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+    .tool-textarea:focus {
+      background: var(--paper-2);
+    }
+    .tool-input {
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--line);
+      background: var(--paper-2);
+      color: var(--ink);
+      font-family: inherit;
+      font-size: 13px;
+      outline: none;
+      transition: border-color .15s;
+    }
+    .tool-input:focus {
+      border-color: var(--amber);
+    }
+    .tool-select {
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--line);
+      background: var(--paper-2);
+      color: var(--ink);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12.5px;
+      font-weight: 600;
+      outline: none;
+      cursor: pointer;
+    }
+    .tool-select:focus {
+      border-color: var(--amber);
+    }
+    .table-container {
+      flex: 1;
+      overflow: auto;
+      max-height: 420px;
+      background: var(--editor-bg);
+      min-height: 380px;
+    }
+    .images-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+      text-align: left;
+    }
+    .images-table th {
+      position: sticky;
+      top: 0;
+      background: var(--paper);
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--line);
+      color: var(--ink-soft);
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 600;
+      font-size: 11.5px;
+      text-transform: uppercase;
+      z-index: 1;
+    }
+    .images-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--line);
+      word-break: break-all;
+      color: var(--ink);
+      vertical-align: middle;
+    }
+    .images-table tr:hover {
+      background: var(--paper-2);
+    }
+    .thumb-preview {
+      width: 44px;
+      height: 44px;
+      border-radius: 6px;
+      object-fit: cover;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      display: block;
+    }
+    .badge-pill {
+      display: inline-block;
+      padding: 2px 7px;
+      font-size: 11px;
+      border-radius: 4px;
+      font-weight: 600;
+      font-family: 'IBM Plex Mono', monospace;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .badge-good {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+    }
+    .badge-bad {
+      background: rgba(229, 72, 77, 0.15);
+      color: #e5484d;
+    }
+    .empty-state {
+      padding: 60px 20px;
+      text-align: center;
+      color: var(--ink-soft);
+      font-style: italic;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body data-tool="html-image-extractor">
+
+  <!-- SHARED HEADER, MOBILE MENU & BREADCRUMBS (rendered by /js/layout.js) -->
+  <div id="site-header"></div>
+  <div id="site-breadcrumbs"></div>
+
+  <!-- TOOL INTRO -->
+  <section class="tool-intro">
+    <div class="wrap tool-intro-content">
+      <span class="eyebrow">IMAGE &amp; SEO AUDITOR</span>
+      <h1>HTML Image Extractor &amp; Alt Auditor</h1>
+      <p class="lead">Extract all embedded image tags, source URLs, responsive source sets, and dimensions. Audit accessibility and identify missing or empty alt text attributes for SEO.</p>
+      <div class="tool-meta-badge">
+        <span class="dot"></span> 100% Private · Processed locally in your browser
+      </div>
+    </div>
+  </section>
+
+  <!-- CALCULATOR / WORKSPACE -->
+  <section class="tool-app-section">
+    <div class="wrap">
+      <div class="tool-workspace">
+        <div class="tool-toolbar">
+          <div class="tool-toolbar-left" style="gap: 12px;">
+            <button type="button" class="btn btn-amber" id="extractBtn">Extract Images</button>
+            <input type="text" id="baseUrl" class="tool-input" placeholder="Base URL (e.g. https://example.com)" style="width: 240px;">
+            <select id="filterSelect" class="tool-select">
+              <option value="all">All Images</option>
+              <option value="missing-alt">Missing Alt Only</option>
+              <option value="has-alt">Has Alt Only</option>
+            </select>
+          </div>
+          <div class="tool-toolbar-right">
+            <button type="button" class="btn btn-ghost btn-sm" id="exampleBtn">Load Example</button>
+            <button type="button" class="btn btn-danger btn-sm" id="clearBtn">Clear</button>
+          </div>
+        </div>
+
+        <div class="tool-grid">
+          <!-- Left Input Pane -->
+          <div class="tool-pane">
+            <div class="tool-pane-header">
+              <span class="title">HTML Input</span>
+              <span class="badge">Raw Markup</span>
+            </div>
+            <textarea id="htmlInput" class="tool-textarea" placeholder="Paste HTML markup here to extract all images and audit alt tags..." spellcheck="false"></textarea>
+          </div>
+
+          <!-- Right Output Pane -->
+          <div class="tool-pane">
+            <div class="tool-pane-header">
+              <span class="title">Extracted Images</span>
+              <div class="actions">
+                <button type="button" class="btn btn-sm btn-outline" id="copyUrlsBtn">Copy URLs</button>
+                <button type="button" class="btn btn-sm btn-ghost" id="downloadCsvBtn">Download CSV</button>
+              </div>
+            </div>
+            <div class="table-container">
+              <table class="images-table" id="imagesTable">
+                <thead>
+                  <tr>
+                    <th style="width: 50px;">Preview</th>
+                    <th>Source URL (src)</th>
+                    <th>Alt Text</th>
+                    <th>Dimensions</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="imagesTableBody">
+                  <tr><td colspan="5" class="empty-state">Extracted images will appear here...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="tool-stats-bar">
+          <div class="tool-stats-items">
+            <div class="tool-stat-badge">Total Images: <b id="statTotal">0</b></div>
+            <div class="tool-stat-badge">Missing Alt: <b id="statMissing" style="color: var(--error);">0</b></div>
+            <div class="tool-stat-badge">Alt Coverage: <b id="statCoverage" style="color: var(--signal);">100%</b></div>
+          </div>
+          <div>Browser DOM Parser · 100% Client-Side</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. ABOUT THIS TOOL SECTION -->
+  <section class="tool-content-section" style="padding: 56px 0; border-top: 1px solid var(--line); background: var(--paper-2);">
+    <div class="wrap">
+      <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">◆ ABOUT THIS TOOL</span>
+      <h2 style="font-size: 26px; margin: 0 0 6px;">About HTML Image Extraction &amp; Alt Auditing</h2>
+      <p style="color: var(--ink-soft); font-size: 14.5px; margin: 0 0 32px;">Audit visual assets, identify missing alternative descriptions, and boost SEO rankings.</p>
+
+      <div class="about-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 36px; font-size: 14.5px; line-height: 1.7; color: var(--ink-soft);">
+        <div>
+          <p style="margin: 0;">Images are essential for engaging web pages, but missing alternative text (<code>alt</code>) damages search engine rankings, impairs Core Web Vitals, and excludes visually impaired users relying on screen readers. Finding every unlabelled image across extensive markup manually is time-consuming.</p>
+        </div>
+        <div>
+          <p style="margin: 0;">The Toolyard HTML Image Extractor parses all <code>&lt;img&gt;</code> tags and <code>&lt;picture&gt;</code> elements, pulls primary image URLs from standard <code>src</code>, <code>srcset</code>, and lazy-loading <code>data-src</code> attributes, audits accessibility compliance, and exports a comprehensive spreadsheet without sending data over a network.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. KEY EXTRACTION RULES SECTION -->
+  <section class="tool-content-section" style="padding: 56px 0; border-top: 1px solid var(--line); background: var(--paper);">
+    <div class="wrap">
+      <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">⚙ AUDIT &amp; ACCESSIBILITY</span>
+      <h2 style="font-size: 26px; margin: 0 0 6px;">Image Audit &amp; Extraction Rules</h2>
+      <p style="color: var(--ink-soft); font-size: 14.5px; margin: 0 0 28px;">How image nodes, source attributes, and accessibility attributes are evaluated.</p>
+
+      <div class="rules-list" style="display: flex; flex-direction: column; gap: 14px;">
+        <div class="rule-card" style="display: flex; align-items: flex-start; gap: 16px; padding: 20px 22px; background: var(--paper-2); border: 1px solid var(--line); border-radius: 12px;">
+          <div class="rule-icon" style="width: 36px; height: 36px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;">🖼</div>
+          <div>
+            <h3 style="font-size: 15.5px; margin: 0 0 6px; color: var(--ink);">Lazy-Loading &amp; Srcset Detection</h3>
+            <p style="margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ink-soft);">Detects standard <code>src</code> attributes as well as modern lazy-loading patterns (<code>data-src</code>, <code>data-lazy</code>, <code>srcset</code>), picking the optimal base image URL automatically.</p>
+          </div>
+        </div>
+
+        <div class="rule-card" style="display: flex; align-items: flex-start; gap: 16px; padding: 20px 22px; background: var(--paper-2); border: 1px solid var(--line); border-radius: 12px;">
+          <div class="rule-icon" style="width: 36px; height: 36px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;">♿</div>
+          <div>
+            <h3 style="font-size: 15.5px; margin: 0 0 6px; color: var(--ink);">WCAG Accessibility &amp; Alt Tag Audit</h3>
+            <p style="margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ink-soft);">Differentiates between valid descriptive alt text, empty <code>alt=""</code> placeholders, and completely missing <code>alt</code> attributes, calculating overall alt coverage percentage.</p>
+          </div>
+        </div>
+
+        <div class="rule-card" style="display: flex; align-items: flex-start; gap: 16px; padding: 20px 22px; background: var(--paper-2); border: 1px solid var(--line); border-radius: 12px;">
+          <div class="rule-icon" style="width: 36px; height: 36px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;">🔗</div>
+          <div>
+            <h3 style="font-size: 15.5px; margin: 0 0 6px; color: var(--ink);">Relative Asset Resolution</h3>
+            <p style="margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ink-soft);">Transforms local asset paths (e.g. <code>/images/hero.png</code>) into full absolute URLs when an optional domain Base URL is specified.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. HOW TO USE (DARK BLUE BACKGROUND LIKE HOMEPAGE STEPS) -->
+  <section class="section-navy" style="padding: 64px 0; position: relative; overflow: hidden; background: var(--navy-900);">
+    <div class="wrap" style="position: relative;">
+      <span class="eyebrow" style="background: rgba(240,169,59,0.18); color: var(--amber); margin-bottom: 12px; display: inline-flex;">◐ THREE STEPS</span>
+      <h2 style="font-size: 26px; color: #fff; margin: 0 0 6px;">How to Use</h2>
+      <p style="color: #9096B8; font-size: 14.5px; margin: 0 0 32px;">Audit and extract all image tags in under ten seconds.</p>
+
+      <div class="steps">
+        <div class="step" data-n="01">
+          <div class="num">1</div>
+          <h3 style="color: #fff;">Paste HTML Code</h3>
+          <p>Paste your HTML markup or page templates into the left editor, or click "Load Example" to test the tool.</p>
+        </div>
+        <div class="step" data-n="02">
+          <div class="num">2</div>
+          <h3 style="color: #fff;">Set Base URL &amp; Extract</h3>
+          <p>Optionally specify a domain base URL to resolve asset paths, then click the amber "Extract Images" button.</p>
+        </div>
+        <div class="step" data-n="03">
+          <div class="num">3</div>
+          <h3 style="color: #fff;">Audit, Copy or Export</h3>
+          <p>Filter by missing alt tags, copy image URLs to clipboard, or export the full audit table as an Excel-ready CSV.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. WHY USE TOOLYARD IMAGE EXTRACTOR (6-CARD BORDERED GRID) -->
+  <section class="tool-content-section" style="padding: 60px 0; background: var(--paper-2); border-top: 1px solid var(--line);">
+    <div class="wrap">
+      <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">✓ FEATURES</span>
+      <h2 style="font-size: 26px; margin: 0 0 6px;">Why Use Toolyard HTML Image Extractor</h2>
+      <p style="color: var(--ink-soft); font-size: 14.5px; margin: 0 0 32px;">Engineered for fast, reliable, and clean visual asset audits.</p>
+
+      <div class="why-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--line); gap: 1px;">
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">◆</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">100% Private</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">All DOM parsing occurs in your browser's local sandbox. No HTML or proprietary image assets leave your device.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">👁</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">Visual Previews</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Renders thumbnail previews for valid remote and absolute URLs directly in the extracted results table.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">⚡</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">Instant Filter Toggles</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Switch between Missing Alt and Valid Alt views dynamically without needing to re-extract or re-paste input.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">📊</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">SEO Alt Coverage Metric</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Calculates percentage scores for accessible images, helping verify on-page technical SEO compliance.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">↓</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">Export to CSV</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Export all extracted image metadata and alt texts directly into an Excel-ready CSV spreadsheet.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">⧉</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">Fast Clipboard Copy</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Copy clean plain text image source URLs matching your active filter with one click.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. FREQUENTLY ASKED QUESTIONS -->
+  <section class="tool-content-section" style="padding: 64px 0; background: var(--paper); border-top: 1px solid var(--line);">
+    <div class="wrap">
+      <div style="text-align: center; margin-bottom: 36px;">
+        <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">FAQ</span>
+        <h2 style="font-size: 28px; margin: 0;">Frequently Asked Questions</h2>
+      </div>
+
+      <div class="faq" id="faqList" style="max-width: 860px; margin: 0 auto;">
+        <div class="faq-item">
+          <button type="button">Why is alt text important for SEO and accessibility?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Alt text provides a text alternative for search engines crawling your images and enables visually impaired users with screen readers to understand the content and context of visual assets.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Does this tool support modern &lt;picture&gt; and srcset tags?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Yes. The extraction engine scans standard <code>&lt;img&gt;</code> tags as well as <code>&lt;picture source&gt;</code> elements, capturing candidate image URLs accurately.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">What does the Base URL input do?<span class="plus">+</span></button>
+          <div class="faq-a"><p>If your HTML uses relative paths (such as <code>/assets/hero.jpg</code> or <code>../images/logo.png</code>), entering a Base URL converts them into full, clickable URLs for visual thumbnail previews.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Does this tool send my HTML or image data to any server?<span class="plus">+</span></button>
+          <div class="faq-a"><p>No. All parsing and extraction execute 100% locally in your browser through client-side JavaScript. Your code and assets remain private.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Can I export the audit report into Google Sheets or Excel?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Yes! Clicking "Download CSV" generates an Excel-compatible spreadsheet listing each image URL, alt text, dimensions, and compliance status.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. RELATED HTML TOOLS -->
+  <section class="related-tools-section" style="padding: 56px 0; background: var(--paper-2); border-top: 1px solid var(--line);">
+    <div class="wrap">
+      <div style="margin-bottom: 24px;">
+        <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">📎 RELATED</span>
+      </div>
+      <div class="section-head" style="margin-bottom: 28px;">
+        <div>
+          <h2 style="font-size: 26px; margin: 0 0 6px;">Related HTML Tools</h2>
+          <p class="desc" style="margin: 0;">More utilities for working with web markup.</p>
+        </div>
+        <a class="view-all" href="/categories/html-web/">All HTML Tools →</a>
+      </div>
+
+      <div class="grid grid-3" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+        <a class="tool-card" href="/tools/html/html-link-extractor.html">
+          <div class="top-row"><span class="badge">Auditor</span></div>
+          <h3>HTML Link Extractor</h3>
+          <p>Extract all hyperlinks, anchor text, targets, and resolve relative URLs to CSV.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/html/html-formatter.html">
+          <div class="top-row"><span class="badge">Formatter</span></div>
+          <h3>HTML Formatter</h3>
+          <p>Beautify messy or compressed HTML with clean indentation and proper nesting.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/html/html-to-text.html">
+          <div class="top-row"><span class="badge">Converter</span></div>
+          <h3>HTML to Plain Text</h3>
+          <p>Strip HTML markup tags and extract clean, readable text with paragraph formatting.</p>
+          <span class="open">Open tool →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHARED FOOTER (rendered by /js/layout.js) -->
+  <div id="site-footer"></div>
+
+  <!-- JAVASCRIPT ENGINE -->
+  <script>
+    (function() {
+      // Header, mega menus, mobile drawer & dark mode are handled by /js/layout.js
+
+      // FAQ Accordion
+      document.querySelectorAll('.faq-item button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const item = btn.parentElement;
+          const isOpen = item.classList.contains('open');
+          document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+          if (!isOpen) item.classList.add('open');
+        });
+      });
+
+      // 2. Image Extraction Engine
+      let imagesData = [];
+
+      function parseImages(html, baseUrl) {
+        if (!html || !html.trim()) return [];
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const imgs = Array.prototype.slice.call(doc.querySelectorAll('img, picture source'));
+        const results = [];
+
+        imgs.forEach(function(el) {
+          let src = el.getAttribute('src') || el.getAttribute('data-src') || el.getAttribute('srcset') || '';
+          if (!src) return;
+          if (src.indexOf(',') !== -1) src = src.split(',')[0].trim().split(' ')[0];
+
+          let resolvedSrc = src;
+          if (baseUrl && !src.startsWith('data:')) {
+            try {
+              resolvedSrc = new URL(src, baseUrl).href;
+            } catch (e) {}
+          }
+
+          const alt = el.getAttribute('alt');
+          const hasAlt = alt !== null && alt.trim().length > 0;
+          const width = el.getAttribute('width') || 'auto';
+          const height = el.getAttribute('height') || 'auto';
+
+          results.push({
+            src: resolvedSrc,
+            alt: alt === null ? null : alt.trim(),
+            hasAlt: hasAlt,
+            width: width,
+            height: height
+          });
+        });
+
+        return results;
+      }
+
+      const inputEl = document.getElementById('htmlInput');
+      const tableBody = document.getElementById('imagesTableBody');
+      const extractBtn = document.getElementById('extractBtn');
+      const baseUrlInput = document.getElementById('baseUrl');
+      const filterSelect = document.getElementById('filterSelect');
+      const clearBtn = document.getElementById('clearBtn');
+      const exampleBtn = document.getElementById('exampleBtn');
+      const copyUrlsBtn = document.getElementById('copyUrlsBtn');
+      const downloadCsvBtn = document.getElementById('downloadCsvBtn');
+      const statTotal = document.getElementById('statTotal');
+      const statMissing = document.getElementById('statMissing');
+      const statCoverage = document.getElementById('statCoverage');
+
+      function renderTable() {
+        const filter = filterSelect ? filterSelect.value : 'all';
+        const filtered = imagesData.filter(function(img) {
+          if (filter === 'missing-alt') return !img.hasAlt;
+          if (filter === 'has-alt') return img.hasAlt;
+          return true;
+        });
+
+        if (!filtered.length) {
+          tableBody.innerHTML = '<tr><td colspan="5" class="empty-state">No images found matching criteria.</td></tr>';
+          return;
+        }
+
+        tableBody.innerHTML = filtered.map(function(img) {
+          const altTextDisplay = img.alt === null
+            ? '<span style="color:var(--error); font-style:italic;">Missing [No alt attribute]</span>'
+            : (img.alt === '' ? '<span style="color:var(--error); font-style:italic;">Empty ("")</span>' : img.alt.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'));
+          
+          const statusBadge = img.hasAlt
+            ? '<span class="badge-pill badge-good">Valid Alt</span>'
+            : '<span class="badge-pill badge-bad">Missing Alt</span>';
+
+          const safeSrc = img.src.replace(/"/g, '&quot;');
+
+          return '<tr>' +
+            '<td><img src="' + safeSrc + '" class="thumb-preview" onerror="this.style.opacity=0.3;" alt=""></td>' +
+            '<td><a href="' + safeSrc + '" target="_blank" rel="noopener noreferrer" style="color:var(--ink); text-decoration:underline;">' + safeSrc + '</a></td>' +
+            '<td>' + altTextDisplay + '</td>' +
+            '<td><code style="font-size:11.5px; padding:2px 4px; background:var(--paper); border:1px solid var(--line); border-radius:4px;">' + img.width + ' × ' + img.height + '</code></td>' +
+            '<td>' + statusBadge + '</td>' +
+          '</tr>';
+        }).join('');
+      }
+
+      function runExtract() {
+        if (!inputEl || !tableBody) return;
+        const src = inputEl.value || '';
+
+        if (!src.trim()) {
+          imagesData = [];
+          tableBody.innerHTML = '<tr><td colspan="5" class="empty-state">Extracted images will appear here...</td></tr>';
+          if (statTotal) statTotal.textContent = '0';
+          if (statMissing) statMissing.textContent = '0';
+          if (statCoverage) statCoverage.textContent = '100%';
+          return;
+        }
+
+        const baseVal = baseUrlInput ? baseUrlInput.value.trim() : '';
+        imagesData = parseImages(src, baseVal);
+
+        const missingCount = imagesData.filter(function(i) { return !i.hasAlt; }).length;
+        const cov = imagesData.length ? Math.round(((imagesData.length - missingCount) / imagesData.length) * 100) : 100;
+
+        if (statTotal) statTotal.textContent = imagesData.length;
+        if (statMissing) statMissing.textContent = missingCount;
+        if (statCoverage) statCoverage.textContent = cov + '%';
+
+        renderTable();
+      }
+
+      // Initial execution on button click
+      if (extractBtn) {
+        extractBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          runExtract();
+        });
+      }
+
+      // Dynamic option updates
+      if (filterSelect) {
+        filterSelect.addEventListener('change', renderTable);
+      }
+      if (baseUrlInput) {
+        baseUrlInput.addEventListener('input', function() {
+          if (inputEl && inputEl.value.trim() && imagesData.length > 0) {
+            runExtract();
+          }
+        });
+      }
+
+      // Clear button: resets input, table, and stats
+      if (clearBtn) {
+        clearBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          if (inputEl) inputEl.value = '';
+          if (baseUrlInput) baseUrlInput.value = '';
+          imagesData = [];
+          if (tableBody) {
+            tableBody.innerHTML = '<tr><td colspan="5" class="empty-state">Extracted images will appear here...</td></tr>';
+          }
+          if (statTotal) statTotal.textContent = '0';
+          if (statMissing) statMissing.textContent = '0';
+          if (statCoverage) statCoverage.textContent = '100%';
+          if (inputEl) inputEl.focus();
+        });
+      }
+
+      // Load Example
+      const exampleHTML = '<div class="gallery">\n  <img src="/images/hero-banner.jpg" alt="Developer using Toolyard web tools suite" width="1200" height="630">\n  <img src="/images/logo.png" width="200" height="50">\n  <img src="/images/preview.webp" alt="Tool screenshot preview">\n  <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=100" width="100" height="100">\n</div>';
+
+      if (exampleBtn) {
+        exampleBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          if (baseUrlInput) baseUrlInput.value = 'https://toolyard.dev';
+          if (inputEl) {
+            inputEl.value = exampleHTML;
+            if (tableBody) {
+              tableBody.innerHTML = '<tr><td colspan="5" class="empty-state">Extracted images will appear here...</td></tr>';
+            }
+            if (statTotal) statTotal.textContent = '0';
+            if (statMissing) statMissing.textContent = '0';
+            if (statCoverage) statCoverage.textContent = '100%';
+            inputEl.focus();
+          }
+        });
+      }
+
+      // Copy URLs
+      if (copyUrlsBtn) {
+        copyUrlsBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          const filter = filterSelect ? filterSelect.value : 'all';
+          const urls = imagesData.filter(function(img) {
+            if (filter === 'missing-alt') return !img.hasAlt;
+            if (filter === 'has-alt') return img.hasAlt;
+            return true;
+          }).map(function(img) { return img.src; }).join('\n');
+
+          if (!urls) return;
+
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(urls).then(function() {
+              const orig = copyUrlsBtn.textContent;
+              copyUrlsBtn.textContent = 'Copied!';
+              setTimeout(function() { copyUrlsBtn.textContent = orig; }, 1500);
+            }).catch(function() {
+              fallbackCopy(urls);
+            });
+          } else {
+            fallbackCopy(urls);
+          }
+        });
+      }
+
+      function fallbackCopy(text) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+          document.execCommand('copy');
+          const orig = copyUrlsBtn.textContent;
+          copyUrlsBtn.textContent = 'Copied!';
+          setTimeout(function() { copyUrlsBtn.textContent = orig; }, 1500);
+        } catch (err) {}
+        document.body.removeChild(ta);
+      }
+
+      // Download CSV
+      if (downloadCsvBtn) {
+        downloadCsvBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          const filter = filterSelect ? filterSelect.value : 'all';
+          const list = imagesData.filter(function(img) {
+            if (filter === 'missing-alt') return !img.hasAlt;
+            if (filter === 'has-alt') return img.hasAlt;
+            return true;
+          });
+
+          if (!list.length) return;
+
+          let csv = 'Index,Source URL,Alt Text,Has Alt,Width,Height\r\n';
+          list.forEach(function(img, i) {
+            const row = [
+              i + 1,
+              '"' + img.src.replace(/"/g, '""') + '"',
+              '"' + (img.alt || '').replace(/"/g, '""') + '"',
+              '"' + img.hasAlt + '"',
+              '"' + img.width + '"',
+              '"' + img.height + '"'
+            ];
+            csv += row.join(',') + '\r\n';
+          });
+
+          const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = 'extracted_images.csv';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

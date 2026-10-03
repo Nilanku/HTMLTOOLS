@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YAML to JSON Converter — Free Online Tool | Toolyard</title>
+  <meta name="description" content="Convert YAML configs, manifests, and multi-document streams into clean, formatted JSON. 100% private in-browser syntax conversion with line diagnostics.">
+  <meta property="og:title" content="YAML to JSON Converter — Free Online Tool | Toolyard">
+  <meta property="og:description" content="Parse YAML documents and Docker/Kubernetes configurations into formatted JSON directly in your browser.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/tools-data.js"></script>
+  <script src="/js/layout.js"></script>
+  <!-- js-yaml CDN for standalone zero-install browser usage -->
+  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+  <style>
+    /* Tool Workspace & Grid Layout */
+    .tool-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      min-height: 480px;
+      background: var(--line);
+      gap: 1px;
+    }
+    @media (max-width: 860px) {
+      .tool-grid { grid-template-columns: 1fr; }
+    }
+    .tool-pane {
+      background: var(--paper-2);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      min-width: 0;
+      overflow: hidden;
+    }
+    .tool-pane-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      background: var(--paper);
+      border-bottom: 1px solid var(--line);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink-soft);
+      min-width: 0;
+    }
+    .tool-pane-header .title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+    .tool-pane-header .actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    .tool-textarea {
+      flex: 1;
+      width: 100%;
+      min-height: 420px;
+      padding: 18px;
+      border: none;
+      outline: none;
+      resize: vertical;
+      background: var(--editor-bg);
+      color: var(--ink);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13.5px;
+      line-height: 1.65;
+      tab-size: 2;
+      white-space: pre;
+      overflow: auto;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+    .tool-textarea:focus {
+      background: var(--paper-2);
+    }
+    .tool-output-box {
+      flex: 1;
+      width: 100%;
+      min-height: 420px;
+      padding: 18px;
+      background: var(--editor-bg);
+      color: var(--ink);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13.5px;
+      line-height: 1.65;
+      overflow-y: auto;
+      overflow-x: auto;
+      white-space: pre;
+      user-select: text;
+      margin: 0;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+    .tool-output-box.empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-soft);
+      font-style: italic;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      white-space: normal;
+    }
+    .error-banner {
+      display: none;
+      padding: 12px 18px;
+      background: rgba(229, 72, 77, 0.12);
+      color: var(--error);
+      border-bottom: 1px solid rgba(229, 72, 77, 0.25);
+      font-size: 13px;
+      font-family: 'IBM Plex Mono', monospace;
+      line-height: 1.5;
+    }
+    .error-banner.show {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .select-opt {
+      padding: 6px 10px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--paper);
+      color: var(--ink);
+      font-size: 13px;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      cursor: pointer;
+    }
+    .checkbox-opt {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--ink);
+      cursor: pointer;
+      user-select: none;
+    }
+  </style>
+</head>
+<body data-tool="yaml-to-json">
+
+  <!-- SHARED HEADER, MOBILE MENU & BREADCRUMBS (rendered by /js/layout.js) -->
+  <div id="site-header"></div>
+  <div id="site-breadcrumbs"></div>
+
+  <!-- TOOL INTRO -->
+  <section class="tool-intro">
+    <div class="wrap tool-intro-content">
+      <span class="eyebrow">DATA CONVERTER</span>
+      <h1>YAML to JSON Converter</h1>
+      <p class="lead">Parse, validate, and convert YAML documents, multi-doc streams, and config files into clean, structured JSON payloads with zero server uploads.</p>
+      <div class="tool-meta-badge">
+        <span class="dot"></span> 100% Private · Client-side parser with multi-doc support
+      </div>
+    </div>
+  </section>
+
+  <!-- CALCULATOR / WORKSPACE -->
+  <section class="tool-app-section">
+    <div class="wrap">
+      <div class="tool-workspace">
+        <div id="errorBanner" class="error-banner"></div>
+
+        <div class="tool-toolbar">
+          <div class="tool-toolbar-left" style="gap: 12px; flex-wrap: wrap;">
+            <button type="button" class="btn btn-amber" id="convertBtn">Convert to JSON</button>
+            <div style="display:flex; align-items:center; gap:6px;">
+              <label for="indentSelect" style="font-size:13px; color:var(--ink-soft);">Formatting:</label>
+              <select id="indentSelect" class="select-opt">
+                <option value="2" selected>2 Spaces (Pretty)</option>
+                <option value="4">4 Spaces (Pretty)</option>
+                <option value="0">Minified (Single Line)</option>
+              </select>
+            </div>
+            <label class="checkbox-opt">
+              <input type="checkbox" id="multiDocCheck" checked>
+              <span>Support Multi-Doc Streams (<code>---</code>)</span>
+            </label>
+          </div>
+          <div class="tool-toolbar-right">
+            <button type="button" class="btn btn-ghost btn-sm" id="exampleBtn">Load Example</button>
+            <button type="button" class="btn btn-danger btn-sm" id="clearBtn">Clear</button>
+          </div>
+        </div>
+
+        <div class="tool-grid">
+          <!-- Left Input Pane -->
+          <div class="tool-pane">
+            <div class="tool-pane-header">
+              <span class="title">YAML Input</span>
+              <span class="badge">Raw YAML</span>
+            </div>
+            <textarea id="yamlInput" class="tool-textarea" placeholder="Paste your YAML config here (e.g. name: app\nversion: 1.0.0)..." spellcheck="false"></textarea>
+          </div>
+
+          <!-- Right Output Pane -->
+          <div class="tool-pane">
+            <div class="tool-pane-header">
+              <span class="title">JSON Output</span>
+              <div class="actions">
+                <button type="button" class="btn btn-sm btn-outline" id="copyBtn">Copy JSON</button>
+                <button type="button" class="btn btn-sm btn-ghost" id="downloadBtn">Download .json</button>
+              </div>
+            </div>
+            <div id="jsonOutput" class="tool-output-box empty"><em>JSON output will appear here after conversion...</em></div>
+          </div>
+        </div>
+
+        <div class="tool-stats-bar">
+          <div class="tool-stats-items">
+            <div class="tool-stat-badge">YAML Size: <b id="statYamlSize">0 B</b></div>
+            <div class="tool-stat-badge">JSON Size: <b id="statJsonSize">0 B</b></div>
+            <div class="tool-stat-badge">Documents: <b id="statDocsCount">0 docs</b></div>
+          </div>
+          <div>ECMA-404 Standard · 100% Client-Side</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. ABOUT THIS TOOL SECTION -->
+  <section class="tool-content-section" style="padding: 56px 0; border-top: 1px solid var(--line); background: var(--paper-2);">
+    <div class="wrap">
+      <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">◆ ABOUT THIS TOOL</span>
+      <h2 style="font-size: 26px; margin: 0 0 6px;">Why Convert YAML to JSON?</h2>
+      <p style="color: var(--ink-soft); font-size: 14.5px; margin: 0 0 32px;">Import DevOps configurations directly into JavaScript applications, APIs, and databases.</p>
+
+      <div class="about-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 36px; font-size: 14.5px; line-height: 1.7; color: var(--ink-soft);">
+        <div>
+          <p style="margin: 0;">While YAML is optimal for human-readable configs like Docker Compose, Kubernetes, and GitHub Actions, most application runtimes, REST endpoints, NoSQL databases (MongoDB, CouchDB), and JavaScript toolchains operate natively on JSON.</p>
+        </div>
+        <div>
+          <p style="margin: 0;">The Toolyard YAML to JSON Converter parses indentation hierarchies, sequences, mappings, anchors, and multiline strings into compliant JSON objects. It also handles multi-document streams separated by <code>---</code>, wrapping them into a unified array for seamless consumption.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. KEY RULES SECTION -->
+  <section class="tool-content-section" style="padding: 56px 0; border-top: 1px solid var(--line); background: var(--paper);">
+    <div class="wrap">
+      <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">⚙ CONVERSION RULES</span>
+      <h2 style="font-size: 26px; margin: 0 0 6px;">How YAML to JSON Parsing Works</h2>
+      <p style="color: var(--ink-soft); font-size: 14.5px; margin: 0 0 28px;">Understanding data type translation and document handling.</p>
+
+      <div class="rules-list" style="display: flex; flex-direction: column; gap: 14px;">
+        <div class="rule-card" style="display: flex; align-items: flex-start; gap: 16px; padding: 20px 22px; background: var(--paper-2); border: 1px solid var(--line); border-radius: 12px;">
+          <div class="rule-icon" style="width: 36px; height: 36px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;">:</div>
+          <div>
+            <h3 style="font-size: 15.5px; margin: 0 0 6px; color: var(--ink);">Indented Mappings to JSON Objects</h3>
+            <p style="margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ink-soft);">YAML key-value mappings are converted into double-quoted JSON object keys enclosed by standard curly braces <code>{ "key": "value" }</code>.</p>
+          </div>
+        </div>
+
+        <div class="rule-card" style="display: flex; align-items: flex-start; gap: 16px; padding: 20px 22px; background: var(--paper-2); border: 1px solid var(--line); border-radius: 12px;">
+          <div class="rule-icon" style="width: 36px; height: 36px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;">-</div>
+          <div>
+            <h3 style="font-size: 15.5px; margin: 0 0 6px; color: var(--ink);">Bullet Sequences to JSON Arrays</h3>
+            <p style="margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ink-soft);">Hyphenated YAML sequences (<code>- item</code>) are parsed directly into ordered JSON arrays (<code>["item"]</code>).</p>
+          </div>
+        </div>
+
+        <div class="rule-card" style="display: flex; align-items: flex-start; gap: 16px; padding: 20px 22px; background: var(--paper-2); border: 1px solid var(--line); border-radius: 12px;">
+          <div class="rule-icon" style="width: 36px; height: 36px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;">---</div>
+          <div>
+            <h3 style="font-size: 15.5px; margin: 0 0 6px; color: var(--ink);">Multi-Document Stream Support</h3>
+            <p style="margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ink-soft);">Multi-document YAML manifests (separated by <code>---</code>) are parsed and returned as an array of JSON objects without throwing syntax errors.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. HOW TO USE -->
+  <section class="section-navy" style="padding: 64px 0; position: relative; overflow: hidden; background: var(--navy-900);">
+    <div class="wrap" style="position: relative;">
+      <span class="eyebrow" style="background: rgba(240,169,59,0.18); color: var(--amber); margin-bottom: 12px; display: inline-flex;">◐ THREE STEPS</span>
+      <h2 style="font-size: 26px; color: #fff; margin: 0 0 6px;">How to Use</h2>
+      <p style="color: #9096B8; font-size: 14.5px; margin: 0 0 32px;">Convert YAML manifests into JSON in three quick steps.</p>
+
+      <div class="steps">
+        <div class="step" data-n="01">
+          <div class="num">1</div>
+          <h3 style="color: #fff;">Paste YAML Content</h3>
+          <p>Paste YAML syntax into the left input pane, or click "Load Example" to test an example document.</p>
+        </div>
+        <div class="step" data-n="02">
+          <div class="num">2</div>
+          <h3 style="color: #fff;">Select Formatting</h3>
+          <p>Choose 2 spaces, 4 spaces, or compact minified output for single-line JSON payloads.</p>
+        </div>
+        <div class="step" data-n="03">
+          <div class="num">3</div>
+          <h3 style="color: #fff;">Copy or Export</h3>
+          <p>Copy the resulting JSON data to your clipboard or download it as a <code>.json</code> file.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. WHY USE TOOLYARD (6-CARD GRID) -->
+  <section class="tool-content-section" style="padding: 60px 0; background: var(--paper-2); border-top: 1px solid var(--line);">
+    <div class="wrap">
+      <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">✓ FEATURES</span>
+      <h2 style="font-size: 26px; margin: 0 0 6px;">Why Use Toolyard YAML to JSON</h2>
+      <p style="color: var(--ink-soft); font-size: 14.5px; margin: 0 0 32px;">Fast, private, and precise parser built for web and cloud engineers.</p>
+
+      <div class="why-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--line); gap: 1px;">
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">🔒</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">100% Browser Local</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">All parsing runs locally in your browser memory. Private secrets and config credentials never touch a server.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">📄</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">Multi-Doc Support</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Handles multi-document YAML files effortlessly, collecting all documents into a clean structured JSON array.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">⚡</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">Syntax Diagnostics</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Pinpoints invalid indentations, bad tokens, or broken mappings with exact line and column error messages.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">⚙</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">Formatting Options</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Switch between 2-space indentation, 4-space indentation, or compact single-line minification.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">↓</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">Download .json</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Download your converted output directly to a <code style="font-size:12px;">output.json</code> file with a single click.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">⧉</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">Fast Clipboard Copy</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Copy the resulting JSON payload instantly to your clipboard with visual confirmation.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. FREQUENTLY ASKED QUESTIONS -->
+  <section class="tool-content-section" style="padding: 64px 0; background: var(--paper); border-top: 1px solid var(--line);">
+    <div class="wrap">
+      <div style="text-align: center; margin-bottom: 36px;">
+        <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">FAQ</span>
+        <h2 style="font-size: 28px; margin: 0;">Frequently Asked Questions</h2>
+      </div>
+
+      <div class="faq" id="faqList" style="max-width: 860px; margin: 0 auto;">
+        <div class="faq-item">
+          <button type="button">How does this tool handle multi-document YAML files?<span class="plus">+</span></button>
+          <div class="faq-a"><p>When "Support Multi-Doc Streams" is enabled, documents separated by <code>---</code> are parsed into individual objects and returned as a single JSON array containing each document in order.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Why do YAML syntax errors occur with tabs?<span class="plus">+</span></button>
+          <div class="faq-a"><p>The YAML specification strictly forbids the use of tab characters (<code>\t</code>) for indentation. All indentation must be constructed using spaces.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">How are YAML anchors and aliases handled?<span class="plus">+</span></button>
+          <div class="faq-a"><p>YAML anchors (<code>&amp;anchor</code>) and aliases (<code>*anchor</code>) are automatically resolved and deep-cloned into their corresponding JSON structures during parsing.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Is my data uploaded to any server during conversion?<span class="plus">+</span></button>
+          <div class="faq-a"><p>No. All parsing and conversion routines execute strictly within your local browser JavaScript engine. No external HTTP requests are made.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. RELATED DATA TOOLS -->
+  <section class="related-tools-section" style="padding: 56px 0; background: var(--paper-2); border-top: 1px solid var(--line);">
+    <div class="wrap">
+      <div style="margin-bottom: 24px;">
+        <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">📎 RELATED</span>
+      </div>
+      <div class="section-head" style="margin-bottom: 28px;">
+        <div>
+          <h2 style="font-size: 26px; margin: 0 0 6px;">Related JSON &amp; Data Tools</h2>
+          <p class="desc" style="margin: 0;">More utilities for converting and formatting structured payloads.</p>
+        </div>
+        <a class="view-all" href="/categories/json-data/">All Data Tools →</a>
+      </div>
+
+      <div class="grid grid-3" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+        <a class="tool-card" href="/tools/json-data/json-to-yaml.html">
+          <div class="top-row"><span class="badge">Converter</span></div>
+          <h3>JSON to YAML</h3>
+          <p>Convert structured JSON data back into clean, indented YAML configuration manifests.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/json-data/json-formatter.html">
+          <div class="top-row"><span class="badge">Formatter</span></div>
+          <h3>JSON Formatter</h3>
+          <p>Format, pretty print, and validate JSON payloads with syntax error diagnostics.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/json-data/json-minifier.html">
+          <div class="top-row"><span class="badge">Optimizer</span></div>
+          <h3>JSON Minifier</h3>
+          <p>Compress JSON structures by stripping unnecessary whitespace and line breaks.</p>
+          <span class="open">Open tool →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHARED FOOTER (rendered by /js/layout.js) -->
+  <div id="site-footer"></div>
+
+  <!-- JAVASCRIPT ENGINE -->
+  <script>
+    (function() {
+      // Header, mega menus, mobile drawer & dark mode are handled by /js/layout.js
+
+      // FAQ Accordion
+      document.querySelectorAll('.faq-item button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const item = btn.parentElement;
+          const isOpen = item.classList.contains('open');
+          document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+          if (!isOpen) item.classList.add('open');
+        });
+      });
+
+      // 2. YAML to JSON Engine
+      function formatBytes(bytes) {
+        if (bytes === 0) return '0 B';
+        if (bytes < 1024) return bytes + ' B';
+        return (bytes / 1024).toFixed(2) + ' KB';
+      }
+
+      const inputEl = document.getElementById('yamlInput');
+      const outputEl = document.getElementById('jsonOutput');
+      const errorBanner = document.getElementById('errorBanner');
+      const convertBtn = document.getElementById('convertBtn');
+      const indentSelect = document.getElementById('indentSelect');
+      const multiDocCheck = document.getElementById('multiDocCheck');
+      const clearBtn = document.getElementById('clearBtn');
+      const exampleBtn = document.getElementById('exampleBtn');
+      const copyBtn = document.getElementById('copyBtn');
+      const downloadBtn = document.getElementById('downloadBtn');
+      const statYamlSize = document.getElementById('statYamlSize');
+      const statJsonSize = document.getElementById('statJsonSize');
+      const statDocsCount = document.getElementById('statDocsCount');
+
+      function hideError() {
+        if (errorBanner) {
+          errorBanner.className = 'error-banner';
+          errorBanner.textContent = '';
+        }
+      }
+
+      function showError(msg) {
+        if (errorBanner) {
+          errorBanner.textContent = 'YAML Syntax Error: ' + msg;
+          errorBanner.className = 'error-banner show';
+        }
+      }
+
+      function runConvert() {
+        const src = inputEl ? inputEl.value.trim() : '';
+        hideError();
+
+        if (!src) {
+          if (outputEl) {
+            outputEl.textContent = '';
+            outputEl.classList.add('empty');
+            outputEl.innerHTML = '<em>JSON output will appear here after conversion...</em>';
+          }
+          if (statYamlSize) statYamlSize.textContent = '0 B';
+          if (statJsonSize) statJsonSize.textContent = '0 B';
+          if (statDocsCount) statDocsCount.textContent = '0 docs';
+          return;
+        }
+
+        try {
+          const indentVal = indentSelect ? indentSelect.value : '2';
+          const indent = indentVal === '0' ? null : parseInt(indentVal, 10);
+          const multiDoc = multiDocCheck ? multiDocCheck.checked : true;
+
+          let parsedData;
+          let docCount = 1;
+
+          if (window.jsyaml) {
+            if (multiDoc && src.includes('---')) {
+              const docs = [];
+              window.jsyaml.loadAll(src, doc => {
+                if (doc !== null && doc !== undefined) docs.push(doc);
+              });
+              parsedData = docs.length === 1 ? docs[0] : docs;
+              docCount = docs.length;
+            } else {
+              parsedData = window.jsyaml.load(src);
+              docCount = 1;
+            }
+          } else {
+            // Fallback basic parser
+            parsedData = JSON.parse(src);
+          }
+
+          const jsonText = indent === null ? JSON.stringify(parsedData) : JSON.stringify(parsedData, null, indent);
+
+          if (outputEl) {
+            outputEl.textContent = jsonText;
+            outputEl.classList.remove('empty');
+          }
+
+          const yamlB = new Blob([src]).size;
+          const jsonB = new Blob([jsonText]).size;
+
+          if (statYamlSize) statYamlSize.textContent = formatBytes(yamlB);
+          if (statJsonSize) statJsonSize.textContent = formatBytes(jsonB);
+          if (statDocsCount) statDocsCount.textContent = `${docCount} doc${docCount > 1 ? 's' : ''}`;
+        } catch (err) {
+          showError(err.message || 'Invalid YAML format');
+          if (outputEl) {
+            outputEl.textContent = '';
+            outputEl.classList.add('empty');
+            outputEl.innerHTML = '<em>Conversion failed. Please verify your YAML syntax.</em>';
+          }
+        }
+      }
+
+      if (convertBtn) convertBtn.addEventListener('click', runConvert);
+      if (indentSelect) indentSelect.addEventListener('change', runConvert);
+      if (multiDocCheck) multiDocCheck.addEventListener('change', runConvert);
+
+      if (inputEl) {
+        inputEl.addEventListener('input', () => {
+          if (errorBanner && errorBanner.classList.contains('show')) {
+            hideError();
+          }
+        });
+      }
+
+      if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+          if (inputEl) inputEl.value = '';
+          hideError();
+          if (outputEl) {
+            outputEl.textContent = '';
+            outputEl.classList.add('empty');
+            outputEl.innerHTML = '<em>JSON output will appear here after conversion...</em>';
+          }
+          if (statYamlSize) statYamlSize.textContent = '0 B';
+          if (statJsonSize) statJsonSize.textContent = '0 B';
+          if (statDocsCount) statDocsCount.textContent = '0 docs';
+          if (inputEl) inputEl.focus();
+        });
+      }
+
+      // Load Example
+      if (exampleBtn) {
+        exampleBtn.addEventListener('click', () => {
+          if (inputEl) {
+            inputEl.value = `version: "3.8"\nservices:\n  web:\n    image: node:18-alpine\n    ports:\n      - "3000:3000"\n    environment:\n      NODE_ENV: production\n      PORT: 3000\n    volumes:\n      - ./:/app\n  db:\n    image: postgres:15\n    environment:\n      POSTGRES_DB: toolyard\n      POSTGRES_PASSWORD: secret\n    ports:\n      - "5432:5432"`;
+            runConvert();
+            inputEl.focus();
+          }
+        });
+      }
+
+      // Copy Output
+      if (copyBtn) {
+        copyBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const text = outputEl ? outputEl.textContent : '';
+          if (!text || (outputEl && outputEl.classList.contains('empty'))) return;
+
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(() => {
+              const orig = copyBtn.textContent;
+              copyBtn.textContent = 'Copied!';
+              setTimeout(() => { copyBtn.textContent = orig; }, 1500);
+            }).catch(() => fallbackCopy(text));
+          } else {
+            fallbackCopy(text);
+          }
+        });
+      }
+
+      function fallbackCopy(text) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+          document.execCommand('copy');
+          const orig = copyBtn.textContent;
+          copyBtn.textContent = 'Copied!';
+          setTimeout(() => { copyBtn.textContent = orig; }, 1500);
+        } catch (err) {}
+        document.body.removeChild(ta);
+      }
+
+      // Download Output as .json
+      if (downloadBtn) {
+        downloadBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const text = outputEl ? outputEl.textContent : '';
+          if (!text || (outputEl && outputEl.classList.contains('empty'))) return;
+          const blob = new Blob([text], { type: 'application/json;charset=utf-8;' });
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = 'output.json';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

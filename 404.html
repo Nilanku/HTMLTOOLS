@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page not found | Toolyard</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/tools-data.js"></script>
+  <script src="/js/layout.js"></script>
+</head>
+<body>
+  <div id="site-header"></div>
+  <main class="ty-404">
+    <div class="wrap">
+      <span class="eyebrow">Error 404</span>
+      <h1>Page not found</h1>
+      <p>That page doesn't exist — it may have moved. Search for the tool you need or browse a category.</p>
+      <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+        <button type="button" class="btn btn-amber" data-ty-search>Search tools</button>
+        <a class="btn btn-outline" href="/">Back to home</a>
+      </div>
+      <div class="qc-row" id="nfCats" style="justify-content:center; flex-wrap:wrap; margin-top:36px;"></div>
+    </div>
+  </main>
+  <div id="site-footer"></div>
+  <script>
+    document.getElementById('nfCats').innerHTML = Toolyard.data.categories.map(function (c) {
+      return '<a class="qc-item" href="' + Toolyard.catUrl(c.slug) + '"><span class="ico">' + Toolyard.escape(c.icon) + '</span>' + Toolyard.escape(c.name) + '</a>';
+    }).join('');
+  </script>
+</body>
+</html>
