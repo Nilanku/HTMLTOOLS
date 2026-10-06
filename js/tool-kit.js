@@ -336,5 +336,29 @@
     return { set: set, get: function () { return el.getAttribute('data-value'); } };
   };
 
+  /* Scroll a textarea so the character at `pos` is visible — exact with or without line wrapping.
+     Measures the real position with an invisible copy of the textarea (same width, font, wrapping). */
+  TK.revealPos = function (ta, pos) {
+    pos = Math.max(0, Math.min(pos | 0, ta.value.length));
+    var cs = getComputedStyle(ta), m = document.createElement('div');
+    ['fontFamily', 'fontSize', 'fontWeight', 'fontStyle', 'letterSpacing', 'lineHeight', 'tabSize', 'textTransform', 'wordSpacing',
+     'whiteSpace', 'wordBreak', 'overflowWrap', 'paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft', 'textIndent'].forEach(function (k) { m.style[k] = cs[k]; });
+    m.style.MozTabSize = cs.tabSize;
+    m.style.position = 'absolute'; m.style.visibility = 'hidden'; m.style.top = '0'; m.style.left = '-99999px';
+    m.style.boxSizing = 'border-box'; m.style.border = '0'; m.style.overflow = 'hidden';
+    m.style.width = ta.clientWidth + 'px';   // content + padding, without the scrollbar — the area text wraps in
+    m.textContent = ta.value.slice(0, pos);
+    var mark = document.createElement('span'); mark.textContent = ta.value.charAt(pos) || '.'; m.appendChild(mark);
+    document.body.appendChild(m);
+    var y = mark.offsetTop, x = mark.offsetLeft, lh = mark.offsetHeight || parseFloat(cs.lineHeight) || 20;
+    document.body.removeChild(m);
+    ta.focus();
+    ta.setSelectionRange(pos, Math.min(pos + 1, ta.value.length));
+    ta.scrollTop = Math.max(0, y - Math.max(lh * 3, (ta.clientHeight - lh) / 3));
+    var wraps = cs.whiteSpace !== 'pre' && cs.whiteSpace !== 'nowrap';
+    ta.scrollLeft = wraps ? 0 : Math.max(0, x - ta.clientWidth / 2);
+    return { top: y, left: x };
+  };
+
   window.TK = TK;
 })();

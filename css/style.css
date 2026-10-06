@@ -698,3 +698,76 @@ a.cat-card:hover { border-color: var(--amber); transform: translateY(-2px); }
 .mega a .cat-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 @media (max-width: 1100px) { .ty-mega-tools { min-width: 640px; } }
 .tool-intro .eyebrow { color: var(--amber); background: rgba(240,169,59,0.14); }
+
+/* ==========================================================================
+   WORKSPACE v3 — wide, screen-height editors that scroll inside (all tools)
+   - .tool-app-section > .wrap: workspace up to 1680px wide (rest of page stays 1200px)
+   - .tool-grid.ty-ed: editor grid. Fixed height (fills the screen on desktop,
+     ~45% of the screen per box on phones). Boxes scroll inside, so the page
+     height never depends on how much text is in a box.
+   - Wrap toggle (added by /js/layout.js): .ty-nowrap = long lines scroll sideways.
+   ========================================================================== */
+:root {
+  --ty-ed-h: clamp(440px, calc(100vh - 240px), 1000px);
+  --ty-ed-box: clamp(220px, 45vh, 440px);
+}
+@supports (height: 100dvh) {
+  :root {
+    --ty-ed-h: clamp(440px, calc(100dvh - 240px), 1000px);
+    --ty-ed-box: clamp(220px, 45dvh, 440px);
+  }
+}
+
+.tool-app-section > .wrap { max-width: 1736px; }
+@media (max-width: 600px) { .tool-app-section > .wrap { padding-left: 16px; padding-right: 16px; } }
+
+/* Editor grid: fixed height, panes never grow with their content */
+.tool-workspace .tool-grid.ty-ed {
+  height: calc(var(--ty-ed-h) - var(--ty-ed-off, 0px));
+  min-height: 400px;
+  grid-template-rows: minmax(0, 1fr);
+}
+.tool-workspace .tool-grid.ty-ed > .tool-pane { min-height: 0; min-width: 0; overflow: hidden; }
+.tool-workspace .tool-grid.ty-ed > .tool-pane > * { flex: 0 0 auto; }
+.tool-workspace .tool-grid.ty-ed > .tool-pane > .tool-pane-header {
+  min-height: 57px; box-sizing: border-box; flex-wrap: wrap; gap: 8px; row-gap: 6px;
+}
+.tool-workspace .tool-grid.ty-ed > .tool-pane > .tool-pane-header .actions { flex-wrap: wrap; }
+
+/* The main box of each pane takes the remaining height and scrolls inside */
+.tool-workspace .tool-grid.ty-ed > .tool-pane > :is(textarea.tool-textarea, .tool-output-box, .table-container, .table-editor-wrap, .ty-drop, .ty-binary, .ty-jres, .ty-scroll) {
+  flex: 1 1 0; height: auto; min-height: 120px; max-height: none; overflow-y: auto;
+}
+.tool-workspace .tool-grid.ty-ed > .tool-pane > textarea.tool-textarea { resize: none; }
+.tool-workspace .tool-grid.ty-ed > .tool-pane > .ty-drop { min-height: 0; }
+
+/* Line wrapping (default) — breaks at spaces, and inside long unbroken strings only when needed */
+.tool-workspace .tool-grid.ty-ed > .tool-pane > :is(textarea.tool-textarea, .tool-output-box) {
+  white-space: pre-wrap; word-break: normal; overflow-wrap: break-word; overflow-wrap: anywhere; overflow-x: hidden;
+  line-height: 22px;   /* whole pixels: identical line positions in every browser, so "Go to error" lands exactly */
+}
+/* Wrap off — long lines scroll sideways (formatted code, CSV, YAML) */
+.tool-workspace .tool-grid.ty-ed > .tool-pane > :is(textarea.tool-textarea, .tool-output-box).ty-nowrap {
+  white-space: pre; overflow-wrap: normal; overflow-x: auto;
+}
+
+/* Phones & small tablets: stacked panes, each box ~45% of the screen so the page can always be swiped */
+@media (max-width: 860px) {
+  .tool-workspace .tool-grid.ty-ed { height: auto; min-height: 0; grid-template-rows: none; }
+  .tool-workspace .tool-grid.ty-ed > .tool-pane > :is(textarea.tool-textarea, .tool-output-box, .table-container, .table-editor-wrap, .ty-drop, .ty-binary, .ty-jres, .ty-scroll) {
+    flex: 0 0 auto; height: var(--ty-ed-box); min-height: 0;
+  }
+  .tool-workspace .tool-grid.ty-ed > .tool-pane > .ty-drop { height: calc(var(--ty-ed-box) - 32px); }
+}
+
+/* Wrap toggle button */
+.ty-wrap-btn { font-family: 'IBM Plex Mono', monospace; }
+.ty-wrap-btn[aria-pressed="true"] { border-color: var(--amber); color: var(--amber-ink); background: rgba(240,169,59,0.12); }
+[data-theme="dark"] .ty-wrap-btn[aria-pressed="true"] { color: var(--amber); }
+.ty-wrap-btn[hidden] { display: none !important; }
+
+/* Scrollable result boxes are keyboard-focusable (arrow keys / Page Down) */
+.tool-workspace .tool-grid.ty-ed [data-ty-scroll]:focus-visible { outline: 2px solid var(--amber); outline-offset: -2px; }
+/* Compact segmented switches inside editor pane headers keep both columns aligned */
+.tool-workspace .tool-grid.ty-ed > .tool-pane > .tool-pane-header .ty-seg { padding: 2px; }
+.tool-workspace .tool-grid.ty-ed > .tool-pane > .tool-pane-header .ty-seg button { padding: 4px 10px; line-height: 18px; }

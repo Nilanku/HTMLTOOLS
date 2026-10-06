@@ -86,7 +86,7 @@
           </div>
         </div>
 
-        <div class="tool-grid">
+        <div class="tool-grid ty-ed">
           <div class="tool-pane">
             <div class="tool-pane-header"><span class="title">JSON input</span><span class="badge">Sorted as you type</span></div>
             <textarea id="srtIn" class="tool-textarea ty-mono" placeholder="Paste JSON here, or drop a .json file…" spellcheck="false" aria-label="JSON to sort"></textarea>
@@ -98,7 +98,7 @@
                 <button type="button" class="btn btn-sm btn-ghost" id="downloadBtn">Download</button>
               </div>
             </div>
-            <textarea id="srtOut" class="tool-textarea ty-mono is-empty" readonly placeholder="Sorted JSON will appear here…" aria-label="Sorted JSON"></textarea>
+            <textarea id="srtOut" data-wrap="off" class="tool-textarea ty-mono is-empty" readonly placeholder="Sorted JSON will appear here…" aria-label="Sorted JSON"></textarea>
             <div class="ty-note" id="srtNote" hidden></div>
             <div id="srtErr"></div>
           </div>
@@ -867,13 +867,7 @@ function jsonJob(d) {
     function jsonErrMsg(e) { return e && e.message === 'timeout' ? 'Processing took too long and was stopped.' : (e && /memory|allocation/i.test(e.message) ? 'Not enough memory to process this document in the browser.' : (e && e.message) || String(e)); }
     function el(tag, cls, text) { var x = document.createElement(tag); if (cls) x.className = cls; if (text != null) x.textContent = text; return x; }
     function countLines(t) { var c = 1, k = -1; while ((k = t.indexOf('\n', k + 1)) !== -1) c++; return c; }
-    function goToPos(ta, pos) {
-      ta.focus();
-      ta.setSelectionRange(pos, Math.min(pos + 1, ta.value.length));
-      var line = 1, k = -1; while ((k = ta.value.indexOf('\n', k + 1)) !== -1 && k < pos) line++;
-      var lh = parseFloat(getComputedStyle(ta).lineHeight) || 20;
-      ta.scrollTop = Math.max(0, (line - 4) * lh);
-    }
+    function goToPos(ta, pos) { TK.revealPos(ta, pos); }
     function renderJsonError(err, ta, label) {
       var box = el('div', 'ty-jerr'), head = el('div', 'head');
       head.append(el('b', null, '✗ ' + (label || 'Invalid JSON')), el('span', 'loc', 'Line ' + err.line + ', column ' + err.col));

@@ -58,18 +58,18 @@
           </div>
         </div>
 
-        <div class="tool-grid">
+        <div class="tool-grid ty-ed">
           <div class="tool-pane">
             <div class="tool-pane-header"><span class="title">A · Original</span>
               <div class="actions"><label class="btn btn-sm btn-ghost">Open file<input type="file" id="fileA" accept=".json,.txt,application/json,text/plain" hidden></label></div>
             </div>
-            <textarea id="cmpA" class="tool-textarea ty-mono" style="min-height:300px;" placeholder="Paste the original JSON (A)…" spellcheck="false" aria-label="Original JSON (A)"></textarea>
+            <textarea id="cmpA" class="tool-textarea ty-mono" placeholder="Paste the original JSON (A)…" spellcheck="false" aria-label="Original JSON (A)"></textarea>
           </div>
           <div class="tool-pane">
             <div class="tool-pane-header"><span class="title">B · Changed</span>
               <div class="actions"><label class="btn btn-sm btn-ghost">Open file<input type="file" id="fileB" accept=".json,.txt,application/json,text/plain" hidden></label></div>
             </div>
-            <textarea id="cmpB" class="tool-textarea ty-mono" style="min-height:300px;" placeholder="Paste the changed JSON (B)…" spellcheck="false" aria-label="Changed JSON (B)"></textarea>
+            <textarea id="cmpB" class="tool-textarea ty-mono" placeholder="Paste the changed JSON (B)…" spellcheck="false" aria-label="Changed JSON (B)"></textarea>
           </div>
         </div>
 
@@ -869,13 +869,7 @@ function jsonJob(d) {
     function jsonErrMsg(e) { return e && e.message === 'timeout' ? 'Processing took too long and was stopped.' : (e && /memory|allocation/i.test(e.message) ? 'Not enough memory to process this document in the browser.' : (e && e.message) || String(e)); }
     function el(tag, cls, text) { var x = document.createElement(tag); if (cls) x.className = cls; if (text != null) x.textContent = text; return x; }
     function countLines(t) { var c = 1, k = -1; while ((k = t.indexOf('\n', k + 1)) !== -1) c++; return c; }
-    function goToPos(ta, pos) {
-      ta.focus();
-      ta.setSelectionRange(pos, Math.min(pos + 1, ta.value.length));
-      var line = 1, k = -1; while ((k = ta.value.indexOf('\n', k + 1)) !== -1 && k < pos) line++;
-      var lh = parseFloat(getComputedStyle(ta).lineHeight) || 20;
-      ta.scrollTop = Math.max(0, (line - 4) * lh);
-    }
+    function goToPos(ta, pos) { TK.revealPos(ta, pos); }
     function renderJsonError(err, ta, label) {
       var box = el('div', 'ty-jerr'), head = el('div', 'head');
       head.append(el('b', null, '✗ ' + (label || 'Invalid JSON')), el('span', 'loc', 'Line ' + err.line + ', column ' + err.col));

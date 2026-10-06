@@ -523,8 +523,84 @@
     else replacePlaceholder('site-breadcrumbs', '');
     replacePlaceholder('site-footer', buildFooter());
     bindChrome();
+    initWorkspaces();
     if (page.type === 'category') renderCategoryPage(page);
     document.documentElement.classList.add('ty-ready');
+  }
+
+  /* ---------------------------------------------------------------------
+     Workspace: Wrap toggles for editor boxes (.tool-grid.ty-ed)
+     - Default: wrap on. data-wrap="off" on a box makes it default to off.
+     - The user's choice is remembered per tool and per box (localStorage).
+     - Only changes how text is displayed — never the text itself.
+     --------------------------------------------------------------------- */
+  function initWorkspaces() {
+    var grids = document.querySelectorAll('.tool-workspace .tool-grid.ty-ed');
+    if (!grids.length) return;
+    var tool = document.body.getAttribute('data-tool') || normPath(location.pathname);
+    function load(key) { try { return localStorage.getItem(key); } catch (e) { return null; } }
+    function save(key, v) { try { localStorage.setItem(key, v); } catch (e) { /* private mode */ } }
+
+    function headerActions(head) {
+      var acts = null, kids = head.children;
+      for (var i = 0; i < kids.length; i++) if (kids[i].classList.contains('actions')) { acts = kids[i]; break; }
+      if (acts) return acts;
+      acts = document.createElement('div');
+      acts.className = 'actions';
+      // keep any badge/hint that sat on the right side of the header next to the new button
+      var extras = [];
+      for (var j = 0; j < kids.length; j++) if (!kids[j].classList.contains('title') && kids[j].tagName === 'SPAN') extras.push(kids[j]);
+      extras.forEach(function (x) { acts.appendChild(x); });
+      head.appendChild(acts);
+      return acts;
+    }
+
+    function addToggle(box, head, idx) {
+      if (!head || box.getAttribute('data-ty-wrap-ready')) return;
+      box.setAttribute('data-ty-wrap-ready', '1');
+      var key = 'ty-wrap:' + tool + ':' + (box.id || ('box' + idx));
+      var stored = load(key);
+      var on = stored === null ? box.getAttribute('data-wrap') !== 'off' : stored === '1';
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'btn btn-sm btn-ghost ty-wrap-btn';
+      btn.textContent = 'Wrap';
+      if (box.id) btn.setAttribute('aria-controls', box.id);
+      function apply() {
+        box.classList.toggle('ty-nowrap', !on);
+        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+        btn.title = on ? 'Long lines wrap — click to scroll sideways instead' : 'Long lines scroll sideways — click to wrap them';
+      }
+      btn.addEventListener('click', function () { on = !on; apply(); save(key, on ? '1' : '0'); });
+      apply();
+      var acts = headerActions(head), firstBtn = null;
+      for (var k = 0; k < acts.children.length; k++) { var ch = acts.children[k]; if (ch.tagName === 'BUTTON' || ch.tagName === 'A' || ch.tagName === 'LABEL') { firstBtn = ch; break; } }
+      acts.insertBefore(btn, firstBtn);   // after any label/badge, before the other buttons
+      // hide the toggle while its box is hidden (e.g. Base64 file mode)
+      btn.hidden = box.hidden;
+      if (window.MutationObserver) new MutationObserver(function () { btn.hidden = box.hidden; }).observe(box, { attributes: true, attributeFilter: ['hidden'] });
+    }
+
+    var idx = 0;
+    Array.prototype.forEach.call(grids, function (grid) {
+      Array.prototype.forEach.call(grid.children, function (pane) {
+        if (!pane.classList.contains('tool-pane')) return;
+        var head = null;
+        Array.prototype.forEach.call(pane.children, function (c) {
+          if (c.classList.contains('tool-pane-header')) { if (!head) head = c; return; }
+          if (c.matches('textarea.tool-textarea, .tool-output-box')) addToggle(c, head, idx++);
+          // result boxes that aren't form fields: focusable so the keyboard can scroll them
+          if (c.matches('.tool-output-box, .table-container, .ty-scroll, .ty-jres') && !c.hasAttribute('tabindex')) {
+            c.setAttribute('tabindex', '0');
+            c.setAttribute('data-ty-scroll', '');
+            if (!c.hasAttribute('aria-label') && head) {
+              var t = head.querySelector('.title');
+              c.setAttribute('aria-label', ((t ? t.textContent : head.textContent) || 'Output').trim());
+            }
+          }
+        });
+      });
+    });
   }
 
   // Public API (used by the homepage and future tool pages)
