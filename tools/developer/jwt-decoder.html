@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JWT Decoder – Decode JSON Web Tokens &amp; Check Expiry Online | Toolyard</title>
+  <meta name="description" content="Free online JWT decoder. Paste a JSON Web Token to see its header, payload and claims, check exp/iat/nbf in your local time and spot expired or unsigned tokens — decoded privately in your browser.">
+  <link rel="canonical" href="https://htmltools.nilankubaruah.workers.dev/tools/developer/jwt-decoder.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="JWT Decoder – Decode JSON Web Tokens &amp; Check Expiry Online">
+  <meta property="og:description" content="Free online JWT decoder. Paste a JSON Web Token to see its header, payload and claims, check exp/iat/nbf in your local time and spot expired or unsigned tokens — decoded privately in your browser.">
+  <meta property="og:url" content="https://htmltools.nilankubaruah.workers.dev/tools/developer/jwt-decoder.html">
+  <meta name="twitter:card" content="summary">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/tools.css">
+  <script src="/js/tools-data.js"></script>
+  <script src="/js/layout.js"></script>
+  <script src="/js/tool-kit.js"></script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "JWT Decoder", "url": "https://htmltools.nilankubaruah.workers.dev/tools/developer/jwt-decoder.html", "applicationCategory": "DeveloperApplication", "operatingSystem": "Any (runs in your browser)", "description": "Free online JWT decoder. Paste a JSON Web Token to see its header, payload and claims, check exp/iat/nbf in your local time and spot expired or unsigned tokens — decoded privately in your browser.", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is it safe to paste a production JWT here?", "acceptedAnswer": {"@type": "Answer", "text": "The token is decoded with JavaScript on your device. It is not sent over the network, not saved in localStorage or cookies and not logged, and Clear wipes it from the page. Still, treat live tokens like passwords: prefer expired or test tokens when you can, and never share them in tickets or chats."}}, {"@type": "Question", "name": "Does this tool verify the JWT signature?", "acceptedAnswer": {"@type": "Answer", "text": "No. Verification needs the signing secret (HS256) or the issuer's public key (RS256/ES256), and checking signatures in a web page encourages pasting secrets. Verify tokens server-side with a maintained JWT library."}}, {"@type": "Question", "name": "Why does my token show as expired?", "acceptedAnswer": {"@type": "Answer", "text": "The exp claim is earlier than your computer's current time. Tokens are often short-lived (5–60 minutes). If a fresh token shows as expired, check that your device clock is correct — the tool uses your local time."}}, {"@type": "Question", "name": "What does alg: none mean?", "acceptedAnswer": {"@type": "Answer", "text": "The token has no signature, so anyone can forge it. Servers must never accept unsigned tokens; accepting them has caused serious real-world vulnerabilities."}}, {"@type": "Question", "name": "What is a JWE and why can't it be decoded?", "acceptedAnswer": {"@type": "Answer", "text": "A JWE (JSON Web Encryption) has five parts instead of three, and its payload is encrypted. Only the header can be read without the decryption key, so the tool shows the header and explains this."}}, {"@type": "Question", "name": "Why are exp and iat numbers like 1735689600?", "acceptedAnswer": {"@type": "Answer", "text": "JWT times are Unix timestamps — seconds since 1 January 1970 UTC. The claims table converts them to your local date and time. For other timestamps, use the Unix Timestamp Converter."}}]}</script>
+</head>
+<body class="ty-tool" data-tool="jwt-decoder">
+
+  <!-- SHARED HEADER, MOBILE MENU & BREADCRUMBS (rendered by /js/layout.js) -->
+  <div id="site-header"></div>
+  <div id="site-breadcrumbs"></div>
+
+  <main>
+  <!-- TOOL INTRO -->
+  <section class="tool-intro">
+    <div class="wrap tool-intro-content">
+      <span class="eyebrow">⌨ DEVELOPER · DECODER</span>
+      <h1>JWT Decoder</h1>
+      <p class="lead">Paste a JSON Web Token to inspect its header, payload and claims. See exactly when it expires in your local time, and catch insecure <code>alg: none</code> tokens — without your token ever leaving the browser.</p>
+      <div class="tool-meta-badge"><span class="dot"></span> Decoded locally · Never stored or logged · Expiry check</div>
+    </div>
+  </section>
+
+  <!-- WORKSPACE -->
+  <section class="tool-app-section">
+    <div class="wrap">
+      
+      <div class="tool-workspace">
+        <div class="tool-toolbar">
+          <div class="tool-toolbar-left">
+            <span style="font-size:13px; color:var(--ink-soft);">🔒 Your token is decoded on this device only — never sent, stored or logged.</span>
+          </div>
+          <div class="tool-toolbar-right">
+            <button type="button" class="btn btn-ghost btn-sm" id="exampleBtn">Load Example</button>
+            <button type="button" class="btn btn-danger btn-sm" id="clearBtn">Clear</button>
+          </div>
+        </div>
+
+        <div class="tool-grid">
+          <div class="tool-pane">
+            <div class="tool-pane-header">
+              <span class="title">Encoded token</span>
+              <span class="badge"><span class="jwt-h">header</span>.<span class="jwt-p">payload</span>.<span class="jwt-s">signature</span></span>
+            </div>
+            <textarea id="jwtIn" class="tool-textarea ty-mono" style="min-height:150px; flex:0 0 auto;" placeholder="Paste a JWT, e.g. eyJhbGciOiJIUzI1NiIs… (a leading “Bearer ” is removed automatically)" spellcheck="false" autocomplete="off" aria-label="JWT token"></textarea>
+            <div class="tool-pane-header" style="border-top:1px solid var(--line);"><span class="title">Token parts</span></div>
+            <div class="ty-jwt-token" id="jwtColor" aria-live="off"><span style="color:var(--ink-soft); font-style:italic;">The colour-coded token will appear here.</span></div>
+          </div>
+          <div class="tool-pane">
+            <div class="tool-pane-header">
+              <span class="title">Decoded</span>
+              <span class="badge">Signature not verified</span>
+            </div>
+            <div class="ty-jwt-out" id="jwtOut">
+              <div class="ty-jwt-empty" id="jwtEmpty">Paste a token to see its header, payload and claims.</div>
+              <div class="ty-banner" id="jwtBanner" hidden><span class="dot"></span><span id="jwtBannerText"></span></div>
+              <div class="ty-banner warn" id="jwtAlgWarn" hidden><span class="dot"></span><span id="jwtAlgWarnText"></span></div>
+              <div class="ty-jwt-block h" id="blkHeader" hidden>
+                <div class="bh"><span class="lbl">Header</span><button type="button" class="btn btn-sm btn-ghost" id="copyHeader">Copy</button></div>
+                <pre id="jwtHeader"></pre>
+              </div>
+              <div class="ty-jwt-block p" id="blkPayload" hidden>
+                <div class="bh"><span class="lbl">Payload</span><button type="button" class="btn btn-sm btn-ghost" id="copyPayload">Copy</button></div>
+                <pre id="jwtPayload"></pre>
+              </div>
+              <div class="ty-jwt-block" id="blkClaims" hidden>
+                <div class="bh"><span class="lbl" style="color:var(--amber-ink)">Registered claims</span></div>
+                <table class="ty-claims"><tbody id="jwtClaims"></tbody></table>
+              </div>
+              <div class="ty-jwt-block s" id="blkSig" hidden>
+                <div class="bh"><span class="lbl">Signature</span></div>
+                <pre id="jwtSig"></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="ty-alert" id="jwtStatus" role="status" aria-live="polite" hidden></p>
+
+        <div class="tool-stats-bar">
+          <div class="tool-stats-items">
+            <div class="tool-stat-badge">Token: <b id="stLen">0</b> chars</div>
+            <div class="tool-stat-badge">Algorithm: <b id="stAlg">–</b></div>
+            <div class="tool-stat-badge">Claims: <b id="stClaims">0</b></div>
+          </div>
+          <div>RFC 7519 · 100% Client-Side</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. ABOUT -->
+  <section class="ty-sec">
+    <div class="wrap">
+      <span class="eyebrow">◆ ABOUT THIS TOOL</span>
+      <h2>What Is a JSON Web Token?</h2>
+      <p class="sub">A compact, URL-safe way to pass signed claims between systems.</p>
+      <div class="about-grid">
+        <div><p>A JWT (RFC 7519) is three Base64URL-encoded parts separated by dots: a <b style="color:#E5484D">header</b> describing the signing algorithm, a <b style="color:#8E4EC6">payload</b> of claims such as the user ID and expiry time, and a <b style="color:#0091FF">signature</b> that proves the token hasn't been tampered with.</p><p>JWTs are used for API authentication, single sign-on (OpenID Connect ID tokens), OAuth 2.0 access tokens and session cookies. Decoding one is the fastest way to debug “401 Unauthorized” errors, check roles and scopes, or see why a token is rejected.</p></div>
+        <div><p>The header and payload are only <b>encoded, not encrypted</b> — anyone holding the token can read them. Never put passwords or secrets in a JWT payload.</p><p>This tool <b>decodes</b> tokens; it does <b>not verify the signature</b>, because that requires the secret or public key. Never trust a token's contents in your application without verifying it server-side with a proper JWT library.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. REFERENCE -->
+  <section class="ty-sec alt">
+    <div class="wrap">
+      <span class="eyebrow">⏱ CLAIMS</span>
+      <h2>Registered JWT Claims</h2>
+      <p class="sub">The standard claims from RFC 7519 shown in the claims table.</p>
+      <div class="ty-ref-wrap"><table class="ty-ref-table">
+        <thead><tr><th>Claim</th><th>Name</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td><code>iss</code></td><td>Issuer</td><td>Who created and signed the token (e.g. your auth server URL).</td></tr>
+          <tr><td><code>sub</code></td><td>Subject</td><td>Who the token is about — usually the user ID.</td></tr>
+          <tr><td><code>aud</code></td><td>Audience</td><td>Which API or app the token is meant for. Can be a string or an array.</td></tr>
+          <tr><td><code>exp</code></td><td>Expiration time</td><td>Unix timestamp (seconds) after which the token must be rejected.</td></tr>
+          <tr><td><code>nbf</code></td><td>Not before</td><td>Unix timestamp before which the token is not yet valid.</td></tr>
+          <tr><td><code>iat</code></td><td>Issued at</td><td>Unix timestamp of when the token was created.</td></tr>
+          <tr><td><code>jti</code></td><td>JWT ID</td><td>A unique identifier, used to prevent token replay.</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <!-- 3. HOW TO USE -->
+  <section class="how-sec section-navy">
+    <div class="wrap">
+      <span class="eyebrow">◐ THREE STEPS</span>
+      <h2>How to Use the JWT Decoder</h2>
+      <p class="sub">Get your result in under ten seconds.</p>
+      <div class="steps">
+        <div class="step" data-n="01">
+          <div class="num">1</div>
+          <h3 style="color:#fff;">Paste your token</h3>
+          <p>Paste a JWT from an Authorization header, cookie or log. A “Bearer ” prefix is removed for you.</p>
+        </div>
+        <div class="step" data-n="02">
+          <div class="num">2</div>
+          <h3 style="color:#fff;">Inspect the claims</h3>
+          <p>Read the pretty-printed header and payload, and see exp, iat and nbf as local dates with “in 5 minutes” style times.</p>
+        </div>
+        <div class="step" data-n="03">
+          <div class="num">3</div>
+          <h3 style="color:#fff;">Check the status</h3>
+          <p>The banner tells you if the token is valid, expired, not yet active or unsigned.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. FEATURES -->
+  <section class="ty-sec">
+    <div class="wrap">
+      <span class="eyebrow">✓ FEATURES</span>
+      <h2>Why Use the Toolyard JWT Decoder</h2>
+      <p class="sub">Fast, accurate and private — built for developers.</p>
+      <div class="why-grid">
+        <div><div class="why-ico">🔒</div><h3>Private by design</h3><p>Tokens are decoded in your browser — never transmitted, saved to storage or written to the console.</p></div>
+        <div><div class="why-ico">⏱</div><h3>Human-readable times</h3><p>Unix timestamps are shown as your local date and time, plus how long ago or until.</p></div>
+        <div><div class="why-ico">🚦</div><h3>Instant status</h3><p>See at a glance whether a token is valid, expired or not yet valid.</p></div>
+        <div><div class="why-ico">⚠</div><h3>Security warnings</h3><p>Flags unsigned <code>alg: none</code> tokens and recognises encrypted JWE tokens.</p></div>
+        <div><div class="why-ico">🎨</div><h3>Colour-coded parts</h3><p>Header, payload and signature are highlighted so you can see the token's structure.</p></div>
+        <div><div class="why-ico">🌍</div><h3>Unicode-safe</h3><p>Payloads with names in any language and emoji decode correctly as UTF-8.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. FAQ -->
+  <section class="ty-sec alt">
+    <div class="wrap">
+      <div style="text-align:center; margin-bottom:36px;">
+        <span class="eyebrow">FAQ</span>
+        <h2 style="font-size:28px; margin-top:12px;">Frequently Asked Questions</h2>
+      </div>
+      <div class="faq" id="faqList">
+        <div class="faq-item">
+          <button type="button">Is it safe to paste a production JWT here?<span class="plus">+</span></button>
+          <div class="faq-a"><p>The token is decoded with JavaScript on your device. It is not sent over the network, not saved in localStorage or cookies and not logged, and <b>Clear</b> wipes it from the page. Still, treat live tokens like passwords: prefer expired or test tokens when you can, and never share them in tickets or chats.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Does this tool verify the JWT signature?<span class="plus">+</span></button>
+          <div class="faq-a"><p>No. Verification needs the signing secret (HS256) or the issuer's public key (RS256/ES256), and checking signatures in a web page encourages pasting secrets. Verify tokens server-side with a maintained JWT library.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Why does my token show as expired?<span class="plus">+</span></button>
+          <div class="faq-a"><p>The <code>exp</code> claim is earlier than your computer's current time. Tokens are often short-lived (5–60 minutes). If a fresh token shows as expired, check that your device clock is correct — the tool uses your local time.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">What does alg: none mean?<span class="plus">+</span></button>
+          <div class="faq-a"><p>The token has no signature, so anyone can forge it. Servers must never accept unsigned tokens; accepting them has caused serious real-world vulnerabilities.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">What is a JWE and why can&#x27;t it be decoded?<span class="plus">+</span></button>
+          <div class="faq-a"><p>A JWE (JSON Web Encryption) has five parts instead of three, and its payload is encrypted. Only the header can be read without the decryption key, so the tool shows the header and explains this.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Why are exp and iat numbers like 1735689600?<span class="plus">+</span></button>
+          <div class="faq-a"><p>JWT times are Unix timestamps — seconds since 1 January 1970 UTC. The claims table converts them to your local date and time. For other timestamps, use the Unix Timestamp Converter.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. RELATED -->
+  <section class="related-tools-section">
+    <div class="wrap">
+      <div class="section-head" style="margin-bottom:28px;">
+        <div>
+          <span class="eyebrow" style="margin-bottom:12px; display:inline-flex;">📎 RELATED</span>
+          <h2 style="font-size:26px; margin:12px 0 6px;">Related Developer Tools</h2>
+          <p class="desc" style="margin:0;">More free utilities that pair well with this one.</p>
+        </div>
+        <a class="view-all" href="/categories/developer/">All Developer Tools →</a>
+      </div>
+      <div class="grid grid-3">
+        <a class="tool-card is-soon" href="/categories/developer/#jwt-header-decoder">
+          <div class="top-row"><span class="badge">Decoder</span><span class="status-pill status-soon">Coming soon</span></div>
+          <h3>JWT Header Decoder</h3>
+          <p>Inspect the algorithm and type in a JWT header.</p>
+          <span class="open ty-soon-label">Coming soon</span>
+        </a>
+        <a class="tool-card" href="/tools/developer/base64-decoder.html">
+          <div class="top-row"><span class="badge">Decoder</span></div>
+          <h3>Base64 Decoder</h3>
+          <p>Decode Base64 strings back to text.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/developer/base64-encoder.html">
+          <div class="top-row"><span class="badge">Encoder</span></div>
+          <h3>Base64 Encoder</h3>
+          <p>Encode text or data to Base64.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/developer/unix-timestamp-converter.html">
+          <div class="top-row"><span class="badge">Converter</span></div>
+          <h3>Unix Timestamp Converter</h3>
+          <p>Convert Unix timestamps to dates and back.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/json-data/json-formatter.html">
+          <div class="top-row"><span class="badge">Formatter</span></div>
+          <h3>JSON Formatter</h3>
+          <p>Format, indent, sort keys and validate JSON payloads.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/developer/url-decoder.html">
+          <div class="top-row"><span class="badge">Decoder</span></div>
+          <h3>URL Decoder</h3>
+          <p>Decode percent-encoded URL strings.</p>
+          <span class="open">Open tool →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <!-- SHARED FOOTER (rendered by /js/layout.js) -->
+  <div id="site-footer"></div>
+
+  <script>
+  (function () {
+    'use strict';
+    var $ = TK.$;
+    TK.initFaq(document.getElementById('faqList'));
+
+    var input = $('jwtIn'), colorEl = $('jwtColor'), statusEl = $('jwtStatus');
+    var banner = $('jwtBanner'), algWarn = $('jwtAlgWarn');
+    var current = null;   // decoded parts kept only in memory while the page is open
+    var rtf = window.Intl && Intl.RelativeTimeFormat ? new Intl.RelativeTimeFormat(undefined, { numeric: 'auto' }) : null;
+
+    function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+
+    function b64urlJson(part, name) {
+      var bytes;
+      try { bytes = TK.base64ToBytes(part); } catch (e) { throw new Error('The ' + name + ' is not valid Base64URL: ' + e.message); }
+      var txt = TK.bytesToText(bytes).text;
+      try { return { json: JSON.parse(txt), raw: txt }; } catch (e) { throw new Error('The ' + name + ' decodes, but is not valid JSON (' + e.message + ').'); }
+    }
+
+    function relative(sec) {
+      var diff = Math.round(sec - Date.now() / 1000), a = Math.abs(diff);
+      var units = [['year', 31536000], ['month', 2592000], ['week', 604800], ['day', 86400], ['hour', 3600], ['minute', 60], ['second', 1]];
+      for (var i = 0; i < units.length; i++) {
+        if (a >= units[i][1] * 0.995 || units[i][0] === 'second') {
+          var v = Math.round(diff / units[i][1]);
+          return rtf ? rtf.format(v, units[i][0]) : (v + ' ' + units[i][0] + 's');
+        }
+      }
+    }
+    function dateStr(sec) {
+      var d = new Date(sec * 1000);
+      return isNaN(d) ? 'Invalid date' : d.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'long' });
+    }
+
+    function setBanner(node, textNode, msg, cls) { node.hidden = !msg; node.className = 'ty-banner ' + (cls || ''); textNode.textContent = msg || ''; }
+
+    function resetOutput() {
+      ['blkHeader', 'blkPayload', 'blkClaims', 'blkSig'].forEach(function (id) { $(id).hidden = true; });
+      $('jwtHeader').textContent = ''; $('jwtPayload').textContent = ''; $('jwtSig').textContent = '';
+      $('jwtClaims').replaceChildren();
+      setBanner(banner, $('jwtBannerText'), ''); setBanner(algWarn, $('jwtAlgWarnText'), '', 'warn');
+      $('jwtEmpty').hidden = false;
+      $('stAlg').textContent = '–'; $('stClaims').textContent = '0';
+      current = null;
+    }
+
+    function renderColor(parts) {
+      colorEl.replaceChildren();
+      var cls = ['jwt-h', 'jwt-p', 'jwt-s', 'jwt-s', 'jwt-s'];
+      parts.forEach(function (p, i) {
+        if (i) colorEl.appendChild(el('span', 'jwt-dot', '.'));
+        colorEl.appendChild(el('span', parts.length === 5 ? (i === 0 ? 'jwt-h' : 'jwt-s') : cls[i] || 'jwt-s', p));
+      });
+    }
+
+    function claimRow(key, label, valueText, detail) {
+      var tr = el('tr'), th = el('th', null, key), td = el('td');
+      th.title = label;
+      td.appendChild(el('span', 'v', valueText));
+      td.appendChild(el('span', 'd', label + (detail ? ' · ' + detail : '')));
+      tr.appendChild(th); tr.appendChild(td);
+      return tr;
+    }
+
+    function renderClaims(p) {
+      var body = $('jwtClaims'); body.replaceChildren();
+      var names = { iss: 'Issuer', sub: 'Subject', aud: 'Audience', exp: 'Expires', nbf: 'Not before', iat: 'Issued at', jti: 'JWT ID' };
+      var n = 0;
+      Object.keys(names).forEach(function (k) {
+        if (!(k in p)) return;
+        n++;
+        var v = p[k];
+        if ((k === 'exp' || k === 'nbf' || k === 'iat') && typeof v === 'number') {
+          body.appendChild(claimRow(k, names[k], dateStr(v), v + ' · ' + relative(v)));
+        } else {
+          body.appendChild(claimRow(k, names[k], (Array.isArray(v) ? v.join(', ') : typeof v === 'object' ? JSON.stringify(v) : String(v)),
+            (k === 'exp' || k === 'nbf' || k === 'iat') ? 'Should be a number (seconds since 1970)' : null));
+        }
+      });
+      var custom = Object.keys(p).filter(function (k) { return !(k in names); });
+      if (custom.length) body.appendChild(claimRow('+' + custom.length, 'Custom claims', custom.join(', '), null));
+      $('blkClaims').hidden = !body.children.length;
+      $('stClaims').textContent = Object.keys(p).length;
+    }
+
+    function timeStatus(p) {
+      var now = Date.now() / 1000;
+      if (typeof p.nbf === 'number' && now < p.nbf) return ['Not yet valid — becomes valid ' + relative(p.nbf) + '.', 'warn'];
+      if (typeof p.exp === 'number') {
+        if (now >= p.exp) return ['Expired ' + relative(p.exp) + ' (' + dateStr(p.exp) + ').', 'bad'];
+        return ['Not expired — expires ' + relative(p.exp) + '. Signature not verified.', 'ok'];
+      }
+      return ['No expiry (exp) claim — this token never expires unless the server enforces a limit.', 'warn'];
+    }
+
+    function run() {
+      var raw = input.value.trim().replace(/^bearer\s+/i, '').replace(/^["']|["']$/g, '');
+      $('stLen').textContent = TK.formatNumber(raw.length);
+      resetOutput();
+      if (!raw) {
+        colorEl.replaceChildren(el('span', null, 'The colour-coded token will appear here.')); colorEl.firstChild.style.cssText = 'color:var(--ink-soft);font-style:italic';
+        TK.status(statusEl, ''); return;
+      }
+      var parts = raw.split('.');
+      renderColor(parts);
+      if (parts.length !== 3 && parts.length !== 5) {
+        TK.status(statusEl, 'A JWT has 3 parts separated by dots (header.payload.signature) — this has ' + parts.length + '. Check the token was copied completely.', 'error');
+        return;
+      }
+      try {
+        var h = b64urlJson(parts[0], 'header');
+        $('jwtEmpty').hidden = true;
+        $('jwtHeader').textContent = JSON.stringify(h.json, null, 2); $('blkHeader').hidden = false;
+        var alg = h.json && h.json.alg != null ? String(h.json.alg) : '(missing)';
+        $('stAlg').textContent = alg;
+        current = { header: $('jwtHeader').textContent, payload: '' };
+        if (parts.length === 5) {
+          setBanner(banner, $('jwtBannerText'), 'Encrypted token (JWE, ' + (h.json.enc || 'unknown enc') + '). The payload is encrypted and cannot be read without the key — only the header is shown.', 'warn');
+          TK.status(statusEl, ''); return;
+        }
+        if (/^none$/i.test(alg)) setBanner(algWarn, $('jwtAlgWarnText'), 'Insecure: alg is “none” — this token is unsigned and can be forged by anyone. Servers must reject it.', 'bad');
+        else if (!parts[2]) setBanner(algWarn, $('jwtAlgWarnText'), 'The signature part is empty.', 'warn');
+        var p = b64urlJson(parts[1], 'payload');
+        $('jwtPayload').textContent = JSON.stringify(p.json, null, 2); $('blkPayload').hidden = false;
+        current.payload = $('jwtPayload').textContent;
+        if (p.json && typeof p.json === 'object' && !Array.isArray(p.json)) {
+          renderClaims(p.json);
+          var st = timeStatus(p.json); setBanner(banner, $('jwtBannerText'), st[0], st[1]);
+        }
+        $('jwtSig').textContent = parts[2] ? parts[2] + '\n\n(' + alg + ' signature — not verified. Verify server-side with your secret or public key.)' : '(empty)';
+        $('blkSig').hidden = false;
+        TK.status(statusEl, '');
+      } catch (e) {
+        TK.status(statusEl, e.message, 'error');
+      }
+    }
+
+    var decode = run;
+    run = function () { decode(); syncTicker(); };
+    input.addEventListener('input', TK.debounce(function () { run(); }, 150));
+    // Keep relative times ("expires in 4 minutes") fresh while a token is shown
+    // (runs only while a token is displayed; stopped on Clear / empty input)
+    var ticker = null;
+    function syncTicker() {
+      if (current && !ticker) ticker = setInterval(function () { if (!document.hidden) run(); }, 30000);
+      else if (!current && ticker) { clearInterval(ticker); ticker = null; }
+    }
+
+    function copyOf(key, btn) { TK.copy(current ? current[key] : '', btn); }
+    $('copyHeader').addEventListener('click', function () { copyOf('header', this); });
+    $('copyPayload').addEventListener('click', function () { copyOf('payload', this); });
+
+    function b64url(obj) { return TK.bytesToBase64(TK.utf8Bytes(JSON.stringify(obj))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); }
+    $('exampleBtn').addEventListener('click', function () {
+      var now = Math.floor(Date.now() / 1000), sig = new Uint8Array(32);
+      crypto.getRandomValues(sig);
+      input.value = b64url({ alg: 'HS256', typ: 'JWT' }) + '.' +
+        b64url({ iss: 'https://auth.example.com', sub: 'user_1234567890', aud: 'toolyard-demo', name: 'Jane Developer 👩‍💻', role: 'admin', iat: now, nbf: now, exp: now + 3600, jti: 'demo-' + now }) + '.' +
+        TK.bytesToBase64(sig).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+      run();
+    });
+    $('clearBtn').addEventListener('click', function () { input.value = ''; run(); input.focus(); });
+
+  })();
+  </script>
+</body>
+</html>

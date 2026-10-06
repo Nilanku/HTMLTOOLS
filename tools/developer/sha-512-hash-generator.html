@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SHA-512 Hash Generator – Text, File Checksum &amp; HMAC Online | Toolyard</title>
+  <meta name="description" content="Free SHA-512 hash generator. Hash text or files up to 512 MB, create HMAC-SHA512 signatures, verify checksums and get hex or Base64 output — computed privately in your browser.">
+  <link rel="canonical" href="https://htmltools.nilankubaruah.workers.dev/tools/developer/sha-512-hash-generator.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="SHA-512 Hash Generator – Text, File Checksum &amp; HMAC Online">
+  <meta property="og:description" content="Free SHA-512 hash generator. Hash text or files up to 512 MB, create HMAC-SHA512 signatures, verify checksums and get hex or Base64 output — computed privately in your browser.">
+  <meta property="og:url" content="https://htmltools.nilankubaruah.workers.dev/tools/developer/sha-512-hash-generator.html">
+  <meta name="twitter:card" content="summary">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/tools.css">
+  <script src="/js/tools-data.js"></script>
+  <script src="/js/layout.js"></script>
+  <script src="/js/tool-kit.js"></script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "SHA-512 Hash Generator", "url": "https://htmltools.nilankubaruah.workers.dev/tools/developer/sha-512-hash-generator.html", "applicationCategory": "DeveloperApplication", "operatingSystem": "Any (runs in your browser)", "description": "Free SHA-512 hash generator. Hash text or files up to 512 MB, create HMAC-SHA512 signatures, verify checksums and get hex or Base64 output — computed privately in your browser.", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is the difference between SHA-256 and SHA-512?", "acceptedAnswer": {"@type": "Answer", "text": "Both are SHA-2 algorithms. SHA-512 produces a longer 512-bit hash and uses 64-bit arithmetic, which makes it faster on most 64-bit computers. SHA-256 is shorter and more widely used. Both are currently secure."}}, {"@type": "Question", "name": "Can SHA-512 be reversed?", "acceptedAnswer": {"@type": "Answer", "text": "No. It is a one-way function. The only way to find an input is to guess and compare, which is infeasible for anything other than short or common inputs."}}, {"@type": "Question", "name": "Why is my SHA-512 different from the terminal?", "acceptedAnswer": {"@type": "Answer", "text": "Check for a trailing newline — echo \"text\" | sha512sum hashes the newline too. Use echo -n or printf. Line endings (CRLF vs LF) and encodings also change the result — text boxes always use LF, so use File mode to hash a CRLF file exactly."}}, {"@type": "Question", "name": "How do I create an npm-style integrity hash?", "acceptedAnswer": {"@type": "Answer", "text": "Drop the file, choose Base64 and prefix the result with sha512-. That is the exact format used in package-lock.json."}}, {"@type": "Question", "name": "Is SHA-512 good for passwords?", "acceptedAnswer": {"@type": "Answer", "text": "Only inside a dedicated scheme like sha512crypt or PBKDF2 with many iterations. On its own it is too fast; prefer Argon2 or bcrypt."}}, {"@type": "Question", "name": "Are my files uploaded?", "acceptedAnswer": {"@type": "Answer", "text": "No. Everything runs in your browser and nothing is stored after you close the tab."}}]}</script>
+</head>
+<body class="ty-tool" data-tool="sha-512-hash-generator">
+
+  <!-- SHARED HEADER, MOBILE MENU & BREADCRUMBS (rendered by /js/layout.js) -->
+  <div id="site-header"></div>
+  <div id="site-breadcrumbs"></div>
+
+  <main>
+  <!-- TOOL INTRO -->
+  <section class="tool-intro">
+    <div class="wrap tool-intro-content">
+      <span class="eyebrow">⌨ DEVELOPER · HASHING</span>
+      <h1>SHA-512 Hash Generator</h1>
+      <p class="lead">Generate SHA-512 hashes of text or files instantly. Verify checksums, sign messages with HMAC-SHA512 and hash lists line by line — powered by the browser's native Web Crypto engine, entirely on your device.</p>
+      <div class="tool-meta-badge"><span class="dot"></span> Live hashing · Files up to 512 MB · HMAC · Nothing leaves your device</div>
+    </div>
+  </section>
+
+  <!-- WORKSPACE -->
+  <section class="tool-app-section">
+    <div class="wrap">
+      <div class="ty-pair"><span>Also available: MD5 for legacy checksums.</span><span>Need a shorter hash? <a href="/tools/developer/sha-256-hash-generator.html">SHA-256 Hash Generator →</a></span></div>
+      <div class="tool-workspace">
+        <div class="tool-toolbar">
+          <div class="tool-toolbar-left">
+            <div class="ty-seg" id="modeSeg" role="group" aria-label="Input type">
+              <button type="button" data-value="text" class="active">Text</button>
+              <button type="button" data-value="file">File</button>
+            </div>
+            <span class="ty-sep"></span>
+            <div class="ty-seg" id="fmtSeg" role="group" aria-label="Output format">
+              <button type="button" data-value="hex" class="active">hex</button>
+              <button type="button" data-value="HEX">HEX</button>
+              <button type="button" data-value="b64">Base64</button>
+            </div>
+            <span class="ty-sep"></span>
+            <label class="ty-opt" id="linesOpt" title="Hash every line separately (one hash per line)"><input type="checkbox" id="optLines"> Each line</label>
+            <label class="ty-opt" title="Keyed hash (HMAC) using a secret key"><input type="checkbox" id="optHmac"> HMAC</label>
+            <input type="text" id="hmacKey" class="ty-input" style="width:180px; padding:6px 10px;" placeholder="Secret key" autocomplete="off" spellcheck="false" aria-label="HMAC secret key" hidden>
+          </div>
+          <div class="tool-toolbar-right">
+            <button type="button" class="btn btn-amber btn-sm" id="runBtn">Hash</button>
+            <button type="button" class="btn btn-ghost btn-sm" id="exampleBtn">Load Example</button>
+            <button type="button" class="btn btn-danger btn-sm" id="clearBtn">Clear</button>
+          </div>
+        </div>
+
+        <div class="tool-grid">
+          <div class="tool-pane">
+            <div class="tool-pane-header">
+              <span class="title" id="inTitle">Text to hash</span>
+              <span class="badge" id="inBadge">UTF-8</span>
+            </div>
+            <textarea id="hashIn" class="tool-textarea" placeholder="Type or paste text — the hash updates as you type. Exact bytes matter: a trailing space or newline changes the hash." spellcheck="false" aria-label="Text to hash"></textarea>
+            <div class="ty-drop" id="drop" hidden>
+              <div class="big" aria-hidden="true">🔐</div>
+              <strong>Drop a file to get its checksum</strong>
+              <span>Any file up to 512 MB — read and hashed on your device</span>
+              <label class="btn btn-outline btn-sm">Choose file<input type="file" id="fileIn"></label>
+              <div class="file-meta" id="fileMeta"></div>
+            </div>
+          </div>
+          <div class="tool-pane">
+            <div class="tool-pane-header">
+              <span class="title" id="outTitle">SHA-512 hash</span>
+              <div class="actions">
+                <button type="button" class="btn btn-sm btn-outline" id="copyBtn">Copy</button>
+                <button type="button" class="btn btn-sm btn-ghost" id="downloadBtn">Download</button>
+              </div>
+            </div>
+            <textarea id="hashOut" class="tool-textarea ty-mono is-empty" style="min-height:120px; flex:0 0 auto;" readonly placeholder="The SHA-512 hash will appear here…" aria-label="Hash output"></textarea>
+            <div class="ty-note" id="hashNote" hidden></div>
+            <div class="ty-subhead"><span>Verify a checksum</span><span id="verifyState" style="text-transform:none; letter-spacing:0;"></span></div>
+            <div style="padding:12px 16px; background:var(--editor-bg); border-bottom:1px solid var(--line);">
+              <input type="text" id="verifyIn" class="ty-input ty-mono" placeholder="Paste the expected hash (hex or Base64) to compare" autocomplete="off" spellcheck="false" aria-label="Expected hash">
+            </div>
+            <div class="ty-subhead" id="alsoHead"><span>Same input, other algorithms</span></div>
+            <div class="ty-scroll" style="min-height:0;">
+              <table class="ty-table" id="alsoTable"><tbody id="alsoBody"><tr><td class="ty-empty">Other hashes of your input appear here.</td></tr></tbody></table>
+            </div>
+          </div>
+        </div>
+        <p class="ty-alert" id="hashStatus" role="status" aria-live="polite" hidden></p>
+
+        <div class="tool-stats-bar">
+          <div class="tool-stats-items">
+            <div class="tool-stat-badge">Input: <b id="stIn">0 B</b></div>
+            <div class="tool-stat-badge">Hash: <b>512 bits</b></div>
+            <div class="tool-stat-badge">Time: <b id="stTime">–</b></div>
+          </div>
+          <div>FIPS 180-4 · Web Crypto · 100% Client-Side</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. ABOUT -->
+  <section class="ty-sec">
+    <div class="wrap">
+      <span class="eyebrow">◆ ABOUT THIS TOOL</span>
+      <h2>What Is SHA-512?</h2>
+      <p class="sub">The largest member of the SHA-2 family, producing a 512-bit fingerprint.</p>
+      <div class="about-grid">
+        <div><p>SHA-512 maps any input to a 512-bit digest, shown as 128 hexadecimal characters. Like SHA-256 it is one-way and collision-resistant, but it works on 64-bit words, so it is often <em>faster</em> than SHA-256 on 64-bit CPUs while offering a larger security margin.</p><p>You will find it in Linux password hashing (<code>$6$</code> crypt), Subresource Integrity (<code>sha512-…</code> in npm lockfiles), Ed25519 signatures, file checksums published by many Linux distributions and HMAC-SHA512 API authentication (e.g. crypto exchanges).</p></div>
+        <div><p>Text is hashed as exact <strong>UTF-8 bytes</strong>, so the result matches <code>sha512sum</code>, Python's <code>hashlib.sha512</code>, Node.js and OpenSSL.</p><p><strong>Not for storing passwords on its own:</strong> a single SHA-512 is fast to brute-force. Use Argon2, bcrypt or scrypt, which are deliberately slow and salted.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. REFERENCE -->
+  <section class="ty-sec alt">
+    <div class="wrap">
+      <span class="eyebrow"># FORMATS</span>
+      <h2>Output Formats &amp; Modes</h2>
+      <p class="sub">Pick the representation your system expects.</p>
+      <div class="rules-list">
+        <div class="rule-card"><div class="rule-icon">hex</div><div><h3>Hexadecimal (128 chars)</h3><p>The format printed by <code>sha512sum</code> and shown on most download pages. Use <b>HEX</b> for uppercase.</p></div></div>
+        <div class="rule-card"><div class="rule-icon">b64</div><div><h3>Base64 (88 chars)</h3><p>Used by npm/yarn lockfile <code>integrity</code> fields and Subresource Integrity: <code>sha512-&lt;base64&gt;</code>.</p></div></div>
+        <div class="rule-card"><div class="rule-icon">🔑</div><div><h3>HMAC-SHA512</h3><p>Keyed signatures used by many trading and payment APIs. Tick <b>HMAC</b> and enter the API secret.</p></div></div>
+        <div class="rule-card"><div class="rule-icon">≡</div><div><h3>Hash each line</h3><p>One SHA-512 per line for bulk hashing of lists — up to 100,000 lines.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. HOW TO USE -->
+  <section class="how-sec section-navy">
+    <div class="wrap">
+      <span class="eyebrow">◐ THREE STEPS</span>
+      <h2>How to Use the SHA-512 Hash Generator</h2>
+      <p class="sub">Get your result in under ten seconds.</p>
+      <div class="steps">
+        <div class="step" data-n="01">
+          <div class="num">1</div>
+          <h3 style="color:#fff;">Type text or drop a file</h3>
+          <p>Paste text to hash it as you type, or switch to <b>File</b> mode and drop any file.</p>
+        </div>
+        <div class="step" data-n="02">
+          <div class="num">2</div>
+          <h3 style="color:#fff;">Choose format and options</h3>
+          <p>Pick hex, HEX or Base64. Enable HMAC with a secret key, or Each line for bulk hashing.</p>
+        </div>
+        <div class="step" data-n="03">
+          <div class="num">3</div>
+          <h3 style="color:#fff;">Copy, download or verify</h3>
+          <p>Copy the hash, download a <code>sha512sum</code>-style checksum file or paste an expected value to compare.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. FEATURES -->
+  <section class="ty-sec">
+    <div class="wrap">
+      <span class="eyebrow">✓ FEATURES</span>
+      <h2>Why Use the Toolyard SHA-512 Hash Generator</h2>
+      <p class="sub">Fast, accurate and private — built for developers.</p>
+      <div class="why-grid">
+        <div><div class="why-ico">🔒</div><h3>Private by design</h3><p>Hashing happens locally via the Web Crypto API — your data never leaves the device.</p></div>
+        <div><div class="why-ico">⚡</div><h3>Native &amp; non-blocking</h3><p>Hardware-accelerated SHA-512 with large inputs and files processed in a background worker.</p></div>
+        <div><div class="why-ico">📁</div><h3>Files up to 512 MB</h3><p>Check ISO images, backups and release archives against their published checksums.</p></div>
+        <div><div class="why-ico">✓</div><h3>Checksum verify</h3><p>Paste the expected hash in hex or Base64 and get an instant ✓ or ✗.</p></div>
+        <div><div class="why-ico">🔑</div><h3>HMAC-SHA512</h3><p>Sign API requests and debug webhook signatures with a secret key.</p></div>
+        <div><div class="why-ico">🧮</div><h3>Compare algorithms</h3><p>MD5, SHA-1, SHA-256 and SHA-384 of the same input are shown alongside.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. FAQ -->
+  <section class="ty-sec alt">
+    <div class="wrap">
+      <div style="text-align:center; margin-bottom:36px;">
+        <span class="eyebrow">FAQ</span>
+        <h2 style="font-size:28px; margin-top:12px;">Frequently Asked Questions</h2>
+      </div>
+      <div class="faq" id="faqList">
+        <div class="faq-item">
+          <button type="button">What is the difference between SHA-256 and SHA-512?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Both are SHA-2 algorithms. SHA-512 produces a longer 512-bit hash and uses 64-bit arithmetic, which makes it faster on most 64-bit computers. SHA-256 is shorter and more widely used. Both are currently secure.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Can SHA-512 be reversed?<span class="plus">+</span></button>
+          <div class="faq-a"><p>No. It is a one-way function. The only way to find an input is to guess and compare, which is infeasible for anything other than short or common inputs.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Why is my SHA-512 different from the terminal?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Check for a trailing newline — <code>echo "text" | sha512sum</code> hashes the newline too. Use <code>echo -n</code> or <code>printf</code>. Line endings (CRLF vs LF) and encodings also change the result — text boxes always use LF, so use File mode to hash a CRLF file exactly.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">How do I create an npm-style integrity hash?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Drop the file, choose Base64 and prefix the result with <code>sha512-</code>. That is the exact format used in <code>package-lock.json</code>.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Is SHA-512 good for passwords?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Only inside a dedicated scheme like <code>sha512crypt</code> or PBKDF2 with many iterations. On its own it is too fast; prefer Argon2 or bcrypt.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Are my files uploaded?<span class="plus">+</span></button>
+          <div class="faq-a"><p>No. Everything runs in your browser and nothing is stored after you close the tab.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. RELATED -->
+  <section class="related-tools-section">
+    <div class="wrap">
+      <div class="section-head" style="margin-bottom:28px;">
+        <div>
+          <span class="eyebrow" style="margin-bottom:12px; display:inline-flex;">📎 RELATED</span>
+          <h2 style="font-size:26px; margin:12px 0 6px;">Related Developer Tools</h2>
+          <p class="desc" style="margin:0;">More free utilities that pair well with this one.</p>
+        </div>
+        <a class="view-all" href="/categories/developer/">All Developer Tools →</a>
+      </div>
+      <div class="grid grid-3">
+        <a class="tool-card" href="/tools/developer/sha-256-hash-generator.html">
+          <div class="top-row"><span class="badge">Generator</span></div>
+          <h3>SHA-256 Hash Generator</h3>
+          <p>Generate SHA-256 hashes from text.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/developer/md5-hash-generator.html">
+          <div class="top-row"><span class="badge">Generator</span></div>
+          <h3>MD5 Hash Generator</h3>
+          <p>Generate MD5 checksums from text.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/developer/base64-encoder.html">
+          <div class="top-row"><span class="badge">Encoder</span></div>
+          <h3>Base64 Encoder</h3>
+          <p>Encode text or data to Base64.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/developer/uuid-generator.html">
+          <div class="top-row"><span class="badge">Generator</span></div>
+          <h3>UUID Generator</h3>
+          <p>Generate random v4 UUIDs in bulk.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/developer/jwt-decoder.html">
+          <div class="top-row"><span class="badge">Decoder</span></div>
+          <h3>JWT Decoder</h3>
+          <p>Decode JWT payloads and inspect claims and expiry.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/developer/unix-timestamp-converter.html">
+          <div class="top-row"><span class="badge">Converter</span></div>
+          <h3>Unix Timestamp Converter</h3>
+          <p>Convert Unix timestamps to dates and back.</p>
+          <span class="open">Open tool →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <!-- SHARED FOOTER (rendered by /js/layout.js) -->
+  <div id="site-footer"></div>
+
+  <script>
+  (function () {
+    'use strict';
+    var $ = TK.$;
+    TK.initFaq(document.getElementById('faqList'));
+function hashJob(d) {
+  // ---- MD5 (RFC 1321), self-contained so it can run inside a Web Worker ----
+  function md5(bytes) {
+    var S = [7,12,17,22,7,12,17,22,7,12,17,22,7,12,17,22,5,9,14,20,5,9,14,20,5,9,14,20,5,9,14,20,4,11,16,23,4,11,16,23,4,11,16,23,4,11,16,23,6,10,15,21,6,10,15,21,6,10,15,21,6,10,15,21];
+    var K = new Int32Array(64);
+    for (var i = 0; i < 64; i++) K[i] = Math.floor(Math.abs(Math.sin(i + 1)) * 4294967296) | 0;
+    var a0 = 0x67452301 | 0, b0 = 0xefcdab89 | 0, c0 = 0x98badcfe | 0, d0 = 0x10325476 | 0, M = new Int32Array(16);
+    function block(src, off) {
+      for (var j = 0; j < 16; j++) { var o = off + j * 4; M[j] = src[o] | (src[o + 1] << 8) | (src[o + 2] << 16) | (src[o + 3] << 24); }
+      var A = a0, B = b0, C = c0, D = d0, F, g;
+      for (var r = 0; r < 64; r++) {
+        if (r < 16) { F = (B & C) | (~B & D); g = r; }
+        else if (r < 32) { F = (D & B) | (~D & C); g = (5 * r + 1) & 15; }
+        else if (r < 48) { F = B ^ C ^ D; g = (3 * r + 5) & 15; }
+        else { F = C ^ (B | ~D); g = (7 * r) & 15; }
+        F = (F + A + K[r] + M[g]) | 0; A = D; D = C; C = B;
+        B = (B + ((F << S[r]) | (F >>> (32 - S[r])))) | 0;
+      }
+      a0 = (a0 + A) | 0; b0 = (b0 + B) | 0; c0 = (c0 + C) | 0; d0 = (d0 + D) | 0;
+    }
+    var len = bytes.length, full = len - (len % 64);
+    for (var off = 0; off < full; off += 64) block(bytes, off);
+    var tail = new Uint8Array(len % 64 < 56 ? 64 : 128);
+    tail.set(bytes.subarray(full)); tail[len - full] = 0x80;
+    var lo = (len * 8) >>> 0, hi = Math.floor(len / 0x20000000) >>> 0, tl = tail.length;
+    for (var b = 0; b < 4; b++) { tail[tl - 8 + b] = (lo >>> (8 * b)) & 255; tail[tl - 4 + b] = (hi >>> (8 * b)) & 255; }
+    for (var o2 = 0; o2 < tl; o2 += 64) block(tail, o2);
+    var out = new Uint8Array(16), w = [a0, b0, c0, d0];
+    for (var k = 0; k < 4; k++) for (var q = 0; q < 4; q++) out[k * 4 + q] = (w[k] >>> (8 * q)) & 255;
+    return out;
+  }
+  function hmacMd5(key, msg) {
+    if (key.length > 64) key = md5(key);
+    var ipad = new Uint8Array(64 + msg.length), opad = new Uint8Array(64 + 16);
+    for (var i = 0; i < 64; i++) { var kb = key[i] || 0; ipad[i] = kb ^ 0x36; opad[i] = kb ^ 0x5c; }
+    ipad.set(msg, 64); opad.set(md5(ipad), 64);
+    return md5(opad);
+  }
+  var cryptoKey = null;
+  function one(algo, bytes) {
+    if (algo === 'MD5') return Promise.resolve(d.key ? hmacMd5(d.key, bytes) : md5(bytes));
+    if (!(self.crypto && crypto.subtle)) return Promise.reject(new Error('This browser blocks the Web Crypto API here (it needs https). Open the page over https.'));
+    if (d.key) {
+      var kp = cryptoKey || (cryptoKey = crypto.subtle.importKey('raw', d.key, { name: 'HMAC', hash: algo }, false, ['sign']));
+      return kp.then(function (k) { return crypto.subtle.sign('HMAC', k, bytes); }).then(function (r) { return new Uint8Array(r); });
+    }
+    return crypto.subtle.digest(algo, bytes).then(function (r) { return new Uint8Array(r); });
+  }
+  var start = Date.now();
+  var dataP = d.file ? d.file.arrayBuffer().then(function (b) { return new Uint8Array(b); }) : Promise.resolve(d.data);
+  return dataP.then(function (data) {
+    if (d.lines) {
+      var res = [], i = 0;
+      return (function next() {
+        if (i >= d.lines.length) return { lines: res, ms: Date.now() - start };
+        return one(d.algo, d.lines[i++]).then(function (h) { res.push(h); return next(); });
+      })();
+    }
+    // one algorithm at a time: Web Crypto copies its input, so parallel digests would multiply peak memory
+    var algos = [d.algo].concat(d.also || []), o = { also: {}, size: data.length }, k = 0;
+    return (function next() {
+      if (k >= algos.length) { o.ms = Date.now() - start; return o; }
+      var a = algos[k++];
+      return one(a, data).then(function (h) { if (a === d.algo && !o.main) { o.main = h; o.ms = Date.now() - start; } else o.also[a] = h; return next(); });
+    })();
+  });
+}
+
+    var ALGO = 'SHA-512', ALSO = ["MD5", "SHA-1", "SHA-256", "SHA-384"];
+    var input = $('hashIn'), out = $('hashOut'), statusEl = $('hashStatus'), note = $('hashNote');
+    var drop = $('drop'), optLines = $('optLines'), optHmac = $('optHmac'), keyIn = $('hmacKey'), verifyIn = $('verifyIn');
+    var MAX_FILE = 512 * 1024 * 1024, WORKER_FROM = 512 * 1024, ALSO_FILE_MAX = 64 * 1024 * 1024;
+    var file = null, result = null, runId = 0;
+
+    function toHex(b) { var s = ''; for (var i = 0; i < b.length; i++) s += (b[i] < 16 ? '0' : '') + b[i].toString(16); return s; }
+    function fmt(b) { var f = fmtSeg.get(); return f === 'b64' ? TK.bytesToBase64(b) : f === 'HEX' ? toHex(b).toUpperCase() : toHex(b); }
+
+    function showResult() {
+      var body = $('alsoBody'); body.replaceChildren();
+      if (!result) { TK.setOutput(out, '', { noteEl: note }); verify(); emptyRow(body); return; }
+      if (result.lines) TK.setOutput(out, result.lines.map(fmt).join('\n'), { noteEl: note });
+      else TK.setOutput(out, fmt(result.main), { noteEl: note });
+      $('stTime').textContent = result.ms < 1 ? '<1 ms' : TK.formatNumber(result.ms) + ' ms';
+      var names = Object.keys(result.also || {});
+      if (!names.length) emptyRow(body, result.lines ? 'Not shown in per-line mode.' : optHmac.checked ? 'Not shown for HMAC.' : result.skipped ? 'Skipped for files over 64 MB to keep memory use low.' : null);
+      names.forEach(function (n) {
+        var tr = document.createElement('tr'), th = document.createElement('td'), td = document.createElement('td');
+        th.textContent = n; th.style.cssText = 'white-space:nowrap; font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--ink-soft); width:1%';
+        td.textContent = fmt(result.also[n]); td.className = 'kw'; td.style.cssText = 'font-family:"IBM Plex Mono",monospace; font-size:12px; word-break:break-all;';
+        tr.append(th, td); body.appendChild(tr);
+      });
+      verify();
+    }
+    function emptyRow(body, msg) {
+      var tr = document.createElement('tr'), td = document.createElement('td'); td.className = 'ty-empty';
+      td.textContent = msg || 'Other hashes of your input appear here.'; tr.appendChild(td); body.appendChild(tr);
+    }
+
+    function verify() {
+      var exp = verifyIn.value.trim(), el = $('verifyState');
+      if (!exp || !result || result.lines) { el.textContent = result && result.lines && exp ? 'Not available in per-line mode' : ''; el.style.color = ''; return; }
+      var hex = toHex(result.main), b64 = TK.bytesToBase64(result.main);
+      var cleaned = exp.replace(/^[a-z0-9-]+[:=]\s*/i, '').replace(/\s+/g, '');
+      var match = cleaned.toLowerCase() === hex || cleaned === b64 || cleaned.replace(/=+$/, '') === b64.replace(/=+$/, '');
+      var otherMatch = !match && Object.keys(result.also || {}).filter(function (n) { return cleaned.toLowerCase() === toHex(result.also[n]); })[0];
+      el.textContent = match ? '✓ Match' : otherMatch ? '✗ No match — but it matches ' + otherMatch : '✗ No match';
+      el.style.color = match ? '#2FAE7A' : 'var(--error)';
+    }
+
+    function setBusy(on) { $('runBtn').textContent = on ? 'Hashing…' : 'Hash'; $('runBtn').disabled = on; }
+
+    function run() {
+      var id = ++runId, isFile = mode.get() === 'file';
+      var key = null;
+      if (optHmac.checked) {
+        if (!keyIn.value) { result = null; showResult(); TK.status(statusEl, 'Enter a secret key for HMAC.', 'warn'); return; }
+        key = TK.utf8Bytes(keyIn.value);
+      }
+      var job = { algo: ALGO, key: key, also: key ? [] : ALSO };
+      var size;
+      if (isFile) {
+        if (!file) { result = null; showResult(); $('stIn').textContent = '0 B'; TK.status(statusEl, ''); return; }
+        job.file = file; size = file.size;
+        if (size > ALSO_FILE_MAX) { job.also = []; job.skipped = true; }   // keep peak memory low on big files
+      } else {
+        var text = input.value;
+        if (!text && !optLines.checked) {
+          // the hash of empty input is valid and well-known, but show it only if the user asks
+          result = null; showResult(); $('stIn').textContent = '0 B'; TK.status(statusEl, ''); return;
+        }
+        if (optLines.checked) {
+          var lines = text.split(/\r?\n/);
+          if (lines.length > 100000) { TK.status(statusEl, 'Per-line mode supports up to 100,000 lines.', 'error'); return; }
+          job.lines = lines.map(function (l) { return TK.utf8Bytes(l); }); job.also = []; size = TK.byteLength(text);
+        } else { job.data = TK.utf8Bytes(text); size = job.data.length; }
+      }
+      $('stIn').textContent = TK.formatBytes(size);
+      var useWorker = isFile || size > WORKER_FROM;
+      if (useWorker) { setBusy(true); TK.status(statusEl, 'Hashing ' + TK.formatBytes(size) + ' in the background…', 'info'); }
+      var p = useWorker ? TK.runWorker(hashJob, job, 180000) : hashJob(job);
+      p.then(function (r) {
+        if (id !== runId) return;   // a newer run started
+        if (job.skipped) r.skipped = true;
+        result = r; showResult(); setBusy(false);
+        TK.status(statusEl, isFile ? 'Hashed ' + file.name + ' (' + TK.formatBytes(size) + ').' : '', isFile ? 'ok' : '');
+      }, function (e) {
+        if (id !== runId) return;
+        setBusy(false); result = null; showResult();
+        TK.status(statusEl, e.message === 'timeout' ? 'Hashing took too long and was stopped.' : (/memory|allocation|Array buffer/i.test(e.message) ? 'Not enough memory to read this file in the browser.' : e.message), 'error');
+      });
+    }
+
+    var auto = TK.autoRun({
+      input: input, run: run, delay: 200, maxAuto: 5000000, also: [optLines, optHmac],
+      onLarge: function (large) { TK.status(statusEl, large ? 'Very large text — live hashing paused. Click Hash.' : '', 'info'); }
+    });
+    var fmtSeg = TK.segmented($('fmtSeg'), showResult);
+    var mode = TK.segmented($('modeSeg'), function (v) {
+      var isFile = v === 'file';
+      input.hidden = isFile; drop.hidden = !isFile; $('linesOpt').hidden = isFile;
+      $('inTitle').textContent = isFile ? 'File to hash' : 'Text to hash';
+      $('inBadge').textContent = isFile ? 'Any file' : 'UTF-8';
+      result = null; run();
+    });
+    optHmac.addEventListener('change', function () { keyIn.hidden = !optHmac.checked; if (optHmac.checked) keyIn.focus(); });
+    keyIn.addEventListener('input', TK.debounce(run, 200));
+    verifyIn.addEventListener('input', verify);
+
+    TK.fileDrop(drop, $('fileIn'), function (f) {
+      file = f; $('fileMeta').textContent = f.name + ' · ' + TK.formatBytes(f.size); run();
+    }, { maxBytes: MAX_FILE, onError: function (m) { TK.status(statusEl, m, 'error'); } });
+    input.addEventListener('dragover', function (e) { if (e.dataTransfer && Array.prototype.indexOf.call(e.dataTransfer.types, 'Files') >= 0) e.preventDefault(); });
+    input.addEventListener('drop', function (e) {
+      if (!e.dataTransfer || !e.dataTransfer.files.length) return;
+      e.preventDefault(); var f = e.dataTransfer.files[0];
+      if (f.size > MAX_FILE) { TK.status(statusEl, 'File is larger than 512 MB.', 'error'); return; }
+      file = f; $('fileMeta').textContent = f.name + ' · ' + TK.formatBytes(f.size); mode.set('file');
+    });
+
+    $('runBtn').addEventListener('click', function () { auto.trigger(); });
+    $('copyBtn').addEventListener('click', function () { TK.copy(TK.getOutput(out), this); });
+    $('downloadBtn').addEventListener('click', function () {
+      var h = TK.getOutput(out); if (!h) { TK.flash(this, 'Nothing to download'); return; }
+      // checksum-file format: "<hash>  <filename>" (works with sha256sum -c / md5sum -c) for hex output
+      var name = mode.get() === 'file' && file ? file.name : 'text.txt';
+      var body = (fmtSeg.get() !== 'b64' && !result.lines) ? h.toLowerCase() + '  ' + name + '\n' : h + '\n';
+      TK.download(body, name + '.' + ALGO.toLowerCase().replace('-', ''), 'text/plain;charset=utf-8', this);
+    });
+    $('exampleBtn').addEventListener('click', function () {
+      mode.set('text', true); input.hidden = false; drop.hidden = true; $('linesOpt').hidden = false;
+      input.value = 'The quick brown fox jumps over the lazy dog'; optLines.checked = false; auto.trigger();
+    });
+    $('clearBtn').addEventListener('click', function () {
+      input.value = ''; file = null; $('fileMeta').textContent = ''; verifyIn.value = ''; keyIn.value = '';
+      result = null; runId++; setBusy(false); showResult(); $('stIn').textContent = '0 B'; $('stTime').textContent = '–';
+      TK.status(statusEl, ''); if (!input.hidden) input.focus();
+    });
+
+  })();
+  </script>
+</body>
+</html>

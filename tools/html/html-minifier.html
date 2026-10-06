@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML Minifier - Compress HTML Online | Toolyard</title>
+  <meta name="description" content="Minify and compress HTML code online. Strip comments, collapse whitespace, reduce page payload size, and preserve critical scripts and preformatted code blocks.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/tools-data.js"></script>
+  <script src="/js/layout.js"></script>
+  <style>
+    /* Calculator Grid & Layout Safeguards */
+    .tool-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      min-height: 480px;
+      background: var(--line);
+      gap: 1px;
+    }
+    @media (max-width: 860px) {
+      .tool-grid { grid-template-columns: 1fr; }
+    }
+    .tool-pane {
+      background: var(--paper-2);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      min-width: 0;
+      overflow: hidden;
+    }
+    .tool-pane-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      background: var(--paper);
+      border-bottom: 1px solid var(--line);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink-soft);
+      min-width: 0;
+    }
+    .tool-pane-header .title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+    .tool-pane-header .actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    .tool-textarea {
+      flex: 1;
+      width: 100%;
+      min-height: 380px;
+      padding: 18px;
+      border: none;
+      outline: none;
+      resize: vertical;
+      background: var(--editor-bg);
+      color: var(--ink);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13.5px;
+      line-height: 1.65;
+      tab-size: 2;
+      white-space: pre;
+      overflow: auto;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+    .tool-textarea:focus {
+      background: var(--paper-2);
+    }
+    .tool-output-box {
+      flex: 1;
+      width: 100%;
+      min-height: 380px;
+      padding: 18px;
+      background: var(--editor-bg);
+      color: var(--ink);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13.5px;
+      line-height: 1.65;
+      overflow-y: auto;
+      overflow-x: hidden;
+      white-space: pre-wrap;
+      word-break: break-all;
+      overflow-wrap: anywhere;
+      user-select: text;
+      margin: 0;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+    .tool-output-box.empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-soft);
+      font-style: italic;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+    }
+    .tool-checkbox-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--ink);
+      cursor: pointer;
+      user-select: none;
+    }
+    .tool-checkbox-label input[type="checkbox"] {
+      accent-color: var(--amber);
+      width: 15px;
+      height: 15px;
+      cursor: pointer;
+    }
+    .stat-saved {
+      color: var(--signal);
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body data-tool="html-minifier">
+
+  <!-- SHARED HEADER, MOBILE MENU & BREADCRUMBS (rendered by /js/layout.js) -->
+  <div id="site-header"></div>
+  <div id="site-breadcrumbs"></div>
+
+  <!-- TOOL INTRO -->
+  <section class="tool-intro">
+    <div class="wrap tool-intro-content">
+      <span class="eyebrow">HTML &amp; WEB TOOL</span>
+      <h1>HTML Minifier</h1>
+      <p class="lead">Reduce unnecessary HTML whitespace and comments while preserving meaningful content. Boost page load speed and bandwidth efficiency.</p>
+      <div class="tool-meta-badge">
+        <span class="dot"></span> 100% Private · Processed locally in your browser
+      </div>
+    </div>
+  </section>
+
+  <!-- CALCULATOR / WORKSPACE -->
+  <section class="tool-app-section">
+    <div class="wrap">
+      <div class="tool-workspace">
+        <div class="tool-toolbar">
+          <div class="tool-toolbar-left" style="gap: 16px;">
+            <button type="button" class="btn btn-amber" id="minifyBtn">Minify HTML</button>
+            <label class="tool-checkbox-label">
+              <input type="checkbox" id="removeComments" checked>
+              <span>Remove Comments</span>
+            </label>
+            <label class="tool-checkbox-label">
+              <input type="checkbox" id="collapseWhitespace" checked>
+              <span>Collapse Whitespace</span>
+            </label>
+          </div>
+          <div class="tool-toolbar-right">
+            <button type="button" class="btn btn-ghost btn-sm" id="exampleBtn">Load Example</button>
+            <button type="button" class="btn btn-danger btn-sm" id="clearBtn">Clear</button>
+          </div>
+        </div>
+
+        <div class="tool-grid">
+          <!-- Left Input Pane -->
+          <div class="tool-pane">
+            <div class="tool-pane-header">
+              <span class="title">Original HTML</span>
+              <span class="badge">INPUT</span>
+            </div>
+            <textarea id="minifierInput" class="tool-textarea" placeholder="Paste or drag HTML here to minify..." spellcheck="false"></textarea>
+          </div>
+
+          <!-- Right Output Pane -->
+          <div class="tool-pane">
+            <div class="tool-pane-header">
+              <span class="title">Minified HTML</span>
+              <div class="actions">
+                <button type="button" class="btn btn-sm btn-outline" id="copyBtn">Copy</button>
+                <button type="button" class="btn btn-sm btn-ghost" id="downloadBtn">Download</button>
+              </div>
+            </div>
+            <pre id="minifierOutput" class="tool-output-box empty"><em>Minified output will appear here...</em></pre>
+          </div>
+        </div>
+
+        <div class="tool-stats-bar">
+          <div class="tool-stats-items">
+            <div class="tool-stat-badge">Original: <b id="origSize">0 B</b></div>
+            <div class="tool-stat-badge">Minified: <b id="minSize">0 B</b></div>
+            <div class="tool-stat-badge stat-saved" id="reduction">0% saved</div>
+          </div>
+          <div>100% Client-Side Engine</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. ABOUT THIS TOOL SECTION -->
+  <section class="tool-content-section" style="padding: 56px 0; border-top: 1px solid var(--line); background: var(--paper-2);">
+    <div class="wrap">
+      <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">◆ ABOUT THIS TOOL</span>
+      <h2 style="font-size: 26px; margin: 0 0 6px;">About HTML Minification</h2>
+      <p style="color: var(--ink-soft); font-size: 14.5px; margin: 0 0 32px;">Why reducing HTML payload size directly improves page speed and Core Web Vitals.</p>
+
+      <div class="about-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 36px; font-size: 14.5px; line-height: 1.7; color: var(--ink-soft);">
+        <div>
+          <p style="margin: 0;">HTML files often contain hundreds of lines of developer comments, indentation tabs, and redundant spaces that are completely unnecessary for browsers to render pages. Compressing your HTML markup trims bandwidth, accelerates DOM parsing, and decreases TTFB (Time to First Byte).</p>
+        </div>
+        <div>
+          <p style="margin: 0;">The Toolyard HTML Minifier processes your source code securely in client-side memory. It removes comments and tightens inter-tag spaces while protecting sensitive blocks like <code>&lt;pre&gt;</code>, <code>&lt;textarea&gt;</code>, <code>&lt;script&gt;</code>, and <code>&lt;style&gt;</code> tags without executing any server transfers.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. KEY OPTIMIZATION RULES SECTION -->
+  <section class="tool-content-section" style="padding: 56px 0; border-top: 1px solid var(--line); background: var(--paper);">
+    <div class="wrap">
+      <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">⚙ OPTIMIZATION ENGINE</span>
+      <h2 style="font-size: 26px; margin: 0 0 6px;">Key Compression Rules</h2>
+      <p style="color: var(--ink-soft); font-size: 14.5px; margin: 0 0 28px;">How the minifier compresses markup safely without breaking DOM semantics.</p>
+
+      <div class="rules-list" style="display: flex; flex-direction: column; gap: 14px;">
+        <div class="rule-card" style="display: flex; align-items: flex-start; gap: 16px; padding: 20px 22px; background: var(--paper-2); border: 1px solid var(--line); border-radius: 12px;">
+          <div class="rule-icon" style="width: 36px; height: 36px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;">⚡</div>
+          <div>
+            <h3 style="font-size: 15.5px; margin: 0 0 6px; color: var(--ink);">Comment Removal</h3>
+            <p style="margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ink-soft);">Strips out all standard HTML comments <code>&lt;!-- ... --&gt;</code> from the production output while safely preserving conditional comment blocks and server directives.</p>
+          </div>
+        </div>
+
+        <div class="rule-card" style="display: flex; align-items: flex-start; gap: 16px; padding: 20px 22px; background: var(--paper-2); border: 1px solid var(--line); border-radius: 12px;">
+          <div class="rule-icon" style="width: 36px; height: 36px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;">✎</div>
+          <div>
+            <h3 style="font-size: 15.5px; margin: 0 0 6px; color: var(--ink);">Inter-Tag Whitespace Collapsing</h3>
+            <p style="margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ink-soft);">Collapses redundant consecutive spaces, line breaks, and tabs between HTML tags into compact markup without altering necessary single-space word gaps.</p>
+          </div>
+        </div>
+
+        <div class="rule-card" style="display: flex; align-items: flex-start; gap: 16px; padding: 20px 22px; background: var(--paper-2); border: 1px solid var(--line); border-radius: 12px;">
+          <div class="rule-icon" style="width: 36px; height: 36px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;">⌨</div>
+          <div>
+            <h3 style="font-size: 15.5px; margin: 0 0 6px; color: var(--ink);">Code Block Protection</h3>
+            <p style="margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ink-soft);">Contents inside <code>&lt;pre&gt;</code>, <code>&lt;textarea&gt;</code>, <code>&lt;script&gt;</code>, and <code>&lt;style&gt;</code> are extracted into placeholders before compression and re-inserted untouched to prevent syntax breakage.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. HOW TO USE (DARK BLUE BACKGROUND LIKE HOMEPAGE STEPS) -->
+  <section class="section-navy" style="padding: 64px 0; position: relative; overflow: hidden; background: var(--navy-900);">
+    <div class="wrap" style="position: relative;">
+      <span class="eyebrow" style="background: rgba(240,169,59,0.18); color: var(--amber); margin-bottom: 12px; display: inline-flex;">◐ THREE STEPS</span>
+      <h2 style="font-size: 26px; color: #fff; margin: 0 0 6px;">How to Use</h2>
+      <p style="color: #9096B8; font-size: 14.5px; margin: 0 0 32px;">Compress and minify your HTML in seconds.</p>
+
+      <div class="steps">
+        <div class="step" data-n="01">
+          <div class="num">1</div>
+          <h3 style="color: #fff;">Paste HTML Code</h3>
+          <p>Paste your HTML into the left input box or click "Load Example" to test the minification pipeline with a demo template.</p>
+        </div>
+        <div class="step" data-n="02">
+          <div class="num">2</div>
+          <h3 style="color: #fff;">Configure Options</h3>
+          <p>Toggle "Remove Comments" and "Collapse Whitespace" according to your deployment or bundling requirements.</p>
+        </div>
+        <div class="step" data-n="03">
+          <div class="num">3</div>
+          <h3 style="color: #fff;">Copy or Download</h3>
+          <p>Click "Copy" to instantly grab the minified code, or "Download" to save the compressed file as <code style="color:var(--amber); background:transparent; border:none; padding:0;">minified.html</code>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. WHY USE TOOLYARD HTML MINIFIER (6-CARD BORDERED GRID) -->
+  <section class="tool-content-section" style="padding: 60px 0; background: var(--paper-2); border-top: 1px solid var(--line);">
+    <div class="wrap">
+      <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">✓ FEATURES</span>
+      <h2 style="font-size: 26px; margin: 0 0 6px;">Why Use Toolyard HTML Minifier</h2>
+      <p style="color: var(--ink-soft); font-size: 14.5px; margin: 0 0 32px;">Engineered for fast, reliable, and non-destructive markup compression.</p>
+
+      <div class="why-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--line); gap: 1px;">
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">◆</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">100% Client-Side</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">All parsing and compression execute in your browser. No files or text ever leave your device.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">⚙</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">Protects Critical Blocks</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Guarantees code inside pre tags, script blocks, and style sheets are not distorted or broken.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">🛡</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">Compression Savings Stats</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Real-time tracking displays original byte size, minified byte size, and total percentage saved.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">⚡</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">Zero Lag Processing</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Optimized regex tokenization minifies large documents up to several megabytes instantaneously.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">↓</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">One-Click Export</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Download the minified output as a standalone file ready to drop into production servers.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">⧉</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">Fast Clipboard Copy</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Copy the entire minified output string with one click without having to highlight long lines.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. FREQUENTLY ASKED QUESTIONS -->
+  <section class="tool-content-section" style="padding: 64px 0; background: var(--paper); border-top: 1px solid var(--line);">
+    <div class="wrap">
+      <div style="text-align: center; margin-bottom: 36px;">
+        <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">FAQ</span>
+        <h2 style="font-size: 28px; margin: 0;">Frequently Asked Questions</h2>
+      </div>
+
+      <div class="faq" id="faqList" style="max-width: 860px; margin: 0 auto;">
+        <div class="faq-item">
+          <button type="button">Does minifying HTML change how the page looks in a browser?<span class="plus">+</span></button>
+          <div class="faq-a"><p>No. Browsers collapse adjacent whitespace by default, so visual layout remains identical. Protected tags like <code>&lt;pre&gt;</code> preserve their internal line breaks.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Will inline JavaScript or CSS code be broken?<span class="plus">+</span></button>
+          <div class="faq-a"><p>No. Embedded scripts and styles inside <code>&lt;script&gt;</code> and <code>&lt;style&gt;</code> tags are protected by safe placeholders during whitespace collapsing.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">How much bandwidth does HTML minification save?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Typically between 10% to 35% depending on how heavily formatted the source document is, how many comments are present, and the depth of tag indentation.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Does this minifier upload my code to a backend server?<span class="plus">+</span></button>
+          <div class="faq-a"><p>No. The compression logic runs 100% locally in your browser through client-side JavaScript. Nothing is sent to any server.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Can I undo minification later?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Yes! You can paste minified code into the Toolyard HTML Formatter at any time to restore clean indentation and readable nesting.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. RELATED HTML TOOLS -->
+  <section class="related-tools-section" style="padding: 56px 0; background: var(--paper-2); border-top: 1px solid var(--line);">
+    <div class="wrap">
+      <div style="margin-bottom: 24px;">
+        <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">📎 RELATED</span>
+      </div>
+      <div class="section-head" style="margin-bottom: 28px;">
+        <div>
+          <h2 style="font-size: 26px; margin: 0 0 6px;">Related HTML Tools</h2>
+          <p class="desc" style="margin: 0;">More utilities for working with web markup.</p>
+        </div>
+        <a class="view-all" href="/categories/html-web/">All HTML Tools →</a>
+      </div>
+
+      <div class="grid grid-3" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+        <a class="tool-card" href="/tools/html/html-formatter.html">
+          <div class="top-row"><span class="badge">Formatter</span></div>
+          <h3>HTML Formatter</h3>
+          <p>Beautify messy or compressed HTML with clean indentation and proper nesting.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/html/html-to-jsx.html">
+          <div class="top-row"><span class="badge">Converter</span></div>
+          <h3>HTML to JSX</h3>
+          <p>Convert HTML markup into React JSX with camelCase attributes and self closing tags.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/html/html-to-markdown.html">
+          <div class="top-row"><span class="badge">Converter</span></div>
+          <h3>HTML to Markdown</h3>
+          <p>Transform HTML markup into clean, portable Markdown syntax for documentation or blogs.</p>
+          <span class="open">Open tool →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHARED FOOTER (rendered by /js/layout.js) -->
+  <div id="site-footer"></div>
+
+  <!-- JAVASCRIPT ENGINE -->
+  <script>
+    (function() {
+      // Header, mega menus, mobile drawer & dark mode are handled by /js/layout.js
+
+      // FAQ Accordion
+      document.querySelectorAll('.faq-item button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const item = btn.parentElement;
+          const isOpen = item.classList.contains('open');
+          document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+          if (!isOpen) item.classList.add('open');
+        });
+      });
+
+      // 2. HTML Minifier Tokenizer Function
+      function minifyHTML(html, options) {
+        if (!html || !html.trim()) return '';
+
+        const removeComments = options && options.removeComments !== undefined ? options.removeComments : true;
+        const collapseWhitespace = options && options.collapseWhitespace !== undefined ? options.collapseWhitespace : true;
+
+        let preservedBlocks = [];
+        let counter = 0;
+
+        // Step 1: Temporarily extract and preserve <pre>, <textarea>, <script>, <style> blocks
+        let processed = html.replace(/<(pre|textarea|script|style)[\s\S]*?<\/\1>/gi, function(match) {
+          let placeholder = '___TOOLYARD_PRESERVED_' + (counter++) + '___';
+          preservedBlocks.push({ placeholder: placeholder, content: match });
+          return placeholder;
+        });
+
+        // Step 2: Remove HTML comments if option is enabled
+        if (removeComments) {
+          processed = processed.replace(/<!--(?!\s*\[if)[\s\S]*?-->/g, '');
+        }
+
+        // Step 3: Collapse whitespace safely
+        if (collapseWhitespace) {
+          processed = processed.replace(/>\s+</g, '><');
+          processed = processed.replace(/\s{2,}/g, ' ');
+          processed = processed.trim();
+        }
+
+        // Step 4: Restore preserved blocks
+        for (let i = 0; i < preservedBlocks.length; i++) {
+          processed = processed.replace(preservedBlocks[i].placeholder, preservedBlocks[i].content);
+        }
+
+        return processed;
+      }
+
+      function formatBytes(bytes) {
+        if (!bytes || bytes === 0) return '0 B';
+        if (bytes < 1024) return bytes + ' B';
+        return (bytes / 1024).toFixed(2) + ' KB';
+      }
+
+      const exampleHTML = '<!DOCTYPE html>\n<html lang="en">\n  <head>\n    <meta charset="UTF-8">\n    <title>Website Launch Page</title>\n    <!-- Stylesheet and inline styling -->\n    <style>\n      body {\n        margin: 0;\n        font-family: sans-serif;\n        line-height: 1.6;\n      }\n      .card {\n        padding: 24px;\n        background: #ffffff;\n      }\n    </style>\n  </head>\n  <body>\n    <!-- Main header section -->\n    <header class="header">\n      <div class="container">\n        <h1>Welcome to Toolyard</h1>\n        <p>Your suite of free client-side developer utilities.</p>\n      </div>\n    </header>\n\n    <pre>\n      Preserved code block\n      Spacing here will NOT be damaged!\n    </pre>\n\n    <script>\n      // JavaScript comments and whitespace inside scripts\n      const appName = "Toolyard";\n      console.log("Welcome to " + appName);\n    <\/script>\n  </body>\n</html>';
+
+      // 3. Bind UI & Calculator Elements
+      const inputEl = document.getElementById('minifierInput');
+      const outputEl = document.getElementById('minifierOutput');
+      const removeCommentsCb = document.getElementById('removeComments');
+      const collapseWhitespaceCb = document.getElementById('collapseWhitespace');
+      const minifyBtn = document.getElementById('minifyBtn');
+      const clearBtn = document.getElementById('clearBtn');
+      const exampleBtn = document.getElementById('exampleBtn');
+      const copyBtn = document.getElementById('copyBtn');
+      const downloadBtn = document.getElementById('downloadBtn');
+
+      const origSizeEl = document.getElementById('origSize');
+      const minSizeEl = document.getElementById('minSize');
+      const reductionEl = document.getElementById('reduction');
+
+      function runMinify() {
+        if (!inputEl || !outputEl) return;
+        const source = inputEl.value || '';
+        
+        if (!source.trim()) {
+          outputEl.textContent = '';
+          outputEl.classList.add('empty');
+          outputEl.innerHTML = '<em>Minified output will appear here...</em>';
+          if (origSizeEl) origSizeEl.textContent = '0 B';
+          if (minSizeEl) minSizeEl.textContent = '0 B';
+          if (reductionEl) reductionEl.textContent = '0% saved';
+          return;
+        }
+
+        const options = {
+          removeComments: removeCommentsCb ? removeCommentsCb.checked : true,
+          collapseWhitespace: collapseWhitespaceCb ? collapseWhitespaceCb.checked : true
+        };
+
+        const minified = minifyHTML(source, options);
+        outputEl.textContent = minified;
+        outputEl.classList.remove('empty');
+
+        const origBytes = new Blob([source]).size;
+        const minBytes = new Blob([minified]).size;
+        const savedBytes = origBytes - minBytes;
+        const percent = origBytes > 0 ? Math.max(0, ((savedBytes / origBytes) * 100)).toFixed(1) : '0';
+
+        if (origSizeEl) origSizeEl.textContent = formatBytes(origBytes);
+        if (minSizeEl) minSizeEl.textContent = formatBytes(minBytes);
+        if (reductionEl) {
+          reductionEl.textContent = percent + '% saved (' + formatBytes(Math.max(0, savedBytes)) + ')';
+        }
+      }
+
+      // ONLY trigger minification when the button is clicked
+      if (minifyBtn) {
+        minifyBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          runMinify();
+        });
+      }
+
+      // Clear button: resets both input and output
+      if (clearBtn) {
+        clearBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          if (inputEl) inputEl.value = '';
+          if (outputEl) {
+            outputEl.textContent = '';
+            outputEl.classList.add('empty');
+            outputEl.innerHTML = '<em>Minified output will appear here...</em>';
+          }
+          if (origSizeEl) origSizeEl.textContent = '0 B';
+          if (minSizeEl) minSizeEl.textContent = '0 B';
+          if (reductionEl) reductionEl.textContent = '0% saved';
+          if (inputEl) inputEl.focus();
+        });
+      }
+
+      // Load Example: puts sample in input and waits for user to click Minify HTML
+      if (exampleBtn) {
+        exampleBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          if (inputEl) {
+            inputEl.value = exampleHTML;
+            if (outputEl) {
+              outputEl.textContent = '';
+              outputEl.classList.add('empty');
+              outputEl.innerHTML = '<em>Minified output will appear here...</em>';
+            }
+            if (origSizeEl) origSizeEl.textContent = '0 B';
+            if (minSizeEl) minSizeEl.textContent = '0 B';
+            if (reductionEl) reductionEl.textContent = '0% saved';
+            inputEl.focus();
+          }
+        });
+      }
+
+      // Copy to Clipboard
+      if (copyBtn) {
+        copyBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          const text = outputEl ? outputEl.textContent : '';
+          if (!text || (outputEl && outputEl.classList.contains('empty'))) return;
+
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(function() {
+              const orig = copyBtn.textContent;
+              copyBtn.textContent = 'Copied!';
+              setTimeout(function() { copyBtn.textContent = orig; }, 1500);
+            }).catch(function() {
+              fallbackCopy(text);
+            });
+          } else {
+            fallbackCopy(text);
+          }
+        });
+      }
+
+      function fallbackCopy(text) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+          document.execCommand('copy');
+          const orig = copyBtn.textContent;
+          copyBtn.textContent = 'Copied!';
+          setTimeout(function() { copyBtn.textContent = orig; }, 1500);
+        } catch (err) {}
+        document.body.removeChild(ta);
+      }
+
+      // Download Output
+      if (downloadBtn) {
+        downloadBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          const text = outputEl ? outputEl.textContent : '';
+          if (!text || (outputEl && outputEl.classList.contains('empty'))) return;
+          const blob = new Blob([text], { type: 'text/html;charset=utf-8' });
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = 'minified.html';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

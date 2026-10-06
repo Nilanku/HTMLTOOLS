@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unix Timestamp Converter – Epoch to Date &amp; Date to Timestamp Online | Toolyard</title>
+  <meta name="description" content="Free Unix timestamp converter. Convert epoch seconds, milliseconds, microseconds or nanoseconds to a human date in any time zone, and dates back to Unix time. Live current timestamp and bulk conversion.">
+  <link rel="canonical" href="https://htmltools.nilankubaruah.workers.dev/tools/developer/unix-timestamp-converter.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Unix Timestamp Converter – Epoch to Date &amp; Date to Timestamp Online">
+  <meta property="og:description" content="Free Unix timestamp converter. Convert epoch seconds, milliseconds, microseconds or nanoseconds to a human date in any time zone, and dates back to Unix time. Live current timestamp and bulk conversion.">
+  <meta property="og:url" content="https://htmltools.nilankubaruah.workers.dev/tools/developer/unix-timestamp-converter.html">
+  <meta name="twitter:card" content="summary">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/tools.css">
+  <script src="/js/tools-data.js"></script>
+  <script src="/js/layout.js"></script>
+  <script src="/js/tool-kit.js"></script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Unix Timestamp Converter", "url": "https://htmltools.nilankubaruah.workers.dev/tools/developer/unix-timestamp-converter.html", "applicationCategory": "DeveloperApplication", "operatingSystem": "Any (runs in your browser)", "description": "Free Unix timestamp converter. Convert epoch seconds, milliseconds, microseconds or nanoseconds to a human date in any time zone, and dates back to Unix time. Live current timestamp and bulk conversion.", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How do I know if a timestamp is in seconds or milliseconds?", "acceptedAnswer": {"@type": "Answer", "text": "Count the digits. Current timestamps in seconds have 10 digits (e.g. 1767225600); in milliseconds they have 13 (1767225600000). Microseconds have 16 and nanoseconds 19. This tool detects it automatically, and you can override the unit."}}, {"@type": "Question", "name": "What is the Year 2038 problem?", "acceptedAnswer": {"@type": "Answer", "text": "Systems that store Unix time as a signed 32-bit integer overflow on 19 January 2038 at 03:14:07 UTC (timestamp 2147483647) and wrap to 1901. Modern systems use 64-bit integers, which last for billions of years — but old embedded devices and databases may still be affected."}}, {"@type": "Question", "name": "Does a Unix timestamp have a time zone?", "acceptedAnswer": {"@type": "Answer", "text": "No. A timestamp identifies the same instant everywhere on Earth; it is always relative to UTC. The time zone only matters when you display it as a calendar date and clock time."}}, {"@type": "Question", "name": "Do Unix timestamps include leap seconds?", "acceptedAnswer": {"@type": "Answer", "text": "No. Unix time assumes every day has exactly 86,400 seconds, so leap seconds are not counted. That's why converting is simple arithmetic."}}, {"@type": "Question", "name": "Can a Unix timestamp be negative?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Negative values are dates before 1 January 1970, for example −86400 is 31 December 1969."}}, {"@type": "Question", "name": "Why does my converted date look one hour off?", "acceptedAnswer": {"@type": "Answer", "text": "Usually daylight saving time or a zone mismatch. Make sure the time zone selector matches the zone you expect; this tool applies the correct DST rules for the date being converted."}}, {"@type": "Question", "name": "What happens to dates that don't exist because of DST?", "acceptedAnswer": {"@type": "Answer", "text": "When clocks jump forward (for example 02:30 on the spring-forward night), that local time never happens. The converter tells you and shows the nearest valid moment."}}]}</script>
+</head>
+<body class="ty-tool" data-tool="unix-timestamp-converter">
+
+  <!-- SHARED HEADER, MOBILE MENU & BREADCRUMBS (rendered by /js/layout.js) -->
+  <div id="site-header"></div>
+  <div id="site-breadcrumbs"></div>
+
+  <main>
+  <!-- TOOL INTRO -->
+  <section class="tool-intro">
+    <div class="wrap tool-intro-content">
+      <span class="eyebrow">⌨ DEVELOPER · TIME</span>
+      <h1>Unix Timestamp Converter</h1>
+      <p class="lead">Convert Unix epoch timestamps to readable dates and back. Auto-detects seconds, milliseconds, microseconds and nanoseconds, supports every time zone and converts whole lists at once.</p>
+      <div class="tool-meta-badge"><span class="dot"></span> Auto-detects s / ms / µs / ns · All IANA time zones · Bulk mode</div>
+    </div>
+  </section>
+
+  <!-- WORKSPACE -->
+  <section class="tool-app-section">
+    <div class="wrap">
+      <div class="ty-pair"><span>Working in JavaScript? See the JS Timestamp Converter.</span><span>Need to generate timestamps? <a href="/categories/developer/#unix-timestamp-generator">Unix Timestamp Generator (coming soon)</a></span></div>
+      <div class="tool-workspace">
+        <div class="tool-toolbar">
+          <div class="tool-toolbar-left">
+            <span class="ty-opt" style="gap:8px;"><span class="lbl" style="font-weight:600;">Time zone</span>
+              <select id="tz" class="ty-input" style="width:auto; max-width:260px; padding:6px 10px;" aria-label="Time zone for display and input"></select>
+            </span>
+          </div>
+          <div class="tool-toolbar-right">
+            <button type="button" class="btn btn-ghost btn-sm" id="exampleBtn">Load Example</button>
+            <button type="button" class="btn btn-danger btn-sm" id="clearBtn">Clear</button>
+          </div>
+        </div>
+
+        <div class="ty-statgrid" aria-live="off">
+          <div class="ty-stat hl"><b id="nowS">–</b><span>Unix seconds now · <button type="button" class="btn btn-sm btn-ghost" id="copyNowS" style="padding:0 6px; font-size:11px;">Copy</button></span></div>
+          <div class="ty-stat"><b id="nowMs">–</b><span>Milliseconds now · <button type="button" class="btn btn-sm btn-ghost" id="copyNowMs" style="padding:0 6px; font-size:11px;">Copy</button></span></div>
+          <div class="ty-stat"><b id="nowIso" style="font-size:17px; line-height:1.6;">–</b><span>Current time in selected zone</span></div>
+        </div>
+
+        <div class="tool-grid">
+          <div class="tool-pane">
+            <div class="tool-pane-header"><span class="title">Timestamp → Date</span><span class="badge" id="unitBadge">Auto</span></div>
+            <div class="ty-form" style="min-height:0; flex:0 0 auto;">
+              <div class="ty-row">
+                <div class="ty-field">
+                  <label for="tsIn">Unix timestamp</label>
+                  <input type="text" id="tsIn" class="ty-input ty-mono" placeholder="e.g. 1767225600" inputmode="numeric" autocomplete="off" spellcheck="false">
+                </div>
+                <div class="ty-field">
+                  <label for="unit">Unit</label>
+                  <select id="unit" class="ty-input">
+                    <option value="auto">Auto-detect</option>
+                    <option value="s">Seconds</option>
+                    <option value="ms">Milliseconds</option>
+                    <option value="us">Microseconds</option>
+                    <option value="ns">Nanoseconds</option>
+                  </select>
+                </div>
+              </div>
+              <div class="hint" id="tsHint" style="font-size:12px; color:var(--ink-soft);">Also accepts date strings such as 2026-01-01T00:00:00Z.</div>
+            </div>
+            <div class="ty-scroll" style="min-height:0;"><table class="ty-table"><tbody id="tsBody"></tbody></table></div>
+          </div>
+          <div class="tool-pane">
+            <div class="tool-pane-header"><span class="title">Date → Timestamp</span>
+              <div class="actions"><button type="button" class="btn btn-sm btn-outline" id="nowBtn">Now</button></div>
+            </div>
+            <div class="ty-form" style="min-height:0; flex:0 0 auto;">
+              <div class="ty-field">
+                <label for="dtIn">Date &amp; time <span class="cnt" id="dtZone">in selected zone</span></label>
+                <input type="datetime-local" id="dtIn" class="ty-input" step="1">
+              </div>
+              <div class="hint" id="dtHint" style="font-size:12px; color:var(--ink-soft);">Interpreted in the time zone chosen above.</div>
+            </div>
+            <div class="ty-scroll" style="min-height:0;"><table class="ty-table"><tbody id="dtBody"></tbody></table></div>
+          </div>
+        </div>
+
+        <div class="tool-grid" style="border-top:1px solid var(--line);">
+          <div class="tool-pane">
+            <div class="tool-pane-header"><span class="title">Bulk convert</span><span class="badge">One per line</span></div>
+            <textarea id="bulkIn" class="tool-textarea ty-mono" style="min-height:180px;" placeholder="Paste many timestamps, one per line (log files, CSV columns, DB exports)…" spellcheck="false" aria-label="Timestamps to convert, one per line"></textarea>
+          </div>
+          <div class="tool-pane">
+            <div class="tool-pane-header"><span class="title">Results</span>
+              <div class="actions">
+                <button type="button" class="btn btn-sm btn-outline" id="copyBulk">Copy</button>
+                <button type="button" class="btn btn-sm btn-ghost" id="dlBulk">Download .csv</button>
+              </div>
+            </div>
+            <textarea id="bulkOut" class="tool-textarea ty-mono is-empty" style="min-height:180px;" readonly placeholder="timestamp, ISO 8601 (UTC), date in selected zone" aria-label="Bulk results"></textarea>
+            <div class="ty-note" id="bulkNote" hidden></div>
+          </div>
+        </div>
+        <p class="ty-alert" id="tsStatus" role="status" aria-live="polite" hidden></p>
+
+        <div class="tool-stats-bar">
+          <div class="tool-stats-items">
+            <div class="tool-stat-badge">Zone: <b id="stZone">–</b></div>
+            <div class="tool-stat-badge">Offset: <b id="stOff">–</b></div>
+            <div class="tool-stat-badge">Bulk lines: <b id="stLines">0</b></div>
+          </div>
+          <div>Intl API · IANA tz database · 100% Client-Side</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. ABOUT -->
+  <section class="ty-sec">
+    <div class="wrap">
+      <span class="eyebrow">◆ ABOUT THIS TOOL</span>
+      <h2>What Is a Unix Timestamp?</h2>
+      <p class="sub">The number of seconds since 1 January 1970, 00:00:00 UTC — the clock computers agree on.</p>
+      <div class="about-grid">
+        <div><p>A Unix timestamp (also called epoch time or POSIX time) counts the seconds elapsed since the <strong>Unix epoch</strong>, 1970-01-01T00:00:00Z, ignoring leap seconds. <code>0</code> is the epoch itself, <code>1767225600</code> is 1 January 2026 at midnight UTC, and negative values are dates before 1970.</p><p>Because it is a single number with no time zone, it is perfect for storing and comparing moments in databases, logs, APIs, JWT <code>exp</code>/<code>iat</code> claims and cookies. You convert it to local time only when showing it to a person.</p></div>
+        <div><p>Different systems use different units: Unix, PHP, Python and most databases use <strong>seconds</strong> (10 digits today); JavaScript and Java use <strong>milliseconds</strong> (13 digits); some APIs and Go use <strong>micro-</strong> or <strong>nanoseconds</strong> (16 or 19 digits). This converter detects the unit from the number of digits.</p><p>Time zones come from your browser's built-in IANA database, so daylight saving time is handled correctly for any date in any zone.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. REFERENCE -->
+  <section class="ty-sec alt">
+    <div class="wrap">
+      <span class="eyebrow">&lt;/&gt; CODE</span>
+      <h2>Get &amp; Convert Timestamps in Your Language</h2>
+      <p class="sub">Copy-paste snippets for the current Unix time (seconds) and back to a date.</p>
+      <div class="ty-ref-wrap">
+        <table class="ty-ref-table">
+          <thead><tr><th>Language</th><th>Current timestamp</th><th>Timestamp → date</th></tr></thead>
+          <tbody>
+            <tr><td>JavaScript</td><td><code>Math.floor(Date.now() / 1000)</code></td><td><code>new Date(ts * 1000).toISOString()</code></td></tr>
+            <tr><td>Python</td><td><code>int(time.time())</code></td><td><code>datetime.fromtimestamp(ts, tz=timezone.utc)</code></td></tr>
+            <tr><td>PHP</td><td><code>time()</code></td><td><code>date('c', $ts)</code></td></tr>
+            <tr><td>Go</td><td><code>time.Now().Unix()</code></td><td><code>time.Unix(ts, 0).UTC()</code></td></tr>
+            <tr><td>Java</td><td><code>Instant.now().getEpochSecond()</code></td><td><code>Instant.ofEpochSecond(ts)</code></td></tr>
+            <tr><td>C#</td><td><code>DateTimeOffset.UtcNow.ToUnixTimeSeconds()</code></td><td><code>DateTimeOffset.FromUnixTimeSeconds(ts)</code></td></tr>
+            <tr><td>MySQL</td><td><code>UNIX_TIMESTAMP()</code></td><td><code>FROM_UNIXTIME(ts)</code></td></tr>
+            <tr><td>PostgreSQL</td><td><code>extract(epoch from now())::bigint</code></td><td><code>to_timestamp(ts)</code></td></tr>
+            <tr><td>Bash</td><td><code>date +%s</code></td><td><code>date -u -d @ts</code> (macOS: <code>date -u -r ts</code>)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. HOW TO USE -->
+  <section class="how-sec section-navy">
+    <div class="wrap">
+      <span class="eyebrow">◐ THREE STEPS</span>
+      <h2>How to Use the Unix Timestamp Converter</h2>
+      <p class="sub">Get your result in under ten seconds.</p>
+      <div class="steps">
+        <div class="step" data-n="01">
+          <div class="num">1</div>
+          <h3 style="color:#fff;">Paste a timestamp</h3>
+          <p>Enter seconds, milliseconds, microseconds or nanoseconds — the unit is detected automatically, negatives included.</p>
+        </div>
+        <div class="step" data-n="02">
+          <div class="num">2</div>
+          <h3 style="color:#fff;">Pick a time zone</h3>
+          <p>See the moment in UTC, your local zone or any of the 400+ IANA zones, plus ISO 8601, RFC 2822 and relative time.</p>
+        </div>
+        <div class="step" data-n="03">
+          <div class="num">3</div>
+          <h3 style="color:#fff;">Convert back or in bulk</h3>
+          <p>Choose a date and time to get its timestamp, or paste a whole column of timestamps to convert them all at once.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. FEATURES -->
+  <section class="ty-sec">
+    <div class="wrap">
+      <span class="eyebrow">✓ FEATURES</span>
+      <h2>Why Use the Toolyard Unix Timestamp Converter</h2>
+      <p class="sub">Fast, accurate and private — built for developers.</p>
+      <div class="why-grid">
+        <div><div class="why-ico">🎯</div><h3>Smart unit detection</h3><p>10, 13, 16 and 19-digit timestamps are recognised as s, ms, µs and ns — no more dates in the year 55,000.</p></div>
+        <div><div class="why-ico">🌍</div><h3>Every time zone</h3><p>Uses the IANA database built into your browser, including daylight saving rules for past and future dates.</p></div>
+        <div><div class="why-ico">⏱</div><h3>Live epoch clock</h3><p>The current Unix time in seconds and milliseconds, one click to copy.</p></div>
+        <div><div class="why-ico">📋</div><h3>Bulk conversion</h3><p>Convert thousands of timestamps from logs or CSV exports and download the result as CSV.</p></div>
+        <div><div class="why-ico">🧾</div><h3>Every format</h3><p>ISO 8601, RFC 2822, UTC, local, relative time, day of year and ISO week number.</p></div>
+        <div><div class="why-ico">🔒</div><h3>Private &amp; offline</h3><p>All conversion happens in your browser. Nothing is sent to a server.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. FAQ -->
+  <section class="ty-sec alt">
+    <div class="wrap">
+      <div style="text-align:center; margin-bottom:36px;">
+        <span class="eyebrow">FAQ</span>
+        <h2 style="font-size:28px; margin-top:12px;">Frequently Asked Questions</h2>
+      </div>
+      <div class="faq" id="faqList">
+        <div class="faq-item">
+          <button type="button">How do I know if a timestamp is in seconds or milliseconds?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Count the digits. Current timestamps in seconds have 10 digits (e.g. 1767225600); in milliseconds they have 13 (1767225600000). Microseconds have 16 and nanoseconds 19. This tool detects it automatically, and you can override the unit.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">What is the Year 2038 problem?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Systems that store Unix time as a signed 32-bit integer overflow on 19 January 2038 at 03:14:07 UTC (timestamp 2147483647) and wrap to 1901. Modern systems use 64-bit integers, which last for billions of years — but old embedded devices and databases may still be affected.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Does a Unix timestamp have a time zone?<span class="plus">+</span></button>
+          <div class="faq-a"><p>No. A timestamp identifies the same instant everywhere on Earth; it is always relative to UTC. The time zone only matters when you display it as a calendar date and clock time.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Do Unix timestamps include leap seconds?<span class="plus">+</span></button>
+          <div class="faq-a"><p>No. Unix time assumes every day has exactly 86,400 seconds, so leap seconds are not counted. That's why converting is simple arithmetic.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Can a Unix timestamp be negative?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Yes. Negative values are dates before 1 January 1970, for example −86400 is 31 December 1969.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Why does my converted date look one hour off?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Usually daylight saving time or a zone mismatch. Make sure the time zone selector matches the zone you expect; this tool applies the correct DST rules for the date being converted.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">What happens to dates that don&#x27;t exist because of DST?<span class="plus">+</span></button>
+          <div class="faq-a"><p>When clocks jump forward (for example 02:30 on the spring-forward night), that local time never happens. The converter tells you and shows the nearest valid moment.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. RELATED -->
+  <section class="related-tools-section">
+    <div class="wrap">
+      <div class="section-head" style="margin-bottom:28px;">
+        <div>
+          <span class="eyebrow" style="margin-bottom:12px; display:inline-flex;">📎 RELATED</span>
+          <h2 style="font-size:26px; margin:12px 0 6px;">Related Developer Tools</h2>
+          <p class="desc" style="margin:0;">More free utilities that pair well with this one.</p>
+        </div>
+        <a class="view-all" href="/categories/developer/">All Developer Tools →</a>
+      </div>
+      <div class="grid grid-3">
+        <a class="tool-card is-soon" href="/categories/developer/#unix-timestamp-generator">
+          <div class="top-row"><span class="badge">Generator</span><span class="status-pill status-soon">Coming soon</span></div>
+          <h3>Unix Timestamp Generator</h3>
+          <p>Get the current or a custom Unix timestamp.</p>
+          <span class="open ty-soon-label">Coming soon</span>
+        </a>
+        <a class="tool-card is-soon" href="/categories/javascript/#js-timestamp-converter">
+          <div class="top-row"><span class="badge">Converter</span><span class="status-pill status-soon">Coming soon</span></div>
+          <h3>JS Timestamp Converter</h3>
+          <p>Convert Date.now() milliseconds to readable dates.</p>
+          <span class="open ty-soon-label">Coming soon</span>
+        </a>
+        <a class="tool-card" href="/tools/developer/uuid-generator.html">
+          <div class="top-row"><span class="badge">Generator</span></div>
+          <h3>UUID Generator</h3>
+          <p>Generate random v4 UUIDs in bulk.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/developer/jwt-decoder.html">
+          <div class="top-row"><span class="badge">Decoder</span></div>
+          <h3>JWT Decoder</h3>
+          <p>Decode JWT payloads and inspect claims and expiry.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card is-soon" href="/categories/developer/#cron-expression-generator">
+          <div class="top-row"><span class="badge">Generator</span><span class="status-pill status-soon">Coming soon</span></div>
+          <h3>Cron Expression Generator</h3>
+          <p>Build and explain cron schedules visually.</p>
+          <span class="open ty-soon-label">Coming soon</span>
+        </a>
+        <a class="tool-card" href="/tools/developer/sha-256-hash-generator.html">
+          <div class="top-row"><span class="badge">Generator</span></div>
+          <h3>SHA-256 Hash Generator</h3>
+          <p>Generate SHA-256 hashes from text.</p>
+          <span class="open">Open tool →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <!-- SHARED FOOTER (rendered by /js/layout.js) -->
+  <div id="site-footer"></div>
+
+  <script>
+  (function () {
+    'use strict';
+    var $ = TK.$;
+    TK.initFaq(document.getElementById('faqList'));
+
+    var tzSel = $('tz'), tsIn = $('tsIn'), unitSel = $('unit'), dtIn = $('dtIn'), statusEl = $('tsStatus');
+    var bulkIn = $('bulkIn'), bulkOut = $('bulkOut');
+    // Chrome's ICU still reports some legacy zone names (e.g. Asia/Calcutta) — show the current official names
+    var ALIAS = { 'Asia/Calcutta': 'Asia/Kolkata', 'Asia/Katmandu': 'Asia/Kathmandu', 'Asia/Saigon': 'Asia/Ho_Chi_Minh', 'Asia/Rangoon': 'Asia/Yangon',
+      'Asia/Dacca': 'Asia/Dhaka', 'Asia/Thimbu': 'Asia/Thimphu', 'Asia/Ulan_Bator': 'Asia/Ulaanbaatar', 'Asia/Macao': 'Asia/Macau', 'Asia/Ujung_Pandang': 'Asia/Makassar',
+      'Europe/Kiev': 'Europe/Kyiv', 'Atlantic/Faeroe': 'Atlantic/Faroe', 'America/Godthab': 'America/Nuuk', 'Africa/Asmera': 'Africa/Asmara',
+      'Pacific/Enderbury': 'Pacific/Kanton', 'Pacific/Truk': 'Pacific/Chuuk', 'Pacific/Ponape': 'Pacific/Pohnpei', 'America/Buenos_Aires': 'America/Argentina/Buenos_Aires',
+      'America/Indianapolis': 'America/Indiana/Indianapolis', 'America/Louisville': 'America/Kentucky/Louisville', 'America/Catamarca': 'America/Argentina/Catamarca',
+      'America/Cordoba': 'America/Argentina/Cordoba', 'America/Jujuy': 'America/Argentina/Jujuy', 'America/Mendoza': 'America/Argentina/Mendoza', 'Etc/UTC': 'UTC', 'Etc/GMT': 'UTC' };
+    function modern(z) {
+      var m = ALIAS[z]; if (!m) return z;
+      try { new Intl.DateTimeFormat('en-US', { timeZone: m }); return m; } catch (e) { return z; }
+    }
+    var LOCAL = modern((Intl.DateTimeFormat().resolvedOptions().timeZone) || 'UTC');
+    var MAX_MS = 8.64e15, fmtCache = {};
+
+    // ---- time zone helpers ----
+    (function fillZones() {
+      var zones = [];
+      try { zones = Intl.supportedValuesOf('timeZone'); } catch (e) {
+        zones = ['UTC', 'Europe/London', 'Europe/Berlin', 'Europe/Paris', 'America/New_York', 'America/Chicago', 'America/Denver', 'America/Los_Angeles', 'America/Sao_Paulo', 'Asia/Kolkata', 'Asia/Dubai', 'Asia/Singapore', 'Asia/Shanghai', 'Asia/Tokyo', 'Australia/Sydney', 'Pacific/Auckland'];
+      }
+      var frag = document.createDocumentFragment();
+      function opt(v, label) { var o = document.createElement('option'); o.value = v; o.textContent = label; frag.appendChild(o); }
+      opt(LOCAL, 'Local — ' + LOCAL.replace(/_/g, ' '));
+      if (LOCAL !== 'UTC') opt('UTC', 'UTC');
+      var seen = {}; seen[LOCAL] = seen.UTC = 1;
+      zones.map(modern).sort().forEach(function (z) { if (!seen[z]) { seen[z] = 1; opt(z, z.replace(/_/g, ' ')); } });
+      tzSel.appendChild(frag); tzSel.value = LOCAL;
+    })();
+    function partsFmt(tz) {
+      return fmtCache[tz] || (fmtCache[tz] = new Intl.DateTimeFormat('en-US', { timeZone: tz, hourCycle: 'h23', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', era: 'short' }));
+    }
+    function wall(ms, tz) {   // calendar fields of instant ms in zone tz
+      var p = {}; partsFmt(tz).formatToParts(new Date(ms)).forEach(function (x) { p[x.type] = x.value; });
+      var y = +p.year; if (p.era === 'BC' || p.era === 'B') y = 1 - y;
+      return { y: y, mo: +p.month, d: +p.day, h: +p.hour % 24, mi: +p.minute, s: +p.second };
+    }
+    function utcOf(w, msPart) { var d = new Date(0); d.setUTCFullYear(w.y, w.mo - 1, w.d); d.setUTCHours(w.h, w.mi, w.s, msPart || 0); return d.getTime(); }
+    function offsetMin(ms, tz) { var fl = Math.floor(ms / 1000) * 1000; return Math.round((utcOf(wall(fl, tz)) - fl) / 60000); }
+    function offStr(min, colon) { var s = min < 0 ? '-' : '+', a = Math.abs(min); return s + String(Math.floor(a / 60)).padStart(2, '0') + (colon === false ? '' : ':') + String(a % 60).padStart(2, '0'); }
+    function pad(n, l) { return String(n).padStart(l || 2, '0'); }
+    function yr(y) { return y < 0 ? '-' + pad(-y, 6) : y > 9999 ? '+' + pad(y, 6) : pad(y, 4); }
+    var DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var DAYS_FULL = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+    function isoIn(ms, tz) {   // ISO 8601 with the zone's offset
+      var w = wall(ms, tz), off = offsetMin(ms, tz), frac = ((ms % 1000) + 1000) % 1000;
+      return yr(w.y) + '-' + pad(w.mo) + '-' + pad(w.d) + 'T' + pad(w.h) + ':' + pad(w.mi) + ':' + pad(w.s) + (frac ? '.' + pad(frac, 3) : '') + (off === 0 && tz === 'UTC' ? 'Z' : offStr(off));
+    }
+    function human(ms, tz) {
+      var w = wall(ms, tz), dow = new Date(utcOf(w)).getUTCDay();
+      return DAYS_FULL[dow] + ', ' + w.d + ' ' + MON[w.mo - 1] + ' ' + w.y + ', ' + pad(w.h) + ':' + pad(w.mi) + ':' + pad(w.s) + ' (UTC' + offStr(offsetMin(ms, tz)) + ')';
+    }
+    function rfc2822(ms, tz) {
+      var w = wall(ms, tz), dow = new Date(utcOf(w)).getUTCDay();
+      return DAYS[dow] + ', ' + pad(w.d) + ' ' + MON[w.mo - 1] + ' ' + w.y + ' ' + pad(w.h) + ':' + pad(w.mi) + ':' + pad(w.s) + ' ' + offStr(offsetMin(ms, tz), false);
+    }
+    var rtf = Intl.RelativeTimeFormat ? new Intl.RelativeTimeFormat('en', { numeric: 'auto' }) : null;
+    function relative(ms) {
+      var diff = (ms - Date.now()) / 1000, a = Math.abs(diff);
+      var u = a < 60 ? ['second', 1] : a < 3600 ? ['minute', 60] : a < 86400 ? ['hour', 3600] : a < 2629800 ? ['day', 86400] : a < 31557600 ? ['month', 2629800] : ['year', 31557600];
+      var v = Math.round(diff / u[1]);
+      return rtf ? rtf.format(v, u[0]) : (v + ' ' + u[0] + 's');
+    }
+    function calendarInfo(ms, tz) {
+      var w = wall(ms, tz), d = new Date(utcOf(w));
+      d.setUTCHours(0, 0, 0, 0);
+      var jan1 = new Date(d); jan1.setUTCMonth(0, 1);
+      var doy = Math.round((d - jan1) / 86400000) + 1;
+      var t = new Date(d); t.setUTCDate(t.getUTCDate() + 3 - ((t.getUTCDay() + 6) % 7));   // Thursday of this ISO week
+      var wy = t.getUTCFullYear(), w1 = new Date(t); w1.setUTCMonth(0, 4);
+      var week = 1 + Math.round(((t - w1) / 86400000 - 3 + ((w1.getUTCDay() + 6) % 7)) / 7);
+      return DAYS_FULL[d.getUTCDay()] + ' · day ' + doy + ' of ' + w.y + ' · ISO week ' + wy + '-W' + pad(week);
+    }
+
+    // ---- result tables with per-row copy ----
+    function table(body, rows) {
+      body.replaceChildren();
+      rows.forEach(function (r) {
+        var tr = document.createElement('tr'), a = document.createElement('td'), b = document.createElement('td'), c = document.createElement('td');
+        a.textContent = r[0]; a.style.cssText = 'width:1%; white-space:nowrap; color:var(--ink-soft); font-size:12.5px;';
+        b.textContent = r[1]; b.style.cssText = 'font-family:"IBM Plex Mono",monospace; font-size:12.5px; word-break:break-word;';
+        if (r[2]) b.style.color = 'var(--error)';
+        c.style.cssText = 'width:1%; text-align:right;';
+        if (r[1] && !r[2] && r[3] !== false) {
+          var btn = document.createElement('button'); btn.type = 'button'; btn.className = 'btn btn-sm btn-ghost'; btn.textContent = 'Copy';
+          btn.style.cssText = 'padding:2px 8px; font-size:11px;'; btn.setAttribute('data-copy', r[1]); c.appendChild(btn);
+        }
+        tr.append(a, b, c); body.appendChild(tr);
+      });
+    }
+    function copyDelegate(e) { var b = e.target.closest('button[data-copy]'); if (b) TK.copy(b.getAttribute('data-copy'), b); }
+    $('tsBody').addEventListener('click', copyDelegate); $('dtBody').addEventListener('click', copyDelegate);
+
+    // ---- parse a timestamp string to {ms, unit} ----
+    function detectUnit(intDigits) { return intDigits <= 11 ? 's' : intDigits <= 14 ? 'ms' : intDigits <= 17 ? 'us' : 'ns'; }
+    var FACTOR = { s: 1000, ms: 1, us: 0.001, ns: 0.000001 }, UNIT_NAME = { s: 'Seconds', ms: 'Milliseconds', us: 'Microseconds', ns: 'Nanoseconds' };
+    function parseTs(raw, unitPref) {
+      var s = raw.trim().replace(/[_,\s](?=\d)/g, '');
+      if (!s) return null;
+      var m = /^([+-]?)(\d+)(?:\.(\d+))?$/.exec(s);
+      if (!m) {
+        var d = Date.parse(raw.trim());
+        if (isNaN(d)) return { error: 'Not a number or a recognisable date.' };
+        return { ms: d, unit: 'date' };
+      }
+      var intPart = m[2].replace(/^0+(?=\d)/, ''), unit = unitPref === 'auto' ? detectUnit(intPart.length) : unitPref;
+      var ms;
+      if (unit === 'us' || unit === 'ns') {   // BigInt keeps precision for 16–19 digit values
+        var big = BigInt(m[2]), div = unit === 'us' ? 1000n : 1000000n;
+        ms = Number(big / div) + Number(big % div) / Number(div) + (m[3] ? Number('0.' + m[3]) / Number(div) : 0);
+      } else ms = Number(m[2] + (m[3] ? '.' + m[3] : '')) * FACTOR[unit];
+      if (m[1] === '-') ms = -ms;
+      if (!isFinite(ms) || Math.abs(ms) > MAX_MS) return { error: 'Out of range — JavaScript dates support ±8.64 × 10¹⁵ ms (about ±275,000 years).' };
+      return { ms: Math.floor(ms), unit: unit, frac: ms - Math.floor(ms) };
+    }
+
+    function convertTs() {
+      var tz = tzSel.value, raw = tsIn.value;
+      $('tsHint').className = 'hint'; $('tsHint').textContent = 'Also accepts date strings such as 2026-01-01T00:00:00Z.';
+      var r = parseTs(raw, unitSel.value);
+      if (!r) { $('unitBadge').textContent = 'Auto'; table($('tsBody'), []); return; }
+      if (r.error) { $('unitBadge').textContent = '—'; table($('tsBody'), [['Error', r.error, true]]); return; }
+      $('unitBadge').textContent = r.unit === 'date' ? 'Date string' : UNIT_NAME[r.unit] + (unitSel.value === 'auto' ? ' (auto)' : '');
+      var ms = r.ms, rows = [
+        ['In ' + (tz === LOCAL ? 'local zone' : tz.replace(/_/g, ' ')), human(ms, tz)],
+        ['UTC', human(ms, 'UTC')],
+        ['ISO 8601 (UTC)', isoIn(ms, 'UTC')],
+        ['ISO 8601 (zone)', isoIn(ms, tz)],
+        ['RFC 2822', rfc2822(ms, tz)],
+        ['Relative', relative(ms), false, false],
+        ['Calendar', calendarInfo(ms, tz), false, false],
+        ['Unix seconds', String(Math.floor(ms / 1000))],
+        ['Milliseconds', String(ms)]
+      ];
+      if (Math.abs(ms / 1000) > 2147483647) rows.push(['Note', 'Beyond the signed 32-bit range (Year 2038 problem) — needs 64-bit storage.', false, false]);
+      table($('tsBody'), rows);
+    }
+
+    // ---- date in zone -> timestamp (two-pass offset, detects DST gaps) ----
+    function convertDt() {
+      var tz = tzSel.value, v = dtIn.value;
+      $('dtHint').className = 'hint'; $('dtHint').textContent = 'Interpreted in the time zone chosen above.';
+      if (!v) { table($('dtBody'), []); return; }
+      var m = /^(-?\d{4,6})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2})(?:\.(\d{1,3}))?)?$/.exec(v);
+      if (!m) { table($('dtBody'), [['Error', 'Enter a complete date and time.', true]]); return; }
+      var w = { y: +m[1], mo: +m[2], d: +m[3], h: +m[4], mi: +m[5], s: +(m[6] || 0) }, msPart = m[7] ? +(m[7] + '00').slice(0, 3) : 0;
+      var asUtc = utcOf(w, msPart);
+      // Candidate offsets: the zone's offset a day before and a day after. A wall time is valid for an offset
+      // if converting back gives the same clock time. 2 valid -> repeated hour (DST ends), 0 -> skipped hour (DST starts).
+      var offB = offsetMin(asUtc - 864e5, tz), offA = offsetMin(asUtc + 864e5, tz), mid = offsetMin(asUtc, tz);
+      var cands = [];
+      [offB, mid, offA].forEach(function (o) {
+        var c = asUtc - o * 60000, b = wall(c, tz);
+        if (b.y === w.y && b.mo === w.mo && b.d === w.d && b.h === w.h && b.mi === w.mi && b.s === w.s && cands.indexOf(c) < 0) cands.push(c);
+      });
+      cands.sort(function (a, b) { return a - b; });
+      var ms;
+      if (cands.length) {
+        ms = cands[0];   // repeated time: first occurrence (same rule as Python fold=0 and JS Temporal 'compatible')
+        if (cands.length > 1) {
+          $('dtHint').className = 'hint warn';
+          $('dtHint').textContent = 'This local time happens twice in ' + tz + ' (clocks go back). Showing the first occurrence (UTC' + offStr(offsetMin(cands[0], tz)) +
+            '); the second is ' + Math.floor(cands[1] / 1000) + ' (UTC' + offStr(offsetMin(cands[1], tz)) + ').';
+        }
+      } else {
+        ms = asUtc - offB * 60000;   // skipped time: move forward by the gap
+        var back = wall(ms, tz);
+        $('dtHint').className = 'hint warn';
+        $('dtHint').textContent = 'This local time does not exist in ' + tz + ' (clocks jump forward for daylight saving). Showing the moment the clock reads ' + pad(back.h) + ':' + pad(back.mi) + ' instead.';
+      }
+      table($('dtBody'), [
+        ['Unix seconds', String(Math.floor(ms / 1000))],
+        ['Milliseconds', String(ms)],
+        ['ISO 8601 (UTC)', isoIn(ms, 'UTC')],
+        ['ISO 8601 (zone)', isoIn(ms, tz)],
+        ['UTC offset', 'UTC' + offStr(offsetMin(ms, tz))],
+        ['Relative', relative(ms), false, false]
+      ]);
+    }
+    function setDtNow() {
+      var w = wall(Date.now(), tzSel.value);
+      dtIn.value = yr(w.y) + '-' + pad(w.mo) + '-' + pad(w.d) + 'T' + pad(w.h) + ':' + pad(w.mi) + ':' + pad(w.s);
+      convertDt();
+    }
+
+    // ---- bulk ----
+    function convertBulk() {
+      var text = bulkIn.value, tz = tzSel.value;
+      if (!text.trim()) { TK.setOutput(bulkOut, '', { noteEl: $('bulkNote') }); $('stLines').textContent = '0'; TK.status(statusEl, ''); return; }
+      var lines = text.split(/\r?\n/);
+      if (lines.length > 100000) { TK.status(statusEl, 'Bulk mode supports up to 100,000 lines.', 'error'); return; }
+      var out = ['timestamp,iso_utc,' + (tz === 'UTC' ? 'utc' : 'local_' + tz.replace(/[^A-Za-z0-9]+/g, '_'))], bad = 0, n = 0;
+      for (var i = 0; i < lines.length; i++) {
+        var l = lines[i].trim(); if (!l) continue; n++;
+        var r = parseTs(l.replace(/^"|"$/g, ''), unitSel.value === 'auto' ? 'auto' : unitSel.value);
+        if (!r || r.error) { bad++; out.push(csv(l) + ',invalid,'); continue; }
+        out.push(csv(l) + ',' + new Date(r.ms).toISOString() + ',' + isoIn(r.ms, tz));
+      }
+      TK.setOutput(bulkOut, out.join('\n'), { noteEl: $('bulkNote') });
+      $('stLines').textContent = TK.formatNumber(n);
+      TK.status(statusEl, bad ? bad + ' line' + (bad > 1 ? 's' : '') + ' could not be converted (marked “invalid”).' : '', bad ? 'warn' : '');
+    }
+    function csv(s) { return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; }
+
+    // ---- live clock: 1 tick/s, paused while the tab is hidden ----
+    var ticker = null;
+    function tick() {
+      var now = Date.now();
+      $('nowS').textContent = Math.floor(now / 1000); $('nowMs').textContent = now;
+      var w = wall(now, tzSel.value); $('nowIso').textContent = yr(w.y) + '-' + pad(w.mo) + '-' + pad(w.d) + ' ' + pad(w.h) + ':' + pad(w.mi) + ':' + pad(w.s);
+    }
+    function startTicker() { if (ticker) return; tick(); ticker = setInterval(tick, 1000); }
+    function stopTicker() { clearInterval(ticker); ticker = null; }
+    document.addEventListener('visibilitychange', function () { document.hidden ? stopTicker() : startTicker(); });
+    $('copyNowS').addEventListener('click', function () { TK.copy(String(Math.floor(Date.now() / 1000)), this); });
+    $('copyNowMs').addEventListener('click', function () { TK.copy(String(Date.now()), this); });
+
+    function zoneChanged() {
+      var tz = tzSel.value; $('stZone').textContent = tz; $('stOff').textContent = 'UTC' + offStr(offsetMin(Date.now(), tz));
+      $('dtZone').textContent = 'in ' + tz.replace(/_/g, ' ');
+      tick(); convertTs(); convertDt(); if (bulkIn.value.length < 2000000) convertBulk();
+    }
+    tzSel.addEventListener('change', zoneChanged);
+    tsIn.addEventListener('input', TK.debounce(convertTs, 120));
+    unitSel.addEventListener('change', function () { convertTs(); convertBulk(); });
+    dtIn.addEventListener('input', convertDt); dtIn.addEventListener('change', convertDt);
+    $('nowBtn').addEventListener('click', setDtNow);
+    var auto = TK.autoRun({ input: bulkIn, run: convertBulk, delay: 300, maxAuto: 2000000,
+      onLarge: function (large) { if (large) TK.status(statusEl, 'Very large list — live conversion paused. Press Ctrl+Enter in the list to convert.', 'info'); } });
+    bulkIn.addEventListener('keydown', function (e) { if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') auto.trigger(); });
+    $('copyBulk').addEventListener('click', function () { TK.copy(TK.getOutput(bulkOut), this); });
+    $('dlBulk').addEventListener('click', function () { TK.download(TK.getOutput(bulkOut), 'timestamps.csv', 'text/csv;charset=utf-8', this); });
+    $('exampleBtn').addEventListener('click', function () {
+      tsIn.value = '1767225600'; unitSel.value = 'auto'; convertTs();
+      dtIn.value = '2038-01-19T03:14:07'; tzSel.value = 'UTC'; zoneChanged();
+      bulkIn.value = ['1767225600', '1767225600000', '1767225600000000', '-86400', '0', '2147483647', '2026-01-01T00:00:00Z', 'not a date'].join('\n'); auto.trigger();
+    });
+    $('clearBtn').addEventListener('click', function () {
+      tsIn.value = ''; dtIn.value = ''; bulkIn.value = ''; convertTs(); convertDt(); convertBulk(); tsIn.focus();
+    });
+
+    tsIn.value = String(Math.floor(Date.now() / 1000));
+    zoneChanged(); setDtNow(); startTicker();
+
+  })();
+  </script>
+</body>
+</html>

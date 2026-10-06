@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSON Validator – Check JSON Syntax, Find Errors by Line &amp; Repair | Toolyard</title>
+  <meta name="description" content="Free online JSON validator. Find syntax errors with exact line and column, get a plain-English fix, detect duplicate keys and precision-losing numbers, and auto-repair broken JSON — 100% in your browser.">
+  <link rel="canonical" href="https://htmltools.nilankubaruah.workers.dev/tools/json-data/json-validator.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="JSON Validator – Check JSON Syntax, Find Errors by Line &amp; Repair">
+  <meta property="og:description" content="Free online JSON validator. Find syntax errors with exact line and column, get a plain-English fix, detect duplicate keys and precision-losing numbers, and auto-repair broken JSON — 100% in your browser.">
+  <meta property="og:url" content="https://htmltools.nilankubaruah.workers.dev/tools/json-data/json-validator.html">
+  <meta name="twitter:card" content="summary">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/tools.css">
+  <script src="/js/tools-data.js"></script>
+  <script src="/js/layout.js"></script>
+  <script src="/js/tool-kit.js"></script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "JSON Validator", "url": "https://htmltools.nilankubaruah.workers.dev/tools/json-data/json-validator.html", "applicationCategory": "DeveloperApplication", "operatingSystem": "Any (runs in your browser)", "description": "Free online JSON validator. Find syntax errors with exact line and column, get a plain-English fix, detect duplicate keys and precision-losing numbers, and auto-repair broken JSON — 100% in your browser.", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Why is my JSON invalid when it works in JavaScript?", "acceptedAnswer": {"@type": "Answer", "text": "JavaScript object literals are more relaxed than JSON. JSON requires double-quoted keys and strings and forbids trailing commas, comments, single quotes, undefined, NaN and functions. Click Repair to convert a JS object literal to valid JSON."}}, {"@type": "Question", "name": "Are duplicate keys allowed in JSON?", "acceptedAnswer": {"@type": "Answer", "text": "The specification says keys “should” be unique, so duplicates are technically allowed — but behaviour is undefined. JavaScript, Python and most libraries silently keep only the last value, which hides bugs. This validator lists every duplicate with its path and line."}}, {"@type": "Question", "name": "Why does it warn about large numbers?", "acceptedAnswer": {"@type": "Answer", "text": "JavaScript stores numbers as 64-bit floats, so integers above 9,007,199,254,740,991 (253−1) are rounded: 12345678901234567890 becomes 12345678901234567000. 64-bit database IDs and Twitter/Snowflake IDs are common victims. Send them as strings to be safe."}}, {"@type": "Question", "name": "What does Repair change?", "acceptedAnswer": {"@type": "Answer", "text": "It strips comments, removes trailing commas, converts single and curly quotes to double quotes, quotes bare keys, converts True/False/None to true/false/null, turns NaN/Infinity/undefined into null, normalises numbers like .5 or 0x1F and adds missing commas. It tells you exactly what it fixed, and Undo restores your original text."}}, {"@type": "Question", "name": "Can it validate against a JSON Schema?", "acceptedAnswer": {"@type": "Answer", "text": "This tool validates syntax. To check structure — required fields, types, formats — use the JSON Schema Validator (coming soon)."}}, {"@type": "Question", "name": "Is a BOM at the start of the file a problem?", "acceptedAnswer": {"@type": "Answer", "text": "A byte order mark (U+FEFF) is invisible but breaks JSON.parse in browsers and Node.js. The validator accepts it and warns you so you can save the file as UTF-8 without BOM."}}, {"@type": "Question", "name": "Is my data uploaded?", "acceptedAnswer": {"@type": "Answer", "text": "No. Validation runs entirely in your browser with JavaScript. Nothing is sent to a server or stored."}}]}</script>
+</head>
+<body class="ty-tool" data-tool="json-validator">
+
+  <!-- SHARED HEADER, MOBILE MENU & BREADCRUMBS (rendered by /js/layout.js) -->
+  <div id="site-header"></div>
+  <div id="site-breadcrumbs"></div>
+
+  <main>
+  <!-- TOOL INTRO -->
+  <section class="tool-intro">
+    <div class="wrap tool-intro-content">
+      <span class="eyebrow">{ } JSON &amp;amp; DATA · VALIDATOR</span>
+      <h1>JSON Validator</h1>
+      <p class="lead">Check JSON instantly and see exactly what's wrong — the line, the column and how to fix it. Detect hidden problems other validators miss, and repair common mistakes like trailing commas, comments and single quotes in one click.</p>
+      <div class="tool-meta-badge"><span class="dot"></span> Exact error location · Duplicate key detection · One-click repair · Files up to 50 MB</div>
+    </div>
+  </section>
+
+  <!-- WORKSPACE -->
+  <section class="tool-app-section">
+    <div class="wrap">
+      <div class="ty-pair"><span>Tip: drop a .json file onto the input to validate it.</span><span>Want to pretty-print it? <a href="/tools/json-data/json-formatter.html">JSON Formatter →</a></span></div>
+      <div class="tool-workspace">
+        <div class="tool-toolbar">
+          <div class="tool-toolbar-left">
+            <button type="button" class="btn btn-outline btn-sm" id="repairBtn" title="Fix trailing commas, comments, single quotes, unquoted keys, True/False/None, NaN and more">🔧 Repair</button>
+            <button type="button" class="btn btn-outline btn-sm" id="formatBtn">Format</button>
+            <select id="indent" class="ty-input" style="width:auto; padding:6px 10px;" aria-label="Indentation">
+              <option value="2">2 spaces</option><option value="4">4 spaces</option><option value="tab">Tabs</option><option value="min">Minified</option>
+            </select>
+            <button type="button" class="btn btn-ghost btn-sm" id="undoBtn" hidden>↶ Undo repair</button>
+          </div>
+          <div class="tool-toolbar-right">
+            <label class="btn btn-outline btn-sm" title="Open a .json file (or drop it on the input)">Open file<input type="file" id="fileIn" accept=".json,.txt,.geojson,.jsonc,application/json,text/plain" hidden></label>
+            <button type="button" class="btn btn-amber btn-sm" id="runBtn">Validate</button>
+            <button type="button" class="btn btn-ghost btn-sm" id="exampleBtn">Load Example</button>
+            <button type="button" class="btn btn-danger btn-sm" id="clearBtn">Clear</button>
+          </div>
+        </div>
+
+        <div class="tool-grid">
+          <div class="tool-pane">
+            <div class="tool-pane-header"><span class="title">JSON input</span><span class="badge">Checked as you type</span></div>
+            <textarea id="jvIn" class="tool-textarea ty-mono" placeholder="Paste JSON here, or drop a .json file…" spellcheck="false" aria-label="JSON to validate"></textarea>
+          </div>
+          <div class="tool-pane">
+            <div class="tool-pane-header"><span class="title">Result</span><span class="badge">RFC 8259</span></div>
+            <div class="ty-jres" id="jvRes" aria-live="polite"></div>
+          </div>
+        </div>
+        <p class="ty-alert" id="jvStatus" role="status" aria-live="polite" hidden></p>
+
+        <div class="tool-stats-bar">
+          <div class="tool-stats-items">
+            <div class="tool-stat-badge">Size: <b id="stSize">0 B</b></div>
+            <div class="tool-stat-badge">Lines: <b id="stLines">0</b></div>
+            <div class="tool-stat-badge">Time: <b id="stTime">–</b></div>
+          </div>
+          <div>Strict RFC 8259 parser · 100% Client-Side</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. ABOUT -->
+  <section class="ty-sec">
+    <div class="wrap">
+      <span class="eyebrow">◆ ABOUT THIS TOOL</span>
+      <h2>What Does a JSON Validator Check?</h2>
+      <p class="sub">Whether your text is valid JSON — and, if not, exactly where and why it breaks.</p>
+      <div class="about-grid">
+        <div><p>JSON (RFC 8259) is strict: keys need double quotes, strings can't contain raw line breaks, and trailing commas, comments, single quotes, <code>NaN</code> and <code>undefined</code> are all forbidden. One stray character makes the whole document unreadable to <code>JSON.parse</code>, APIs and config loaders.</p><p>This validator uses its own strict parser instead of the browser's, so instead of a cryptic “Unexpected token at position 4817” you get the <strong>line, column, the offending line with a pointer</strong> and a plain-English fix. If a bracket is never closed, it tells you where that bracket was opened.</p></div>
+        <div><p>It also flags problems that are technically valid but dangerous: <strong>duplicate keys</strong> (most parsers silently keep only the last value) and <strong>numbers too large for JavaScript</strong>, like 64-bit IDs that would be silently rounded.</p><p>Got JSON from a JavaScript object, a Python dict or a hand-edited config? <strong>Repair</strong> fixes trailing commas, comments, single or curly quotes, unquoted keys, <code>True/False/None</code>, <code>NaN</code>, missing commas and more — and you can undo it.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. REFERENCE -->
+  <section class="ty-sec alt">
+    <div class="wrap">
+      <span class="eyebrow">⚠ COMMON ERRORS</span>
+      <h2>The Most Common JSON Errors (and Fixes)</h2>
+      <p class="sub">What the messages mean and how to fix them.</p>
+      <div class="ty-ref-wrap">
+        <table class="ty-ref-table">
+          <thead><tr><th>Error</th><th>Invalid</th><th>Valid</th></tr></thead>
+          <tbody>
+            <tr><td>Trailing comma</td><td><code>{"a": 1,}</code></td><td><code>{"a": 1}</code></td></tr>
+            <tr><td>Single quotes</td><td><code>{'a': 'x'}</code></td><td><code>{"a": "x"}</code></td></tr>
+            <tr><td>Unquoted key</td><td><code>{a: 1}</code></td><td><code>{"a": 1}</code></td></tr>
+            <tr><td>Comment</td><td><code>{"a": 1 // note}</code></td><td><code>{"a": 1}</code></td></tr>
+            <tr><td>Python literals</td><td><code>{"ok": True, "v": None}</code></td><td><code>{"ok": true, "v": null}</code></td></tr>
+            <tr><td>Missing comma</td><td><code>{"a": 1 "b": 2}</code></td><td><code>{"a": 1, "b": 2}</code></td></tr>
+            <tr><td>Bad backslash</td><td><code>{"path": "C:\Users"}</code></td><td><code>{"path": "C:\\Users"}</code></td></tr>
+            <tr><td>Line break in string</td><td><code>"line 1⏎line 2"</code></td><td><code>"line 1\nline 2"</code></td></tr>
+            <tr><td>Leading zero</td><td><code>{"zip": 01234}</code></td><td><code>{"zip": "01234"}</code></td></tr>
+            <tr><td>NaN / undefined</td><td><code>{"x": NaN}</code></td><td><code>{"x": null}</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. HOW TO USE -->
+  <section class="how-sec section-navy">
+    <div class="wrap">
+      <span class="eyebrow">◐ THREE STEPS</span>
+      <h2>How to Use the JSON Validator</h2>
+      <p class="sub">Get your result in under ten seconds.</p>
+      <div class="steps">
+        <div class="step" data-n="01">
+          <div class="num">1</div>
+          <h3 style="color:#fff;">Paste or drop JSON</h3>
+          <p>Paste JSON into the input or drop a .json file (up to 50 MB). It is validated as you type.</p>
+        </div>
+        <div class="step" data-n="02">
+          <div class="num">2</div>
+          <h3 style="color:#fff;">Read the diagnosis</h3>
+          <p>Valid JSON shows a green check with statistics. Invalid JSON shows the line, column, the broken line with a pointer and how to fix it — click <b>Go to error</b> to jump there.</p>
+        </div>
+        <div class="step" data-n="03">
+          <div class="num">3</div>
+          <h3 style="color:#fff;">Repair or format</h3>
+          <p>Click <b>Repair</b> to fix common mistakes automatically (undo is one click away), or <b>Format</b> to pretty-print valid JSON.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. FEATURES -->
+  <section class="ty-sec">
+    <div class="wrap">
+      <span class="eyebrow">✓ FEATURES</span>
+      <h2>Why Use the Toolyard JSON Validator</h2>
+      <p class="sub">Fast, accurate and private — built for developers.</p>
+      <div class="why-grid">
+        <div><div class="why-ico">📍</div><h3>Exact error location</h3><p>Line, column and a visual pointer — plus where an unclosed bracket was opened.</p></div>
+        <div><div class="why-ico">💬</div><h3>Plain-English fixes</h3><p>Every error comes with a concrete suggestion, not a parser stack trace.</p></div>
+        <div><div class="why-ico">🔧</div><h3>One-click repair</h3><p>Fixes trailing commas, comments, quotes, unquoted keys, Python literals and missing commas.</p></div>
+        <div><div class="why-ico">🔍</div><h3>Hidden problems</h3><p>Detects duplicate keys and numbers that would lose precision in JavaScript.</p></div>
+        <div><div class="why-ico">⚡</div><h3>Big files, no freeze</h3><p>Documents over 512 KB are validated in a background worker; files up to 50 MB.</p></div>
+        <div><div class="why-ico">🔒</div><h3>Private</h3><p>Your JSON never leaves your browser — safe for API keys, tokens and customer data.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. FAQ -->
+  <section class="ty-sec alt">
+    <div class="wrap">
+      <div style="text-align:center; margin-bottom:36px;">
+        <span class="eyebrow">FAQ</span>
+        <h2 style="font-size:28px; margin-top:12px;">Frequently Asked Questions</h2>
+      </div>
+      <div class="faq" id="faqList">
+        <div class="faq-item">
+          <button type="button">Why is my JSON invalid when it works in JavaScript?<span class="plus">+</span></button>
+          <div class="faq-a"><p>JavaScript object literals are more relaxed than JSON. JSON requires double-quoted keys and strings and forbids trailing commas, comments, single quotes, <code>undefined</code>, <code>NaN</code> and functions. Click Repair to convert a JS object literal to valid JSON.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Are duplicate keys allowed in JSON?<span class="plus">+</span></button>
+          <div class="faq-a"><p>The specification says keys “should” be unique, so duplicates are technically allowed — but behaviour is undefined. JavaScript, Python and most libraries silently keep only the <em>last</em> value, which hides bugs. This validator lists every duplicate with its path and line.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Why does it warn about large numbers?<span class="plus">+</span></button>
+          <div class="faq-a"><p>JavaScript stores numbers as 64-bit floats, so integers above 9,007,199,254,740,991 (2<sup>53</sup>−1) are rounded: <code>12345678901234567890</code> becomes <code>12345678901234567000</code>. 64-bit database IDs and Twitter/Snowflake IDs are common victims. Send them as strings to be safe.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">What does Repair change?<span class="plus">+</span></button>
+          <div class="faq-a"><p>It strips comments, removes trailing commas, converts single and curly quotes to double quotes, quotes bare keys, converts <code>True/False/None</code> to <code>true/false/null</code>, turns <code>NaN</code>/<code>Infinity</code>/<code>undefined</code> into <code>null</code>, normalises numbers like <code>.5</code> or <code>0x1F</code> and adds missing commas. It tells you exactly what it fixed, and Undo restores your original text.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Can it validate against a JSON Schema?<span class="plus">+</span></button>
+          <div class="faq-a"><p>This tool validates syntax. To check structure — required fields, types, formats — use the JSON Schema Validator (coming soon).</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Is a BOM at the start of the file a problem?<span class="plus">+</span></button>
+          <div class="faq-a"><p>A byte order mark (U+FEFF) is invisible but breaks <code>JSON.parse</code> in browsers and Node.js. The validator accepts it and warns you so you can save the file as UTF-8 without BOM.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Is my data uploaded?<span class="plus">+</span></button>
+          <div class="faq-a"><p>No. Validation runs entirely in your browser with JavaScript. Nothing is sent to a server or stored.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. RELATED -->
+  <section class="related-tools-section">
+    <div class="wrap">
+      <div class="section-head" style="margin-bottom:28px;">
+        <div>
+          <span class="eyebrow" style="margin-bottom:12px; display:inline-flex;">📎 RELATED</span>
+          <h2 style="font-size:26px; margin:12px 0 6px;">Related JSON &amp; Data Tools</h2>
+          <p class="desc" style="margin:0;">More free utilities that pair well with this one.</p>
+        </div>
+        <a class="view-all" href="/categories/json-data/">All JSON &amp; Data Tools →</a>
+      </div>
+      <div class="grid grid-3">
+        <a class="tool-card" href="/tools/json-data/json-formatter.html">
+          <div class="top-row"><span class="badge">Formatter</span></div>
+          <h3>JSON Formatter</h3>
+          <p>Format, indent, sort keys and validate JSON payloads.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/json-data/json-compare.html">
+          <div class="top-row"><span class="badge">Utility</span></div>
+          <h3>JSON Compare</h3>
+          <p>Diff two JSON documents and highlight changes.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/json-data/json-sorter.html">
+          <div class="top-row"><span class="badge">Utility</span></div>
+          <h3>JSON Sorter</h3>
+          <p>Sort JSON keys and arrays alphabetically.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/json-data/json-escape-unescape.html">
+          <div class="top-row"><span class="badge">Encoder</span></div>
+          <h3>JSON Escape/Unescape</h3>
+          <p>Escape JSON for embedding in strings, or reverse it.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/json-data/json-minifier.html">
+          <div class="top-row"><span class="badge">Minifier</span></div>
+          <h3>JSON Minifier</h3>
+          <p>Strip whitespace to reduce JSON payload sizes.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card is-soon" href="/categories/json-data/#json-schema-validator">
+          <div class="top-row"><span class="badge">Validator</span><span class="status-pill status-soon">Coming soon</span></div>
+          <h3>JSON Schema Validator</h3>
+          <p>Validate JSON data against a JSON Schema.</p>
+          <span class="open ty-soon-label">Coming soon</span>
+        </a>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <!-- SHARED FOOTER (rendered by /js/layout.js) -->
+  <div id="site-footer"></div>
+
+  <script>
+  (function () {
+    'use strict';
+    var $ = TK.$;
+    TK.initFaq(document.getElementById('faqList'));
+function jsonJob(d) {
+  /* Toolyard JSON engine — self-contained so it can run in a Web Worker or on the main thread.
+   * Model: objects are Maps (exact key order, no __proto__ pitfalls), unsafe numbers are RawNum (exact digits). */
+  var MAXDEPTH = 3000;
+  function RawNum(s) { this.raw = s; }
+
+  /* ------------------------------ PARSER ------------------------------ */
+  function parse(text, opt) {
+    opt = opt || {};
+    var lenient = !!opt.lenient, keepBig = opt.keepBig !== false;
+    var i = 0, n = text.length, fixes = {}, stack = [], path = [];
+    var warn = { dup: [], dupCount: 0, big: [], bigCount: 0 };
+    var stats = { objects: 0, arrays: 0, keys: 0, strings: 0, numbers: 0, booleans: 0, nulls: 0, depth: 0 };
+    var bom = text.charCodeAt(0) === 0xFEFF;
+    if (bom) i = 1;
+    var NUM = /-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?/y;
+    var LNUM = /[+-]?(?:0[xX][0-9a-fA-F]+|(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?)/y;
+    var IDENT = /[A-Za-z_$][\w$]*/y;
+
+    function fix(k) { fixes[k] = (fixes[k] || 0) + 1; }
+    function fail(msg, hint, at) { var e = new Error(msg); e.isJson = true; e.pos = at == null ? i : at; e.hint = hint || ''; throw e; }
+    function hex4(c) { return ('000' + c.toString(16).toUpperCase()).slice(-4); }
+    function lineOf(pos) { var l = 1, k = -1; while ((k = text.indexOf('\n', k + 1)) !== -1 && k < pos) l++; return l; }
+    function unclosed() {
+      if (!stack.length) return '';
+      var p = stack[stack.length - 1];
+      return 'The ' + text.charAt(p) + ' opened on line ' + lineOf(p) + ' is never closed — add the matching ' + (text.charAt(p) === '{' ? '}' : ']') + '.';
+    }
+    function pathStr() {
+      var s = '$';
+      for (var k = 0; k < path.length; k++) s += typeof path[k] === 'number' ? '[' + path[k] + ']' : (/^[A-Za-z_$][\w$]*$/.test(path[k]) ? '.' + path[k] : '[' + JSON.stringify(path[k]) + ']');
+      return s;
+    }
+    function describe(c) {
+      if (c === 0x201C || c === 0x201D || c === 0x2018 || c === 0x2019) return ['Curly “smart” quotes are not valid JSON', 'Replace them with straight double quotes ("). Word processors and chat apps often convert quotes automatically.'];
+      if (c === 39) return ['Strings must use double quotes, not single quotes', 'Change \'text\' to "text" — or click Repair.'];
+      if (c === 0xA0) return ['Invisible non-breaking space (U+00A0)', 'Often pasted from web pages or docs. Replace it with a normal space — or click Repair.'];
+      if (c < 32 || c === 0x7F || c === 0x200B || c === 0xFEFF) return ['Invisible control character (U+' + hex4(c) + ')', 'Delete the hidden character — or click Repair.'];
+      return null;
+    }
+
+    function ws() {
+      for (;;) {
+        var c = text.charCodeAt(i);
+        if (c === 32 || c === 10 || c === 13 || c === 9) { i++; continue; }
+        if (c === 47) {
+          var c2 = text.charCodeAt(i + 1);
+          if (c2 === 47 || c2 === 42) {
+            if (!lenient) fail('Comments are not allowed in JSON', 'JSON has no comment syntax. Remove the comment — or click Repair to strip all comments.');
+            if (c2 === 47) { var e = text.indexOf('\n', i); i = e < 0 ? n : e; }
+            else { var e2 = text.indexOf('*/', i + 2); if (e2 < 0) fail('Unterminated /* comment', 'Close it with */.'); i = e2 + 2; }
+            fix('comments'); continue;
+          }
+        }
+        if (lenient && (c === 0xA0 || c === 0xFEFF || c === 0x200B || c === 0x2028 || c === 0x2029 || c === 11 || c === 12)) { i++; fix('whitespace'); continue; }
+        return;
+      }
+    }
+
+    function string(q) {
+      var start = i; i++;
+      var out = '', seg = i;
+      for (;;) {
+        if (i >= n) fail('Unterminated string', 'The string that starts here has no closing quote.', start);
+        var c = text.charCodeAt(i);
+        if (c === q) { out += text.slice(seg, i); i++; return out; }
+        if (c === 92) {
+          out += text.slice(seg, i);
+          var e = text.charCodeAt(i + 1);
+          switch (e) {
+            case 34: out += '"'; break; case 92: out += '\\'; break; case 47: out += '/'; break;
+            case 98: out += '\b'; break; case 102: out += '\f'; break; case 110: out += '\n'; break;
+            case 114: out += '\r'; break; case 116: out += '\t'; break;
+            case 117:
+              var h = text.substr(i + 2, 4);
+              if (!/^[0-9a-fA-F]{4}$/.test(h)) fail('Invalid \\u escape', 'A \\u escape needs exactly 4 hex digits, e.g. \\u00e9.', i);
+              out += String.fromCharCode(parseInt(h, 16)); i += 4; break;
+            default:
+              if (lenient && i + 1 < n) { out += e === 39 ? "'" : '\\' + text.charAt(i + 1); fix('escapes'); break; }   // \' -> ', unknown escapes keep their backslash (C:\Users)
+              if (i + 1 >= n) fail('Unterminated string', 'The string ends with a lone backslash.', start);
+              fail('Invalid escape sequence \\' + text.charAt(i + 1), 'Valid escapes are \\" \\\\ \\/ \\b \\f \\n \\r \\t and \\uXXXX. For a literal backslash write \\\\ (e.g. Windows paths: C:\\\\Users).', i);
+          }
+          i += 2; seg = i; continue;
+        }
+        if (c < 32) {
+          if (lenient) { out += text.slice(seg, i) + text.charAt(i); i++; seg = i; fix('control'); continue; }
+          if (c === 10 || c === 13) fail('Line break inside a string', 'JSON strings must stay on one line — write \\n for a line break. If this is unintended, the closing quote of this string is probably missing.');
+          fail('Unescaped control character (U+' + hex4(c) + ') inside a string', c === 9 ? 'Write \\t instead of a literal tab.' : 'Escape it as \\u' + hex4(c) + '.');
+        }
+        i++;
+      }
+    }
+
+    function number() {
+      var start = i, raw, num;
+      NUM.lastIndex = i; var m = NUM.exec(text);
+      var nx = m ? text.charCodeAt(i + m[0].length) : 0;
+      var strictOk = m && !(nx >= 48 && nx <= 57) && nx !== 46 && nx !== 101 && nx !== 69 && nx !== 120 && nx !== 88;
+      if (strictOk) { raw = m[0]; i += raw.length; num = Number(raw); }
+      else {
+        if (!lenient) {
+          if (m && /^-?0$/.test(m[0]) && nx >= 48 && nx <= 57) fail('Numbers cannot have leading zeros', 'Write 7 instead of 07 — or quote it as a string ("07") if the zero matters, like a postcode.', start);
+          if (m && nx === 46) fail('A decimal point must be followed by digits', 'Write 1.0 or 1 instead of 1.', start);
+          if (text.charAt(start) === '+') fail('Numbers cannot start with +', 'Remove the plus sign.', start);
+          if (text.charAt(start) === '.') fail('Numbers must have a digit before the decimal point', 'Write 0.5 instead of .5.', start);
+          if (m && (nx === 120 || nx === 88)) fail('Hexadecimal numbers are not allowed', 'Convert it to decimal.', start);
+          fail('Invalid number', 'Numbers look like 42, -3.14 or 6.02e23.', start);
+        }
+        LNUM.lastIndex = i; var lm = LNUM.exec(text);
+        if (!lm) fail('Invalid number', '', start);
+        raw = lm[0]; i += raw.length; fix('numbers');
+        var neg = raw.charAt(0) === '-', body = raw.replace(/^[+-]/, '');
+        num = /^0[xX]/.test(body) ? parseInt(body, 16) : Number(body);
+        if (neg) num = -num;
+        raw = null;
+      }
+      if (keepBig && raw) {
+        var digits = raw.replace(/^-/, '').replace(/[eE].*$/, '').replace('.', '').replace(/^0+/, '');
+        var unsafe = /^-?\d+$/.test(raw) ? !Number.isSafeInteger(num) : (digits.length > 17 || !isFinite(num));
+        if (unsafe) {
+          warn.bigCount++; if (warn.big.length < 20) warn.big.push({ path: pathStr(), raw: raw.length > 40 ? raw.slice(0, 40) + '…' : raw });
+          return new RawNum(raw);
+        }
+      }
+      if (!isFinite(num)) { warn.bigCount++; if (warn.big.length < 20) warn.big.push({ path: pathStr(), raw: String(num) }); }
+      return num;
+    }
+
+    function word(w) { return text.startsWith(w, i) && !/[\w$]/.test(text.charAt(i + w.length) || ''); }
+
+    function value(depth) {
+      ws();
+      if (i >= n) fail('Unexpected end of input', unclosed() || 'A value is missing here.');
+      var c = text.charCodeAt(i);
+      if (c === 123) return object(depth + 1);
+      if (c === 91) return array(depth + 1);
+      if (c === 34) { stats.strings++; return string(34); }
+      if (c === 45 || (c >= 48 && c <= 57)) { if (lenient && word('-Infinity')) { i += 9; fix('literals'); stats.nulls++; return null; } stats.numbers++; return number(); }
+      if (word('true')) { i += 4; stats.booleans++; return true; }
+      if (word('false')) { i += 5; stats.booleans++; return false; }
+      if (word('null')) { i += 4; stats.nulls++; return null; }
+      if (lenient) {
+        if (c === 39) { stats.strings++; fix('quotes'); return string(39); }
+        if (c === 0x201C) { stats.strings++; fix('quotes'); return string(0x201D); }
+        if (c === 43 || c === 46) { stats.numbers++; return number(); }
+        if (word('True')) { i += 4; fix('literals'); stats.booleans++; return true; }
+        if (word('False')) { i += 5; fix('literals'); stats.booleans++; return false; }
+        if (word('None') || word('undefined') || word('NaN') || word('Infinity')) { var wl = (text.slice(i).match(/^\w+/) || [''])[0].length; i += wl; fix('literals'); stats.nulls++; return null; }
+      }
+      var dsc = describe(c); if (dsc) fail(dsc[0], dsc[1]);
+      if (c === 43 || c === 46) number();
+      if (word('True') || word('False') || word('None')) fail('Python-style ' + text.slice(i).match(/^\w+/)[0] + ' is not valid JSON', 'JSON uses lowercase true, false and null — or click Repair.');
+      if (word('undefined') || word('NaN') || word('Infinity')) fail(text.slice(i).match(/^\w+/)[0] + ' is not a valid JSON value', 'Use null, a number or a string instead — or click Repair (converts it to null).');
+      if (c === 44) fail('Unexpected comma', 'A value is missing before this comma, or there is one comma too many.');
+      if (c === 125 || c === 93) fail('Unexpected ' + text.charAt(i), stack.length ? 'A value is missing — check for a trailing comma or an extra closing bracket.' : 'There is no matching opening bracket.');
+      if (/[A-Za-z_]/.test(text.charAt(i))) fail('Unexpected word “' + (text.slice(i).match(/^[\w$]+/) || [''])[0].slice(0, 30) + '”', 'Text values must be wrapped in double quotes, e.g. "hello".');
+      fail('Unexpected character “' + text.charAt(i) + '”', 'Expected a value: string, number, object, array, true, false or null.');
+    }
+
+    function key() {
+      var c = text.charCodeAt(i);
+      if (c === 34) return string(34);
+      if (lenient) {
+        if (c === 39) { fix('quotes'); return string(39); }
+        if (c === 0x201C) { fix('quotes'); return string(0x201D); }
+        IDENT.lastIndex = i; var m = IDENT.exec(text);
+        if (m) { i += m[0].length; fix('keys'); return m[0]; }
+        NUM.lastIndex = i; var nm = NUM.exec(text);
+        if (nm) { i += nm[0].length; fix('keys'); return nm[0]; }
+      }
+      if (i >= n) fail('Unexpected end of input', unclosed());
+      var dsc = describe(c);
+      if (c === 39) fail('Property names must use double quotes, not single quotes', 'Change \'name\' to "name" — or click Repair.');
+      if (dsc) fail(dsc[0], dsc[1]);
+      if (/[A-Za-z_$0-9]/.test(text.charAt(i))) fail('Property names must be wrapped in double quotes', 'Write "' + (text.slice(i).match(/^[\w$]+/) || ['key'])[0].slice(0, 30) + '": instead — or click Repair.');
+      fail('Expected a property name in double quotes', 'Object keys look like "name".');
+    }
+
+    function object(depth) {
+      if (depth > MAXDEPTH) fail('Nesting is too deep', 'More than ' + MAXDEPTH + ' levels of nested objects/arrays.');
+      if (depth > stats.depth) stats.depth = depth;
+      stats.objects++; stack.push(i); i++;
+      var m = new Map(), comma = -1;
+      ws();
+      if (text.charCodeAt(i) === 125) { i++; stack.pop(); return m; }
+      for (;;) {
+        ws();
+        if (text.charCodeAt(i) === 125 && comma >= 0) {
+          if (!lenient) fail('Trailing comma before }', 'Remove the last comma — JSON does not allow a comma after the final property.', comma);
+          fix('trailingCommas'); i++; stack.pop(); return m;
+        }
+        var kpos = i, k = key();
+        ws();
+        if (text.charCodeAt(i) !== 58) {
+          if (i >= n) fail('Unexpected end of input', unclosed());
+          if (lenient && text.charCodeAt(i) === 61) { fix('colons'); }
+          else fail('Expected : after property name ' + JSON.stringify(k.length > 40 ? k.slice(0, 40) + '…' : k), 'Each property needs a colon: "name": value.');
+        }
+        i++;
+        if (m.has(k)) { warn.dupCount++; if (warn.dup.length < 20) warn.dup.push({ path: pathStr(), key: k, line: lineOf(kpos) }); }
+        stats.keys++;
+        path.push(k); var v = value(depth); path.pop();
+        m.set(k, v);
+        ws();
+        var c = text.charCodeAt(i);
+        if (c === 44) { comma = i; i++; continue; }
+        if (c === 125) { i++; stack.pop(); return m; }
+        if (i >= n) fail('Unexpected end of input', unclosed());
+        if (lenient && (c === 34 || c === 39 || /[A-Za-z_$]/.test(text.charAt(i)))) { fix('commas'); comma = -1; continue; }
+        if (c === 34) fail('Missing comma between properties', 'Add a comma after the previous value.');
+        if (c === 93) fail('Mismatched bracket: found ] but expected }', 'The ' + '{ opened on line ' + lineOf(stack[stack.length - 1]) + ' must be closed with }.');
+        fail('Expected , or } after property value', 'Check for a missing comma or an unquoted value.');
+      }
+    }
+
+    function array(depth) {
+      if (depth > MAXDEPTH) fail('Nesting is too deep', 'More than ' + MAXDEPTH + ' levels of nested objects/arrays.');
+      if (depth > stats.depth) stats.depth = depth;
+      stats.arrays++; stack.push(i); i++;
+      var a = [], comma = -1;
+      ws();
+      if (text.charCodeAt(i) === 93) { i++; stack.pop(); return a; }
+      for (;;) {
+        ws();
+        if (text.charCodeAt(i) === 93 && comma >= 0) {
+          if (!lenient) fail('Trailing comma before ]', 'Remove the last comma — JSON does not allow a comma after the final item.', comma);
+          fix('trailingCommas'); i++; stack.pop(); return a;
+        }
+        path.push(a.length); a.push(value(depth)); path.pop();
+        ws();
+        var c = text.charCodeAt(i);
+        if (c === 44) { comma = i; i++; continue; }
+        if (c === 93) { i++; stack.pop(); return a; }
+        if (i >= n) fail('Unexpected end of input', unclosed());
+        if (lenient && c !== 125 && c !== 58) { fix('commas'); comma = -1; continue; }
+        if (c === 125) fail('Mismatched bracket: found } but expected ]', 'The [ opened on line ' + lineOf(stack[stack.length - 1]) + ' must be closed with ].');
+        if (c === 58) fail('Unexpected : inside an array', 'Arrays hold plain values. Use an object { } for "key": value pairs.');
+        fail('Missing comma between array items', 'Add a comma after the previous item.');
+      }
+    }
+
+    var model;
+    try {
+      ws();
+      if (i >= n) fail('Empty input', 'Paste some JSON to check.', 0);
+      model = value(0);
+      ws();
+      if (i < n) {
+        if (text.charCodeAt(i) === 125 || text.charCodeAt(i) === 93) fail('Unexpected ' + text.charAt(i) + ' after the end of the JSON', 'There is an extra closing bracket.');
+        fail('Unexpected content after the end of the JSON', 'Only one top-level value is allowed. Did you paste two documents, or forget a comma or a surrounding [ ]?');
+      }
+    } catch (e) {
+      if (e instanceof RangeError) { e = new Error('Nesting is too deep'); e.isJson = true; e.pos = i; e.hint = 'The document is nested too deeply to process in the browser.'; }
+      if (!e.isJson) throw e;
+      return { ok: false, error: locate(text, e) };
+    }
+    return { ok: true, model: model, stats: stats, warn: warn, fixes: fixes, bom: bom };
+  }
+
+  function locate(text, e) {
+    var pos = Math.min(e.pos, text.length), line = 1, ls = 0, k = -1;
+    while ((k = text.indexOf('\n', k + 1)) !== -1 && k < pos) { line++; ls = k + 1; }
+    var le = text.indexOf('\n', ls); if (le < 0) le = text.length;
+    var col = pos - ls, lineText = text.slice(ls, le).replace(/\r$/, ''), from = 0;
+    if (lineText.length > 110) { from = Math.max(0, Math.min(col - 55, lineText.length - 110)); lineText = (from ? '…' : '') + lineText.slice(from, from + 110) + (from + 110 < lineText.length ? '…' : ''); }
+    var caret = col - from + (from ? 1 : 0);
+    return { msg: e.message, hint: e.hint, pos: pos, line: line, col: col + 1, context: lineText.replace(/\t/g, ' '), caret: Math.max(0, caret) };
+  }
+
+  /* ---------------------------- STRINGIFY ---------------------------- */
+  function stringify(v, indent, ascii) {
+    indent = indent || '';
+    var q = ascii ? function (s) { return JSON.stringify(s).replace(/[\u007f-\uffff]/g, function (c) { return '\\u' + ('000' + c.charCodeAt(0).toString(16)).slice(-4); }); } : JSON.stringify;
+    function w(v, pad) {
+      if (v === null) return 'null';
+      var t = typeof v;
+      if (t === 'string') return q(v);
+      if (t === 'number') return isFinite(v) ? String(v) : 'null';
+      if (t === 'boolean') return v ? 'true' : 'false';
+      if (v instanceof RawNum) return v.raw;
+      var inner = pad + indent, nl = indent ? '\n' : '', out = [], k;
+      if (Array.isArray(v)) {
+        if (!v.length) return '[]';
+        for (k = 0; k < v.length; k++) out.push(w(v[k], inner));
+        return '[' + nl + inner + out.join(',' + nl + inner) + nl + pad + ']';
+      }
+      if (!v.size) return '{}';
+      var sep = indent ? ': ' : ':';
+      v.forEach(function (val, key) { out.push(q(key) + sep + w(val, inner)); });
+      return '{' + nl + inner + out.join(',' + nl + inner) + nl + pad + '}';
+    }
+    return w(v, '');
+  }
+
+  /* ------------------------------ SORT ------------------------------- */
+  function makeCmp(method, desc) {
+    var coll = method === 'natural' ? new Intl.Collator('en', { numeric: true, sensitivity: 'variant' }) : method === 'caseless' ? new Intl.Collator('en', { sensitivity: 'base' }) : null;
+    // default: Unicode code point order (same as jq -S and Python sort_keys); JS '<' compares UTF-16 units, which misorders emoji
+    function cp(a, b) {
+      var l = Math.min(a.length, b.length);
+      for (var k = 0; k < l; k++) {
+        var x = a.charCodeAt(k), y = b.charCodeAt(k);
+        if (x !== y) {
+          x = x >= 0xD800 && x <= 0xDFFF ? x + 0x2000 : x >= 0xE000 ? x - 0x800 : x;
+          y = y >= 0xD800 && y <= 0xDFFF ? y + 0x2000 : y >= 0xE000 ? y - 0x800 : y;
+          return x - y;
+        }
+      }
+      return a.length - b.length;
+    }
+    var base = coll ? function (a, b) { return coll.compare(a, b) || cp(a, b); } : cp;
+    return desc ? function (a, b) { return base(b, a); } : base;
+  }
+  function rank(v) { return v === null ? 0 : typeof v === 'boolean' ? 1 : (typeof v === 'number' || v instanceof RawNum) ? 2 : typeof v === 'string' ? 3 : 4; }
+  function numOf(v) { return v instanceof RawNum ? Number(v.raw) : v; }
+  function sortModel(v, o, depth) {
+    var strCmp = o.cmp;
+    function valCmp(a, b) {
+      var ra = rank(a), rb = rank(b);
+      if (ra !== rb || ra === 4) return ra === 4 && rb === 4 ? 0 : (o.desc ? rb - ra : ra - rb);
+      if (ra === 3) return strCmp(a, b);
+      if (ra === 2) return o.desc ? numOf(b) - numOf(a) : numOf(a) - numOf(b);
+      if (ra === 1) return o.desc ? (b - a) : (a - b);
+      return 0;
+    }
+    function rec(v, depth) {
+      var deep = o.recursive || depth === 0;
+      if (Array.isArray(v)) {
+        var arr = deep || o.recursive ? v.map(function (x) { return o.recursive ? rec(x, depth + 1) : x; }) : v.slice();
+        if (o.arrays === 'values' && (deep)) arr.sort(valCmp);
+        else if (o.arrays === 'byKey' && deep && o.byKey) {
+          arr.sort(function (a, b) {
+            var ha = a instanceof Map && a.has(o.byKey), hb = b instanceof Map && b.has(o.byKey);
+            if (!ha || !hb) return ha === hb ? 0 : ha ? -1 : 1;     // items without the key go last
+            return valCmp(a.get(o.byKey), b.get(o.byKey));
+          });
+        }
+        return arr;
+      }
+      if (v instanceof Map) {
+        var keys = Array.from(v.keys());
+        if (o.keys && deep) keys.sort(strCmp);
+        var m = new Map();
+        keys.forEach(function (k) { m.set(k, o.recursive ? rec(v.get(k), depth + 1) : v.get(k)); });
+        return m;
+      }
+      return v;
+    }
+    return rec(v, depth || 0);
+  }
+
+  /* ----------------------------- COMPARE ----------------------------- */
+  function typeName(v) { return v === null ? 'null' : Array.isArray(v) ? 'array' : v instanceof Map ? 'object' : v instanceof RawNum ? 'number' : typeof v; }
+  function compare(A, B, o) {
+    var ignore = {}, ignoreN = 0;
+    (o.ignoreKeys || []).forEach(function (k) { if (k) { ignore['$' + k] = 1; ignoreN++; } });
+    var LIMIT = 5000, entries = [], counts = { added: 0, removed: 0, changed: 0 }, patch = [];
+    var canonMemo = new WeakMap();
+    function canon(v) {
+      if (v === null || typeof v !== 'object') return typeof v === 'number' ? String(v) : JSON.stringify(v);
+      if (v instanceof RawNum) return normRaw(v.raw);
+      var c = canonMemo.get(v); if (c !== undefined) return c;
+      if (Array.isArray(v)) { var items = v.map(canon); if (o.ignoreOrder) items.sort(); c = '[' + items.join(',') + ']'; }
+      else { var ks = Array.from(v.keys()).filter(function (k) { return !ignore['$' + k]; }).sort(); c = '{' + ks.map(function (k) { return JSON.stringify(k) + ':' + canon(v.get(k)); }).join(',') + '}'; }
+      canonMemo.set(v, c); return c;
+    }
+    function normRaw(r) { return /^-?\d+$/.test(r) ? String(BigInt(r)) : String(Number(r)) === 'Infinity' ? r : r; }
+    function eqPrim(a, b) {
+      if (a instanceof RawNum || b instanceof RawNum) {
+        var sa = a instanceof RawNum ? normRaw(a.raw) : String(a), sb = b instanceof RawNum ? normRaw(b.raw) : String(b);
+        return sa === sb;
+      }
+      return a === b;
+    }
+    function ptr(p) { return p.map(function (s) { return '/' + String(s).replace(/~/g, '~0').replace(/\//g, '~1'); }).join(''); }
+    function human(p) {
+      var s = '$';
+      for (var k = 0; k < p.length; k++) s += typeof p[k] === 'number' ? '[' + p[k] + ']' : (/^[A-Za-z_$][\w$]*$/.test(p[k]) ? '.' + p[k] : '[' + JSON.stringify(p[k]) + ']');
+      return s;
+    }
+    function preview(v) { if (v === undefined) return ''; var s = stringify(v); return s.length > 300 ? s.slice(0, 300) + '…' : s; }
+    function rec(op, hp, a, b) {
+      counts[op]++;
+      if (entries.length < LIMIT) entries.push({ op: op, path: human(hp), a: preview(a), b: preview(b), ta: a === undefined ? '' : typeName(a), tb: b === undefined ? '' : typeName(b) });
+    }
+    function P(op, pp, v) { var m = new Map([['op', op], ['path', ptr(pp)]]); if (v !== undefined) m.set('value', v); patch.push(m); }
+
+    function diff(a, b, hp, pp) {
+      var ta = typeName(a), tb = typeName(b);
+      if (ta !== tb) { rec('changed', hp, a, b); P('replace', pp, b); return; }
+      if (ta === 'object') {
+        a.forEach(function (va, k) {
+          if (ignore['$' + k]) return;
+          if (!b.has(k)) { rec('removed', hp.concat(k), va, undefined); P('remove', pp.concat(k)); }
+          else diff(va, b.get(k), hp.concat(k), pp.concat(k));
+        });
+        b.forEach(function (vb, k) { if (!ignore['$' + k] && !a.has(k)) { rec('added', hp.concat(k), undefined, vb); P('add', pp.concat(k), vb); } });
+        return;
+      }
+      if (ta === 'array') { diffArray(a, b, hp, pp); return; }
+      if (!eqPrim(a, b)) { rec('changed', hp, a, b); P('replace', pp, b); }
+    }
+
+    function diffArray(a, b, hp, pp) {
+      if (canon(a) === canon(b)) return;
+      if (o.ignoreOrder) {
+        var bag = new Map();
+        b.forEach(function (x, j) { var c = canon(x); (bag.get(c) || bag.set(c, []).get(c)).push(j); });
+        var removed = [];
+        a.forEach(function (x, i) { var c = canon(x), l = bag.get(c); if (l && l.length) l.shift(); else removed.push(i); });
+        removed.forEach(function (i) { rec('removed', hp.concat(i), a[i], undefined); });
+        bag.forEach(function (l) { l.forEach(function (j) { rec('added', hp.concat(j), undefined, b[j]); }); });
+        return;   // no patch in ignore-order mode
+      }
+      var n = a.length, m = b.length, ca = a.map(canon), cb = b.map(canon);
+      var pre = 0; while (pre < n && pre < m && ca[pre] === cb[pre]) pre++;
+      var suf = 0; while (suf < n - pre && suf < m - pre && ca[n - 1 - suf] === cb[m - 1 - suf]) suf++;
+      var N = n - pre - suf, M = m - pre - suf, seq = [];   // seq: forward edit script over the middle part
+      if (N && M && N * M <= 4e6) {
+        var W = M + 1, L = new Uint32Array((N + 1) * W);
+        for (var x = N - 1; x >= 0; x--) for (var y = M - 1; y >= 0; y--)
+          L[x * W + y] = ca[pre + x] === cb[pre + y] ? L[(x + 1) * W + y + 1] + 1 : Math.max(L[(x + 1) * W + y], L[x * W + y + 1]);
+        var xi = 0, yi = 0, dels = [], ins = [];
+        var flush = function () {
+          var k = 0;
+          for (; k < dels.length && k < ins.length; k++) seq.push({ t: 'mod', i: dels[k], j: ins[k] });
+          for (var r = k; r < dels.length; r++) seq.push({ t: 'del', i: dels[r] });
+          for (var s = k; s < ins.length; s++) seq.push({ t: 'ins', j: ins[s] });
+          dels = []; ins = [];
+        };
+        while (xi < N || yi < M) {
+          if (xi < N && yi < M && ca[pre + xi] === cb[pre + yi]) { flush(); seq.push({ t: 'eq', i: pre + xi, j: pre + yi }); xi++; yi++; }
+          else if (yi >= M || (xi < N && L[(xi + 1) * W + yi] >= L[xi * W + yi + 1])) { dels.push(pre + xi); xi++; }
+          else { ins.push(pre + yi); yi++; }
+        }
+        flush();
+      } else if (N && M && (seq = myers(N, M, pre)) !== null) {
+        // Myers O((N+M)·D) diff for big arrays with few edits (seq already filled)
+      } else {   // index-based fallback (huge arrays with many edits)
+        seq = [];
+        for (var k = 0; k < Math.min(N, M); k++) seq.push({ t: 'mod', i: pre + k, j: pre + k });
+        for (k = Math.min(N, M); k < N; k++) seq.push({ t: 'del', i: pre + k });
+        for (k = Math.min(N, M); k < M; k++) seq.push({ t: 'ins', j: pre + k });
+      }
+      function myers(N, M, pre) {
+        var MAX = Math.min(N + M, 2000), off = MAX + 1, V = new Int32Array(2 * MAX + 3), trace = [], D = -1;
+        outer: for (var d = 0; d <= MAX; d++) {
+          trace.push(V.slice(off - d - 1, off + d + 2));
+          for (var k = -d; k <= d; k += 2) {
+            var x = (k === -d || (k !== d && V[off + k - 1] < V[off + k + 1])) ? V[off + k + 1] : V[off + k - 1] + 1, y = x - k;
+            while (x < N && y < M && ca[pre + x] === cb[pre + y]) { x++; y++; }
+            V[off + k] = x;
+            if (x >= N && y >= M) { D = d; break outer; }
+          }
+        }
+        if (D < 0) return null;
+        var rev = [], cx = N, cy = M;
+        for (var e = D; e >= 0; e--) {
+          var v = trace[e], kk = cx - cy, at = function (q) { return v[q + e + 1]; };
+          var pk = (kk === -e || (kk !== e && at(kk - 1) < at(kk + 1))) ? kk + 1 : kk - 1, px = at(pk), py = px - pk;
+          while (cx > px && cy > py) { cx--; cy--; rev.push({ t: 'eq', i: pre + cx, j: pre + cy }); }
+          if (e > 0) { if (cx === px) { cy--; rev.push({ t: 'ins', j: pre + cy }); } else { cx--; rev.push({ t: 'del', i: pre + cx }); } }
+          cx = px; cy = py;
+        }
+        // forward order; pair runs of deletions+insertions between equal items as modifications
+        var out = [], dl = [], il = [];
+        var fl = function () {
+          var q = 0;
+          for (; q < dl.length && q < il.length; q++) out.push({ t: 'mod', i: dl[q], j: il[q] });
+          for (var r = q; r < dl.length; r++) out.push({ t: 'del', i: dl[r] });
+          for (var w = q; w < il.length; w++) out.push({ t: 'ins', j: il[w] });
+          dl = []; il = [];
+        };
+        for (var z = rev.length - 1; z >= 0; z--) {
+          var o2 = rev[z];
+          if (o2.t === 'eq') { fl(); out.push(o2); } else if (o2.t === 'del') dl.push(o2.i); else il.push(o2.j);
+        }
+        fl();
+        return out;
+      }
+      // A-cursor (number of A items before each op) for valid patch indices
+      var ac = pre;
+      seq.forEach(function (s) { s.ac = ac; if (s.t !== 'ins') ac++; });
+      // human-readable entries in forward order; patch ops collected per op then emitted in reverse
+      var opsPatch = [];
+      seq.forEach(function (s) {
+        if (s.t === 'eq') { opsPatch.push(null); return; }
+        if (s.t === 'del') { rec('removed', hp.concat(s.i), a[s.i], undefined); opsPatch.push([['remove', pp.concat(s.ac)]]); return; }
+        if (s.t === 'ins') { rec('added', hp.concat(s.j), undefined, b[s.j]); opsPatch.push([['add', pp.concat(s.ac), b[s.j]]]); return; }
+        // modified pair: recurse, capturing its patch ops
+        var saved = patch; patch = [];
+        diff(a[s.i], b[s.j], hp.concat(s.i), pp.concat(s.ac));
+        opsPatch.push(patch); patch = saved;
+      });
+      for (var r = opsPatch.length - 1; r >= 0; r--) {
+        var ops = opsPatch[r]; if (!ops) continue;
+        ops.forEach(function (op) { if (op instanceof Map) patch.push(op); else P(op[0], op[1], op[2]); });
+      }
+    }
+    diff(A, B, [], []);
+    var total = counts.added + counts.removed + counts.changed;
+    return { entries: entries, counts: counts, total: total, truncated: total > entries.length, patch: o.ignoreOrder ? null : stringify(patch, '  ') };
+  }
+
+  /* ----------------------------- FLATTEN ----------------------------- */
+  function flatten(v, o) {
+    var out = new Map(), collisions = 0, ambiguous = 0, sep = o.sep, maxDepth = o.maxDepth || 0;
+    function join(prefix, k, isIndex) {
+      if (isIndex && o.arrays === 'bracket') return prefix + '[' + k + ']';
+      return prefix === '' ? String(k) : prefix + sep + k;
+    }
+    function put(k, val) { if (out.has(k)) collisions++; out.set(k, val); }
+    function rec(v, prefix, depth) {
+      var isArr = Array.isArray(v), isObj = v instanceof Map;
+      if ((!isArr && !isObj) || (maxDepth && depth >= maxDepth && prefix !== '')) { put(prefix, v); return; }
+      var size = isArr ? v.length : v.size;
+      if (!size) { if (o.keepEmpty && prefix !== '') put(prefix, v); return; }
+      if (isArr) { for (var i = 0; i < v.length; i++) rec(v[i], join(prefix, i, true), depth + 1); }
+      else v.forEach(function (val, k) { if (sep && k.indexOf(sep) >= 0) ambiguous++; rec(val, join(prefix, k, false), depth + 1); });
+    }
+    if (!(Array.isArray(v) || v instanceof Map)) return { primitive: true, map: out };
+    rec(v, '', 0);
+    return { map: out, collisions: collisions, ambiguous: ambiguous };
+  }
+  function scalarText(v) { return typeof v === 'string' ? v : stringify(v); }
+  function csvCell(s) { return /[",\r\n]/.test(s) || /^\s|\s$/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; }
+
+  /* ----------------------------- DISPATCH ---------------------------- */
+  function indentOf(x) { return x === 'tab' ? '\t' : x === 'min' ? '' : ' '.repeat(+x || 2); }
+  var t0 = Date.now(), r, p;
+  switch (d.op) {
+    case 'check':
+      p = parse(d.text, { keepBig: true });
+      if (!p.ok) return { ok: false, error: p.error };
+      return { ok: true, stats: p.stats, warn: p.warn, bom: p.bom, size: d.text.length, ms: Date.now() - t0,
+               formatted: d.format ? stringify(p.model, indentOf(d.indent)) : null };
+    case 'repair':
+      p = parse(d.text, { lenient: true, keepBig: true });
+      if (!p.ok) return { ok: false, error: p.error };
+      return { ok: true, text: stringify(p.model, indentOf(d.indent || '2')), fixes: p.fixes, warn: p.warn, stats: p.stats };
+    case 'sort':
+      p = parse(d.text, { keepBig: true });
+      if (!p.ok) return { ok: false, error: p.error };
+      var sorted = sortModel(p.model, { keys: d.keys !== false, recursive: d.recursive !== false, desc: !!d.desc, cmp: makeCmp(d.method, d.desc), arrays: d.arrays || 'keep', byKey: d.byKey });
+      return { ok: true, text: stringify(sorted, indentOf(d.indent)), stats: p.stats, warn: p.warn, ms: Date.now() - t0, changed: stringify(sorted) !== stringify(p.model) };
+    case 'compare':
+      var pa = parse(d.a, { keepBig: true }); if (!pa.ok) return { ok: false, side: 'a', error: pa.error };
+      var pb = parse(d.b, { keepBig: true }); if (!pb.ok) return { ok: false, side: 'b', error: pb.error };
+      r = compare(pa.model, pb.model, d);
+      r.ok = true; r.ms = Date.now() - t0; r.statsA = pa.stats; r.statsB = pb.stats;
+      r.sameText = d.a === d.b;
+      return r;
+    case 'flatten':
+      p = parse(d.text, { keepBig: true });
+      if (!p.ok) return { ok: false, error: p.error };
+      var f = flatten(p.model, { sep: d.sep, arrays: d.arrays, maxDepth: d.maxDepth, keepEmpty: d.keepEmpty });
+      if (f.primitive) return { ok: true, primitive: true, text: d.text.trim(), count: 0 };
+      var text;
+      if (d.format === 'json') text = stringify(f.map, indentOf(d.indent));
+      else if (d.format === 'csv') { var rows = ['key,value']; f.map.forEach(function (v, k) { rows.push(csvCell(k) + ',' + csvCell(scalarText(v))); }); text = rows.join('\n'); }
+      else { var lines = []; f.map.forEach(function (v, k) { lines.push(k + '=' + scalarText(v).replace(/\r?\n/g, '\\n')); }); text = lines.join('\n'); }
+      return { ok: true, text: text, count: f.map.size, collisions: f.collisions, ambiguous: f.ambiguous, warn: p.warn, stats: p.stats, ms: Date.now() - t0 };
+  }
+  throw new Error('Unknown operation');
+}
+
+    var JSON_WORKER_FROM = 512 * 1024, JSON_MAX_FILE = 50 * 1024 * 1024;
+    // small input: main thread (instant); large input: Web Worker with a timeout so the page never freezes
+    function runJson(job, size) {
+      if (size > JSON_WORKER_FROM) return TK.runWorker(jsonJob, job, 60000);
+      return new Promise(function (res) { res(jsonJob(job)); });
+    }
+    function jsonErrMsg(e) { return e && e.message === 'timeout' ? 'Processing took too long and was stopped.' : (e && /memory|allocation/i.test(e.message) ? 'Not enough memory to process this document in the browser.' : (e && e.message) || String(e)); }
+    function el(tag, cls, text) { var x = document.createElement(tag); if (cls) x.className = cls; if (text != null) x.textContent = text; return x; }
+    function countLines(t) { var c = 1, k = -1; while ((k = t.indexOf('\n', k + 1)) !== -1) c++; return c; }
+    function goToPos(ta, pos) {
+      ta.focus();
+      ta.setSelectionRange(pos, Math.min(pos + 1, ta.value.length));
+      var line = 1, k = -1; while ((k = ta.value.indexOf('\n', k + 1)) !== -1 && k < pos) line++;
+      var lh = parseFloat(getComputedStyle(ta).lineHeight) || 20;
+      ta.scrollTop = Math.max(0, (line - 4) * lh);
+    }
+    function renderJsonError(err, ta, label) {
+      var box = el('div', 'ty-jerr'), head = el('div', 'head');
+      head.append(el('b', null, '✗ ' + (label || 'Invalid JSON')), el('span', 'loc', 'Line ' + err.line + ', column ' + err.col));
+      box.append(head, el('div', 'msg', err.msg));
+      if (err.context) {
+        var pre = el('pre');
+        pre.append(document.createTextNode(err.context + '\n' + ' '.repeat(err.caret)), el('span', 'jcaret', '^'));
+        box.appendChild(pre);
+      }
+      if (err.hint) box.appendChild(el('div', 'hint', err.hint));
+      if (ta) {
+        var acts = el('div', 'acts'), b = el('button', 'btn btn-sm btn-outline', 'Go to error');
+        b.type = 'button'; b.addEventListener('click', function () { goToPos(ta, err.pos); });
+        acts.appendChild(b); box.appendChild(acts);
+      }
+      return box;
+    }
+    function attachJsonFile(ta, fileInput, onLoad, statusEl) {
+      function load(f) {
+        if (!f) return;
+        if (f.size > JSON_MAX_FILE) { TK.status(statusEl, '“' + f.name + '” is ' + TK.formatBytes(f.size) + '. The maximum is 50 MB.', 'error'); return; }
+        TK.readFile(f, 'text').then(function (t) { ta.value = t; onLoad(f); }, function () { TK.status(statusEl, 'Could not read “' + f.name + '”.', 'error'); });
+      }
+      if (fileInput) fileInput.addEventListener('change', function () { load(fileInput.files[0]); fileInput.value = ''; });
+      ta.addEventListener('dragover', function (e) { if (e.dataTransfer && Array.prototype.indexOf.call(e.dataTransfer.types, 'Files') >= 0) e.preventDefault(); });
+      ta.addEventListener('drop', function (e) { if (e.dataTransfer && e.dataTransfer.files.length) { e.preventDefault(); load(e.dataTransfer.files[0]); } });
+    }
+    function statCell(n, label, hl) { var d = el('div', 'ty-stat' + (hl ? ' hl' : '')); d.append(el('b', null, typeof n === 'number' ? TK.formatNumber(n) : n), el('span', null, label)); return d; }
+    function warnBox(title, items) {
+      var w = el('div', 'ty-jwarn'), ul = el('ul'); w.appendChild(el('h4', null, '⚠ ' + title));
+      items.forEach(function (it) { var li = el('li'); if (typeof it === 'string') li.textContent = it; else li.append.apply(li, it); ul.appendChild(li); });
+      w.appendChild(ul); return w;
+    }
+    function codeEl(t) { return el('code', null, t); }
+
+    var input = $('jvIn'), res = $('jvRes'), statusEl = $('jvStatus'), indentSel = $('indent');
+    var undoText = null, runId = 0;
+    var FIX_LABELS = { comments: 'comment(s) removed', trailingCommas: 'trailing comma(s) removed', quotes: 'single/curly quoted string(s) converted', keys: 'unquoted key(s) quoted',
+      literals: 'True/False/None/NaN/undefined value(s) converted', numbers: 'number(s) normalised', commas: 'missing comma(s) added', escapes: 'invalid escape(s) fixed',
+      control: 'raw control character(s) escaped', whitespace: 'invisible space(s) removed', colons: '“=” replaced by “:”' };
+
+    function renderEmpty() {
+      var d = el('div', null, 'Paste JSON on the left — it is checked as you type.');
+      d.style.cssText = 'padding:28px 20px; color:var(--ink-soft); font-size:14px; text-align:center;';
+      res.replaceChildren(d);
+    }
+    function topType(t) { var c = t.replace(/^[\s\uFEFF]+/, '').charAt(0); return c === '{' ? 'object' : c === '[' ? 'array' : c === '"' ? 'string' : /[\d-]/.test(c) ? 'number' : c === 't' || c === 'f' ? 'boolean' : 'null'; }
+
+    function renderOk(r, text) {
+      res.replaceChildren();
+      var ok = el('div', 'ty-jok'), info = el('div');
+      info.append(el('b', null, 'Valid JSON'), el('span', null, 'Top-level ' + topType(text) + ' · ' + TK.formatNumber(countLines(text)) + ' lines · checked in ' + (r.ms < 1 ? '<1' : r.ms) + ' ms'));
+      ok.append(el('div', 'big', '✓'), info);
+      var s = r.stats, g1 = el('div', 'ty-statgrid four'), g2 = el('div', 'ty-statgrid four');
+      g1.append(statCell(s.objects, 'Objects'), statCell(s.arrays, 'Arrays'), statCell(s.keys, 'Keys'), statCell(s.depth, 'Max depth', true));
+      g2.append(statCell(s.strings, 'Strings'), statCell(s.numbers, 'Numbers'), statCell(s.booleans, 'Booleans'), statCell(s.nulls, 'Nulls'));
+      res.append(ok, g1, g2);
+      if (r.warn.dupCount) {
+        res.appendChild(warnBox(r.warn.dupCount + ' duplicate key' + (r.warn.dupCount > 1 ? 's' : '') + ' — only the last value is kept by most parsers',
+          r.warn.dup.map(function (d) { return [codeEl(JSON.stringify(d.key)), ' in ', codeEl(d.path), ' (line ' + d.line + ')']; })
+            .concat(r.warn.dupCount > r.warn.dup.length ? ['…and ' + (r.warn.dupCount - r.warn.dup.length) + ' more'] : [])));
+      }
+      if (r.warn.bigCount) {
+        res.appendChild(warnBox(r.warn.bigCount + ' number' + (r.warn.bigCount > 1 ? 's' : '') + ' too large or precise for JavaScript',
+          r.warn.big.map(function (b) { return [codeEl(b.raw), ' at ', codeEl(b.path)]; })
+            .concat(['JSON.parse would round these (e.g. 64-bit IDs). Consider sending them as strings.'])));
+      }
+      if (r.bom) res.appendChild(warnBox('File starts with a byte order mark (BOM)', ['Invisible U+FEFF at the start breaks JSON.parse in browsers and Node.js. Save the file as “UTF-8” without BOM.']));
+    }
+
+    function run() {
+      var text = input.value, id = ++runId;
+      $('stSize').textContent = TK.formatBytes(text.length > 2e6 ? text.length : TK.byteLength(text));
+      $('stLines').textContent = TK.formatNumber(text ? countLines(text) : 0);
+      if (!text.trim()) { renderEmpty(); TK.status(statusEl, ''); $('stTime').textContent = '–'; return; }
+      var big = text.length > JSON_WORKER_FROM, t0 = performance.now();
+      if (big) TK.status(statusEl, 'Validating ' + TK.formatBytes(text.length) + ' in the background…', 'info');
+      runJson({ op: 'check', text: text }, text.length).then(function (r) {
+        if (id !== runId) return;
+        if (big) TK.status(statusEl, '');
+        $('stTime').textContent = Math.round(performance.now() - t0) + ' ms';
+        if (r.ok) renderOk(r, text); else res.replaceChildren(renderJsonError(r.error, input));
+      }, function (e) { if (id === runId) TK.status(statusEl, jsonErrMsg(e), 'error'); });
+    }
+
+    function setText(t, keepUndo) {
+      input.value = t;
+      if (!keepUndo) { undoText = null; $('undoBtn').hidden = true; }
+      auto.trigger();
+    }
+
+    $('repairBtn').addEventListener('click', function () {
+      var text = input.value, btn = this;
+      if (!text.trim()) { TK.flash(btn, 'Nothing to repair'); return; }
+      var ind = indentSel.value === 'min' ? 'min' : indentSel.value;
+      runJson({ op: 'repair', text: text, indent: ind }, text.length).then(function (r) {
+        if (!r.ok) { res.replaceChildren(renderJsonError(r.error, input, 'Could not repair automatically')); TK.status(statusEl, 'This error needs a manual fix — see the details above.', 'warn'); return; }
+        var parts = Object.keys(r.fixes).map(function (k) { return r.fixes[k] + ' ' + (FIX_LABELS[k] || k); });
+        undoText = text; $('undoBtn').hidden = false;
+        input.value = r.text; run();
+        TK.status(statusEl, parts.length ? 'Repaired: ' + parts.join(', ') + '.' : 'Already valid JSON — nothing to repair, formatted it instead.', 'ok');
+      }, function (e) { TK.status(statusEl, jsonErrMsg(e), 'error'); });
+    });
+    $('undoBtn').addEventListener('click', function () {
+      if (undoText == null) return;
+      input.value = undoText; undoText = null; this.hidden = true; run(); TK.status(statusEl, 'Restored your original text.', 'info');
+    });
+    $('formatBtn').addEventListener('click', function () {
+      var text = input.value, btn = this;
+      if (!text.trim()) { TK.flash(btn, 'Nothing to format'); return; }
+      runJson({ op: 'check', text: text, format: true, indent: indentSel.value }, text.length).then(function (r) {
+        if (!r.ok) { TK.flash(btn, 'Fix errors first'); res.replaceChildren(renderJsonError(r.error, input)); return; }
+        input.value = r.formatted; run();
+      }, function (e) { TK.status(statusEl, jsonErrMsg(e), 'error'); });
+    });
+
+    var auto = TK.autoRun({ input: input, run: run, delay: 300, maxAuto: 5000000,
+      onLarge: function (large) { if (large) TK.status(statusEl, 'Very large input — live validation paused. Click Validate.', 'info'); } });
+    input.addEventListener('input', function () { if (undoText != null) { undoText = null; $('undoBtn').hidden = true; } });
+    attachJsonFile(input, $('fileIn'), function (f) { setText(input.value); TK.status(statusEl, 'Loaded ' + f.name + ' (' + TK.formatBytes(f.size) + ').', 'info'); }, statusEl);
+    $('runBtn').addEventListener('click', function () { auto.trigger(); });
+    $('exampleBtn').addEventListener('click', function () {
+      setText('{\n  "name": "Toolyard",\n  "version": 2,\n  "tags": ["json", "validator",],\n  "author": {"name": "Ada", \'email\': "ada@example.com"},\n  "id": 12345678901234567890\n}');
+    });
+    $('clearBtn').addEventListener('click', function () { setText(''); TK.status(statusEl, ''); input.focus(); });
+    renderEmpty();
+
+  })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open Graph Generator – Create og: Meta Tags with Live Preview | Toolyard</title>
+  <meta name="description" content="Free Open Graph meta tag generator. Create og:title, og:description, og:image, article and Twitter/X card tags with live Facebook, X and LinkedIn previews and image size checks.">
+  <link rel="canonical" href="https://htmltools.nilankubaruah.workers.dev/tools/seo/open-graph-generator.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Open Graph Generator – Create og: Meta Tags with Live Preview">
+  <meta property="og:description" content="Free Open Graph meta tag generator. Create og:title, og:description, og:image, article and Twitter/X card tags with live Facebook, X and LinkedIn previews and image size checks.">
+  <meta property="og:url" content="https://htmltools.nilankubaruah.workers.dev/tools/seo/open-graph-generator.html">
+  <meta name="twitter:card" content="summary">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/tools.css">
+  <script src="/js/tools-data.js"></script>
+  <script src="/js/layout.js"></script>
+  <script src="/js/tool-kit.js"></script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Open Graph Generator", "url": "https://htmltools.nilankubaruah.workers.dev/tools/seo/open-graph-generator.html", "applicationCategory": "DeveloperApplication", "operatingSystem": "Any (runs in your browser)", "description": "Free Open Graph meta tag generator. Create og:title, og:description, og:image, article and Twitter/X card tags with live Facebook, X and LinkedIn previews and image size checks.", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Which Open Graph tags are required?", "acceptedAnswer": {"@type": "Answer", "text": "The protocol requires og:title, og:type, og:image and og:url. In practice also add og:description and og:site_name for a complete card."}}, {"@type": "Question", "name": "Why isn't my image showing in the preview?", "acceptedAnswer": {"@type": "Answer", "text": "The URL must be absolute (starting with https://), publicly accessible without a login, and point directly to an image file. Some hosts block hot-linking. If it fails here, it will usually fail on social platforms too."}}, {"@type": "Question", "name": "Do I need separate Twitter tags?", "acceptedAnswer": {"@type": "Answer", "text": "X falls back to og:title, og:description and og:image, but you need twitter:card to get a card at all. twitter:site and twitter:creator are optional attribution."}}, {"@type": "Question", "name": "I updated my tags but Facebook shows the old preview. Why?", "acceptedAnswer": {"@type": "Answer", "text": "Platforms cache previews for days. Paste your URL into the Facebook Sharing Debugger and click “Scrape Again”, or use LinkedIn Post Inspector, to refresh."}}, {"@type": "Question", "name": "What's the difference between og:title and the title tag?", "acceptedAnswer": {"@type": "Answer", "text": "The <title> tag is for search results and browser tabs. og:title is for social cards and can be more conversational, without the brand suffix."}}, {"@type": "Question", "name": "Should og:url be the canonical URL?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Use the clean canonical URL without tracking parameters, so likes and shares from different links are counted together."}}]}</script>
+</head>
+<body class="ty-tool" data-tool="open-graph-generator">
+
+  <!-- SHARED HEADER, MOBILE MENU & BREADCRUMBS (rendered by /js/layout.js) -->
+  <div id="site-header"></div>
+  <div id="site-breadcrumbs"></div>
+
+  <main>
+  <!-- TOOL INTRO -->
+  <section class="tool-intro">
+    <div class="wrap tool-intro-content">
+      <span class="eyebrow">🔍 SEO · GENERATOR</span>
+      <h1>Open Graph Generator</h1>
+      <p class="lead">Generate Open Graph and Twitter/X card tags so your links look great when shared on Facebook, LinkedIn, X, WhatsApp, Slack and Discord — with live previews and image checks.</p>
+      <div class="tool-meta-badge"><span class="dot"></span> Facebook, X &amp; LinkedIn previews · Article tags · Image size check</div>
+    </div>
+  </section>
+
+  <!-- WORKSPACE -->
+  <section class="tool-app-section">
+    <div class="wrap">
+      <div class="ty-pair"><span>Recommended image: <b>1200 × 630 px</b>, under 5 MB, on a public https URL.</span><span>Need title and description tags too? <a href="/tools/seo/meta-tag-generator.html">Meta Tag Generator →</a></span></div>
+      <div class="tool-workspace">
+        <div class="tool-toolbar">
+          <div class="tool-toolbar-left">
+            <span style="font-size:13px; color:var(--ink-soft);">Everything updates as you type.</span>
+          </div>
+          <div class="tool-toolbar-right">
+            <button type="button" class="btn btn-ghost btn-sm" id="exampleBtn">Load Example</button>
+            <button type="button" class="btn btn-danger btn-sm" id="resetBtn">Reset</button>
+          </div>
+        </div>
+
+        <div class="tool-grid">
+          <div class="tool-pane">
+            <div class="tool-pane-header"><span class="title">Share details</span><span class="badge">* required by Open Graph</span></div>
+            <form class="ty-form" id="ogForm" autocomplete="off" onsubmit="return false">
+              <div class="ty-row">
+                <div class="ty-field">
+                  <label for="fType">og:type *</label>
+                  <select class="ty-input" id="fType">
+                    <option value="website">website</option><option value="article">article</option><option value="profile">profile</option>
+                    <option value="book">book</option><option value="video.other">video.other</option><option value="music.song">music.song</option>
+                  </select>
+                </div>
+                <div class="ty-field">
+                  <label for="fLocale">og:locale</label>
+                  <select class="ty-input" id="fLocale">
+                    <option value="">— none —</option><option>en_US</option><option>en_GB</option><option>en_IN</option><option>hi_IN</option><option>bn_IN</option>
+                    <option>es_ES</option><option>fr_FR</option><option>de_DE</option><option>pt_BR</option><option>ja_JP</option><option>zh_CN</option><option>ar_AR</option>
+                  </select>
+                </div>
+              </div>
+              <div class="ty-field">
+                <label for="fTitle">og:title * <span class="cnt" id="cTitle">0 / 60</span></label>
+                <input class="ty-input" id="fTitle" maxlength="300" placeholder="The headline people see on the share card">
+              </div>
+              <div class="ty-field">
+                <label for="fDesc">og:description <span class="cnt" id="cDesc">0 / 160</span></label>
+                <textarea class="ty-input" id="fDesc" rows="2" maxlength="1000" placeholder="One or two sentences that make people click."></textarea>
+              </div>
+              <div class="ty-field">
+                <label for="fUrl">og:url *</label>
+                <input class="ty-input" id="fUrl" type="url" placeholder="https://example.com/page">
+                <span class="hint" id="hUrl">The canonical, absolute URL of the page.</span>
+              </div>
+              <div class="ty-field">
+                <label for="fImage">og:image *</label>
+                <input class="ty-input" id="fImage" type="url" placeholder="https://example.com/images/share-1200x630.jpg">
+                <span class="hint" id="hImage">Absolute https URL. 1200 × 630 px (1.91:1) recommended.</span>
+              </div>
+              <div class="ty-row three">
+                <div class="ty-field"><label for="fImgW">Width</label><input class="ty-input" id="fImgW" type="number" min="1" placeholder="1200"></div>
+                <div class="ty-field"><label for="fImgH">Height</label><input class="ty-input" id="fImgH" type="number" min="1" placeholder="630"></div>
+                <div class="ty-field"><label for="fSite">og:site_name</label><input class="ty-input" id="fSite" placeholder="Toolyard"></div>
+              </div>
+              <div class="ty-field">
+                <label for="fAlt">og:image:alt</label>
+                <input class="ty-input" id="fAlt" placeholder="Describe the image for screen-reader users">
+              </div>
+              <fieldset class="ty-fieldset" id="articleSet" hidden>
+                <legend>Article</legend>
+                <div class="ty-row">
+                  <div class="ty-field"><label for="fPub">Published</label><input class="ty-input" id="fPub" type="datetime-local"></div>
+                  <div class="ty-field"><label for="fMod">Modified</label><input class="ty-input" id="fMod" type="datetime-local"></div>
+                </div>
+                <div class="ty-row">
+                  <div class="ty-field"><label for="fAuthor">Author (profile URL or name)</label><input class="ty-input" id="fAuthor" placeholder="https://example.com/about/jane"></div>
+                  <div class="ty-field"><label for="fSection">Section</label><input class="ty-input" id="fSection" placeholder="Technology"></div>
+                </div>
+                <div class="ty-field"><label for="fTags">Tags <span class="opt">comma-separated</span></label><input class="ty-input" id="fTags" placeholder="seo, open graph, html"></div>
+              </fieldset>
+              <fieldset class="ty-fieldset">
+                <legend>X (Twitter) card</legend>
+                <label class="ty-opt"><input type="checkbox" id="fTw" checked> Include Twitter/X card tags</label>
+                <div class="ty-row three" id="twFields">
+                  <div class="ty-field"><label for="fCard">Card type</label><select class="ty-input" id="fCard"><option value="summary_large_image">Large image</option><option value="summary">Summary</option></select></div>
+                  <div class="ty-field"><label for="fTwSite">@site</label><input class="ty-input" id="fTwSite" placeholder="@toolyard"></div>
+                  <div class="ty-field"><label for="fTwCreator">@creator</label><input class="ty-input" id="fTwCreator" placeholder="@jane"></div>
+                </div>
+              </fieldset>
+              <div class="ty-field">
+                <label for="fApp">fb:app_id <span class="opt">optional</span></label>
+                <input class="ty-input" id="fApp" inputmode="numeric" placeholder="Only needed for Facebook Insights">
+              </div>
+            </form>
+          </div>
+          <div class="tool-pane">
+            <div class="tool-pane-header">
+              <span class="title">Generated HTML</span>
+              <div class="actions">
+                <button type="button" class="btn btn-sm btn-outline" id="copyBtn">Copy</button>
+                <button type="button" class="btn btn-sm btn-ghost" id="downloadBtn">Download</button>
+              </div>
+            </div>
+            <textarea class="ty-code" id="ogOut" readonly aria-label="Generated Open Graph tags" spellcheck="false"></textarea>
+            <ul class="ty-checklist" id="ogChecks" aria-label="Checks"></ul>
+            <div class="ty-preview-wrap">
+              <div class="ty-tabs ty-seg" id="previewSeg" role="group" aria-label="Preview platform">
+                <button type="button" data-value="fb" class="active">Facebook</button>
+                <button type="button" data-value="x">X</button>
+                <button type="button" data-value="li">LinkedIn</button>
+              </div>
+              <div class="ty-og" id="card">
+                <div class="img" id="cardImg"><span id="cardImgMsg">Add an og:image URL</span></div>
+                <div class="meta">
+                  <div class="dom" id="cardDom">EXAMPLE.COM</div>
+                  <div class="t" id="cardTitle">Your share title</div>
+                  <div class="d" id="cardDesc">Your description</div>
+                </div>
+                <div class="xcap" id="cardXcap" hidden>Your share title</div>
+              </div>
+              <div class="xdom" id="cardXdom" style="font-size:13px; color:var(--ink-soft); padding-top:6px;" hidden>From example.com</div>
+            </div>
+          </div>
+        </div>
+        <p class="ty-alert" id="ogStatus" role="status" aria-live="polite" hidden></p>
+
+        <div class="tool-stats-bar">
+          <div class="tool-stats-items">
+            <div class="tool-stat-badge">Tags: <b id="stTags">0</b></div>
+            <div class="tool-stat-badge">Image: <b id="stImg">–</b></div>
+            <div class="tool-stat-badge">Checks: <b id="stChecks">–</b></div>
+          </div>
+          <div>ogp.me · 100% Client-Side</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. ABOUT -->
+  <section class="ty-sec">
+    <div class="wrap">
+      <span class="eyebrow">◆ ABOUT THIS TOOL</span>
+      <h2>What Is the Open Graph Protocol?</h2>
+      <p class="sub">The tags that turn a bare link into a rich, clickable preview card.</p>
+      <div class="about-grid">
+        <div><p>Open Graph (<code>og:</code>) meta tags were created by Facebook and are now read by almost every app that shows link previews: LinkedIn, X, WhatsApp, Telegram, Slack, Discord, iMessage, Pinterest and more. Without them, platforms guess — often picking the wrong image or a random sentence.</p><p>Four properties are required by the protocol: <code>og:title</code>, <code>og:type</code>, <code>og:image</code> and <code>og:url</code>. Adding <code>og:description</code>, <code>og:site_name</code> and image dimensions makes previews faster and more reliable.</p></div>
+        <div><p>X (Twitter) reads Open Graph tags as a fallback, but it needs its own <code>twitter:card</code> tag to choose the card layout — a <b>large image</b> card or a compact <b>summary</b> card with a square thumbnail.</p><p>Platforms cache previews. After changing tags on a live page, use the Facebook Sharing Debugger or LinkedIn Post Inspector to force a refresh. Preview images in this tool load directly from your URL, so they only appear for publicly reachable images.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. REFERENCE -->
+  <section class="ty-sec alt">
+    <div class="wrap">
+      <span class="eyebrow">🖼 IMAGE SPECS</span>
+      <h2>Share Image Requirements</h2>
+      <p class="sub">Sizes that look sharp everywhere.</p>
+      <div class="ty-ref-wrap"><table class="ty-ref-table">
+        <thead><tr><th>Platform</th><th>Recommended</th><th>Minimum / notes</th></tr></thead>
+        <tbody>
+          <tr><td>Facebook</td><td>1200 × 630 px (1.91:1)</td><td>600 × 315 for large cards; max 8 MB</td></tr>
+          <tr><td>LinkedIn</td><td>1200 × 627 px</td><td>Max 5 MB; shown at 1.91:1</td></tr>
+          <tr><td>X — summary_large_image</td><td>1200 × 628 px (1.91:1)</td><td>Min 300 × 157; max 5 MB; JPG, PNG, WebP, GIF</td></tr>
+          <tr><td>X — summary</td><td>Square, 1:1</td><td>Min 144 × 144; max 4096 × 4096</td></tr>
+          <tr><td>WhatsApp / Telegram</td><td>1200 × 630 px</td><td>Keep under ~300 KB for reliable thumbnails</td></tr>
+          <tr><td>Slack / Discord</td><td>1200 × 630 px</td><td>Uses og:image; Discord also reads theme-color</td></tr>
+        </tbody>
+      </table></div>
+      <p style="font-size:12.5px; color:var(--ink-soft); margin-top:10px;">Keep important text and logos away from the edges — some apps crop the image to a square.</p>
+    </div>
+  </section>
+
+  <!-- 3. HOW TO USE -->
+  <section class="how-sec section-navy">
+    <div class="wrap">
+      <span class="eyebrow">◐ THREE STEPS</span>
+      <h2>How to Use the Open Graph Generator</h2>
+      <p class="sub">Get your result in under ten seconds.</p>
+      <div class="steps">
+        <div class="step" data-n="01">
+          <div class="num">1</div>
+          <h3 style="color:#fff;">Fill in the details</h3>
+          <p>Add a title, description, page URL and share image. Choose “article” to add publish dates, author and tags.</p>
+        </div>
+        <div class="step" data-n="02">
+          <div class="num">2</div>
+          <h3 style="color:#fff;">Check the previews</h3>
+          <p>Switch between Facebook, X and LinkedIn previews and fix anything flagged in the checklist.</p>
+        </div>
+        <div class="step" data-n="03">
+          <div class="num">3</div>
+          <h3 style="color:#fff;">Paste into your head</h3>
+          <p>Copy the tags into your page's <code>&lt;head&gt;</code>, deploy, then refresh the platform caches.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. FEATURES -->
+  <section class="ty-sec">
+    <div class="wrap">
+      <span class="eyebrow">✓ FEATURES</span>
+      <h2>Why Use the Toolyard Open Graph Generator</h2>
+      <p class="sub">Fast, accurate and private — built for developers.</p>
+      <div class="why-grid">
+        <div><div class="why-ico">👀</div><h3>Three live previews</h3><p>See your card the way Facebook, X and LinkedIn display it — before you publish.</p></div>
+        <div><div class="why-ico">🖼</div><h3>Image check</h3><p>Loads your image and reports its real size and aspect ratio, warning if it's too small.</p></div>
+        <div><div class="why-ico">📰</div><h3>Article support</h3><p>Published and modified dates in ISO 8601 with your time zone, author, section and tags.</p></div>
+        <div><div class="why-ico">🐦</div><h3>X cards included</h3><p>Adds the twitter:card tags X needs, without duplicating what it reads from Open Graph.</p></div>
+        <div><div class="why-ico">🧼</div><h3>Safe, valid output</h3><p>Quotes and special characters are escaped, so titles with “&” or quotes never break your HTML.</p></div>
+        <div><div class="why-ico">🔒</div><h3>Private</h3><p>Generated in your browser — nothing is sent to any server.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. FAQ -->
+  <section class="ty-sec alt">
+    <div class="wrap">
+      <div style="text-align:center; margin-bottom:36px;">
+        <span class="eyebrow">FAQ</span>
+        <h2 style="font-size:28px; margin-top:12px;">Frequently Asked Questions</h2>
+      </div>
+      <div class="faq" id="faqList">
+        <div class="faq-item">
+          <button type="button">Which Open Graph tags are required?<span class="plus">+</span></button>
+          <div class="faq-a"><p>The protocol requires <code>og:title</code>, <code>og:type</code>, <code>og:image</code> and <code>og:url</code>. In practice also add <code>og:description</code> and <code>og:site_name</code> for a complete card.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Why isn&#x27;t my image showing in the preview?<span class="plus">+</span></button>
+          <div class="faq-a"><p>The URL must be absolute (starting with https://), publicly accessible without a login, and point directly to an image file. Some hosts block hot-linking. If it fails here, it will usually fail on social platforms too.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Do I need separate Twitter tags?<span class="plus">+</span></button>
+          <div class="faq-a"><p>X falls back to <code>og:title</code>, <code>og:description</code> and <code>og:image</code>, but you need <code>twitter:card</code> to get a card at all. <code>twitter:site</code> and <code>twitter:creator</code> are optional attribution.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">I updated my tags but Facebook shows the old preview. Why?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Platforms cache previews for days. Paste your URL into the Facebook Sharing Debugger and click “Scrape Again”, or use LinkedIn Post Inspector, to refresh.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">What&#x27;s the difference between og:title and the title tag?<span class="plus">+</span></button>
+          <div class="faq-a"><p>The <code>&lt;title&gt;</code> tag is for search results and browser tabs. <code>og:title</code> is for social cards and can be more conversational, without the brand suffix.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Should og:url be the canonical URL?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Yes. Use the clean canonical URL without tracking parameters, so likes and shares from different links are counted together.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. RELATED -->
+  <section class="related-tools-section">
+    <div class="wrap">
+      <div class="section-head" style="margin-bottom:28px;">
+        <div>
+          <span class="eyebrow" style="margin-bottom:12px; display:inline-flex;">📎 RELATED</span>
+          <h2 style="font-size:26px; margin:12px 0 6px;">Related SEO Tools</h2>
+          <p class="desc" style="margin:0;">More free utilities that pair well with this one.</p>
+        </div>
+        <a class="view-all" href="/categories/seo/">All SEO Tools →</a>
+      </div>
+      <div class="grid grid-3">
+        <a class="tool-card" href="/tools/seo/meta-tag-generator.html">
+          <div class="top-row"><span class="badge">Generator</span></div>
+          <h3>Meta Tag Generator</h3>
+          <p>Generate title, description and essential meta tags.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card is-soon" href="/categories/seo/#twitter-card-generator">
+          <div class="top-row"><span class="badge">Generator</span><span class="status-pill status-soon">Coming soon</span></div>
+          <h3>Twitter Card Generator</h3>
+          <p>Generate Twitter/X card meta tags.</p>
+          <span class="open ty-soon-label">Coming soon</span>
+        </a>
+        <a class="tool-card is-soon" href="/categories/seo/#open-graph-preview">
+          <div class="top-row"><span class="badge">Preview</span><span class="status-pill status-soon">Coming soon</span></div>
+          <h3>Open Graph Preview</h3>
+          <p>Preview social share cards before publishing.</p>
+          <span class="open ty-soon-label">Coming soon</span>
+        </a>
+        <a class="tool-card is-soon" href="/categories/seo/#schema-markup-generator">
+          <div class="top-row"><span class="badge">Generator</span><span class="status-pill status-soon">Coming soon</span></div>
+          <h3>Schema Markup Generator</h3>
+          <p>Generate JSON-LD structured data for any page.</p>
+          <span class="open ty-soon-label">Coming soon</span>
+        </a>
+        <a class="tool-card is-soon" href="/categories/generators/#favicon-generator">
+          <div class="top-row"><span class="badge">Generator</span><span class="status-pill status-soon">Coming soon</span></div>
+          <h3>Favicon Generator</h3>
+          <p>Generate favicon sizes and the HTML link tags.</p>
+          <span class="open ty-soon-label">Coming soon</span>
+        </a>
+        <a class="tool-card is-soon" href="/categories/seo/#seo-slug-generator">
+          <div class="top-row"><span class="badge">Generator</span><span class="status-pill status-soon">Coming soon</span></div>
+          <h3>SEO Slug Generator</h3>
+          <p>Turn titles into clean, SEO-friendly URL slugs.</p>
+          <span class="open ty-soon-label">Coming soon</span>
+        </a>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <!-- SHARED FOOTER (rendered by /js/layout.js) -->
+  <div id="site-footer"></div>
+
+  <script>
+  (function () {
+    'use strict';
+    var $ = TK.$;
+    TK.initFaq(document.getElementById('faqList'));
+
+    var form = $('ogForm'), out = $('ogOut'), checks = $('ogChecks');
+    var F = function (id) { return $(id); }, esc = TK.escape;
+    var imgInfo = { url: '', w: 0, h: 0, state: 'none' };   // none | loading | ok | error
+    var probe = new Image();
+    probe.onload = function () { if (probe.src === imgInfo.url) { imgInfo.state = 'ok'; imgInfo.w = probe.naturalWidth; imgInfo.h = probe.naturalHeight; build(); } };
+    probe.onerror = function () { if (probe.src === imgInfo.url) { imgInfo.state = 'error'; build(); } };
+
+    function absUrl(u) { try { var x = new URL(u); return /^https?:$/.test(x.protocol) ? x : null; } catch (e) { return null; } }
+    function isoLocal(v) {
+      if (!v) return '';
+      var d = new Date(v); if (isNaN(d)) return '';
+      var off = -d.getTimezoneOffset(), sign = off >= 0 ? '+' : '-', p = function (n) { return String(Math.floor(Math.abs(n))).padStart(2, '0'); };
+      return v.length === 16 ? v + ':00' + sign + p(off / 60) + ':' + p(off % 60) : v + sign + p(off / 60) + ':' + p(off % 60);
+    }
+    function handle(s) { s = s.trim(); return s ? (s.charAt(0) === '@' ? s : '@' + s) : ''; }
+    function cnt(el, n, max) { el.textContent = n + ' / ' + max; el.className = 'cnt ' + (!n ? '' : n > max ? 'warn' : 'ok'); }
+
+    function build() {
+      var type = F('fType').value, title = F('fTitle').value.trim(), desc = F('fDesc').value.trim().replace(/\s+/g, ' ');
+      var url = F('fUrl').value.trim(), image = F('fImage').value.trim(), site = F('fSite').value.trim();
+      var lines = ['<!-- Open Graph -->'], tags = 0, tips = [];
+      function prop(p, v) { if (v) { lines.push('<meta property="' + p + '" content="' + esc(v) + '">'); tags++; } }
+      function name(p, v) { if (v) { lines.push('<meta name="' + p + '" content="' + esc(v) + '">'); tags++; } }
+      prop('og:type', type); prop('og:title', title); prop('og:description', desc); prop('og:url', url); prop('og:site_name', site);
+      prop('og:locale', F('fLocale').value);
+      if (image) {
+        prop('og:image', image);
+        if (/^https:/i.test(image)) prop('og:image:secure_url', image);
+        prop('og:image:width', F('fImgW').value || (imgInfo.state === 'ok' && imgInfo.url === image ? String(imgInfo.w) : ''));
+        prop('og:image:height', F('fImgH').value || (imgInfo.state === 'ok' && imgInfo.url === image ? String(imgInfo.h) : ''));
+        prop('og:image:alt', F('fAlt').value.trim());
+      }
+      F('articleSet').hidden = type !== 'article';
+      if (type === 'article') {
+        prop('article:published_time', isoLocal(F('fPub').value));
+        prop('article:modified_time', isoLocal(F('fMod').value));
+        prop('article:author', F('fAuthor').value.trim());
+        prop('article:section', F('fSection').value.trim());
+        F('fTags').value.split(',').map(function (t) { return t.trim(); }).filter(Boolean).slice(0, 20).forEach(function (t) { prop('article:tag', t); });
+      }
+      prop('fb:app_id', F('fApp').value.replace(/\D/g, ''));
+      F('twFields').hidden = !F('fTw').checked;
+      if (F('fTw').checked) {
+        lines.push('', '<!-- X (Twitter) — falls back to og:title, og:description and og:image -->');
+        name('twitter:card', F('fCard').value);
+        name('twitter:site', handle(F('fTwSite').value));
+        name('twitter:creator', handle(F('fTwCreator').value));
+        if (image && F('fAlt').value.trim()) name('twitter:image:alt', F('fAlt').value.trim());
+      }
+      out.value = tags ? lines.join('\n') : '';
+      $('stTags').textContent = tags;
+      cnt($('cTitle'), title.length, 60); cnt($('cDesc'), desc.length, 160);
+
+      // image probing (only http/https, only when the URL changes)
+      var iu = absUrl(image);
+      if (!image || !iu) { imgInfo = { url: '', w: 0, h: 0, state: 'none' }; probe.removeAttribute('src'); }
+      else if (iu.href !== imgInfo.url) { imgInfo = { url: iu.href, w: 0, h: 0, state: 'loading' }; probe.src = iu.href; }
+
+      // checks
+      if (!title) tips.push(['error', 'og:title is required.']);
+      else if (title.length > 88) tips.push(['warn', 'Title is ' + title.length + ' characters — Facebook truncates after ~88, X after ~70.']);
+      else tips.push(['ok', 'og:title set (' + title.length + ' chars).']);
+      if (!desc) tips.push(['warn', 'Add og:description — otherwise platforms pick text from the page.']);
+      else if (desc.length > 200) tips.push(['warn', 'Description is long; most cards show only the first 1–2 lines.']);
+      var u = url ? absUrl(url) : null;
+      F('hUrl').className = 'hint' + (url && !u ? ' error' : '');
+      if (!url) tips.push(['error', 'og:url is required — use the canonical page URL.']);
+      else if (!u) tips.push(['error', 'og:url must be an absolute URL (https://…).']);
+      F('hImage').className = 'hint' + (image && !iu ? ' error' : '');
+      F('hImage').textContent = image && !iu ? 'Must be an absolute URL starting with https://' : 'Absolute https URL. 1200 × 630 px (1.91:1) recommended.';
+      if (!image) tips.push(['error', 'og:image is required — links without an image get far fewer clicks.']);
+      else if (!iu) tips.push(['error', 'og:image must be an absolute http(s) URL.']);
+      else if (iu.protocol === 'http:') tips.push(['warn', 'Use https:// for the image — some apps refuse insecure images.']);
+      if (imgInfo.state === 'ok') {
+        var ratio = imgInfo.w / imgInfo.h, large = F('fCard').value === 'summary_large_image';
+        if (imgInfo.w < 600 || imgInfo.h < 315) tips.push(['warn', 'Image is ' + imgInfo.w + '×' + imgInfo.h + ' — below 600×315, many platforms show a small thumbnail.']);
+        else if (Math.abs(ratio - 1.91) > 0.2 && (large || F('fType').value)) tips.push(['warn', 'Image ratio is ' + ratio.toFixed(2) + ':1 — it will be cropped (1.91:1 recommended).']);
+        else tips.push(['ok', 'Image loaded: ' + imgInfo.w + '×' + imgInfo.h + ' px.']);
+        $('stImg').textContent = imgInfo.w + '×' + imgInfo.h;
+      } else if (imgInfo.state === 'error') {
+        tips.push(['warn', 'The image could not be loaded from here. Check it is public and the URL is correct (previews don\'t load inside the offline file viewer).']);
+        $('stImg').textContent = 'not loaded';
+      } else $('stImg').textContent = imgInfo.state === 'loading' ? 'loading…' : '–';
+      if (image && !F('fAlt').value.trim()) tips.push(['warn', 'Add og:image:alt to describe the image for accessibility.']);
+      checks.replaceChildren();
+      tips.forEach(function (t) { var li = document.createElement('li'); li.className = t[0] === 'ok' ? '' : t[0]; li.textContent = t[1]; checks.appendChild(li); });
+      var errs = tips.filter(function (t) { return t[0] === 'error'; }).length, warns = tips.filter(function (t) { return t[0] === 'warn'; }).length;
+      $('stChecks').textContent = errs ? errs + ' error' + (errs > 1 ? 's' : '') : warns ? warns + ' tip' + (warns > 1 ? 's' : '') : 'all good';
+      renderCard(title, desc, u, site);
+    }
+
+    function renderCard(title, desc, u, site) {
+      var p = platform.get(), card = $('card'), dom = u ? u.hostname.replace(/^www\./, '') : 'example.com';
+      card.className = 'ty-og' + (p === 'x' ? ' x' + (F('fCard').value === 'summary' ? ' summary' : '') : p === 'li' ? ' li' : '');
+      $('cardDom').textContent = p === 'li' ? (site || dom) : dom.toUpperCase();
+      $('cardTitle').textContent = title || 'Your share title';
+      $('cardDesc').textContent = desc || 'Your description';
+      $('cardXcap').textContent = title || 'Your share title';
+      $('cardXcap').hidden = p !== 'x';
+      $('cardXdom').hidden = p !== 'x'; $('cardXdom').textContent = 'From ' + dom;
+      var box = $('cardImg');
+      var existing = box.querySelector('img');
+      if (imgInfo.state === 'ok') {
+        if (!existing) { existing = document.createElement('img'); existing.alt = ''; box.replaceChildren(existing); }
+        if (existing.src !== imgInfo.url) existing.src = imgInfo.url;
+      } else {
+        var msg = document.createElement('span');
+        msg.textContent = imgInfo.state === 'loading' ? 'Loading image…' : imgInfo.state === 'error' ? 'Image could not be loaded' : 'Add an og:image URL';
+        box.replaceChildren(msg);
+      }
+    }
+
+    var platform = TK.segmented($('previewSeg'), function () { build(); });
+    var deb = TK.debounce(build, 120);
+    form.addEventListener('input', deb);
+    form.addEventListener('change', deb);
+
+    $('copyBtn').addEventListener('click', function () { TK.copy(out.value, this); });
+    $('downloadBtn').addEventListener('click', function () { TK.download(out.value, 'open-graph-tags.html', 'text/html;charset=utf-8', this); });
+    $('exampleBtn').addEventListener('click', function () {
+      F('fType').value = 'article'; F('fLocale').value = 'en_IN';
+      F('fTitle').value = '10 Free Developer Tools That Run in Your Browser';
+      F('fDesc').value = 'Format JSON, decode JWTs, encode Base64 and more — fast, private tools that never upload your data.';
+      F('fUrl').value = 'https://htmltools.nilankubaruah.workers.dev/blog/free-developer-tools';
+      F('fImage').value = location.origin + '/images/og-default.png';
+      F('fImgW').value = '1200'; F('fImgH').value = '630'; F('fSite').value = 'Toolyard';
+      F('fAlt').value = 'Toolyard logo with a grid of developer tool icons';
+      var now = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+      F('fPub').value = now; F('fMod').value = now;
+      F('fAuthor').value = 'https://htmltools.nilankubaruah.workers.dev/about'; F('fSection').value = 'Developer Tools'; F('fTags').value = 'developer tools, json, base64, privacy';
+      F('fTwSite').value = 'toolyard';
+      build();
+    });
+    $('resetBtn').addEventListener('click', function () { form.reset(); build(); F('fTitle').focus(); });
+    build();
+
+  })();
+  </script>
+</body>
+</html>

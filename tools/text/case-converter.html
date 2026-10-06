@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Case Converter – UPPER, lower, Title, camelCase, snake_case Online | Toolyard</title>
+  <meta name="description" content="Free online case converter. Convert text to UPPERCASE, lowercase, Title Case, Sentence case, camelCase, PascalCase, snake_case, kebab-case, CONSTANT_CASE and more — instant, Unicode-aware, private.">
+  <link rel="canonical" href="https://htmltools.nilankubaruah.workers.dev/tools/text/case-converter.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Case Converter – UPPER, lower, Title, camelCase, snake_case Online">
+  <meta property="og:description" content="Free online case converter. Convert text to UPPERCASE, lowercase, Title Case, Sentence case, camelCase, PascalCase, snake_case, kebab-case, CONSTANT_CASE and more — instant, Unicode-aware, private.">
+  <meta property="og:url" content="https://htmltools.nilankubaruah.workers.dev/tools/text/case-converter.html">
+  <meta name="twitter:card" content="summary">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/tools.css">
+  <script src="/js/tools-data.js"></script>
+  <script src="/js/layout.js"></script>
+  <script src="/js/tool-kit.js"></script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Case Converter", "url": "https://htmltools.nilankubaruah.workers.dev/tools/text/case-converter.html", "applicationCategory": "DeveloperApplication", "operatingSystem": "Any (runs in your browser)", "description": "Free online case converter. Convert text to UPPERCASE, lowercase, Title Case, Sentence case, camelCase, PascalCase, snake_case, kebab-case, CONSTANT_CASE and more — instant, Unicode-aware, private.", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Which words stay lowercase in Title Case?", "acceptedAnswer": {"@type": "Answer", "text": "Articles (a, an, the), coordinating conjunctions (and, but, or, nor, for, so, yet) and short prepositions (as, at, by, in, of, off, on, per, to, up, via, from, into, with, over) — unless they are the first or last word or follow a colon."}}, {"@type": "Question", "name": "What's the difference between Title Case and Capitalize Each Word?", "acceptedAnswer": {"@type": "Answer", "text": "Capitalize Each Word uppercases the first letter of every word, including “a”, “of” and “the”. Title Case follows headline style rules and keeps those small words lowercase."}}, {"@type": "Question", "name": "How does camelCase handle existing identifiers?", "acceptedAnswer": {"@type": "Answer", "text": "Words are split at spaces, punctuation and case changes, so getHTTPResponse becomes get_http_response in snake_case and user-id becomes userId in camelCase."}}, {"@type": "Question", "name": "Why are my acronyms not preserved?", "acceptedAnswer": {"@type": "Answer", "text": "If the whole input is in capitals, acronyms can't be told apart from normal words, so everything is converted. Turn off Keep acronyms to force full conversion in any case."}}, {"@type": "Question", "name": "Can I convert a list of variable names?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Put one name per line — code cases convert each line separately and keep the line breaks."}}, {"@type": "Question", "name": "Is my text stored?", "acceptedAnswer": {"@type": "Answer", "text": "No. Conversion happens locally in your browser; nothing is uploaded or saved."}}]}</script>
+</head>
+<body class="ty-tool" data-tool="case-converter">
+
+  <!-- SHARED HEADER, MOBILE MENU & BREADCRUMBS (rendered by /js/layout.js) -->
+  <div id="site-header"></div>
+  <div id="site-breadcrumbs"></div>
+
+  <main>
+  <!-- TOOL INTRO -->
+  <section class="tool-intro">
+    <div class="wrap tool-intro-content">
+      <span class="eyebrow">✎ TEXT · CONVERTER</span>
+      <h1>Case Converter</h1>
+      <p class="lead">Change text to UPPERCASE, lowercase, Title Case or Sentence case — or convert names to camelCase, PascalCase, snake_case, kebab-case and CONSTANT_CASE for code. One click, live as you type.</p>
+      <div class="tool-meta-badge"><span class="dot"></span> 13 cases · Smart Title Case · Keeps acronyms like NASA &amp; iPhone</div>
+    </div>
+  </section>
+
+  <!-- WORKSPACE -->
+  <section class="tool-app-section">
+    <div class="wrap">
+      <div class="ty-pair"><span>Code cases convert <b>each line</b> separately — paste a list of names to convert them all.</span><span>Turning a title into a URL? <a href="/categories/text/#text-to-slug">Text to Slug (coming soon)</a></span></div>
+      <div class="tool-workspace">
+        <div class="tool-toolbar">
+          <div class="tool-toolbar-left">
+            <label class="ty-opt" title="Leave words like NASA, HTML, iPhone and JavaScript unchanged in Title and Sentence case"><input type="checkbox" id="optAcr" checked> Keep acronyms</label>
+            <label class="ty-opt" title="café → cafe in code cases"><input type="checkbox" id="optAscii" checked> Remove accents (code cases)</label>
+          </div>
+          <div class="tool-toolbar-right">
+            <button type="button" class="btn btn-outline btn-sm" id="useBtn" title="Move the result into the input">⇄ Use as input</button>
+            <button type="button" class="btn btn-ghost btn-sm" id="exampleBtn">Load Example</button>
+            <button type="button" class="btn btn-danger btn-sm" id="clearBtn">Clear</button>
+          </div>
+        </div>
+        <div class="ty-cases" id="cases" role="group" aria-label="Choose a case">
+          <button type="button" data-case="upper" class="active">UPPER CASE</button>
+          <button type="button" data-case="lower">lower case</button>
+          <button type="button" data-case="title">Title Case</button>
+          <button type="button" data-case="sentence">Sentence case</button>
+          <button type="button" data-case="capital">Capitalize Each Word</button>
+          <button type="button" data-case="camel">camelCase</button>
+          <button type="button" data-case="pascal">PascalCase</button>
+          <button type="button" data-case="snake">snake_case</button>
+          <button type="button" data-case="constant">CONSTANT_CASE</button>
+          <button type="button" data-case="kebab">kebab-case</button>
+          <button type="button" data-case="train">Train-Case</button>
+          <button type="button" data-case="dot">dot.case</button>
+          <button type="button" data-case="alternating">aLtErNaTiNg</button>
+          <button type="button" data-case="inverse">iNVERSE</button>
+        </div>
+
+        <div class="tool-grid">
+          <div class="tool-pane">
+            <div class="tool-pane-header">
+              <span class="title">Input text</span>
+              <span class="badge">Any language</span>
+            </div>
+            <textarea id="caseIn" class="tool-textarea" style="word-break:normal;" placeholder="Type or paste text, a headline, or a list of variable names (one per line)…" spellcheck="false" aria-label="Text to convert"></textarea>
+          </div>
+          <div class="tool-pane">
+            <div class="tool-pane-header">
+              <span class="title" id="outTitle">UPPER CASE</span>
+              <div class="actions">
+                <button type="button" class="btn btn-sm btn-outline" id="copyBtn">Copy</button>
+                <button type="button" class="btn btn-sm btn-ghost" id="downloadBtn">Download .txt</button>
+              </div>
+            </div>
+            <textarea id="caseOut" class="tool-textarea is-empty" style="word-break:normal;" readonly placeholder="Converted text will appear here…" aria-label="Converted text"></textarea>
+            <div class="ty-note" id="caseNote" hidden></div>
+          </div>
+        </div>
+        <p class="ty-alert" id="caseStatus" role="status" aria-live="polite" hidden></p>
+
+        <div class="tool-stats-bar">
+          <div class="tool-stats-items">
+            <div class="tool-stat-badge">Characters: <b id="stChars">0</b></div>
+            <div class="tool-stat-badge">Words: <b id="stWords">0</b></div>
+            <div class="tool-stat-badge">Lines: <b id="stLines">0</b></div>
+          </div>
+          <div>Unicode-aware · 100% Client-Side</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. ABOUT -->
+  <section class="ty-sec">
+    <div class="wrap">
+      <span class="eyebrow">◆ ABOUT THIS TOOL</span>
+      <h2>Text Cases and Naming Conventions</h2>
+      <p class="sub">From headlines to variable names — every case has its place.</p>
+      <div class="about-grid">
+        <div><p><b>Title Case</b> here is smart: it capitalizes major words but keeps short articles, conjunctions and prepositions (a, an, the, and, of, in, on, to…) lowercase unless they start or end the title or follow a colon — close to AP and Chicago style. Hyphenated words are capitalized on both sides (“Self-Driving”).</p><p><b>Sentence case</b> lowercases everything, then capitalizes the first letter of each sentence and the pronoun “I”. With <b>Keep acronyms</b> on, words like NASA, HTML, iPhone and JavaScript stay exactly as you wrote them.</p></div>
+        <div><p>The <b>code cases</b> split text into words at spaces, punctuation and existing case changes, so <code>XMLHttpRequest</code>, <code>user_id</code>, <code>user-id</code> and <code>User ID</code> all convert cleanly. Each line is converted separately, so you can paste a list.</p><p><b>Remove accents</b> turns “Crème brûlée” into <code>cremeBrulee</code> instead of <code>crèmeBrûlée</code> — safer for identifiers, CSS classes and file names.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. REFERENCE -->
+  <section class="ty-sec alt">
+    <div class="wrap">
+      <span class="eyebrow">⌨ CONVENTIONS</span>
+      <h2>Which Case Should I Use?</h2>
+      <p class="sub">Common naming conventions in programming and on the web.</p>
+      <div class="ty-ref-wrap"><table class="ty-ref-table">
+        <thead><tr><th>Case</th><th>Example</th><th>Typically used for</th></tr></thead>
+        <tbody>
+          <tr><td>camelCase</td><td><code>userFirstName</code></td><td>JavaScript / Java / C# variables and functions, JSON keys</td></tr>
+          <tr><td>PascalCase</td><td><code>UserFirstName</code></td><td>Classes, types, React components, C# methods</td></tr>
+          <tr><td>snake_case</td><td><code>user_first_name</code></td><td>Python, Ruby, Rust variables, SQL columns</td></tr>
+          <tr><td>CONSTANT_CASE</td><td><code>USER_FIRST_NAME</code></td><td>Constants, environment variables</td></tr>
+          <tr><td>kebab-case</td><td><code>user-first-name</code></td><td>URLs, CSS classes, HTML attributes, file names</td></tr>
+          <tr><td>Train-Case</td><td><code>User-First-Name</code></td><td>HTTP headers (Content-Type)</td></tr>
+          <tr><td>dot.case</td><td><code>user.first.name</code></td><td>Config keys, i18n message keys, package names</td></tr>
+          <tr><td>Title Case</td><td>The Lord of the Rings</td><td>Headlines, page titles, book and article titles</td></tr>
+          <tr><td>Sentence case</td><td>The lord of the rings</td><td>UI labels, buttons, many style guides' headings</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <!-- 3. HOW TO USE -->
+  <section class="how-sec section-navy">
+    <div class="wrap">
+      <span class="eyebrow">◐ THREE STEPS</span>
+      <h2>How to Use the Case Converter</h2>
+      <p class="sub">Get your result in under ten seconds.</p>
+      <div class="steps">
+        <div class="step" data-n="01">
+          <div class="num">1</div>
+          <h3 style="color:#fff;">Paste your text</h3>
+          <p>Enter a headline, paragraph, or a list of names — one per line.</p>
+        </div>
+        <div class="step" data-n="02">
+          <div class="num">2</div>
+          <h3 style="color:#fff;">Pick a case</h3>
+          <p>Click any case button. The result updates live as you keep typing.</p>
+        </div>
+        <div class="step" data-n="03">
+          <div class="num">3</div>
+          <h3 style="color:#fff;">Copy it</h3>
+          <p>Copy or download the result, or use it as the new input to chain conversions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. FEATURES -->
+  <section class="ty-sec">
+    <div class="wrap">
+      <span class="eyebrow">✓ FEATURES</span>
+      <h2>Why Use the Toolyard Case Converter</h2>
+      <p class="sub">Fast, accurate and private — built for developers.</p>
+      <div class="why-grid">
+        <div><div class="why-ico">🧠</div><h3>Smart Title Case</h3><p>Small words stay lowercase, hyphenated words are handled, and the last word is always capitalized.</p></div>
+        <div><div class="why-ico">🔠</div><h3>Keeps acronyms</h3><p>NASA, HTML, iPhone and JavaScript survive Title and Sentence case untouched.</p></div>
+        <div><div class="why-ico">⌨</div><h3>Developer cases</h3><p>camel, Pascal, snake, CONSTANT, kebab, Train and dot case — splitting existing identifiers correctly.</p></div>
+        <div><div class="why-ico">📋</div><h3>Bulk friendly</h3><p>Convert hundreds of lines at once; code cases work line by line.</p></div>
+        <div><div class="why-ico">🌍</div><h3>Unicode-aware</h3><p>Works with accented, Greek and Cyrillic letters; optionally strips accents for identifiers.</p></div>
+        <div><div class="why-ico">🔒</div><h3>Private</h3><p>Text is converted locally in your browser and never uploaded.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. FAQ -->
+  <section class="ty-sec alt">
+    <div class="wrap">
+      <div style="text-align:center; margin-bottom:36px;">
+        <span class="eyebrow">FAQ</span>
+        <h2 style="font-size:28px; margin-top:12px;">Frequently Asked Questions</h2>
+      </div>
+      <div class="faq" id="faqList">
+        <div class="faq-item">
+          <button type="button">Which words stay lowercase in Title Case?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Articles (a, an, the), coordinating conjunctions (and, but, or, nor, for, so, yet) and short prepositions (as, at, by, in, of, off, on, per, to, up, via, from, into, with, over) — unless they are the first or last word or follow a colon.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">What&#x27;s the difference between Title Case and Capitalize Each Word?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Capitalize Each Word uppercases the first letter of every word, including “a”, “of” and “the”. Title Case follows headline style rules and keeps those small words lowercase.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">How does camelCase handle existing identifiers?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Words are split at spaces, punctuation and case changes, so <code>getHTTPResponse</code> becomes <code>get_http_response</code> in snake_case and <code>user-id</code> becomes <code>userId</code> in camelCase.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Why are my acronyms not preserved?<span class="plus">+</span></button>
+          <div class="faq-a"><p>If the whole input is in capitals, acronyms can't be told apart from normal words, so everything is converted. Turn off <b>Keep acronyms</b> to force full conversion in any case.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Can I convert a list of variable names?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Yes. Put one name per line — code cases convert each line separately and keep the line breaks.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Is my text stored?<span class="plus">+</span></button>
+          <div class="faq-a"><p>No. Conversion happens locally in your browser; nothing is uploaded or saved.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. RELATED -->
+  <section class="related-tools-section">
+    <div class="wrap">
+      <div class="section-head" style="margin-bottom:28px;">
+        <div>
+          <span class="eyebrow" style="margin-bottom:12px; display:inline-flex;">📎 RELATED</span>
+          <h2 style="font-size:26px; margin:12px 0 6px;">Related Text Tools</h2>
+          <p class="desc" style="margin:0;">More free utilities that pair well with this one.</p>
+        </div>
+        <a class="view-all" href="/categories/text/">All Text Tools →</a>
+      </div>
+      <div class="grid grid-3">
+        <a class="tool-card is-soon" href="/categories/text/#text-to-slug">
+          <div class="top-row"><span class="badge">Converter</span><span class="status-pill status-soon">Coming soon</span></div>
+          <h3>Text to Slug</h3>
+          <p>Convert any text into a URL-friendly slug.</p>
+          <span class="open ty-soon-label">Coming soon</span>
+        </a>
+        <a class="tool-card" href="/tools/text/word-counter.html">
+          <div class="top-row"><span class="badge">Counter</span></div>
+          <h3>Word Counter</h3>
+          <p>Count words, sentences and reading time.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/text/character-counter.html">
+          <div class="top-row"><span class="badge">Counter</span></div>
+          <h3>Character Counter</h3>
+          <p>Count characters with and without spaces.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card is-soon" href="/categories/text/#remove-extra-spaces">
+          <div class="top-row"><span class="badge">Cleaner</span><span class="status-pill status-soon">Coming soon</span></div>
+          <h3>Remove Extra Spaces</h3>
+          <p>Collapse repeated spaces and trim lines.</p>
+          <span class="open ty-soon-label">Coming soon</span>
+        </a>
+        <a class="tool-card is-soon" href="/categories/text/#find-and-replace">
+          <div class="top-row"><span class="badge">Utility</span><span class="status-pill status-soon">Coming soon</span></div>
+          <h3>Find &amp; Replace</h3>
+          <p>Find and replace text with optional regex support.</p>
+          <span class="open ty-soon-label">Coming soon</span>
+        </a>
+        <a class="tool-card is-soon" href="/categories/text/#sort-lines">
+          <div class="top-row"><span class="badge">Utility</span><span class="status-pill status-soon">Coming soon</span></div>
+          <h3>Sort Lines Alphabetically</h3>
+          <p>Sort lines A–Z, Z–A, naturally or by length.</p>
+          <span class="open ty-soon-label">Coming soon</span>
+        </a>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <!-- SHARED FOOTER (rendered by /js/layout.js) -->
+  <div id="site-footer"></div>
+
+  <script>
+  (function () {
+    'use strict';
+    var $ = TK.$;
+    TK.initFaq(document.getElementById('faqList'));
+
+    var input = $('caseIn'), out = $('caseOut'), statusEl = $('caseStatus'), note = $('caseNote');
+    var optAcr = $('optAcr'), optAscii = $('optAscii');
+    var current = 'upper';
+    var SMALL = new Set('a an the and but or nor for so yet as at by in of off on per to up via vs vs. v v. from into with over en if'.split(' '));
+    var CODE = { camel: 1, pascal: 1, snake: 1, constant: 1, kebab: 1, train: 1, dot: 1 };
+
+    function capFirst(w) { return w.replace(/^(\P{L}*)(\p{L})/u, function (m, a, b) { return a + b.toUpperCase(); }); }
+    function isKeep(w, allCaps) {
+      if (!optAcr.checked || allCaps) return false;
+      var letters = w.replace(/\P{L}/gu, '');
+      return (letters.length > 1 && letters === letters.toUpperCase() && letters !== letters.toLowerCase()) || /\p{Ll}\p{Lu}/u.test(w);
+    }
+
+    function titleCase(text, allCaps) {
+      return text.split('\n').map(function (line) {
+        var parts = line.split(/(\s+)/), idx = [];
+        parts.forEach(function (p, i) { if (p && !/^\s+$/.test(p)) idx.push(i); });
+        var firstI = idx[0], lastI = idx[idx.length - 1], prevBreak = true;
+        idx.forEach(function (i) {
+          var w = parts[i], core = w.toLowerCase().replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}.]+$/gu, '');
+          var out;
+          if (isKeep(w, allCaps)) out = w;
+          else if (i !== firstI && i !== lastI && !prevBreak && SMALL.has(core)) out = w.toLowerCase();
+          else out = w.toLowerCase().replace(/(^|[-\u2010\u2013\/])(\P{L}*)(\p{L})/gu, function (m, a, b, c) { return a + b + c.toUpperCase(); });
+          parts[i] = out;
+          prevBreak = /[:.!?\u2014]$/.test(w);
+        });
+        return parts.join('');
+      }).join('\n');
+    }
+
+    function sentenceCase(text, allCaps) {
+      var res = text.split(/(\s+)/).map(function (w) { return isKeep(w, allCaps) ? w : w.toLowerCase(); }).join('');
+      res = res.replace(/(^|[.!?]\s+|\n\s*)(\P{L}*)(\p{L})/gu, function (m, a, b, c) { return a + b + c.toUpperCase(); });
+      return res.replace(/(^|[^\p{L}])i(?=$|[^\p{L}]|['\u2019](?:m|ve|ll|d)\b)/gu, '$1I');
+    }
+
+    var RE_APOS = /['\u2019]/g, RE_MARK = /\p{M}/gu, RE_ASCII = /^[\x00-\x7F]*$/, RE_LOWUP = /([\p{Ll}\p{N}])(\p{Lu})/gu,
+        RE_ACR = /(\p{Lu}+)(\p{Lu}\p{Ll})/gu, RE_SPLIT = /[^\p{L}\p{N}]+/u, RE_LOWUP_A = /([a-z0-9])([A-Z])/g, RE_ACR_A = /([A-Z]+)([A-Z][a-z])/g, RE_SPLIT_A = /[^A-Za-z0-9]+/;
+    function words(line) {
+      var s = line.indexOf("'") >= 0 || line.indexOf('\u2019') >= 0 ? line.replace(RE_APOS, '') : line;
+      if (RE_ASCII.test(s)) {   // fast path for plain ASCII (the common case for code)
+        return s.replace(RE_LOWUP_A, '$1 $2').replace(RE_ACR_A, '$1 $2').split(RE_SPLIT_A).filter(Boolean);
+      }
+      if (optAscii.checked) s = s.normalize('NFD').replace(RE_MARK, '').replace(/ß/g, 'ss').replace(/æ/g, 'ae').replace(/Æ/g, 'AE').replace(/ø/g, 'o').replace(/Ø/g, 'O').replace(/ł/g, 'l').replace(/Ł/g, 'L');
+      s = s.replace(RE_LOWUP, '$1 $2').replace(RE_ACR, '$1 $2');
+      return s.split(RE_SPLIT).filter(Boolean);
+    }
+    function lowerCap(w) { return capFirst(w.toLowerCase()); }
+
+    function convert(text, kind) {
+      var allCaps = text === text.toUpperCase();
+      switch (kind) {
+        case 'upper': return text.toUpperCase();
+        case 'lower': return text.toLowerCase();
+        case 'title': return titleCase(text, allCaps);
+        case 'sentence': return sentenceCase(text, allCaps);
+        case 'capital': return text.toLowerCase().replace(/(^|[\s\-\u2010\/("\u201C])(\p{L})/gu, function (m, a, b) { return a + b.toUpperCase(); });
+        case 'alternating': var k = 0; return text.replace(/\p{L}/gu, function (c) { return (k++ % 2) ? c.toUpperCase() : c.toLowerCase(); });
+        case 'inverse': return text.replace(/\p{L}/gu, function (c) { var u = c.toUpperCase(); return c === u ? c.toLowerCase() : u; });
+      }
+      return text.split(/\r?\n/).map(function (line) {
+        var w = words(line);
+        if (!w.length) return '';
+        switch (kind) {
+          case 'camel': return w[0].toLowerCase() + w.slice(1).map(lowerCap).join('');
+          case 'pascal': return w.map(lowerCap).join('');
+          case 'snake': return w.join('_').toLowerCase();
+          case 'constant': return w.join('_').toUpperCase();
+          case 'kebab': return w.join('-').toLowerCase();
+          case 'train': return w.map(lowerCap).join('-');
+          case 'dot': return w.join('.').toLowerCase();
+        }
+      }).join('\n');
+    }
+
+    function run() {
+      var text = input.value;
+      $('stChars').textContent = TK.formatNumber(text.length);
+      $('stWords').textContent = TK.formatNumber((text.match(/[\p{L}\p{N}]+(?:['\u2019\-][\p{L}\p{N}]+)*/gu) || []).length);
+      $('stLines').textContent = TK.formatNumber(text ? text.split('\n').length : 0);
+      TK.setOutput(out, text ? convert(text, current) : '', { noteEl: note });
+      TK.status(statusEl, CODE[current] && text && /\S\s+\S/.test(text) && text.indexOf('\n') < 0 && text.length > 60
+        ? 'Code cases convert each line into one identifier — put one name per line to convert a list.' : '', 'info');
+    }
+
+    var auto = TK.autoRun({
+      input: input, run: run, delay: 150, maxAuto: 2000000, also: [optAcr, optAscii],
+      onLarge: function (large) { TK.status(statusEl, large ? 'Very large text — click a case button to convert.' : '', 'info'); }
+    });
+    var caseBtns = document.querySelectorAll('#cases button');
+    caseBtns.forEach(function (b) {
+      b.setAttribute('aria-pressed', b.classList.contains('active'));
+      b.addEventListener('click', function () {
+        current = b.getAttribute('data-case');
+        caseBtns.forEach(function (x) { var on = x === b; x.classList.toggle('active', on); x.setAttribute('aria-pressed', on); });
+        $('outTitle').textContent = b.textContent;
+        auto.trigger();
+      });
+    });
+
+    $('useBtn').addEventListener('click', function () { var v = TK.getOutput(out); if (!v) return; input.value = v; auto.trigger(); });
+    $('copyBtn').addEventListener('click', function () { TK.copy(TK.getOutput(out), this); });
+    $('downloadBtn').addEventListener('click', function () { TK.download(TK.getOutput(out), 'converted-' + current + '.txt', 'text/plain;charset=utf-8', this); });
+    $('exampleBtn').addEventListener('click', function () {
+      input.value = CODE[current] ? 'user first name\nXMLHttpRequest\nget_HTTP_response\ncrème brûlée recipe' : 'the quick guide to NASA missions: how the iPhone and JavaScript changed space-age science';
+      auto.trigger();
+    });
+    $('clearBtn').addEventListener('click', function () { input.value = ''; auto.trigger(); input.focus(); });
+
+  })();
+  </script>
+</body>
+</html>

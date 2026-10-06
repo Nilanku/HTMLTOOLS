@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meta Tag Generator – Create SEO Title &amp; Description Tags | Toolyard</title>
+  <meta name="description" content="Free meta tag generator. Create title, meta description, robots, canonical, viewport and theme-color tags with a live Google search preview, pixel-accurate length checks and SEO tips.">
+  <link rel="canonical" href="https://htmltools.nilankubaruah.workers.dev/tools/seo/meta-tag-generator.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Meta Tag Generator – Create SEO Title &amp; Description Tags">
+  <meta property="og:description" content="Free meta tag generator. Create title, meta description, robots, canonical, viewport and theme-color tags with a live Google search preview, pixel-accurate length checks and SEO tips.">
+  <meta property="og:url" content="https://htmltools.nilankubaruah.workers.dev/tools/seo/meta-tag-generator.html">
+  <meta name="twitter:card" content="summary">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/tools.css">
+  <script src="/js/tools-data.js"></script>
+  <script src="/js/layout.js"></script>
+  <script src="/js/tool-kit.js"></script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Meta Tag Generator", "url": "https://htmltools.nilankubaruah.workers.dev/tools/seo/meta-tag-generator.html", "applicationCategory": "DeveloperApplication", "operatingSystem": "Any (runs in your browser)", "description": "Free meta tag generator. Create title, meta description, robots, canonical, viewport and theme-color tags with a live Google search preview, pixel-accurate length checks and SEO tips.", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How long should a meta title be?", "acceptedAnswer": {"@type": "Answer", "text": "Keep it under about 580 pixels — roughly 50–60 characters. Longer titles are cut off with “…”. The counter shows both characters and pixels, and the preview truncates like Google."}}, {"@type": "Question", "name": "How long should a meta description be?", "acceptedAnswer": {"@type": "Answer", "text": "120–160 characters works well on desktop. Google sometimes shows longer snippets, but anything past ~160 characters is often cut. Each page should have a unique description."}}, {"@type": "Question", "name": "Does Google always use my meta description?", "acceptedAnswer": {"@type": "Answer", "text": "No. Google rewrites snippets when it thinks another part of the page better matches the search. A specific, accurate description that summarises the page is used most often."}}, {"@type": "Question", "name": "Do I still need the keywords meta tag?", "acceptedAnswer": {"@type": "Answer", "text": "No. Google ignores it entirely and Bing doesn't use it for ranking. The field is optional and left out of the code when empty."}}, {"@type": "Question", "name": "What does noindex, nofollow do?", "acceptedAnswer": {"@type": "Answer", "text": "noindex keeps the page out of search results; nofollow tells crawlers not to follow its links. Use them for private, duplicate or low-value pages — never on pages you want to rank."}}, {"@type": "Question", "name": "Where do I paste the code?", "acceptedAnswer": {"@type": "Answer", "text": "Inside the <head> section of your HTML, before </head>. Keep <meta charset> as the first element. In WordPress, use your SEO plugin's fields instead."}}, {"@type": "Question", "name": "Is anything I type saved?", "acceptedAnswer": {"@type": "Answer", "text": "No. The generator runs entirely in your browser and doesn't store or transmit your data."}}]}</script>
+</head>
+<body class="ty-tool" data-tool="meta-tag-generator">
+
+  <!-- SHARED HEADER, MOBILE MENU & BREADCRUMBS (rendered by /js/layout.js) -->
+  <div id="site-header"></div>
+  <div id="site-breadcrumbs"></div>
+
+  <main>
+  <!-- TOOL INTRO -->
+  <section class="tool-intro">
+    <div class="wrap tool-intro-content">
+      <span class="eyebrow">🔍 SEO · GENERATOR</span>
+      <h1>Meta Tag Generator</h1>
+      <p class="lead">Fill in your page details to generate clean, valid SEO meta tags — with a live Google search result preview, pixel-width length checks and instant tips. Copy the code into your <code>&lt;head&gt;</code>.</p>
+      <div class="tool-meta-badge"><span class="dot"></span> Live Google preview · Pixel-accurate truncation · Valid HTML5</div>
+    </div>
+  </section>
+
+  <!-- WORKSPACE -->
+  <section class="tool-app-section">
+    <div class="wrap">
+      <div class="ty-pair"><span>Paste the generated code inside the <code>&lt;head&gt;</code> of your page.</span><span>Need social sharing tags too? <a href="/tools/seo/open-graph-generator.html">Open Graph Generator →</a></span></div>
+      <div class="tool-workspace">
+        <div class="tool-toolbar">
+          <div class="tool-toolbar-left">
+            <span style="font-size:13px; color:var(--ink-soft);">Everything updates as you type.</span>
+          </div>
+          <div class="tool-toolbar-right">
+            <button type="button" class="btn btn-ghost btn-sm" id="exampleBtn">Load Example</button>
+            <button type="button" class="btn btn-danger btn-sm" id="resetBtn">Reset</button>
+          </div>
+        </div>
+
+        <div class="tool-grid">
+          <div class="tool-pane">
+            <div class="tool-pane-header"><span class="title">Page details</span><span class="badge">* recommended</span></div>
+            <form class="ty-form" id="mtForm" autocomplete="off" onsubmit="return false">
+              <div class="ty-field">
+                <label for="fTitle">Page title * <span class="cnt" id="cTitle">0 chars · 0 px</span></label>
+                <input class="ty-input" id="fTitle" maxlength="300" placeholder="e.g. Free JSON Formatter – Beautify &amp; Validate JSON | Toolyard">
+                <span class="hint">50–60 characters. Put the main keyword first and your brand last.</span>
+              </div>
+              <div class="ty-field">
+                <label for="fDesc">Meta description * <span class="cnt" id="cDesc">0 chars</span></label>
+                <textarea class="ty-input" id="fDesc" rows="3" maxlength="1000" placeholder="A one- or two-sentence summary that makes people want to click."></textarea>
+                <span class="hint">120–160 characters. Describe the benefit and include a call to action.</span>
+              </div>
+              <div class="ty-field">
+                <label for="fUrl">Canonical URL *</label>
+                <input class="ty-input" id="fUrl" type="url" placeholder="https://example.com/page">
+                <span class="hint" id="hUrl">The preferred, absolute URL of this page.</span>
+              </div>
+              <div class="ty-row">
+                <div class="ty-field">
+                  <label for="fIndex">Indexing</label>
+                  <select class="ty-input" id="fIndex"><option value="index">index — show in search</option><option value="noindex">noindex — hide from search</option></select>
+                </div>
+                <div class="ty-field">
+                  <label for="fFollow">Links</label>
+                  <select class="ty-input" id="fFollow"><option value="follow">follow — crawl links</option><option value="nofollow">nofollow — ignore links</option></select>
+                </div>
+              </div>
+              <div class="ty-field">
+                <span class="lbl">Advanced robots directives <span class="opt">optional</span></span>
+                <div class="ty-checks">
+                  <label class="ty-opt"><input type="checkbox" id="rLarge" checked> max-image-preview:large</label>
+                  <label class="ty-opt"><input type="checkbox" id="rNoarchive"> noarchive</label>
+                  <label class="ty-opt"><input type="checkbox" id="rNosnippet"> nosnippet</label>
+                  <label class="ty-opt"><input type="checkbox" id="rNoimage"> noimageindex</label>
+                </div>
+              </div>
+              <div class="ty-row">
+                <div class="ty-field">
+                  <label for="fAuthor">Author <span class="opt">optional</span></label>
+                  <input class="ty-input" id="fAuthor" placeholder="Jane Developer">
+                </div>
+                <div class="ty-field">
+                  <label for="fLang">Language <span class="opt">optional</span></label>
+                  <input class="ty-input" id="fLang" placeholder="en, en-IN, hi…" maxlength="20">
+                </div>
+              </div>
+              <div class="ty-field">
+                <label for="fKeywords">Keywords <span class="opt">optional — ignored by Google</span></label>
+                <input class="ty-input" id="fKeywords" placeholder="json formatter, json beautifier">
+              </div>
+              <div class="ty-row">
+                <div class="ty-field">
+                  <label for="fTheme">Theme colour <span class="opt">mobile browser bar</span></label>
+                  <div style="display:flex; gap:8px; align-items:center;">
+                    <input class="ty-input" id="fThemeOn" type="checkbox" style="width:auto;" aria-label="Include theme colour">
+                    <input class="ty-input" id="fTheme" type="color" value="#f0a93b">
+                  </div>
+                </div>
+                <div class="ty-field">
+                  <span class="lbl">Basics</span>
+                  <div class="ty-checks">
+                    <label class="ty-opt"><input type="checkbox" id="fCharset" checked> charset</label>
+                    <label class="ty-opt"><input type="checkbox" id="fViewport" checked> viewport</label>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="tool-pane">
+            <div class="tool-pane-header">
+              <span class="title">Generated HTML</span>
+              <div class="actions">
+                <button type="button" class="btn btn-sm btn-outline" id="copyBtn">Copy</button>
+                <button type="button" class="btn btn-sm btn-ghost" id="downloadBtn">Download</button>
+              </div>
+            </div>
+            <textarea class="ty-code" id="mtOut" readonly aria-label="Generated meta tags" spellcheck="false"></textarea>
+            <ul class="ty-checklist" id="mtChecks" aria-label="SEO checks"></ul>
+            <div class="ty-preview-wrap">
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:10px;">Google preview (desktop)</div>
+              <div class="ty-serp" id="serp">
+                <div class="site"><div class="fav" id="pFav">T</div><div><div class="sname" id="pName">example.com</div><div class="surl" id="pUrl">https://example.com</div></div></div>
+                <h3 class="stitle" id="pTitle">Your page title appears here</h3>
+                <div class="sdesc" id="pDesc">Your meta description appears here. Write a compelling summary of the page.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="ty-alert" id="mtStatus" role="status" aria-live="polite" hidden></p>
+
+        <div class="tool-stats-bar">
+          <div class="tool-stats-items">
+            <div class="tool-stat-badge">Tags: <b id="stTags">0</b></div>
+            <div class="tool-stat-badge">Title: <b id="stTitle">0 px</b> / 580</div>
+            <div class="tool-stat-badge">Description: <b id="stDesc">0</b> / 160</div>
+          </div>
+          <div>HTML5 · 100% Client-Side</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. ABOUT -->
+  <section class="ty-sec">
+    <div class="wrap">
+      <span class="eyebrow">◆ ABOUT THIS TOOL</span>
+      <h2>What Are Meta Tags?</h2>
+      <p class="sub">Small pieces of HTML that tell search engines and browsers about your page.</p>
+      <div class="about-grid">
+        <div><p>Meta tags live in the <code>&lt;head&gt;</code> of a page and aren't visible on the page itself. The two that matter most for SEO are the <b>title tag</b> — the blue headline in Google results and the text in the browser tab — and the <b>meta description</b>, which Google often uses as the snippet under the title.</p><p>Good titles and descriptions don't directly boost rankings much, but they strongly affect <b>click-through rate</b>: a clear, specific, benefit-driven snippet gets more clicks than a vague one.</p></div>
+        <div><p>The <b>robots</b> tag controls whether a page can be indexed and whether its links are followed; <b>canonical</b> tells Google which URL is the main version when the same content is reachable at several addresses (with tracking parameters, http/https, trailing slashes).</p><p>Google truncates titles by <b>pixel width</b> (about 580 px), not character count — “WWW” takes far more room than “iii”. This tool measures your title in pixels the same way, so the preview shows where it will be cut.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. REFERENCE -->
+  <section class="ty-sec alt">
+    <div class="wrap">
+      <span class="eyebrow">🏷 TAG GUIDE</span>
+      <h2>Meta Tags Explained</h2>
+      <p class="sub">What each generated tag does and when to use it.</p>
+      <div class="rules-list">
+        <div class="rule-card"><div class="rule-icon">T</div><div><h3><code>&lt;title&gt;</code></h3><p>Required on every page. Unique, descriptive, 50–60 characters (under ~580 px). Main keyword near the start, brand at the end.</p></div></div>
+        <div class="rule-card"><div class="rule-icon">D</div><div><h3><code>meta name="description"</code></h3><p>A unique 120–160 character summary. Google may rewrite it, but a good one is used most of the time and improves clicks.</p></div></div>
+        <div class="rule-card"><div class="rule-icon">R</div><div><h3><code>meta name="robots"</code></h3><p><code>index, follow</code> is the default. Use <code>noindex</code> for thank-you pages, internal search results and staging sites. <code>max-image-preview:large</code> allows big image previews in Discover.</p></div></div>
+        <div class="rule-card"><div class="rule-icon">C</div><div><h3><code>link rel="canonical"</code></h3><p>The absolute, preferred URL of the page. Prevents duplicate-content issues from URL parameters and alternate addresses.</p></div></div>
+        <div class="rule-card"><div class="rule-icon">V</div><div><h3><code>charset</code> &amp; <code>viewport</code></h3><p>Every modern page needs <code>&lt;meta charset="UTF-8"&gt;</code> (first in the head) and the responsive viewport tag for mobile-friendly rendering.</p></div></div>
+        <div class="rule-card"><div class="rule-icon">K</div><div><h3><code>meta name="keywords"</code></h3><p>Ignored by Google since 2009 and by Bing as a ranking signal. Harmless, but optional — it can reveal your keyword strategy to competitors.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. HOW TO USE -->
+  <section class="how-sec section-navy">
+    <div class="wrap">
+      <span class="eyebrow">◐ THREE STEPS</span>
+      <h2>How to Use the Meta Tag Generator</h2>
+      <p class="sub">Get your result in under ten seconds.</p>
+      <div class="steps">
+        <div class="step" data-n="01">
+          <div class="num">1</div>
+          <h3 style="color:#fff;">Describe your page</h3>
+          <p>Enter the title, description and canonical URL. Counters turn amber or red when they're too long.</p>
+        </div>
+        <div class="step" data-n="02">
+          <div class="num">2</div>
+          <h3 style="color:#fff;">Check the preview</h3>
+          <p>See exactly how your result could look on Google, and follow the tips in the checklist.</p>
+        </div>
+        <div class="step" data-n="03">
+          <div class="num">3</div>
+          <h3 style="color:#fff;">Copy into your head</h3>
+          <p>Copy or download the HTML and paste it inside the <code>&lt;head&gt;</code> of your page.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. FEATURES -->
+  <section class="ty-sec">
+    <div class="wrap">
+      <span class="eyebrow">✓ FEATURES</span>
+      <h2>Why Use the Toolyard Meta Tag Generator</h2>
+      <p class="sub">Fast, accurate and private — built for developers.</p>
+      <div class="why-grid">
+        <div><div class="why-ico">👀</div><h3>Live Google preview</h3><p>See your snippet as searchers will, with realistic truncation of long titles and descriptions.</p></div>
+        <div><div class="why-ico">📐</div><h3>Pixel-accurate</h3><p>Title width is measured in pixels like Google does, not just counted in characters.</p></div>
+        <div><div class="why-ico">✅</div><h3>Built-in SEO checks</h3><p>Instant tips for missing tags, lengths, non-absolute canonicals and accidental noindex.</p></div>
+        <div><div class="why-ico">🧼</div><h3>Clean, safe code</h3><p>Valid HTML5 with properly escaped quotes and special characters — no broken attributes.</p></div>
+        <div><div class="why-ico">🤖</div><h3>Robots made simple</h3><p>Pick index/follow and advanced directives without memorising the syntax.</p></div>
+        <div><div class="why-ico">🔒</div><h3>Private</h3><p>Everything runs in your browser — nothing is sent or stored.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. FAQ -->
+  <section class="ty-sec alt">
+    <div class="wrap">
+      <div style="text-align:center; margin-bottom:36px;">
+        <span class="eyebrow">FAQ</span>
+        <h2 style="font-size:28px; margin-top:12px;">Frequently Asked Questions</h2>
+      </div>
+      <div class="faq" id="faqList">
+        <div class="faq-item">
+          <button type="button">How long should a meta title be?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Keep it under about 580 pixels — roughly 50–60 characters. Longer titles are cut off with “…”. The counter shows both characters and pixels, and the preview truncates like Google.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">How long should a meta description be?<span class="plus">+</span></button>
+          <div class="faq-a"><p>120–160 characters works well on desktop. Google sometimes shows longer snippets, but anything past ~160 characters is often cut. Each page should have a unique description.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Does Google always use my meta description?<span class="plus">+</span></button>
+          <div class="faq-a"><p>No. Google rewrites snippets when it thinks another part of the page better matches the search. A specific, accurate description that summarises the page is used most often.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Do I still need the keywords meta tag?<span class="plus">+</span></button>
+          <div class="faq-a"><p>No. Google ignores it entirely and Bing doesn't use it for ranking. The field is optional and left out of the code when empty.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">What does noindex, nofollow do?<span class="plus">+</span></button>
+          <div class="faq-a"><p><code>noindex</code> keeps the page out of search results; <code>nofollow</code> tells crawlers not to follow its links. Use them for private, duplicate or low-value pages — never on pages you want to rank.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Where do I paste the code?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Inside the <code>&lt;head&gt;</code> section of your HTML, before <code>&lt;/head&gt;</code>. Keep <code>&lt;meta charset&gt;</code> as the first element. In WordPress, use your SEO plugin's fields instead.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Is anything I type saved?<span class="plus">+</span></button>
+          <div class="faq-a"><p>No. The generator runs entirely in your browser and doesn't store or transmit your data.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. RELATED -->
+  <section class="related-tools-section">
+    <div class="wrap">
+      <div class="section-head" style="margin-bottom:28px;">
+        <div>
+          <span class="eyebrow" style="margin-bottom:12px; display:inline-flex;">📎 RELATED</span>
+          <h2 style="font-size:26px; margin:12px 0 6px;">Related SEO Tools</h2>
+          <p class="desc" style="margin:0;">More free utilities that pair well with this one.</p>
+        </div>
+        <a class="view-all" href="/categories/seo/">All SEO Tools →</a>
+      </div>
+      <div class="grid grid-3">
+        <a class="tool-card" href="/tools/seo/open-graph-generator.html">
+          <div class="top-row"><span class="badge">Generator</span></div>
+          <h3>Open Graph Generator</h3>
+          <p>Create og: tags for rich link previews.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card is-soon" href="/categories/seo/#twitter-card-generator">
+          <div class="top-row"><span class="badge">Generator</span><span class="status-pill status-soon">Coming soon</span></div>
+          <h3>Twitter Card Generator</h3>
+          <p>Generate Twitter/X card meta tags.</p>
+          <span class="open ty-soon-label">Coming soon</span>
+        </a>
+        <a class="tool-card is-soon" href="/categories/seo/#serp-snippet-preview">
+          <div class="top-row"><span class="badge">Preview</span><span class="status-pill status-soon">Coming soon</span></div>
+          <h3>SERP Snippet Preview</h3>
+          <p>Preview how your page appears in Google results.</p>
+          <span class="open ty-soon-label">Coming soon</span>
+        </a>
+        <a class="tool-card is-soon" href="/categories/seo/#schema-markup-generator">
+          <div class="top-row"><span class="badge">Generator</span><span class="status-pill status-soon">Coming soon</span></div>
+          <h3>Schema Markup Generator</h3>
+          <p>Generate JSON-LD structured data for any page.</p>
+          <span class="open ty-soon-label">Coming soon</span>
+        </a>
+        <a class="tool-card is-soon" href="/categories/seo/#robots-txt-generator">
+          <div class="top-row"><span class="badge">Generator</span><span class="status-pill status-soon">Coming soon</span></div>
+          <h3>Robots.txt Generator</h3>
+          <p>Create robots.txt rules for crawlers.</p>
+          <span class="open ty-soon-label">Coming soon</span>
+        </a>
+        <a class="tool-card" href="/tools/text/character-counter.html">
+          <div class="top-row"><span class="badge">Counter</span></div>
+          <h3>Character Counter</h3>
+          <p>Count characters with and without spaces.</p>
+          <span class="open">Open tool →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <!-- SHARED FOOTER (rendered by /js/layout.js) -->
+  <div id="site-footer"></div>
+
+  <script>
+  (function () {
+    'use strict';
+    var $ = TK.$;
+    TK.initFaq(document.getElementById('faqList'));
+
+    var form = $('mtForm'), out = $('mtOut'), checks = $('mtChecks');
+    var F = function (id) { return $(id); };
+    var esc = TK.escape;
+    var canvas = document.createElement('canvas'), ctx = canvas.getContext('2d');
+    function px(text, font) { ctx.font = font; return Math.round(ctx.measureText(text).width); }
+    function truncPx(text, font, max) {
+      if (px(text, font) <= max) return text;
+      var lo = 0, hi = text.length;
+      while (lo < hi) { var mid = (lo + hi + 1) >> 1; if (px(text.slice(0, mid) + ' …', font) <= max) lo = mid; else hi = mid - 1; }
+      return text.slice(0, lo).replace(/\s+\S*$/, '') + ' …';
+    }
+    var TITLE_FONT = '20px Arial', DESC_FONT = '14px Arial';
+
+    function cls(el, n, okMin, okMax, hardMax) {
+      el.className = 'cnt ' + (!n ? '' : n > hardMax ? 'over' : (n < okMin || n > okMax) ? 'warn' : 'ok');
+    }
+    function absUrl(u) { try { var x = new URL(u); return /^https?:$/.test(x.protocol) ? x : null; } catch (e) { return null; } }
+
+    function build() {
+      var title = F('fTitle').value.trim(), desc = F('fDesc').value.trim().replace(/\s+/g, ' '), url = F('fUrl').value.trim();
+      var lines = [], tags = 0, tips = [];
+      function add(s) { lines.push(s); tags++; }
+      if (F('fLang').value.trim()) lines.push('<!-- Set the page language on the html element: <html lang="' + esc(F('fLang').value.trim()) + '"> -->');
+      if (F('fCharset').checked) add('<meta charset="UTF-8">');
+      if (F('fViewport').checked) add('<meta name="viewport" content="width=device-width, initial-scale=1">');
+      if (title) add('<title>' + esc(title) + '</title>');
+      if (desc) add('<meta name="description" content="' + esc(desc) + '">');
+      var robots = [F('fIndex').value, F('fFollow').value];
+      if (F('rLarge').checked && !F('rNosnippet').checked) robots.push('max-image-preview:large');
+      if (F('rNoarchive').checked) robots.push('noarchive');
+      if (F('rNosnippet').checked) robots.push('nosnippet');
+      if (F('rNoimage').checked) robots.push('noimageindex');
+      add('<meta name="robots" content="' + robots.join(', ') + '">');
+      if (url) add('<link rel="canonical" href="' + esc(url) + '">');
+      if (F('fAuthor').value.trim()) add('<meta name="author" content="' + esc(F('fAuthor').value.trim()) + '">');
+      if (F('fKeywords').value.trim()) add('<meta name="keywords" content="' + esc(F('fKeywords').value.trim().split(/\s*,\s*/).filter(Boolean).join(', ')) + '">');
+      if (F('fThemeOn').checked) add('<meta name="theme-color" content="' + esc(F('fTheme').value) + '">');
+      out.value = lines.join('\n');
+      out._full = out.value;
+
+      // counters
+      var tpx = px(title, TITLE_FONT);
+      $('cTitle').textContent = title.length + ' chars · ' + tpx + ' px';
+      $('cTitle').className = 'cnt ' + (!title ? '' : tpx > 580 ? 'over' : title.length < 30 ? 'warn' : 'ok');
+      $('cDesc').textContent = desc.length + ' chars';
+      cls($('cDesc'), desc.length, 70, 160, 160);
+      $('stTitle').textContent = tpx + ' px'; $('stDesc').textContent = desc.length; $('stTags').textContent = tags;
+
+      // checks
+      if (!title) tips.push(['error', 'Add a page title — it is the most important on-page SEO element.']);
+      else if (tpx > 580) tips.push(['warn', 'Title is ' + tpx + ' px wide and will be truncated (limit ≈ 580 px). Shorten it or move key words to the front.']);
+      else if (title.length < 30) tips.push(['warn', 'Title is short (' + title.length + ' chars). Use the space to add a keyword or benefit.']);
+      else tips.push(['ok', 'Title length looks good (' + title.length + ' chars, ' + tpx + ' px).']);
+      if (!desc) tips.push(['error', 'Add a meta description to control your search snippet.']);
+      else if (desc.length > 160) tips.push(['warn', 'Description is ' + desc.length + ' characters — likely cut off after ~160.']);
+      else if (desc.length < 70) tips.push(['warn', 'Description is short (' + desc.length + ' chars). Aim for 120–160.']);
+      else tips.push(['ok', 'Description length looks good.']);
+      var u = url ? absUrl(url) : null;
+      $('hUrl').className = 'hint' + (url && !u ? ' error' : '');
+      $('hUrl').textContent = url && !u ? 'Use a full absolute URL starting with https://' : 'The preferred, absolute URL of this page.';
+      if (!url) tips.push(['warn', 'Add a canonical URL to avoid duplicate-content issues.']);
+      else if (!u) tips.push(['error', 'Canonical must be an absolute URL (https://…).']);
+      else if (u.protocol === 'http:') tips.push(['warn', 'Canonical uses http:// — use https:// if your site supports it.']);
+      if (F('fIndex').value === 'noindex') tips.push(['warn', 'noindex is set — this page will NOT appear in search results.']);
+      if (F('fKeywords').value.trim()) tips.push(['warn', 'Keywords meta tag is ignored by Google — optional.']);
+      checks.replaceChildren();
+      tips.forEach(function (t) { var li = document.createElement('li'); li.className = t[0] === 'ok' ? '' : t[0]; li.textContent = t[1]; checks.appendChild(li); });
+
+      // preview
+      $('pTitle').textContent = title ? truncPx(title, TITLE_FONT, 580) : 'Your page title appears here';
+      $('pDesc').textContent = desc ? truncPx(desc, DESC_FONT, 960) : 'Your meta description appears here. Write a compelling summary of the page.';
+      var host = u ? u.hostname.replace(/^www\./, '') : 'example.com';
+      $('pName').textContent = host;
+      $('pFav').textContent = host.charAt(0).toUpperCase();
+      $('pUrl').textContent = u ? u.origin + (u.pathname !== '/' ? ' › ' + u.pathname.split('/').filter(Boolean).map(decodeSafe).join(' › ') : '') : 'https://example.com';
+    }
+    function decodeSafe(s) { try { return decodeURIComponent(s); } catch (e) { return s; } }
+
+    var deb = TK.debounce(build, 80);
+    form.addEventListener('input', deb);
+    form.addEventListener('change', deb);
+
+    $('copyBtn').addEventListener('click', function () { TK.copy(out.value, this); });
+    $('downloadBtn').addEventListener('click', function () { TK.download(out.value, 'meta-tags.html', 'text/html;charset=utf-8', this); });
+    $('exampleBtn').addEventListener('click', function () {
+      F('fTitle').value = 'Free JSON Formatter & Validator Online | Toolyard';
+      F('fDesc').value = 'Format, validate and beautify JSON instantly in your browser. Sort keys, fix errors and copy clean JSON — free, fast and 100% private. No sign-up needed.';
+      F('fUrl').value = 'https://htmltools.nilankubaruah.workers.dev/tools/json-data/json-formatter';
+      F('fAuthor').value = 'Toolyard'; F('fLang').value = 'en'; F('fThemeOn').checked = true;
+      build();
+    });
+    $('resetBtn').addEventListener('click', function () { form.reset(); build(); F('fTitle').focus(); });
+    build();
+
+  })();
+  </script>
+</body>
+</html>

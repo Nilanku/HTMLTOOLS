@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML to Plain Text Converter - Extract Text Online | Toolyard</title>
+  <meta name="description" content="Extract clean, readable plain text from HTML code online. Strip markup tags, format lists and tables, remove unwanted scripts, and count characters and words instantly.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/tools-data.js"></script>
+  <script src="/js/layout.js"></script>
+  <style>
+    /* Calculator Grid & Layout Safeguards */
+    .tool-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      min-height: 480px;
+      background: var(--line);
+      gap: 1px;
+    }
+    @media (max-width: 860px) {
+      .tool-grid { grid-template-columns: 1fr; }
+    }
+    .tool-pane {
+      background: var(--paper-2);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      min-width: 0;
+      overflow: hidden;
+    }
+    .tool-pane-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      background: var(--paper);
+      border-bottom: 1px solid var(--line);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink-soft);
+      min-width: 0;
+    }
+    .tool-pane-header .title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+    .tool-pane-header .actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    .tool-textarea {
+      flex: 1;
+      width: 100%;
+      min-height: 380px;
+      padding: 18px;
+      border: none;
+      outline: none;
+      resize: vertical;
+      background: var(--editor-bg);
+      color: var(--ink);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13.5px;
+      line-height: 1.65;
+      tab-size: 2;
+      white-space: pre;
+      overflow: auto;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+    .tool-textarea:focus {
+      background: var(--paper-2);
+    }
+    .tool-output-box {
+      flex: 1;
+      width: 100%;
+      min-height: 380px;
+      padding: 18px;
+      background: var(--editor-bg);
+      color: var(--ink);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13.5px;
+      line-height: 1.65;
+      overflow-y: auto;
+      overflow-x: hidden;
+      white-space: pre-wrap;
+      word-break: break-all;
+      overflow-wrap: anywhere;
+      user-select: text;
+      margin: 0;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+    .tool-output-box.empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-soft);
+      font-style: italic;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body data-tool="html-to-text">
+
+  <!-- SHARED HEADER, MOBILE MENU & BREADCRUMBS (rendered by /js/layout.js) -->
+  <div id="site-header"></div>
+  <div id="site-breadcrumbs"></div>
+
+  <!-- TOOL INTRO -->
+  <section class="tool-intro">
+    <div class="wrap tool-intro-content">
+      <span class="eyebrow">HTML CONVERTER</span>
+      <h1>HTML to Plain Text</h1>
+      <p class="lead">Strip markup tags, unescape entities, clean structural whitespace, and convert HTML tables, lists, and headings into readable plain text.</p>
+      <div class="tool-meta-badge">
+        <span class="dot"></span> 100% Private · Processed locally in your browser
+      </div>
+    </div>
+  </section>
+
+  <!-- CALCULATOR / WORKSPACE -->
+  <section class="tool-app-section">
+    <div class="wrap">
+      <div class="tool-workspace">
+        <div class="tool-toolbar">
+          <div class="tool-toolbar-left">
+            <button type="button" class="btn btn-amber" id="convertBtn">Extract Plain Text</button>
+          </div>
+          <div class="tool-toolbar-right">
+            <button type="button" class="btn btn-ghost btn-sm" id="exampleBtn">Load Example</button>
+            <button type="button" class="btn btn-danger btn-sm" id="clearBtn">Clear</button>
+          </div>
+        </div>
+
+        <div class="tool-grid">
+          <!-- Left Input Pane -->
+          <div class="tool-pane">
+            <div class="tool-pane-header">
+              <span class="title">HTML Input</span>
+              <span class="badge">Raw Markup</span>
+            </div>
+            <textarea id="textInput" class="tool-textarea" placeholder="Paste HTML markup here to extract plain text..." spellcheck="false"></textarea>
+          </div>
+
+          <!-- Right Output Pane -->
+          <div class="tool-pane">
+            <div class="tool-pane-header">
+              <span class="title">Plain Text Output</span>
+              <div class="actions">
+                <button type="button" class="btn btn-sm btn-outline" id="copyBtn">Copy</button>
+                <button type="button" class="btn btn-sm btn-ghost" id="downloadBtn">Download .txt</button>
+              </div>
+            </div>
+            <pre id="textOutput" class="tool-output-box empty"><em>Plain text output will appear here...</em></pre>
+          </div>
+        </div>
+
+        <div class="tool-stats-bar">
+          <div class="tool-stats-items">
+            <div class="tool-stat-badge">Characters: <b id="charCount">0</b></div>
+            <div class="tool-stat-badge">Words: <b id="wordCount">0</b></div>
+            <div class="tool-stat-badge">Lines: <b id="lineCount">0</b></div>
+          </div>
+          <div>Browser Native DOM Parser</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. ABOUT THIS TOOL SECTION -->
+  <section class="tool-content-section" style="padding: 56px 0; border-top: 1px solid var(--line); background: var(--paper-2);">
+    <div class="wrap">
+      <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">◆ ABOUT THIS TOOL</span>
+      <h2 style="font-size: 26px; margin: 0 0 6px;">About HTML to Plain Text Extraction</h2>
+      <p style="color: var(--ink-soft); font-size: 14.5px; margin: 0 0 32px;">Strip away visual markup and isolate raw, human-readable copy.</p>
+
+      <div class="about-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 36px; font-size: 14.5px; line-height: 1.7; color: var(--ink-soft);">
+        <div>
+          <p style="margin: 0;">HTML files contain layers of styling tags, wrapper divs, metadata headers, and inline scripts that get in the way when you need just the copy. The Toolyard HTML to Plain Text extractor cleanly strips all markup tags while maintaining the natural paragraph flow and line breaks of your content.</p>
+        </div>
+        <div>
+          <p style="margin: 0;">Whether extracting body text from rich HTML emails, preparing article copy for text-to-speech engines, feeding natural language models (LLMs), or generating accessible text-only fallback versions, this tool strips markup without sending any data over a network.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. KEY EXTRACTION RULES SECTION -->
+  <section class="tool-content-section" style="padding: 56px 0; border-top: 1px solid var(--line); background: var(--paper);">
+    <div class="wrap">
+      <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">⚙ EXTRACTION ENGINE</span>
+      <h2 style="font-size: 26px; margin: 0 0 6px;">Formatting &amp; Extraction Rules</h2>
+      <p style="color: var(--ink-soft); font-size: 14.5px; margin: 0 0 28px;">How HTML elements are transformed into clean plaintext structure.</p>
+
+      <div class="rules-list" style="display: flex; flex-direction: column; gap: 14px;">
+        <div class="rule-card" style="display: flex; align-items: flex-start; gap: 16px; padding: 20px 22px; background: var(--paper-2); border: 1px solid var(--line); border-radius: 12px;">
+          <div class="rule-icon" style="width: 36px; height: 36px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;">🚫</div>
+          <div>
+            <h3 style="font-size: 15.5px; margin: 0 0 6px; color: var(--ink);">Script, Style &amp; Meta Filtering</h3>
+            <p style="margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ink-soft);">Automatically purges all <code>&lt;script&gt;</code>, <code>&lt;style&gt;</code>, <code>&lt;noscript&gt;</code>, <code>&lt;svg&gt;</code>, <code>&lt;head&gt;</code>, and <code>&lt;iframe&gt;</code> nodes so that raw CSS rules and JavaScript functions never appear in the extracted text.</p>
+          </div>
+        </div>
+
+        <div class="rule-card" style="display: flex; align-items: flex-start; gap: 16px; padding: 20px 22px; background: var(--paper-2); border: 1px solid var(--line); border-radius: 12px;">
+          <div class="rule-icon" style="width: 36px; height: 36px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;">☰</div>
+          <div>
+            <h3 style="font-size: 15.5px; margin: 0 0 6px; color: var(--ink);">Lists and Numbering Conversion</h3>
+            <p style="margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ink-soft);">Converts unordered lists (<code>&lt;ul&gt;</code>) into clean bulleted items (<code>• Item</code>) and ordered lists (<code>&lt;ol&gt;</code>) into sequential numbers (<code>1. Item</code>), preserving list structure.</p>
+          </div>
+        </div>
+
+        <div class="rule-card" style="display: flex; align-items: flex-start; gap: 16px; padding: 20px 22px; background: var(--paper-2); border: 1px solid var(--line); border-radius: 12px;">
+          <div class="rule-icon" style="width: 36px; height: 36px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;">▦</div>
+          <div>
+            <h3 style="font-size: 15.5px; margin: 0 0 6px; color: var(--ink);">Table &amp; Tab-Delimited Spacing</h3>
+            <p style="margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ink-soft);">Converts rows (<code>&lt;tr&gt;</code>) and cells (<code>&lt;td&gt;</code>, <code>&lt;th&gt;</code>) into tab-separated lines for easy pasting into spreadsheets or plain text documentation.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. HOW TO USE (DARK BLUE BACKGROUND LIKE HOMEPAGE STEPS) -->
+  <section class="section-navy" style="padding: 64px 0; position: relative; overflow: hidden; background: var(--navy-900);">
+    <div class="wrap" style="position: relative;">
+      <span class="eyebrow" style="background: rgba(240,169,59,0.18); color: var(--amber); margin-bottom: 12px; display: inline-flex;">◐ THREE STEPS</span>
+      <h2 style="font-size: 26px; color: #fff; margin: 0 0 6px;">How to Use</h2>
+      <p style="color: #9096B8; font-size: 14.5px; margin: 0 0 32px;">Extract clean plain text in under ten seconds.</p>
+
+      <div class="steps">
+        <div class="step" data-n="01">
+          <div class="num">1</div>
+          <h3 style="color: #fff;">Paste HTML Code</h3>
+          <p>Paste raw HTML, webpage markup, or email templates into the left editor, or click "Load Example".</p>
+        </div>
+        <div class="step" data-n="02">
+          <div class="num">2</div>
+          <h3 style="color: #fff;">Click Extract</h3>
+          <p>Click "Extract Plain Text" to run the client-side DOM text-parsing engine.</p>
+        </div>
+        <div class="step" data-n="03">
+          <div class="num">3</div>
+          <h3 style="color: #fff;">Copy or Download</h3>
+          <p>Click "Copy" to put the clean text into your clipboard, or "Download .txt" to save a plain text file.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. WHY USE TOOLYARD EXTRACTOR (6-CARD BORDERED GRID) -->
+  <section class="tool-content-section" style="padding: 60px 0; background: var(--paper-2); border-top: 1px solid var(--line);">
+    <div class="wrap">
+      <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">✓ FEATURES</span>
+      <h2 style="font-size: 26px; margin: 0 0 6px;">Why Use Toolyard Plain Text Converter</h2>
+      <p style="color: var(--ink-soft); font-size: 14.5px; margin: 0 0 32px;">Engineered for fast, reliable, and clean text stripping.</p>
+
+      <div class="why-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--line); gap: 1px;">
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">◆</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">100% Private</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">All extraction executes in your browser's local memory. No HTML content is ever uploaded to a server.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">☰</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">Smart Layout Spacing</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Preserves paragraph gaps, header separations, and list line breaks rather than merging everything into one blob.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">📊</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">Live Text Counter</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Provides real-time statistics including total character count, word count, and line count for extracted copy.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">⚡</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">Zero Lag Processing</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Processes large multi-megabyte HTML documents instantly with browser-native DOM tree parsing.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">↓</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">Download .txt File</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Save the resulting text directly as a <code style="color:var(--ink); font-size:12px;">plain-text.txt</code> document with a single click.</p>
+        </div>
+        <div style="background: var(--paper-2); padding: 26px 22px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(240,169,59,0.14); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; font-weight: 700;">⧉</div>
+          <h3 style="font-size: 15px; margin: 0 0 6px; color: var(--ink);">Fast Clipboard Copy</h3>
+          <p style="margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft);">Instantly copy the extracted plain text with full clipboard support and visual confirmation.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. FREQUENTLY ASKED QUESTIONS -->
+  <section class="tool-content-section" style="padding: 64px 0; background: var(--paper); border-top: 1px solid var(--line);">
+    <div class="wrap">
+      <div style="text-align: center; margin-bottom: 36px;">
+        <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">FAQ</span>
+        <h2 style="font-size: 28px; margin: 0;">Frequently Asked Questions</h2>
+      </div>
+
+      <div class="faq" id="faqList" style="max-width: 860px; margin: 0 auto;">
+        <div class="faq-item">
+          <button type="button">Are HTML entities decoded during extraction?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Yes. Named and numeric entities (such as <code>&amp;amp;</code>, <code>&amp;lt;</code>, <code>&amp;gt;</code>, <code>&amp;copy;</code>, and <code>&amp;nbsp;</code>) are automatically converted into their respective plaintext characters.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Will scripts, CSS code, or metadata appear in the text?<span class="plus">+</span></button>
+          <div class="faq-a"><p>No. All non-visible DOM content inside <code>&lt;script&gt;</code>, <code>&lt;style&gt;</code>, <code>&lt;head&gt;</code>, and <code>&lt;meta&gt;</code> tags is excluded from the output.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">How does this tool handle line breaks and paragraphs?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Block elements like <code>&lt;p&gt;</code>, <code>&lt;h1&gt;–&lt;h6&gt;</code>, <code>&lt;div&gt;</code>, and <code>&lt;blockquote&gt;</code> are separated with double line breaks, while <code>&lt;br&gt;</code> creates single line breaks.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Does this converter send my data to a server?<span class="plus">+</span></button>
+          <div class="faq-a"><p>No. All parsing and extraction execute 100% locally in your browser through client-side JavaScript. Your text remains confidential.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Can I use this for preparing data for AI / LLM models?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Yes. Stripping markup tags to create clean plain text reduces token consumption and eliminates unwanted formatting noise in machine learning pipelines.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. RELATED HTML TOOLS -->
+  <section class="related-tools-section" style="padding: 56px 0; background: var(--paper-2); border-top: 1px solid var(--line);">
+    <div class="wrap">
+      <div style="margin-bottom: 24px;">
+        <span class="eyebrow" style="margin-bottom: 12px; display: inline-flex;">📎 RELATED</span>
+      </div>
+      <div class="section-head" style="margin-bottom: 28px;">
+        <div>
+          <h2 style="font-size: 26px; margin: 0 0 6px;">Related HTML Tools</h2>
+          <p class="desc" style="margin: 0;">More utilities for working with web markup.</p>
+        </div>
+        <a class="view-all" href="/categories/html-web/">All HTML Tools →</a>
+      </div>
+
+      <div class="grid grid-3" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+        <a class="tool-card" href="/tools/html/html-formatter.html">
+          <div class="top-row"><span class="badge">Formatter</span></div>
+          <h3>HTML Formatter</h3>
+          <p>Beautify messy or compressed HTML with clean indentation and proper nesting.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/html/html-minifier.html">
+          <div class="top-row"><span class="badge">Optimizer</span></div>
+          <h3>HTML Minifier</h3>
+          <p>Strip unnecessary whitespace and comments to reduce file payload size for production.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/html/html-to-markdown.html">
+          <div class="top-row"><span class="badge">Converter</span></div>
+          <h3>HTML to Markdown</h3>
+          <p>Transform HTML markup into clean, portable Markdown syntax for documentation or blogs.</p>
+          <span class="open">Open tool →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHARED FOOTER (rendered by /js/layout.js) -->
+  <div id="site-footer"></div>
+
+  <!-- JAVASCRIPT ENGINE -->
+  <script>
+    (function() {
+      // Header, mega menus, mobile drawer & dark mode are handled by /js/layout.js
+
+      // FAQ Accordion
+      document.querySelectorAll('.faq-item button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const item = btn.parentElement;
+          const isOpen = item.classList.contains('open');
+          document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+          if (!isOpen) item.classList.add('open');
+        });
+      });
+
+      // 2. HTML to Plain Text Extractor Function
+      function htmlToPlainText(html) {
+        if (!html || !html.trim()) return '';
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+
+        // Remove non-content elements
+        const ignoreSelectors = 'script, style, noscript, svg, head, meta, link, iframe';
+        const elementsToRemove = doc.querySelectorAll(ignoreSelectors);
+        elementsToRemove.forEach(function(el) { el.remove(); });
+
+        function extractText(node) {
+          if (node.nodeType === Node.TEXT_NODE) {
+            return node.textContent.replace(/\s+/g, ' ');
+          }
+          if (node.nodeType !== Node.ELEMENT_NODE) return '';
+
+          const tag = node.tagName.toLowerCase();
+          if (tag === 'br') return '\n';
+          if (tag === 'hr') return '\n----------------------------------------\n';
+          
+          if (/^h[1-6]$/.test(tag)) {
+            const text = Array.prototype.slice.call(node.childNodes).map(extractText).join('').trim();
+            return text ? '\n\n' + text.toUpperCase() + '\n\n' : '';
+          }
+          
+          if (tag === 'p' || tag === 'blockquote') {
+            const text = Array.prototype.slice.call(node.childNodes).map(extractText).join('').trim();
+            return text ? '\n\n' + text + '\n\n' : '';
+          }
+          
+          if (tag === 'li') {
+            const text = Array.prototype.slice.call(node.childNodes).map(extractText).join('').trim();
+            return '• ' + text + '\n';
+          }
+          
+          if (tag === 'ul' || tag === 'ol') {
+            const children = Array.prototype.slice.call(node.children);
+            const items = children
+              .filter(function(c) { return c.tagName.toLowerCase() === 'li'; })
+              .map(function(li, idx) {
+                const prefix = tag === 'ol' ? (idx + 1) + '. ' : '• ';
+                const content = Array.prototype.slice.call(li.childNodes).map(extractText).join('').trim();
+                return prefix + content;
+              }).join('\n');
+            return '\n\n' + items + '\n\n';
+          }
+          
+          if (tag === 'tr') {
+            const cells = Array.prototype.slice.call(node.querySelectorAll('th, td')).map(function(c) {
+              return extractText(c).trim();
+            });
+            return cells.join('\t') + '\n';
+          }
+          
+          if (tag === 'table') {
+            return '\n\n' + Array.prototype.slice.call(node.childNodes).map(extractText).join('') + '\n\n';
+          }
+
+          let childText = '';
+          for (let i = 0; i < node.childNodes.length; i++) {
+            childText += extractText(node.childNodes[i]);
+          }
+          return childText;
+        }
+
+        return extractText(doc.body).trim().replace(/\n{3,}/g, '\n\n');
+      }
+
+      function countWords(str) {
+        if (!str || !str.trim()) return 0;
+        return str.trim().split(/\s+/).filter(Boolean).length;
+      }
+
+      const exampleHTML = '<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8">\n  <title>The Future of Web Tools</title>\n  <style>body { font-family: sans-serif; }</style>\n</head>\n<body>\n  <h1>The Future of Web Tools</h1>\n  <p>Browser-based apps run <strong>entirely on-device</strong> without sending your private files to remote servers.</p>\n  \n  <h2>Key Advantages</h2>\n  <ul>\n    <li><strong>100% Privacy:</strong> Zero telemetry or cloud database logging.</li>\n    <li><strong>Zero Latency:</strong> Instant results generated locally.</li>\n    <li><strong>Offline Ready:</strong> Works anywhere without an active connection.</li>\n  </ul>\n\n  <h2>Supported Formats</h2>\n  <table>\n    <tr>\n      <th>Format</th>\n      <th>Speed</th>\n    </tr>\n    <tr>\n      <td>HTML5</td>\n      <td>Instant</td>\n    </tr>\n    <tr>\n      <td>Plain Text</td>\n      <td>Instant</td>\n    </tr>\n  </table>\n\n  <script>\n    console.log("This script content is automatically removed!");\n  <\/script>\n</body>\n</html>';
+
+      // 3. Bind UI & Calculator Elements
+      const inputEl = document.getElementById('textInput');
+      const outputEl = document.getElementById('textOutput');
+      const convertBtn = document.getElementById('convertBtn');
+      const clearBtn = document.getElementById('clearBtn');
+      const exampleBtn = document.getElementById('exampleBtn');
+      const copyBtn = document.getElementById('copyBtn');
+      const downloadBtn = document.getElementById('downloadBtn');
+
+      const charCountEl = document.getElementById('charCount');
+      const wordCountEl = document.getElementById('wordCount');
+      const lineCountEl = document.getElementById('lineCount');
+
+      function runConvert() {
+        if (!inputEl || !outputEl) return;
+        const source = inputEl.value || '';
+
+        if (!source.trim()) {
+          outputEl.textContent = '';
+          outputEl.classList.add('empty');
+          outputEl.innerHTML = '<em>Plain text output will appear here...</em>';
+          if (charCountEl) charCountEl.textContent = '0';
+          if (wordCountEl) wordCountEl.textContent = '0';
+          if (lineCountEl) lineCountEl.textContent = '0';
+          return;
+        }
+
+        const text = htmlToPlainText(source);
+        outputEl.textContent = text;
+        outputEl.classList.remove('empty');
+
+        if (charCountEl) charCountEl.textContent = text.length.toLocaleString();
+        if (wordCountEl) wordCountEl.textContent = countWords(text).toLocaleString();
+        if (lineCountEl) lineCountEl.textContent = (text ? text.split('\n').length : 0).toLocaleString();
+      }
+
+      // Conversion executes ONLY when the Convert button is clicked
+      if (convertBtn) {
+        convertBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          runConvert();
+        });
+      }
+
+      // Clear button: resets both input and output
+      if (clearBtn) {
+        clearBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          if (inputEl) inputEl.value = '';
+          if (outputEl) {
+            outputEl.textContent = '';
+            outputEl.classList.add('empty');
+            outputEl.innerHTML = '<em>Plain text output will appear here...</em>';
+          }
+          if (charCountEl) charCountEl.textContent = '0';
+          if (wordCountEl) wordCountEl.textContent = '0';
+          if (lineCountEl) lineCountEl.textContent = '0';
+          if (inputEl) inputEl.focus();
+        });
+      }
+
+      // Load Example: puts sample HTML into input and resets output until user clicks Extract
+      if (exampleBtn) {
+        exampleBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          if (inputEl) {
+            inputEl.value = exampleHTML;
+            if (outputEl) {
+              outputEl.textContent = '';
+              outputEl.classList.add('empty');
+              outputEl.innerHTML = '<em>Plain text output will appear here...</em>';
+            }
+            if (charCountEl) charCountEl.textContent = '0';
+            if (wordCountEl) wordCountEl.textContent = '0';
+            if (lineCountEl) lineCountEl.textContent = '0';
+            inputEl.focus();
+          }
+        });
+      }
+
+      // Copy to Clipboard
+      if (copyBtn) {
+        copyBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          const text = outputEl ? outputEl.textContent : '';
+          if (!text || (outputEl && outputEl.classList.contains('empty'))) return;
+
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(function() {
+              const orig = copyBtn.textContent;
+              copyBtn.textContent = 'Copied!';
+              setTimeout(function() { copyBtn.textContent = orig; }, 1500);
+            }).catch(function() {
+              fallbackCopy(text);
+            });
+          } else {
+            fallbackCopy(text);
+          }
+        });
+      }
+
+      function fallbackCopy(text) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+          document.execCommand('copy');
+          const orig = copyBtn.textContent;
+          copyBtn.textContent = 'Copied!';
+          setTimeout(function() { copyBtn.textContent = orig; }, 1500);
+        } catch (err) {}
+        document.body.removeChild(ta);
+      }
+
+      // Download Output as .txt
+      if (downloadBtn) {
+        downloadBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          const text = outputEl ? outputEl.textContent : '';
+          if (!text || (outputEl && outputEl.classList.contains('empty'))) return;
+          const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = 'plain-text.txt';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
