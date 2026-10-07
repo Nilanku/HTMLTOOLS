@@ -546,7 +546,7 @@
      - Only changes how text is displayed — never the text itself.
      --------------------------------------------------------------------- */
   function initWorkspaces() {
-    var grids = document.querySelectorAll('.tool-workspace .tool-grid.ty-ed');
+    var grids = document.querySelectorAll('.tool-workspace .tool-grid.ty-ed, .tool-workspace .tool-grid.ty-gen');   // editors + visual generators
     if (!grids.length) return;
     var tool = document.body.getAttribute('data-tool') || normPath(location.pathname);
     function load(key) { try { return localStorage.getItem(key); } catch (e) { return null; } }

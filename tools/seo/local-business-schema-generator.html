@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Local Business Schema Generator – LocalBusiness JSON-LD with Opening Hours | Toolyard</title>
+  <meta name="description" content="Free local business schema generator. Create LocalBusiness JSON-LD for restaurants, shops, clinics and services with address, geo coordinates, opening hours, phone and price range. Live preview and Google guideline checks.">
+  <link rel="canonical" href="https://htmltools.nilankubaruah.workers.dev/tools/seo/local-business-schema-generator.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Local Business Schema Generator – LocalBusiness JSON-LD with Opening Hours">
+  <meta property="og:description" content="Free local business schema generator. Create LocalBusiness JSON-LD for restaurants, shops, clinics and services with address, geo coordinates, opening hours, phone and price range. Live preview and Google guideline checks.">
+  <meta property="og:url" content="https://htmltools.nilankubaruah.workers.dev/tools/seo/local-business-schema-generator.html">
+  <meta name="twitter:card" content="summary">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/tools.css">
+  <script src="/js/tools-data.js"></script>
+  <script src="/js/layout.js"></script>
+  <script src="/js/tool-kit.js"></script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Local Business Schema Generator", "url": "https://htmltools.nilankubaruah.workers.dev/tools/seo/local-business-schema-generator.html", "applicationCategory": "DeveloperApplication", "operatingSystem": "Any (runs in your browser)", "description": "Free local business schema generator. Create LocalBusiness JSON-LD for restaurants, shops, clinics and services with address, geo coordinates, opening hours, phone and price range. Live preview and Google guideline checks.", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is required for local business markup?", "acceptedAnswer": {"@type": "Answer", "text": "Google requires the business name and its address. Telephone, website URL, geo coordinates, opening hours and price range are recommended, plus menu and cuisine for restaurants."}}, {"@type": "Question", "name": "Which business type should I choose?", "acceptedAnswer": {"@type": "Answer", "text": "The most specific one that fits — for example Dentist instead of LocalBusiness. If none fits, LocalBusiness is fine. Schema.org lists many more types than this menu; you can change the @type in the code afterwards."}}, {"@type": "Question", "name": "How do I find my latitude and longitude?", "acceptedAnswer": {"@type": "Answer", "text": "Open Google Maps, right-click your business location and click the coordinates at the top of the menu to copy them. Use at least 5 decimal places."}}, {"@type": "Question", "name": "How do I mark hours that pass midnight?", "acceptedAnswer": {"@type": "Answer", "text": "Enter the real closing time, e.g. opens 18:00, closes 02:00. For a business open all day tick 24h, which writes 00:00–23:59."}}, {"@type": "Question", "name": "I have several locations. What should I do?", "acceptedAnswer": {"@type": "Answer", "text": "Give each location its own page with its own LocalBusiness markup and address. Don't list all branches in one block on one page."}}, {"@type": "Question", "name": "Does this replace Google Business Profile?", "acceptedAnswer": {"@type": "Answer", "text": "No. Your Business Profile is the main source for Maps and the local pack. This markup supports it by stating the same facts on your own website — keep both identical."}}, {"@type": "Question", "name": "Is my data stored?", "acceptedAnswer": {"@type": "Answer", "text": "Only in your browser's localStorage. Press Reset to clear it."}}]}</script>
+</head>
+<body class="ty-tool" data-tool="local-business-schema-generator">
+
+  <!-- SHARED HEADER, MOBILE MENU & BREADCRUMBS (rendered by /js/layout.js) -->
+  <div id="site-header"></div>
+  <div id="site-breadcrumbs"></div>
+
+  <main>
+  <!-- TOOL INTRO -->
+  <section class="tool-intro">
+    <div class="wrap tool-intro-content">
+      <span class="eyebrow">🔍 SEO · STRUCTURED DATA</span>
+      <h1>Local Business Schema Generator</h1>
+      <p class="lead">Create <code>LocalBusiness</code> JSON-LD for your shop, restaurant, clinic or service — with the full address, map coordinates, opening hours that group themselves, and restaurant extras like cuisine and menu.</p>
+      <div class="tool-meta-badge"><span class="dot"></span> 30+ business types · Opening hours · Geo · Restaurant fields</div>
+    </div>
+  </section>
+
+  <!-- WORKSPACE -->
+  <section class="tool-app-section">
+    <div class="wrap">
+      <div class="ty-pair"><span>Paste the code into your home page or location page's <code>&lt;head&gt;</code> or <code>&lt;body&gt;</code>.</span><span>Marking up your company as a whole? <a href="/categories/seo/#organization-schema-generator">Organization Schema Generator (coming soon)</a></span></div>
+      <div class="tool-workspace ty-gen-ws">
+        <div class="tool-toolbar">
+          <div class="tool-toolbar-left"><span style="font-size:13px; color:var(--ink-soft);">Fill in the form — the JSON-LD and the checks update as you type. </span></div>
+          <div class="tool-toolbar-right">
+            <button type="button" class="btn btn-ghost btn-sm" id="exampleBtn">Load Example</button>
+            <button type="button" class="btn btn-danger btn-sm" id="resetBtn">Reset</button>
+          </div>
+        </div>
+        <div class="tool-grid ty-gen ty-schema">
+          <div class="ty-gen-main">
+            <div class="tool-pane ty-gen-ctl">
+              <div class="tool-pane-header"><span class="title">Details</span><span class="badge">Saved in this browser</span></div>
+              <form class="ty-ctl ty-sform" id="sForm" autocomplete="off" onsubmit="return false">
+<details class="ty-sgroup" open><summary>Business</summary><div class="ty-sgbody">
+<div class="ty-field"><label for="bType"><span>Business type</span></label><select id="bType" data-k="bType" class="ty-input tool-select"><option value="LocalBusiness" selected>Local business (general)</option><option value="Restaurant">Restaurant</option><option value="CafeOrCoffeeShop">Café / coffee shop</option><option value="Bakery">Bakery</option><option value="BarOrPub">Bar / pub</option><option value="FastFoodRestaurant">Fast food restaurant</option><option value="Store">Store / shop</option><option value="ClothingStore">Clothing store</option><option value="ElectronicsStore">Electronics store</option><option value="GroceryStore">Grocery store</option><option value="HardwareStore">Hardware store</option><option value="BookStore">Book store</option><option value="Dentist">Dentist</option><option value="MedicalClinic">Medical clinic</option><option value="Physician">Doctor / physician</option><option value="Pharmacy">Pharmacy</option><option value="VeterinaryCare">Veterinary care</option><option value="HairSalon">Hair salon</option><option value="BeautySalon">Beauty salon</option><option value="DaySpa">Day spa</option><option value="ExerciseGym">Gym</option><option value="AutoRepair">Auto repair</option><option value="Plumber">Plumber</option><option value="Electrician">Electrician</option><option value="HVACBusiness">HVAC business</option><option value="Locksmith">Locksmith</option><option value="Hotel">Hotel</option><option value="RealEstateAgent">Real estate agent</option><option value="Attorney">Lawyer / attorney</option><option value="AccountingService">Accountant</option><option value="ChildCare">Child care</option><option value="TravelAgency">Travel agency</option></select><div class="hint">Choose the most specific type. More types exist on schema.org.</div></div>
+<div class="ty-field"><label for="name"><span>Business name <span class="ty-need req">Required</span></span></label><input type="text" id="name" data-k="name" class="ty-input" placeholder="e.g. Brahmaputra Café" autocomplete="off" spellcheck="false" ><div class="hint">Exactly as on your sign and Google Business Profile.</div></div>
+<div class="ty-row"><div class="ty-field"><label for="url"><span>Website URL <span class="ty-need rec">Recommended</span></span></label><input type="url" id="url" data-k="url" class="ty-input" placeholder="https://example.com" autocomplete="off" spellcheck="false" ></div><div class="ty-field"><label for="phone"><span>Telephone <span class="ty-need rec">Recommended</span></span></label><input type="tel" id="phone" data-k="phone" class="ty-input" placeholder="+91 3712 123456" autocomplete="off" spellcheck="false" ><div class="hint">Include the country code.</div></div></div>
+<div class="ty-field"><label for="images"><span>Image URLs (one per line) <span class="ty-need rec">Recommended</span></span></label><textarea id="images" data-k="images" class="ty-input" rows="2" placeholder="https://example.com/img/storefront.jpg" spellcheck="false"></textarea><div class="hint">Photos of the business — absolute URLs.</div></div>
+<div class="ty-row"><div class="ty-field"><label for="price"><span>Price range <span class="ty-need rec">Recommended</span></span></label><input type="text" id="price" data-k="price" class="ty-input" placeholder="e.g. ₹₹ or ₹200–₹600" autocomplete="off" spellcheck="false" ><div class="hint">Under 100 characters.</div></div><div class="ty-field"><label for="bDesc"><span>Short description</span></label><input type="text" id="bDesc" data-k="bDesc" class="ty-input" placeholder="Optional" autocomplete="off" spellcheck="false" ></div></div>
+</div></details>
+<details class="ty-sgroup" open><summary>Address</summary><div class="ty-sgbody">
+<div class="ty-field"><label for="street"><span>Street address <span class="ty-need req">Required</span></span></label><input type="text" id="street" data-k="street" class="ty-input" placeholder="e.g. 12 Main Road, Near Circuit House" autocomplete="off" spellcheck="false" ></div>
+<div class="ty-row"><div class="ty-field"><label for="locality"><span>City / locality <span class="ty-need req">Required</span></span></label><input type="text" id="locality" data-k="locality" class="ty-input" placeholder="e.g. Tezpur" autocomplete="off" spellcheck="false" ></div><div class="ty-field"><label for="region"><span>State / region <span class="ty-need req">Required</span></span></label><input type="text" id="region" data-k="region" class="ty-input" placeholder="e.g. Assam" autocomplete="off" spellcheck="false" ></div></div>
+<div class="ty-row"><div class="ty-field"><label for="postal"><span>Postal code <span class="ty-need req">Required</span></span></label><input type="text" id="postal" data-k="postal" class="ty-input" placeholder="e.g. 784001" autocomplete="off" spellcheck="false" ></div><div class="ty-field"><label for="country"><span>Country <span class="ty-need req">Required</span></span></label><input type="text" id="country" data-k="country" class="ty-input" placeholder="e.g. IN" autocomplete="off" spellcheck="false" ><div class="hint">Two-letter ISO code (IN, US, GB…) is best.</div></div></div>
+<div class="ty-row"><div class="ty-field"><label for="lat"><span>Latitude <span class="ty-need rec">Recommended</span></span></label><input type="text" id="lat" data-k="lat" class="ty-input" placeholder="e.g. 26.63333" autocomplete="off" spellcheck="false" inputmode="decimal"><div class="hint">At least 5 decimal places.</div></div><div class="ty-field"><label for="lng"><span>Longitude <span class="ty-need rec">Recommended</span></span></label><input type="text" id="lng" data-k="lng" class="ty-input" placeholder="e.g. 92.80000" autocomplete="off" spellcheck="false" inputmode="decimal"></div></div>
+</div></details>
+<details class="ty-sgroup" open><summary>Opening hours</summary><div class="ty-sgbody">
+<div class="ty-hours"><div class="ty-hrow" data-day="Monday"><span class="ty-hday">Mon</span>
+<label class="ty-opt"><input type="checkbox" id="h-mon-on" data-k="h-mon-on"> Open</label>
+<label class="ty-opt" title="Open 24 hours (00:00–23:59)"><input type="checkbox" id="h-mon-24" data-k="h-mon-24"> 24h</label>
+<span class="ty-htimes"><input type="time" id="h-mon-o" data-k="h-mon-o" class="ty-input" aria-label="Monday opens"><span class="to">–</span><input type="time" id="h-mon-c" data-k="h-mon-c" class="ty-input" aria-label="Monday closes"></span></div>
+<div class="ty-hrow" data-day="Tuesday"><span class="ty-hday">Tue</span>
+<label class="ty-opt"><input type="checkbox" id="h-tue-on" data-k="h-tue-on"> Open</label>
+<label class="ty-opt" title="Open 24 hours (00:00–23:59)"><input type="checkbox" id="h-tue-24" data-k="h-tue-24"> 24h</label>
+<span class="ty-htimes"><input type="time" id="h-tue-o" data-k="h-tue-o" class="ty-input" aria-label="Tuesday opens"><span class="to">–</span><input type="time" id="h-tue-c" data-k="h-tue-c" class="ty-input" aria-label="Tuesday closes"></span></div>
+<div class="ty-hrow" data-day="Wednesday"><span class="ty-hday">Wed</span>
+<label class="ty-opt"><input type="checkbox" id="h-wed-on" data-k="h-wed-on"> Open</label>
+<label class="ty-opt" title="Open 24 hours (00:00–23:59)"><input type="checkbox" id="h-wed-24" data-k="h-wed-24"> 24h</label>
+<span class="ty-htimes"><input type="time" id="h-wed-o" data-k="h-wed-o" class="ty-input" aria-label="Wednesday opens"><span class="to">–</span><input type="time" id="h-wed-c" data-k="h-wed-c" class="ty-input" aria-label="Wednesday closes"></span></div>
+<div class="ty-hrow" data-day="Thursday"><span class="ty-hday">Thu</span>
+<label class="ty-opt"><input type="checkbox" id="h-thu-on" data-k="h-thu-on"> Open</label>
+<label class="ty-opt" title="Open 24 hours (00:00–23:59)"><input type="checkbox" id="h-thu-24" data-k="h-thu-24"> 24h</label>
+<span class="ty-htimes"><input type="time" id="h-thu-o" data-k="h-thu-o" class="ty-input" aria-label="Thursday opens"><span class="to">–</span><input type="time" id="h-thu-c" data-k="h-thu-c" class="ty-input" aria-label="Thursday closes"></span></div>
+<div class="ty-hrow" data-day="Friday"><span class="ty-hday">Fri</span>
+<label class="ty-opt"><input type="checkbox" id="h-fri-on" data-k="h-fri-on"> Open</label>
+<label class="ty-opt" title="Open 24 hours (00:00–23:59)"><input type="checkbox" id="h-fri-24" data-k="h-fri-24"> 24h</label>
+<span class="ty-htimes"><input type="time" id="h-fri-o" data-k="h-fri-o" class="ty-input" aria-label="Friday opens"><span class="to">–</span><input type="time" id="h-fri-c" data-k="h-fri-c" class="ty-input" aria-label="Friday closes"></span></div>
+<div class="ty-hrow" data-day="Saturday"><span class="ty-hday">Sat</span>
+<label class="ty-opt"><input type="checkbox" id="h-sat-on" data-k="h-sat-on"> Open</label>
+<label class="ty-opt" title="Open 24 hours (00:00–23:59)"><input type="checkbox" id="h-sat-24" data-k="h-sat-24"> 24h</label>
+<span class="ty-htimes"><input type="time" id="h-sat-o" data-k="h-sat-o" class="ty-input" aria-label="Saturday opens"><span class="to">–</span><input type="time" id="h-sat-c" data-k="h-sat-c" class="ty-input" aria-label="Saturday closes"></span></div>
+<div class="ty-hrow" data-day="Sunday"><span class="ty-hday">Sun</span>
+<label class="ty-opt"><input type="checkbox" id="h-sun-on" data-k="h-sun-on"> Open</label>
+<label class="ty-opt" title="Open 24 hours (00:00–23:59)"><input type="checkbox" id="h-sun-24" data-k="h-sun-24"> 24h</label>
+<span class="ty-htimes"><input type="time" id="h-sun-o" data-k="h-sun-o" class="ty-input" aria-label="Sunday opens"><span class="to">–</span><input type="time" id="h-sun-c" data-k="h-sun-c" class="ty-input" aria-label="Sunday closes"></span></div></div>
+<div class="ty-line"><button type="button" class="btn btn-outline btn-sm" data-act="copymon">Copy Monday to Tue–Fri</button><button type="button" class="btn btn-ghost btn-sm" data-act="weekdays">Mon–Fri 9–5</button></div>
+<div class="hint" style="font-size:12px;color:var(--ink-soft)">Days with the same hours are combined automatically. Closing after midnight (e.g. 18:00–02:00) is allowed.</div>
+</div></details>
+<details class="ty-sgroup" id="foodGroup" open><summary>Restaurant details</summary><div class="ty-sgbody">
+<div class="ty-field"><label for="cuisine"><span>Cuisine(s) <span class="ty-need rec">Recommended</span></span></label><input type="text" id="cuisine" data-k="cuisine" class="ty-input" placeholder="e.g. Assamese, North Indian" autocomplete="off" spellcheck="false" ><div class="hint">Separate several with commas.</div></div>
+<div class="ty-row"><div class="ty-field"><label for="menu"><span>Menu URL <span class="ty-need rec">Recommended</span></span></label><input type="url" id="menu" data-k="menu" class="ty-input" placeholder="https://example.com/menu" autocomplete="off" spellcheck="false" ></div><div class="ty-field"><label for="reserve"><span>Accepts reservations</span></label><select id="reserve" data-k="reserve" class="ty-input tool-select"><option value="" selected>— not set —</option><option value="true">Yes</option><option value="false">No</option></select></div></div>
+</div></details>
+<details class="ty-sgroup"><summary>Profiles (optional)</summary><div class="ty-sgbody">
+<div class="ty-field"><label for="sameAs"><span>Social / directory profile URLs (one per line)</span></label><textarea id="sameAs" data-k="sameAs" class="ty-input" rows="2" placeholder="https://www.facebook.com/example
+https://www.instagram.com/example" spellcheck="false"></textarea><div class="hint">Becomes <code>sameAs</code>.</div></div>
+</div></details>
+              </form>
+            </div>
+            <div class="tool-pane ty-gen-prev">
+              <div class="tool-pane-header"><span class="title">Preview &amp; checks</span><span class="ty-ccount" id="checkCount" aria-live="polite"></span></div>
+              <div class="ty-sprev" id="sPrev">
+                <div class="ty-sstatus" id="sStatus" hidden></div>
+                <div id="preview"></div>
+                <ul class="ty-slist" id="checks" aria-label="Checks"></ul>
+              </div>
+            </div>
+          </div>
+          <div class="tool-pane ty-gen-code">
+            <div class="tool-pane-header"><span class="title">JSON-LD</span>
+              <div class="actions">
+                <div class="ty-seg" id="fmtSeg" role="group" aria-label="Output format"><button type="button" data-value="script" class="active">&lt;script&gt;</button><button type="button" data-value="json">JSON</button></div>
+                <button type="button" class="btn btn-sm btn-outline" id="copyBtn">Copy</button>
+                <button type="button" class="btn btn-sm btn-ghost" id="dlBtn">Download</button>
+              </div>
+            </div>
+            <textarea class="tool-textarea ty-mono" id="codeOut" readonly spellcheck="false" aria-label="Generated JSON-LD"></textarea>
+            <div class="ty-svalid">Validate: <a href="https://search.google.com/test/rich-results" target="_blank" rel="noopener">Google Rich Results Test ↗</a> · <a href="https://validator.schema.org/" target="_blank" rel="noopener">Schema.org Validator ↗</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. ABOUT -->
+  <section class="ty-sec">
+    <div class="wrap">
+      <span class="eyebrow">◆ ABOUT THIS TOOL</span>
+      <h2>What Is Local Business Structured Data?</h2>
+      <p class="sub">Tell search engines your business's name, address, hours and contact details in a format they can't misread.</p>
+      <div class="about-grid">
+        <div><p><code>LocalBusiness</code> structured data describes a physical business that customers visit or that serves a local area: its <strong>name</strong>, <strong>address</strong>, <strong>phone number</strong>, <strong>opening hours</strong>, location on the map and price range. Google can use it for business details in Search and Maps, alongside your Google Business Profile.</p><p>Google requires the <code>name</code> and <code>address</code>. Geo coordinates, telephone, URL, opening hours and price range are recommended — and restaurants can add cuisine, menu and reservations.</p></div>
+        <div><p>Pick the most specific type you can — <code>Dentist</code>, <code>Restaurant</code>, <code>HairSalon</code> — rather than the general <code>LocalBusiness</code>. Each location of a chain should have its own page and its own markup.</p><p>Keep the details identical to your Google Business Profile and the text on your page. For the company as a whole (logo, social profiles, legal name), use <a href="/categories/seo/#organization-schema-generator">Organization</a> markup on the home page.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. REFERENCE -->
+  <section class="ty-sec alt">
+    <div class="wrap">
+      <span class="eyebrow">✓ RULES</span>
+      <h2>Google&#x27;s Local Business Guidelines</h2>
+      <p class="sub">What to include and how to format it.</p>
+      <div class="rules-list">
+        <div class="rule-card"><div class="rule-icon">!</div><div><h3>Required</h3><p><code>name</code> and <code>address</code> (a <code>PostalAddress</code>). Fill in as many address parts as apply: street, city, region, postal code, country.</p></div></div>
+        <div class="rule-card"><div class="rule-icon">📍</div><div><h3><code>geo</code></h3><p>Latitude and longitude with at least 5 decimal places — roughly 1 metre precision. Copy them from Google Maps (right-click the pin).</p></div></div>
+        <div class="rule-card"><div class="rule-icon">🕘</div><div><h3><code>openingHoursSpecification</code></h3><p>Days with opening and closing times in 24-hour format. Open all day: 00:00–23:59. Closed days are simply left out.</p></div></div>
+        <div class="rule-card"><div class="rule-icon">☎</div><div><h3>Phone &amp; price</h3><p><code>telephone</code> with the country and area code. <code>priceRange</code> such as “$$” or a range — under 100 characters.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. HOW TO USE -->
+  <section class="how-sec section-navy">
+    <div class="wrap">
+      <span class="eyebrow">◐ THREE STEPS</span>
+      <h2>How to Use the Local Business Schema Generator</h2>
+      <p class="sub">Get your result in under ten seconds.</p>
+      <div class="steps">
+        <div class="step" data-n="01">
+          <div class="num">1</div>
+          <h3 style="color:#fff;">Enter the business</h3>
+          <p>Choose the business type and enter the name, website, phone and full address.</p>
+        </div>
+        <div class="step" data-n="02">
+          <div class="num">2</div>
+          <h3 style="color:#fff;">Set the hours</h3>
+          <p>Tick the open days and set the times. Days with the same hours are combined for you.</p>
+        </div>
+        <div class="step" data-n="03">
+          <div class="num">3</div>
+          <h3 style="color:#fff;">Copy and test</h3>
+          <p>Copy the script tag into the location page and test it with Google's Rich Results Test.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. FEATURES -->
+  <section class="ty-sec">
+    <div class="wrap">
+      <span class="eyebrow">✓ FEATURES</span>
+      <h2>Why Use the Toolyard Local Business Schema Generator</h2>
+      <p class="sub">Fast, accurate and private — built for developers.</p>
+      <div class="why-grid">
+        <div><div class="why-ico">🕘</div><h3>Smart opening hours</h3><p>Same-hours days are grouped into one specification; 24-hour and overnight hours handled.</p></div>
+        <div><div class="why-ico">📍</div><h3>Geo checks</h3><p>Validates coordinate ranges and the 5-decimal precision Google recommends.</p></div>
+        <div><div class="why-ico">🍽</div><h3>Restaurant extras</h3><p>Cuisine, menu and reservations appear automatically for food businesses.</p></div>
+        <div><div class="why-ico">👀</div><h3>Live preview</h3><p>See the address, phone and “Open now” status the way searchers would.</p></div>
+        <div><div class="why-ico">🛡</div><h3>Safe output</h3><p>Escaped, valid JSON-LD ready to paste.</p></div>
+        <div><div class="why-ico">🔒</div><h3>Private</h3><p>Runs entirely in your browser.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. FAQ -->
+  <section class="ty-sec alt">
+    <div class="wrap">
+      <div style="text-align:center; margin-bottom:36px;">
+        <span class="eyebrow">FAQ</span>
+        <h2 style="font-size:28px; margin-top:12px;">Frequently Asked Questions</h2>
+      </div>
+      <div class="faq" id="faqList">
+        <div class="faq-item">
+          <button type="button">What is required for local business markup?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Google requires the business name and its address. Telephone, website URL, geo coordinates, opening hours and price range are recommended, plus menu and cuisine for restaurants.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Which business type should I choose?<span class="plus">+</span></button>
+          <div class="faq-a"><p>The most specific one that fits — for example Dentist instead of LocalBusiness. If none fits, LocalBusiness is fine. Schema.org lists many more types than this menu; you can change the @type in the code afterwards.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">How do I find my latitude and longitude?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Open Google Maps, right-click your business location and click the coordinates at the top of the menu to copy them. Use at least 5 decimal places.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">How do I mark hours that pass midnight?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Enter the real closing time, e.g. opens 18:00, closes 02:00. For a business open all day tick 24h, which writes 00:00–23:59.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">I have several locations. What should I do?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Give each location its own page with its own LocalBusiness markup and address. Don't list all branches in one block on one page.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Does this replace Google Business Profile?<span class="plus">+</span></button>
+          <div class="faq-a"><p>No. Your Business Profile is the main source for Maps and the local pack. This markup supports it by stating the same facts on your own website — keep both identical.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Is my data stored?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Only in your browser's localStorage. Press Reset to clear it.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. RELATED -->
+  <section class="related-tools-section">
+    <div class="wrap">
+      <div class="section-head" style="margin-bottom:28px;">
+        <div>
+          <span class="eyebrow" style="margin-bottom:12px; display:inline-flex;">📎 RELATED</span>
+          <h2 style="font-size:26px; margin:12px 0 6px;">Related SEO Tools</h2>
+          <p class="desc" style="margin:0;">More free utilities that pair well with this one.</p>
+        </div>
+        <a class="view-all" href="/categories/seo/">All SEO Tools →</a>
+      </div>
+      <div class="grid grid-3">
+        <a class="tool-card is-soon" href="/categories/seo/#organization-schema-generator">
+          <div class="top-row"><span class="badge">Generator</span><span class="status-pill status-soon">Coming soon</span></div>
+          <h3>Organization Schema Generator</h3>
+          <p>Organization JSON-LD with logo and socials.</p>
+          <span class="open ty-soon-label">Coming soon</span>
+        </a>
+        <a class="tool-card" href="/tools/seo/product-schema-generator.html">
+          <div class="top-row"><span class="badge">Generator</span></div>
+          <h3>Product Schema Generator</h3>
+          <p>Product structured data with price and reviews.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/seo/breadcrumb-schema-generator.html">
+          <div class="top-row"><span class="badge">Generator</span></div>
+          <h3>Breadcrumb Schema Generator</h3>
+          <p>Generate BreadcrumbList JSON-LD.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/seo/faq-schema-generator.html">
+          <div class="top-row"><span class="badge">Generator</span></div>
+          <h3>FAQ Schema Generator</h3>
+          <p>Build FAQPage JSON-LD for rich results.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card is-soon" href="/categories/seo/#schema-markup-generator">
+          <div class="top-row"><span class="badge">Generator</span><span class="status-pill status-soon">Coming soon</span></div>
+          <h3>Schema Markup Generator</h3>
+          <p>Generate JSON-LD structured data for any page.</p>
+          <span class="open ty-soon-label">Coming soon</span>
+        </a>
+        <a class="tool-card" href="/tools/seo/meta-tag-generator.html">
+          <div class="top-row"><span class="badge">Generator</span></div>
+          <h3>Meta Tag Generator</h3>
+          <p>Generate title, description and essential meta tags.</p>
+          <span class="open">Open tool →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <!-- SHARED FOOTER (rendered by /js/layout.js) -->
+  <div id="site-footer"></div>
+
+  <script>
+  (function () {
+    'use strict';
+    var $ = TK.$;
+    TK.initFaq(document.getElementById('faqList'));
+
+    /* ---- shared visual-generator helpers ---------------------------------- */
+    var G = {};
+    /* Coalesce bursts of input events (slider drags fire 60+ times a second) into one render per frame */
+    G.frame = function (fn) {
+      var queued = false;
+      return function () { if (queued) return; queued = true; requestAnimationFrame(function () { queued = false; fn(); }); };
+    };
+    /* Round for CSS output: max `d` decimals, no trailing zeros, never "-0" */
+    G.n = function (v, d) { var p = Math.pow(10, d == null ? 2 : d), r = Math.round(v * p) / p; return String(r === 0 ? 0 : r); };
+    G.clamp = function (v, a, b) { return Math.min(b, Math.max(a, v)); };
+    G.hex = function (s) {
+      s = String(s == null ? '' : s).trim().toLowerCase();
+      if (s.charAt(0) !== '#') s = '#' + s;
+      if (/^#[0-9a-f]{3}$/.test(s)) s = '#' + s[1] + s[1] + s[2] + s[2] + s[3] + s[3];
+      return /^#[0-9a-f]{6}$/.test(s) ? s : null;
+    };
+    G.rgb = function (hex) { var n = parseInt(hex.slice(1), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; };
+    G.toHex = function (r, g, b) { return '#' + [r, g, b].map(function (x) { return ('0' + G.clamp(Math.round(x), 0, 255).toString(16)).slice(-2); }).join(''); };
+    G.hsl = function (r, g, b) {
+      r /= 255; g /= 255; b /= 255;
+      var mx = Math.max(r, g, b), mn = Math.min(r, g, b), h = 0, s = 0, l = (mx + mn) / 2, d = mx - mn;
+      if (d) {
+        s = l > 0.5 ? d / (2 - mx - mn) : d / (mx + mn);
+        h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4;
+        h *= 60;
+      }
+      return [Math.round(h) % 360, Math.round(s * 100), Math.round(l * 100)];
+    };
+    G.fromHsl = function (h, s, l) {
+      s /= 100; l /= 100;
+      var k = function (n) { return (n + h / 30) % 12; }, a = s * Math.min(l, 1 - l);
+      var f = function (n) { return l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1))); };
+      return G.toHex(f(0) * 255, f(8) * 255, f(4) * 255);
+    };
+    /* A colour in the chosen output format. fmt: 'hex' | 'rgb' | 'hsl'; a: alpha 0–1 */
+    G.color = function (hex, a, fmt) {
+      a = a == null ? 1 : G.clamp(+a, 0, 1);
+      var c = G.rgb(hex), al = G.n(a, 2);
+      if (fmt === 'hsl') { var h = G.hsl(c[0], c[1], c[2]); return a < 1 ? 'hsla(' + h[0] + ', ' + h[1] + '%, ' + h[2] + '%, ' + al + ')' : 'hsl(' + h[0] + ', ' + h[1] + '%, ' + h[2] + '%)'; }
+      if (fmt === 'hex') return a < 1 ? hex + ('0' + Math.round(a * 255).toString(16)).slice(-2) : hex;
+      return a < 1 ? 'rgba(' + c.join(', ') + ', ' + al + ')' : 'rgb(' + c.join(', ') + ')';
+    };
+    G.rand = function (a, b) { return a + Math.floor(Math.random() * (b - a + 1)); };
+
+    /* Number value of a control (falls back to its last valid value while the box is empty/half-typed) */
+    G.v = function (id) {
+      var el = $(id), x = parseFloat(el.value);
+      if (isFinite(x)) return x;
+      x = parseFloat(el.getAttribute('data-last'));
+      return isFinite(x) ? x : parseFloat(el.defaultValue) || 0;
+    };
+    /* Set a slider/number pair (and its range twin) from code */
+    G.set = function (id, val) {
+      var el = $(id); el.value = val; el.setAttribute('data-last', val);
+      var r = el.parentNode.querySelector('input[type="range"][data-for="' + id + '"]'); if (r) r.value = val;
+    };
+    /* Set a colour swatch + its hex box */
+    G.setColor = function (id, hex) {
+      $(id).value = hex;
+      var t = document.querySelector('[data-hex-for="' + id + '"]'); if (t) { t.value = hex; t.classList.remove('bad'); }
+    };
+    /* One delegated listener for every slider pair / colour box in `root` (no per-control listeners to leak) */
+    G.wire = function (root, onChange) {
+      root.addEventListener('input', function (e) {
+        var t = e.target, id = t.getAttribute('data-for'), hx = t.getAttribute('data-hex-for');
+        if (id) { var n = $(id); n.value = t.value; n.setAttribute('data-last', t.value); }
+        else if (t.classList.contains('ty-num')) {
+          var x = parseFloat(t.value), r = root.querySelector('input[type="range"][data-for="' + t.id + '"]');
+          if (isFinite(x)) { t.setAttribute('data-last', x); if (r) r.value = x; }
+        } else if (hx) {
+          var h = G.hex(t.value); t.classList.toggle('bad', !h);
+          if (!h) return;
+          $(hx).value = h;
+        } else if (t.type === 'color') {
+          var tx = root.querySelector('[data-hex-for="' + t.id + '"]'); if (tx) { tx.value = t.value; tx.classList.remove('bad'); }
+        }
+        onChange(e);
+      });
+      root.addEventListener('change', function (e) {
+        var t = e.target;
+        if (t.classList.contains('ty-num')) {        // out of range / empty → clamp or restore on commit
+          var x = parseFloat(t.value), mn = parseFloat(t.min), mx = parseFloat(t.max);
+          if (!isFinite(x)) x = parseFloat(t.getAttribute('data-last')) || parseFloat(t.defaultValue) || 0;
+          if (isFinite(mn)) x = Math.max(mn, x); if (isFinite(mx)) x = Math.min(mx, x);
+          G.set(t.id, x);
+          onChange(e);
+        } else if (t.getAttribute('data-hex-for')) {
+          t.value = $(t.getAttribute('data-hex-for')).value; t.classList.remove('bad');
+        } else if (t.type === 'checkbox' || t.tagName === 'SELECT') onChange(e);
+      });
+    };
+    /* Only touch the code box when the text really changed (keeps selection, avoids repaint) */
+    G.out = function (ta, text) { if (ta.value !== text) { ta.value = text; ta._full = text; } };
+    /* Preview background switch (remembered across generators) */
+    G.stageBg = function () {
+      var stage = $('stage'), key = 'ty-stage-bg';
+      var segc = TK.segmented($('bgSeg'), function (v) { stage.setAttribute('data-bg', v); try { localStorage.setItem(key, v); } catch (e) {} });
+      try { var v = localStorage.getItem(key); if (v && $('bgSeg').querySelector('[data-value="' + v + '"]')) { segc.set(v, true); stage.setAttribute('data-bg', v); } } catch (e) {}
+      return segc;
+    };
+    /* Remember the design between visits (small JSON, validated on load by the caller) */
+    G.store = function (key) {
+      var t = null;
+      return {
+        load: function () { try { return JSON.parse(localStorage.getItem(key) || 'null'); } catch (e) { return null; } },
+        save: function (obj) { clearTimeout(t); t = setTimeout(function () { try { localStorage.setItem(key, JSON.stringify(obj)); } catch (e) {} }, 400); },
+        clear: function () { clearTimeout(t); try { localStorage.removeItem(key); } catch (e) {} }
+      };
+    };
+    G.num = function (x, a, b, d) { x = +x; return isFinite(x) ? G.clamp(x, a, b) : d; };
+    /* ----------------------------------------------------------------------- */
+
+    /* ---- shared JSON-LD generator helpers ------------------------------------------ */
+    var S = {}, form = $('sForm');
+    S.el = function (tag, cls, txt) { var x = document.createElement(tag); if (cls) x.className = cls; if (txt != null) x.textContent = txt; return x; };
+    S.v = function (id) { var e = $(id); return e.type === 'checkbox' ? e.checked : e.value.trim(); };
+    S.lines = function (id) { return S.v(id).split(/\r?\n/).map(function (s) { return s.trim(); }).filter(Boolean); };
+    S.list = function (name) {   // rows → objects (completely empty rows are skipped)
+      var out = [];
+      form.querySelectorAll('.ty-rep[data-list="' + name + '"] > .ty-rep-row').forEach(function (r, i) {
+        var o = { _i: i + 1 }, any = false;
+        r.querySelectorAll('[data-f]').forEach(function (f) { var v = f.type === 'checkbox' ? f.checked : f.value.trim(); o[f.getAttribute('data-f')] = v; if (v && f.type !== 'checkbox' && f.tagName !== 'SELECT') any = true; });
+        if (any) out.push(o);
+      });
+      return out;
+    };
+    /* drop empty strings, empty arrays and objects that only hold "@type"/"@context" — so optional fields simply disappear */
+    S.prune = function (x) {
+      if (Array.isArray(x)) { var a = x.map(S.prune).filter(function (v) { return v !== undefined; }); return a.length ? a : undefined; }
+      if (x && typeof x === 'object') {
+        var o = {}, real = false;
+        Object.keys(x).forEach(function (k) { var v = S.prune(x[k]); if (v !== undefined) { o[k] = v; if (k !== '@type' && k !== '@context') real = true; } });
+        return real ? o : undefined;
+      }
+      return x === '' || x == null || x !== x ? undefined : x;
+    };
+    /* a closing script tag or an HTML comment opener inside a value must not end the script element: escape them (still valid JSON) */
+    S.out = function (d) { return S.prune(d) || { '@context': d['@context'], '@type': d['@type'] }; };   // never an empty {}
+    S.safe = function (s) { return s.replace(/<\//g, '<\\/').replace(/\x3c!--/g, '\\u003c!--'); };
+    S.num = function (s) { if (s === '' || s == null) return ''; var n = Number(String(s).replace(',', '.')); return isFinite(n) ? n : s; };
+    S.isUrl = function (s) { if (!/^https?:\/\/[^\s]+$/i.test(s)) return false; try { var u = new URL(s); return !!u.hostname && u.hostname.indexOf('.') > 0; } catch (e) { return false; } };
+    S.isDate = function (s) { var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s); if (!m) return false; var d = new Date(Date.UTC(+m[1], m[2] - 1, +m[3])); return d.getUTCMonth() === m[2] - 1 && d.getUTCDate() === +m[3]; };
+    S.today = function () { var d = new Date(); return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); };
+    S.gtinOk = function (s) {   // GTIN-8/12/13/14 with a valid check digit
+      if (!/^(\d{8}|\d{12}|\d{13}|\d{14})$/.test(s)) return false;
+      var d = s.split('').map(Number), chk = d.pop(), sum = 0;
+      d.reverse().forEach(function (x, i) { sum += x * (i % 2 ? 1 : 3); });
+      return (10 - sum % 10) % 10 === chk;
+    };
+    /* time-zone offset select (+05:30 …) — defaults to this browser's offset */
+    S.tzOptions = function (sel) {
+      var offs = [-720,-660,-600,-570,-540,-480,-420,-360,-300,-240,-210,-180,-120,-60,0,60,120,180,210,240,270,300,330,345,360,390,420,480,525,540,570,600,630,660,720,765,780,840];
+      var mine = -new Date().getTimezoneOffset();
+      if (offs.indexOf(mine) < 0) offs.push(mine), offs.sort(function (a, b) { return a - b; });
+      offs.forEach(function (m) {
+        var s = (m < 0 ? '-' : '+') + ('0' + Math.floor(Math.abs(m) / 60)).slice(-2) + ':' + ('0' + Math.abs(m) % 60).slice(-2);
+        var o = S.el('option', null, 'UTC' + s); o.value = s; if (m === mine) o.defaultSelected = o.selected = true; sel.appendChild(o);
+      });
+    };
+    S.dt = function (v, tz) { if (!v) return ''; if (/^\d{4}-\d{2}-\d{2}$/.test(v)) return v; return (v.length === 16 ? v + ':00' : v) + (tz || ''); };
+
+    /* ---- repeaters -------------------------------------------------------------------- */
+    S.addRow = function (name, values, focus) {
+      var box = form.querySelector('.ty-rep[data-list="' + name + '"]'), tpl = $('tpl-' + name);
+      var rowEl = tpl.content.firstElementChild.cloneNode(true);
+      if (values) rowEl.querySelectorAll('[data-f]').forEach(function (f) { var k = f.getAttribute('data-f'); if (values[k] != null) { if (f.type === 'checkbox') f.checked = !!values[k]; else f.value = values[k]; } });
+      box.appendChild(rowEl); S.renumber(box);
+      if (focus) { var first = rowEl.querySelector('input, textarea'); if (first) first.focus(); }
+      return rowEl;
+    };
+    S.renumber = function (box) {
+      var rows = box.children, item = box.getAttribute('data-item'), min = +box.getAttribute('data-min') || 0;
+      for (var i = 0; i < rows.length; i++) {
+        rows[i].querySelector('.ty-rep-n').textContent = item + ' ' + (i + 1);
+        rows[i].querySelector('[data-act=up]').disabled = i === 0;
+        rows[i].querySelector('[data-act=down]').disabled = i === rows.length - 1;
+        rows[i].querySelector('[data-act=del]').disabled = rows.length <= min;
+      }
+    };
+    S.setRows = function (name, arr) {
+      var box = form.querySelector('.ty-rep[data-list="' + name + '"]'), min = +box.getAttribute('data-min') || 0;
+      box.replaceChildren();
+      (arr || []).forEach(function (v) { S.addRow(name, v); });
+      while (box.children.length < min) S.addRow(name);
+      S.renumber(box);
+    };
+
+    /* ---- model (for saving / restoring) ------------------------------------------------- */
+    S.model = function () {
+      var m = { f: {}, l: {} };
+      form.querySelectorAll('[data-k]').forEach(function (e) { m.f[e.getAttribute('data-k')] = e.type === 'checkbox' ? e.checked : e.value; });
+      form.querySelectorAll('.ty-rep').forEach(function (box) {
+        m.l[box.getAttribute('data-list')] = Array.prototype.map.call(box.children, function (r) {
+          var o = {}; r.querySelectorAll('[data-f]').forEach(function (f) { o[f.getAttribute('data-f')] = f.type === 'checkbox' ? f.checked : f.value; }); return o;
+        });
+      });
+      return m;
+    };
+    S.apply = function (m) {
+      form.querySelectorAll('[data-k]').forEach(function (e) {
+        var k = e.getAttribute('data-k'), v = m && m.f ? m.f[k] : undefined;
+        if (e.type === 'checkbox') e.checked = v === undefined ? e.defaultChecked : !!v;
+        else if (e.tagName === 'SELECT') { e.value = v === undefined ? (e.querySelector('option[selected]') || e.options[0] || {}).value : v; if (e.selectedIndex < 0) e.selectedIndex = 0; }
+        else e.value = v === undefined ? '' : String(v);
+      });
+      form.querySelectorAll('.ty-rep').forEach(function (box) { var n = box.getAttribute('data-list'); S.setRows(n, m && m.l ? m.l[n] : null); });
+    };
+
+    /* ---- checks ------------------------------------------------------------------------- */
+    S.renderChecks = function (list) {
+      var ul = $('checks'), frag = document.createDocumentFragment(), n = { err: 0, warn: 0 };
+      var order = { err: 0, warn: 1, info: 2, ok: 3 };
+      list.sort(function (a, b) { return order[a[0]] - order[b[0]]; });
+      list.forEach(function (c) {
+        if (n[c[0]] != null) n[c[0]]++;
+        var li = S.el('li', 'ty-chk ' + c[0]);
+        li.appendChild(S.el('span', 'ic', c[0] === 'err' ? '✕' : c[0] === 'warn' ? '!' : c[0] === 'info' ? 'i' : '✓'));
+        li.appendChild(S.el('span', 'tx', c[1]));
+        frag.appendChild(li);
+      });
+      ul.replaceChildren(frag);
+      var cc = $('checkCount');
+      cc.textContent = n.err ? n.err + ' error' + (n.err > 1 ? 's' : '') + (n.warn ? ' · ' + n.warn + ' warning' + (n.warn > 1 ? 's' : '') : '') : n.warn ? n.warn + ' warning' + (n.warn > 1 ? 's' : '') : '✓ Valid';
+      cc.className = 'ty-ccount ' + (n.err ? 'err' : n.warn ? 'warn' : 'ok');
+      return n;
+    };
+    S.status = function (kind, text) { var b = $('sStatus'); b.className = 'ty-sstatus ' + (kind || ''); b.textContent = text || ''; b.hidden = !text; };
+
+    /* ---- wiring --------------------------------------------------------------------------
+       cfg: { key, build() → { data, checks:[[level,text]…] }, preview(data, previewEl), example() → model, filename } */
+    S.init = function (cfg) {
+      var out = $('codeOut'), lastText = '', pend = null, timer = null;
+      /* debounced save, flushed when the tab is hidden or closed so the last keystrokes are never lost */
+      function flush() { clearTimeout(timer); if (pend) { try { localStorage.setItem(cfg.key, JSON.stringify(pend)); } catch (e) {} pend = null; } }
+      var store = {
+        load: function () { try { return JSON.parse(localStorage.getItem(cfg.key) || 'null'); } catch (e) { return null; } },
+        save: function (m) { pend = m; clearTimeout(timer); timer = setTimeout(flush, 400); },
+        clear: function () { clearTimeout(timer); pend = null; try { localStorage.removeItem(cfg.key); } catch (e) {} }
+      };
+      window.addEventListener('pagehide', flush);
+      document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'hidden') flush(); });
+      var fmtSeg = TK.segmented($('fmtSeg'), function (v) { try { localStorage.setItem('ty-jsonld-fmt', v); } catch (e) {} render(); });
+      try { var f0 = localStorage.getItem('ty-jsonld-fmt'); if (f0 === 'json' || f0 === 'script') fmtSeg.set(f0, true); } catch (e) {}
+      function text() {
+        var r = cfg.build(), data = S.out(r.data);
+        var json = S.safe(JSON.stringify(data, null, 2));
+        lastText = fmtSeg.get() === 'json' ? json : '\x3cscript type="application/ld+json">\n' + json + '\n\x3c/script>';
+        return r;
+      }
+      function render() {
+        var r = text();
+        G.out(out, lastText);
+        S.renderChecks(r.checks || []);
+        var pv = $('preview'); pv.replaceChildren(); cfg.preview(S.out(r.data), pv, r);
+        store.save(S.model());
+      }
+      var queue = G.frame(render);
+      form.addEventListener('input', queue);
+      form.addEventListener('change', queue);
+      form.addEventListener('click', function (e) {
+        var b = e.target.closest('[data-act]'); if (!b || !form.contains(b)) return;
+        var act = b.getAttribute('data-act');
+        if (act === 'add') { S.addRow(b.getAttribute('data-list'), null, true); queue(); return; }
+        if (cfg.action && cfg.action(act, b)) { queue(); return; }
+        var rowEl = b.closest('.ty-rep-row'); if (!rowEl) return;
+        var box = rowEl.parentNode;
+        if (act === 'del') { if (box.children.length > (+box.getAttribute('data-min') || 0)) rowEl.remove(); }
+        else if (act === 'up' && rowEl.previousElementSibling) box.insertBefore(rowEl, rowEl.previousElementSibling);
+        else if (act === 'down' && rowEl.nextElementSibling) box.insertBefore(rowEl.nextElementSibling, rowEl);
+        S.renumber(box); b.disabled ? (box.querySelector('[data-act=' + act + ']:not(:disabled)') || b).focus() : b.focus();
+        queue();
+      });
+      $('copyBtn').addEventListener('click', function () { TK.copy(lastText, this); });
+      $('dlBtn').addEventListener('click', function () {
+        var js = fmtSeg.get() === 'json';
+        TK.download(lastText, cfg.filename + (js ? '.json' : '.html'), js ? 'application/ld+json' : 'text/html;charset=utf-8', this);
+      });
+      $('exampleBtn').addEventListener('click', function () { S.apply(cfg.example()); render(); });
+      $('resetBtn').addEventListener('click', function () { store.clear(); S.apply(cfg.initial ? cfg.initial() : null); if (cfg.onReset) cfg.onReset(); render(); });
+      if (cfg.setup) cfg.setup();
+      var saved = store.load();
+      S.apply(saved && saved.f ? saved : (cfg.initial ? cfg.initial() : null));
+      render();
+      return { render: render };
+    };
+
+    /* ---- preview helpers (Google-style result) ------------------------------------------ */
+    S.idOf = function (u, frag) { try { var x = new URL(u); x.hash = ''; return x.href + '#' + frag; } catch (e) { return ''; } };
+    S.host = function (u) { try { return new URL(u).hostname.replace(/^www\./, ''); } catch (e) { return ''; } };
+    S.serp = function (o) {   // o: {url, site, title, desc, crumbs:[…], extra: Node, thumb:bool}
+      var card = S.el('div', 'ty-serp ty-sserp'), site = S.el('div', 'site'), fav = S.el('div', 'fav', (o.site || o.host || '?').charAt(0).toUpperCase());
+      var meta = S.el('div'); meta.appendChild(S.el('div', 'sname', o.site || o.host || 'example.com'));
+      meta.appendChild(S.el('div', 'surl', o.crumbs && o.crumbs.length ? o.crumbs.join(' › ') : (o.url || 'https://example.com')));
+      site.append(fav, meta); card.appendChild(site);
+      var body = S.el('div', 'ty-sbody'), txt = S.el('div', 'ty-stxt');
+      txt.appendChild(S.el('div', 'stitle', o.title || 'Page title'));
+      if (o.extra) txt.appendChild(o.extra);
+      if (o.desc) txt.appendChild(S.el('div', 'sdesc', o.desc));
+      body.appendChild(txt);
+      if (o.thumb) body.appendChild(S.el('div', 'ty-sthumb', '🖼'));
+      card.appendChild(body);
+      return card;
+    };
+    S.stars = function (v, best) { best = +best || 5; var x = Math.round(Math.max(0, Math.min(5, (+v / best) * 5))), s = ''; for (var i = 1; i <= 5; i++) s += x >= i ? '★' : '☆'; return s; };
+    // plain text of an HTML answer for the preview (regex + entity map — user HTML is never parsed into the page)
+    S.strip = function (h) {
+      var ent = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ' };
+      return h.replace(/<(br|\/p|\/li|\/h[1-6]|\/div)\s*\/?>/gi, ' ').replace(/<[^>]*>/g, '')
+        .replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, function (m, e) {
+          if (e.charAt(0) === '#') { var c = e.charAt(1).toLowerCase() === 'x' ? parseInt(e.slice(2), 16) : parseInt(e.slice(1), 10); try { return String.fromCodePoint(c); } catch (x) { return m; } }
+          return ent[e.toLowerCase()] != null ? ent[e.toLowerCase()] : m;
+        }).replace(/\s+/g, ' ').trim();
+    };
+
+    var DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    var FOOD = { Restaurant: 1, CafeOrCoffeeShop: 1, Bakery: 1, BarOrPub: 1, FastFoodRestaurant: 1 };
+    function k(d, f) { return 'h-' + d.slice(0, 3).toLowerCase() + '-' + f; }
+    function day(d) { return { on: $(k(d, 'on')).checked, all: $(k(d, '24')).checked, o: $(k(d, 'o')).value, c: $(k(d, 'c')).value }; }
+    function syncHours() {   // greys out times for closed / 24h days
+      DAYS.forEach(function (d) { var x = day(d); $(k(d, 'o')).disabled = $(k(d, 'c')).disabled = !x.on || x.all; $(k(d, '24')).disabled = !x.on; });
+    }
+    function decs(s) { var m = /\.(\d+)$/.exec(s); return m ? m[1].length : 0; }
+    function build() {
+      var checks = [], type = S.v('bType'), food = !!FOOD[type];
+      $('foodGroup').hidden = !food; syncHours();
+      var name = S.v('name'), url = S.v('url'), phone = S.v('phone'), imgs = S.lines('images'), pr = S.v('price');
+      if (!name) checks.push(['err', 'Business name is required.']);
+      if (url && !S.isUrl(url)) checks.push(['err', 'Website URL must be absolute (https://…).']);
+      if (!url) checks.push(['info', 'Website URL is recommended.']);
+      if (phone && !/^\+/.test(phone)) checks.push(['warn', 'Telephone: start with + and the country code, e.g. +91 3712 123456.']);
+      if (phone && !/^\+?[\d\s().\-\/]{6,}$/.test(phone)) checks.push(['warn', 'Telephone contains unexpected characters.']);
+      if (!phone) checks.push(['info', 'Telephone is recommended.']);
+      var bad = imgs.filter(function (u) { return !S.isUrl(u); });
+      if (bad.length) checks.push(['err', 'Image URLs must be absolute: ' + bad[0].slice(0, 60)]);
+      if (pr.length >= 100) checks.push(['err', 'Price range must be under 100 characters (now ' + pr.length + ').']);
+      var addr = { street: S.v('street'), locality: S.v('locality'), region: S.v('region'), postal: S.v('postal'), country: S.v('country') };
+      var lbl = { street: 'street address', locality: 'city', region: 'state/region', postal: 'postal code', country: 'country' };
+      var filled = Object.keys(addr).filter(function (x) { return addr[x]; });
+      if (!filled.length) checks.push(['err', 'Address is required.']);
+      else Object.keys(addr).forEach(function (x) { if (!addr[x]) checks.push(['warn', 'Address: add the ' + lbl[x] + ' (if it applies).']); });
+      if (addr.country && addr.country.length !== 2) checks.push(['info', 'Country: a two-letter ISO code (e.g. IN, US) is the most reliable format.']);
+      var lat = S.v('lat'), lng = S.v('lng'), geo = '';
+      if (lat || lng) {
+        var la = Number(lat), lo = Number(lng);
+        if (!lat || !lng || !isFinite(la) || !isFinite(lo)) checks.push(['err', 'Geo: enter both latitude and longitude as decimal numbers.']);
+        else if (la < -90 || la > 90 || lo < -180 || lo > 180) checks.push(['err', 'Geo: latitude must be −90…90 and longitude −180…180.']);
+        else {
+          if (decs(lat) < 5 || decs(lng) < 5) checks.push(['warn', 'Geo: use at least 5 decimal places for precision.']);
+          geo = { '@type': 'GeoCoordinates', latitude: la, longitude: lo };
+        }
+      } else checks.push(['info', 'Geo coordinates are recommended.']);
+      /* hours: group days with identical times */
+      var groups = {}, order = [], anyOpen = false;
+      DAYS.forEach(function (d) {
+        var x = day(d); if (!x.on) return; anyOpen = true;
+        var o = x.all ? '00:00' : x.o, c = x.all ? '23:59' : x.c;
+        if (!o || !c) { checks.push(['err', d + ': set both the opening and closing time (or untick Open).']); return; }
+        if (o === c) { checks.push(['warn', d + ': opening and closing times are the same. For all day, tick 24h.']); }
+        else if (c < o && c !== '00:00') checks.push(['info', d + ': closes after midnight (' + o + '–' + c + ').']);
+        var key = o + '|' + c; if (!groups[key]) { groups[key] = []; order.push(key); } groups[key].push(d);
+      });
+      var hours = order.map(function (key) { var p = key.split('|'); return { '@type': 'OpeningHoursSpecification', dayOfWeek: groups[key].length === 1 ? groups[key][0] : groups[key], opens: p[0], closes: p[1] }; });
+      if (!anyOpen) checks.push(['info', 'Opening hours are recommended — tick the days you are open.']);
+      var menu = S.v('menu');
+      if (food && menu && !S.isUrl(menu)) checks.push(['err', 'Menu URL must be absolute.']);
+      var same = S.lines('sameAs'), badS = same.filter(function (u) { return !S.isUrl(u); });
+      if (badS.length) checks.push(['err', 'Profile URLs must be absolute: ' + badS[0].slice(0, 60)]);
+      if (!checks.some(function (c) { return c[0] === 'err' || c[0] === 'warn'; })) checks.push(['ok', 'Name and address present — markup is valid.']);
+      var data = { '@context': 'https://schema.org', '@type': type, '@id': url && S.isUrl(url) ? S.idOf(url, 'business') : '',
+        name: name, description: S.v('bDesc'), url: url, telephone: phone, image: imgs.length === 1 ? imgs[0] : imgs, priceRange: pr,
+        address: { '@type': 'PostalAddress', streetAddress: addr.street, addressLocality: addr.locality, addressRegion: addr.region, postalCode: addr.postal, addressCountry: addr.country },
+        geo: geo, openingHoursSpecification: hours,
+        servesCuisine: food ? (function () { var c = S.v('cuisine').split(',').map(function (s) { return s.trim(); }).filter(Boolean); return c.length === 1 ? c[0] : c; })() : '',
+        menu: food ? menu : '', acceptsReservations: food && S.v('reserve') ? S.v('reserve') === 'true' : '',
+        sameAs: same };
+      return { data: data, checks: checks };
+    }
+    var LABEL = {}; Array.prototype.forEach.call($('bType').options, function (o) { LABEL[o.value] = o.textContent.replace(/\s*\(.*\)$/, ''); });
+    function openNow(specs) {
+      var now = new Date(), d = DAYS[(now.getDay() + 6) % 7], t = ('0' + now.getHours()).slice(-2) + ':' + ('0' + now.getMinutes()).slice(-2);
+      var yd = DAYS[(now.getDay() + 5) % 7], res = null;
+      (specs || []).forEach(function (s) {
+        var ds = [].concat(s.dayOfWeek), over = s.closes < s.opens;
+        if (ds.indexOf(d) >= 0 && t >= s.opens && (over || t < s.closes || s.closes === '23:59')) res = { open: true, until: s.closes };
+        if (over && ds.indexOf(yd) >= 0 && t < s.closes) res = { open: true, until: s.closes };
+      });
+      return res || { open: false };
+    }
+    function preview(d, el) {
+      var a = d.address || {}, rich = S.el('div', 'ty-srich');
+      rich.textContent = [LABEL[d['@type']] || d['@type'], d.priceRange].filter(Boolean).join(' · ');
+      var box = S.el('div');
+      var addrLine = [a.streetAddress, a.addressLocality, a.addressRegion, a.postalCode, a.addressCountry].filter(Boolean).join(', ');
+      if (addrLine) { var ad = S.el('div', 'shours'); ad.appendChild(S.el('b', null, 'Address: ')); ad.appendChild(document.createTextNode(addrLine)); box.appendChild(ad); }
+      if (d.openingHoursSpecification) {
+        var st = openNow(d.openingHoursSpecification), hr = S.el('div', 'shours'); hr.appendChild(S.el('b', null, 'Hours: '));
+        hr.appendChild(S.el('span', st.open ? 'open' : 'closed', st.open ? 'Open' : 'Closed'));
+        if (st.open) hr.appendChild(document.createTextNode(st.until === '23:59' ? ' · Open 24 hours' : ' · Closes ' + st.until));
+        box.appendChild(hr);
+      }
+      if (d.telephone) { var ph = S.el('div', 'shours'); ph.appendChild(S.el('b', null, 'Phone: ')); ph.appendChild(document.createTextNode(d.telephone)); box.appendChild(ph); }
+      if (rich.textContent) box.insertBefore(rich, box.firstChild);
+      var host = S.host(d.url || '');
+      el.appendChild(S.el('div', 'ty-plabel', 'Search result with business details (illustration)'));
+      el.appendChild(S.serp({ url: d.url, site: d.name || host, host: host, title: d.name || 'Business name', desc: d.description || '', extra: box.childNodes.length ? box : null, thumb: !!d.image }));
+    }
+    function setHours(map) { DAYS.forEach(function (d) { var v = map[d]; $(k(d, 'on')).checked = !!v; $(k(d, '24')).checked = false; if (v) { $(k(d, 'o')).value = v[0]; $(k(d, 'c')).value = v[1]; } }); }
+    function baseHours() { var f = {}; DAYS.forEach(function (d) { f[k(d, 'o')] = '09:00'; f[k(d, 'c')] = '17:00'; }); return f; }
+    S.init({
+      key: 'ty-localbusiness-schema', filename: 'local-business-schema', build: build, preview: preview,
+      action: function (act) {
+        if (act === 'copymon') { var m = day('Monday'); DAYS.slice(1, 5).forEach(function (d) { $(k(d, 'on')).checked = m.on; $(k(d, '24')).checked = m.all; $(k(d, 'o')).value = m.o; $(k(d, 'c')).value = m.c; }); return true; }
+        if (act === 'weekdays') { setHours({ Monday: ['09:00', '17:00'], Tuesday: ['09:00', '17:00'], Wednesday: ['09:00', '17:00'], Thursday: ['09:00', '17:00'], Friday: ['09:00', '17:00'] }); return true; }
+        return false;
+      },
+      initial: function () { return { f: baseHours(), l: {} }; },
+      example: function () {
+        var f = baseHours();
+        ['mon', 'tue', 'wed', 'thu', 'fri', 'sat'].forEach(function (x) { f['h-' + x + '-on'] = true; f['h-' + x + '-o'] = '08:00'; f['h-' + x + '-c'] = '21:30'; });
+        f['h-sat-c'] = '23:00'; f['h-sun-on'] = true; f['h-sun-o'] = '10:00'; f['h-sun-c'] = '20:00';
+        return { f: Object.assign(f, { bType: 'CafeOrCoffeeShop', name: 'Brahmaputra Café', url: 'https://example.com', phone: '+91 3712 123456',
+          images: 'https://example.com/img/cafe-front.jpg', price: '₹₹', bDesc: 'Assam tea, coffee and fresh snacks by the river.',
+          street: '12 Main Road, Near Circuit House', locality: 'Tezpur', region: 'Assam', postal: '784001', country: 'IN', lat: '26.63333', lng: '92.80000',
+          cuisine: 'Assamese, Café', menu: 'https://example.com/menu', reserve: 'false', sameAs: 'https://www.instagram.com/example' }), l: {} };
+      }
+    });
+
+  })();
+  </script>
+</body>
+</html>

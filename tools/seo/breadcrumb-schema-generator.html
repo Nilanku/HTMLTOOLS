@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Breadcrumb Schema Generator – BreadcrumbList JSON-LD | Toolyard</title>
+  <meta name="description" content="Free breadcrumb schema generator. Build BreadcrumbList JSON-LD from a URL in one click, reorder items, and check positions, absolute URLs and domains. Live preview of the breadcrumb path in Google.">
+  <link rel="canonical" href="https://htmltools.nilankubaruah.workers.dev/tools/seo/breadcrumb-schema-generator.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Breadcrumb Schema Generator – BreadcrumbList JSON-LD">
+  <meta property="og:description" content="Free breadcrumb schema generator. Build BreadcrumbList JSON-LD from a URL in one click, reorder items, and check positions, absolute URLs and domains. Live preview of the breadcrumb path in Google.">
+  <meta property="og:url" content="https://htmltools.nilankubaruah.workers.dev/tools/seo/breadcrumb-schema-generator.html">
+  <meta name="twitter:card" content="summary">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/tools.css">
+  <script src="/js/tools-data.js"></script>
+  <script src="/js/layout.js"></script>
+  <script src="/js/tool-kit.js"></script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Breadcrumb Schema Generator", "url": "https://htmltools.nilankubaruah.workers.dev/tools/seo/breadcrumb-schema-generator.html", "applicationCategory": "DeveloperApplication", "operatingSystem": "Any (runs in your browser)", "description": "Free breadcrumb schema generator. Build BreadcrumbList JSON-LD from a URL in one click, reorder items, and check positions, absolute URLs and domains. Live preview of the breadcrumb path in Google.", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Do breadcrumbs still appear in Google?", "acceptedAnswer": {"@type": "Answer", "text": "Yes on desktop. Since early 2025 Google no longer shows breadcrumb paths on mobile results — mobile shows just the site name and domain. The markup is still valid and still used to understand your site structure."}}, {"@type": "Question", "name": "Does the last item need a URL?", "acceptedAnswer": {"@type": "Answer", "text": "No. Google allows the URL of the last item (the page itself) to be left out. Including it is also fine."}}, {"@type": "Question", "name": "Must the trail match my URL structure?", "acceptedAnswer": {"@type": "Answer", "text": "No. It should show a logical path a user would follow, such as Home › Books › Fiction. URL folders are a handy starting point, which is why the Fill trail button uses them."}}, {"@type": "Question", "name": "Should I include the home page?", "acceptedAnswer": {"@type": "Answer", "text": "It's common and recommended to start with Home. The trail still needs at least two items in total."}}, {"@type": "Question", "name": "Can a page have more than one breadcrumb?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. If a product is reachable from two categories, add two separate BreadcrumbList blocks. Generate each trail separately."}}, {"@type": "Question", "name": "What does position mean?", "acceptedAnswer": {"@type": "Answer", "text": "The order of the item in the trail, starting at 1 for the top level. This tool sets it automatically from the order of your items."}}, {"@type": "Question", "name": "Is my data stored?", "acceptedAnswer": {"@type": "Answer", "text": "Only in your browser's localStorage. Press Reset to clear it."}}]}</script>
+</head>
+<body class="ty-tool" data-tool="breadcrumb-schema-generator">
+
+  <!-- SHARED HEADER, MOBILE MENU & BREADCRUMBS (rendered by /js/layout.js) -->
+  <div id="site-header"></div>
+  <div id="site-breadcrumbs"></div>
+
+  <main>
+  <!-- TOOL INTRO -->
+  <section class="tool-intro">
+    <div class="wrap tool-intro-content">
+      <span class="eyebrow">🔍 SEO · STRUCTURED DATA</span>
+      <h1>Breadcrumb Schema Generator</h1>
+      <p class="lead">Create <code>BreadcrumbList</code> JSON-LD that shows your page's place in the site hierarchy. Paste a URL to fill the trail automatically, rename and reorder the items, and copy valid code with positions numbered for you.</p>
+      <div class="tool-meta-badge"><span class="dot"></span> BreadcrumbList JSON-LD · Fill from URL · Automatic positions</div>
+    </div>
+  </section>
+
+  <!-- WORKSPACE -->
+  <section class="tool-app-section">
+    <div class="wrap">
+      <div class="ty-pair"><span>Paste the code into the page's <code>&lt;head&gt;</code> or <code>&lt;body&gt;</code>.</span><span>Marking up the article itself? <a href="/tools/seo/article-schema-generator.html">Article Schema Generator →</a></span></div>
+      <div class="tool-workspace ty-gen-ws">
+        <div class="tool-toolbar">
+          <div class="tool-toolbar-left"><span style="font-size:13px; color:var(--ink-soft);">Fill in the form — the JSON-LD and the checks update as you type. </span></div>
+          <div class="tool-toolbar-right">
+            <button type="button" class="btn btn-ghost btn-sm" id="exampleBtn">Load Example</button>
+            <button type="button" class="btn btn-danger btn-sm" id="resetBtn">Reset</button>
+          </div>
+        </div>
+        <div class="tool-grid ty-gen ty-schema">
+          <div class="ty-gen-main">
+            <div class="tool-pane ty-gen-ctl">
+              <div class="tool-pane-header"><span class="title">Details</span><span class="badge">Saved in this browser</span></div>
+              <form class="ty-ctl ty-sform" id="sForm" autocomplete="off" onsubmit="return false">
+<details class="ty-sgroup" open><summary>Quick start</summary><div class="ty-sgbody">
+<div class="ty-field"><label for="fillUrl"><span>Start from a page URL</span></label>
+<div class="ty-line"><input type="url" id="fillUrl" class="ty-input" placeholder="https://example.com/books/fiction/the-hobbit" autocomplete="off" spellcheck="false" style="flex:1 1 220px;width:auto">
+<button type="button" class="btn btn-outline btn-sm" data-act="fill">Fill trail</button></div>
+<div class="hint">Creates one item per folder in the URL (Home › Books › Fiction › …). Then edit the names — use the labels visitors see on your page.</div></div>
+</div></details>
+<details class="ty-sgroup" open><summary>Breadcrumb trail</summary><div class="ty-sgbody">
+<div class="ty-rep" data-list="crumbs" data-min="2" data-item="Item"></div>
+<button type="button" class="btn btn-outline btn-sm ty-rep-add" data-act="add" data-list="crumbs">+ Add item</button>
+<template id="tpl-crumbs"><div class="ty-rep-row">
+  <div class="ty-rep-head"><span class="ty-rep-n">Item</span><span class="ty-rep-acts">
+    <button type="button" class="ty-ibtn" data-act="up" aria-label="Move up" title="Move up">↑</button><button type="button" class="ty-ibtn" data-act="down" aria-label="Move down" title="Move down">↓</button><button type="button" class="ty-ibtn del" data-act="del" aria-label="Remove" title="Remove">✕</button>
+  </span></div>
+  <div class="ty-rep-body"><label class="ty-field"><span class="lbl">Name <span class="ty-need req">Required</span></span><input type="text" data-f="name" class="ty-input" placeholder="e.g. Books" autocomplete="off" spellcheck="false" ></label><label class="ty-field"><span class="lbl">URL</span><input type="url" data-f="url" class="ty-input" placeholder="https://example.com/books" autocomplete="off" spellcheck="false" ></label></div>
+</div></template>
+</div></details>
+              </form>
+            </div>
+            <div class="tool-pane ty-gen-prev">
+              <div class="tool-pane-header"><span class="title">Preview &amp; checks</span><span class="ty-ccount" id="checkCount" aria-live="polite"></span></div>
+              <div class="ty-sprev" id="sPrev">
+                <div class="ty-sstatus" id="sStatus" hidden></div>
+                <div id="preview"></div>
+                <ul class="ty-slist" id="checks" aria-label="Checks"></ul>
+              </div>
+            </div>
+          </div>
+          <div class="tool-pane ty-gen-code">
+            <div class="tool-pane-header"><span class="title">JSON-LD</span>
+              <div class="actions">
+                <div class="ty-seg" id="fmtSeg" role="group" aria-label="Output format"><button type="button" data-value="script" class="active">&lt;script&gt;</button><button type="button" data-value="json">JSON</button></div>
+                <button type="button" class="btn btn-sm btn-outline" id="copyBtn">Copy</button>
+                <button type="button" class="btn btn-sm btn-ghost" id="dlBtn">Download</button>
+              </div>
+            </div>
+            <textarea class="tool-textarea ty-mono" id="codeOut" readonly spellcheck="false" aria-label="Generated JSON-LD"></textarea>
+            <div class="ty-svalid">Validate: <a href="https://search.google.com/test/rich-results" target="_blank" rel="noopener">Google Rich Results Test ↗</a> · <a href="https://validator.schema.org/" target="_blank" rel="noopener">Schema.org Validator ↗</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. ABOUT -->
+  <section class="ty-sec">
+    <div class="wrap">
+      <span class="eyebrow">◆ ABOUT THIS TOOL</span>
+      <h2>What Is Breadcrumb Structured Data?</h2>
+      <p class="sub">Show search engines where a page sits in your site — Home › Category › Page.</p>
+      <div class="about-grid">
+        <div><p>Breadcrumb structured data (<code>BreadcrumbList</code>) describes the trail of links from your home page down to the current page. Each step is a <code>ListItem</code> with a <code>position</code>, a <code>name</code> and the URL of that level (<code>item</code>).</p><p>Google can use it to show a readable path such as <em>example.com › Books › Fiction</em> above your result instead of a raw URL.</p></div>
+        <div><p><strong>Status in 2026:</strong> breadcrumb rich results are still supported, but since early 2025 Google shows them on <strong>desktop</strong> results only; mobile results show just the site name and domain. The markup still helps Google understand your site structure.</p><p>The trail should reflect a typical path a visitor would take to reach the page — it doesn't have to copy your URL folders. Also mark up the main <a href="/tools/seo/article-schema-generator.html">article</a> or <a href="/tools/seo/product-schema-generator.html">product</a> on the page.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. REFERENCE -->
+  <section class="ty-sec alt">
+    <div class="wrap">
+      <span class="eyebrow">✓ RULES</span>
+      <h2>BreadcrumbList Requirements</h2>
+      <p class="sub">From Google's breadcrumb documentation.</p>
+      <div class="rules-list">
+        <div class="rule-card"><div class="rule-icon">2+</div><div><h3>At least two items</h3><p>A breadcrumb needs a minimum of two <code>ListItem</code>s. Positions start at 1 and count up — this tool numbers them for you.</p></div></div>
+        <div class="rule-card"><div class="rule-icon">🔗</div><div><h3><code>item</code> URLs</h3><p>Each item links to its page with a full, absolute URL. The URL of the <strong>last</strong> item (the current page) is optional.</p></div></div>
+        <div class="rule-card"><div class="rule-icon">Aa</div><div><h3>Names users see</h3><p>Use the same short labels as the visible breadcrumb on your page, e.g. “Books”, not “books-category”.</p></div></div>
+        <div class="rule-card"><div class="rule-icon">⑂</div><div><h3>Several paths</h3><p>If a page can be reached by different paths, you may add more than one BreadcrumbList. Use this tool once per trail.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. HOW TO USE -->
+  <section class="how-sec section-navy">
+    <div class="wrap">
+      <span class="eyebrow">◐ THREE STEPS</span>
+      <h2>How to Use the Breadcrumb Schema Generator</h2>
+      <p class="sub">Get your result in under ten seconds.</p>
+      <div class="steps">
+        <div class="step" data-n="01">
+          <div class="num">1</div>
+          <h3 style="color:#fff;">Fill the trail</h3>
+          <p>Paste the page URL and press Fill trail, or add items by hand from Home down to the current page.</p>
+        </div>
+        <div class="step" data-n="02">
+          <div class="num">2</div>
+          <h3 style="color:#fff;">Name the steps</h3>
+          <p>Rename each item to match your visible breadcrumb labels. Reorder with ↑ ↓ if needed.</p>
+        </div>
+        <div class="step" data-n="03">
+          <div class="num">3</div>
+          <h3 style="color:#fff;">Copy the code</h3>
+          <p>Copy the script tag into the page and test it with Google's Rich Results Test.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. FEATURES -->
+  <section class="ty-sec">
+    <div class="wrap">
+      <span class="eyebrow">✓ FEATURES</span>
+      <h2>Why Use the Toolyard Breadcrumb Schema Generator</h2>
+      <p class="sub">Fast, accurate and private — built for developers.</p>
+      <div class="why-grid">
+        <div><div class="why-ico">⚡</div><h3>One-click trail</h3><p>Builds the items from any URL's folders, with readable names.</p></div>
+        <div><div class="why-ico">#</div><h3>Automatic positions</h3><p>Positions are numbered in order — reorder freely and they update.</p></div>
+        <div><div class="why-ico">🔎</div><h3>Checks</h3><p>Flags relative URLs, other domains, duplicates and trails that are too short.</p></div>
+        <div><div class="why-ico">👀</div><h3>Live preview</h3><p>Shows the breadcrumb path as Google displays it on desktop.</p></div>
+        <div><div class="why-ico">🛡</div><h3>Safe output</h3><p>Escaped JSON that can't break the page.</p></div>
+        <div><div class="why-ico">🔒</div><h3>Private</h3><p>Runs entirely in your browser.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. FAQ -->
+  <section class="ty-sec alt">
+    <div class="wrap">
+      <div style="text-align:center; margin-bottom:36px;">
+        <span class="eyebrow">FAQ</span>
+        <h2 style="font-size:28px; margin-top:12px;">Frequently Asked Questions</h2>
+      </div>
+      <div class="faq" id="faqList">
+        <div class="faq-item">
+          <button type="button">Do breadcrumbs still appear in Google?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Yes on desktop. Since early 2025 Google no longer shows breadcrumb paths on mobile results — mobile shows just the site name and domain. The markup is still valid and still used to understand your site structure.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Does the last item need a URL?<span class="plus">+</span></button>
+          <div class="faq-a"><p>No. Google allows the URL of the last item (the page itself) to be left out. Including it is also fine.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Must the trail match my URL structure?<span class="plus">+</span></button>
+          <div class="faq-a"><p>No. It should show a logical path a user would follow, such as Home › Books › Fiction. URL folders are a handy starting point, which is why the Fill trail button uses them.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Should I include the home page?<span class="plus">+</span></button>
+          <div class="faq-a"><p>It's common and recommended to start with Home. The trail still needs at least two items in total.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Can a page have more than one breadcrumb?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Yes. If a product is reachable from two categories, add two separate BreadcrumbList blocks. Generate each trail separately.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">What does position mean?<span class="plus">+</span></button>
+          <div class="faq-a"><p>The order of the item in the trail, starting at 1 for the top level. This tool sets it automatically from the order of your items.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Is my data stored?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Only in your browser's localStorage. Press Reset to clear it.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. RELATED -->
+  <section class="related-tools-section">
+    <div class="wrap">
+      <div class="section-head" style="margin-bottom:28px;">
+        <div>
+          <span class="eyebrow" style="margin-bottom:12px; display:inline-flex;">📎 RELATED</span>
+          <h2 style="font-size:26px; margin:12px 0 6px;">Related SEO Tools</h2>
+          <p class="desc" style="margin:0;">More free utilities that pair well with this one.</p>
+        </div>
+        <a class="view-all" href="/categories/seo/">All SEO Tools →</a>
+      </div>
+      <div class="grid grid-3">
+        <a class="tool-card" href="/tools/seo/article-schema-generator.html">
+          <div class="top-row"><span class="badge">Generator</span></div>
+          <h3>Article Schema Generator</h3>
+          <p>Create Article and BlogPosting structured data.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/seo/product-schema-generator.html">
+          <div class="top-row"><span class="badge">Generator</span></div>
+          <h3>Product Schema Generator</h3>
+          <p>Product structured data with price and reviews.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/seo/faq-schema-generator.html">
+          <div class="top-row"><span class="badge">Generator</span></div>
+          <h3>FAQ Schema Generator</h3>
+          <p>Build FAQPage JSON-LD for rich results.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/seo/local-business-schema-generator.html">
+          <div class="top-row"><span class="badge">Generator</span></div>
+          <h3>Local Business Schema Generator</h3>
+          <p>Structured data for local businesses.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card is-soon" href="/categories/seo/#schema-markup-generator">
+          <div class="top-row"><span class="badge">Generator</span><span class="status-pill status-soon">Coming soon</span></div>
+          <h3>Schema Markup Generator</h3>
+          <p>Generate JSON-LD structured data for any page.</p>
+          <span class="open ty-soon-label">Coming soon</span>
+        </a>
+        <a class="tool-card" href="/tools/seo/meta-tag-generator.html">
+          <div class="top-row"><span class="badge">Generator</span></div>
+          <h3>Meta Tag Generator</h3>
+          <p>Generate title, description and essential meta tags.</p>
+          <span class="open">Open tool →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <!-- SHARED FOOTER (rendered by /js/layout.js) -->
+  <div id="site-footer"></div>
+
+  <script>
+  (function () {
+    'use strict';
+    var $ = TK.$;
+    TK.initFaq(document.getElementById('faqList'));
+
+    /* ---- shared visual-generator helpers ---------------------------------- */
+    var G = {};
+    /* Coalesce bursts of input events (slider drags fire 60+ times a second) into one render per frame */
+    G.frame = function (fn) {
+      var queued = false;
+      return function () { if (queued) return; queued = true; requestAnimationFrame(function () { queued = false; fn(); }); };
+    };
+    /* Round for CSS output: max `d` decimals, no trailing zeros, never "-0" */
+    G.n = function (v, d) { var p = Math.pow(10, d == null ? 2 : d), r = Math.round(v * p) / p; return String(r === 0 ? 0 : r); };
+    G.clamp = function (v, a, b) { return Math.min(b, Math.max(a, v)); };
+    G.hex = function (s) {
+      s = String(s == null ? '' : s).trim().toLowerCase();
+      if (s.charAt(0) !== '#') s = '#' + s;
+      if (/^#[0-9a-f]{3}$/.test(s)) s = '#' + s[1] + s[1] + s[2] + s[2] + s[3] + s[3];
+      return /^#[0-9a-f]{6}$/.test(s) ? s : null;
+    };
+    G.rgb = function (hex) { var n = parseInt(hex.slice(1), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; };
+    G.toHex = function (r, g, b) { return '#' + [r, g, b].map(function (x) { return ('0' + G.clamp(Math.round(x), 0, 255).toString(16)).slice(-2); }).join(''); };
+    G.hsl = function (r, g, b) {
+      r /= 255; g /= 255; b /= 255;
+      var mx = Math.max(r, g, b), mn = Math.min(r, g, b), h = 0, s = 0, l = (mx + mn) / 2, d = mx - mn;
+      if (d) {
+        s = l > 0.5 ? d / (2 - mx - mn) : d / (mx + mn);
+        h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4;
+        h *= 60;
+      }
+      return [Math.round(h) % 360, Math.round(s * 100), Math.round(l * 100)];
+    };
+    G.fromHsl = function (h, s, l) {
+      s /= 100; l /= 100;
+      var k = function (n) { return (n + h / 30) % 12; }, a = s * Math.min(l, 1 - l);
+      var f = function (n) { return l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1))); };
+      return G.toHex(f(0) * 255, f(8) * 255, f(4) * 255);
+    };
+    /* A colour in the chosen output format. fmt: 'hex' | 'rgb' | 'hsl'; a: alpha 0–1 */
+    G.color = function (hex, a, fmt) {
+      a = a == null ? 1 : G.clamp(+a, 0, 1);
+      var c = G.rgb(hex), al = G.n(a, 2);
+      if (fmt === 'hsl') { var h = G.hsl(c[0], c[1], c[2]); return a < 1 ? 'hsla(' + h[0] + ', ' + h[1] + '%, ' + h[2] + '%, ' + al + ')' : 'hsl(' + h[0] + ', ' + h[1] + '%, ' + h[2] + '%)'; }
+      if (fmt === 'hex') return a < 1 ? hex + ('0' + Math.round(a * 255).toString(16)).slice(-2) : hex;
+      return a < 1 ? 'rgba(' + c.join(', ') + ', ' + al + ')' : 'rgb(' + c.join(', ') + ')';
+    };
+    G.rand = function (a, b) { return a + Math.floor(Math.random() * (b - a + 1)); };
+
+    /* Number value of a control (falls back to its last valid value while the box is empty/half-typed) */
+    G.v = function (id) {
+      var el = $(id), x = parseFloat(el.value);
+      if (isFinite(x)) return x;
+      x = parseFloat(el.getAttribute('data-last'));
+      return isFinite(x) ? x : parseFloat(el.defaultValue) || 0;
+    };
+    /* Set a slider/number pair (and its range twin) from code */
+    G.set = function (id, val) {
+      var el = $(id); el.value = val; el.setAttribute('data-last', val);
+      var r = el.parentNode.querySelector('input[type="range"][data-for="' + id + '"]'); if (r) r.value = val;
+    };
+    /* Set a colour swatch + its hex box */
+    G.setColor = function (id, hex) {
+      $(id).value = hex;
+      var t = document.querySelector('[data-hex-for="' + id + '"]'); if (t) { t.value = hex; t.classList.remove('bad'); }
+    };
+    /* One delegated listener for every slider pair / colour box in `root` (no per-control listeners to leak) */
+    G.wire = function (root, onChange) {
+      root.addEventListener('input', function (e) {
+        var t = e.target, id = t.getAttribute('data-for'), hx = t.getAttribute('data-hex-for');
+        if (id) { var n = $(id); n.value = t.value; n.setAttribute('data-last', t.value); }
+        else if (t.classList.contains('ty-num')) {
+          var x = parseFloat(t.value), r = root.querySelector('input[type="range"][data-for="' + t.id + '"]');
+          if (isFinite(x)) { t.setAttribute('data-last', x); if (r) r.value = x; }
+        } else if (hx) {
+          var h = G.hex(t.value); t.classList.toggle('bad', !h);
+          if (!h) return;
+          $(hx).value = h;
+        } else if (t.type === 'color') {
+          var tx = root.querySelector('[data-hex-for="' + t.id + '"]'); if (tx) { tx.value = t.value; tx.classList.remove('bad'); }
+        }
+        onChange(e);
+      });
+      root.addEventListener('change', function (e) {
+        var t = e.target;
+        if (t.classList.contains('ty-num')) {        // out of range / empty → clamp or restore on commit
+          var x = parseFloat(t.value), mn = parseFloat(t.min), mx = parseFloat(t.max);
+          if (!isFinite(x)) x = parseFloat(t.getAttribute('data-last')) || parseFloat(t.defaultValue) || 0;
+          if (isFinite(mn)) x = Math.max(mn, x); if (isFinite(mx)) x = Math.min(mx, x);
+          G.set(t.id, x);
+          onChange(e);
+        } else if (t.getAttribute('data-hex-for')) {
+          t.value = $(t.getAttribute('data-hex-for')).value; t.classList.remove('bad');
+        } else if (t.type === 'checkbox' || t.tagName === 'SELECT') onChange(e);
+      });
+    };
+    /* Only touch the code box when the text really changed (keeps selection, avoids repaint) */
+    G.out = function (ta, text) { if (ta.value !== text) { ta.value = text; ta._full = text; } };
+    /* Preview background switch (remembered across generators) */
+    G.stageBg = function () {
+      var stage = $('stage'), key = 'ty-stage-bg';
+      var segc = TK.segmented($('bgSeg'), function (v) { stage.setAttribute('data-bg', v); try { localStorage.setItem(key, v); } catch (e) {} });
+      try { var v = localStorage.getItem(key); if (v && $('bgSeg').querySelector('[data-value="' + v + '"]')) { segc.set(v, true); stage.setAttribute('data-bg', v); } } catch (e) {}
+      return segc;
+    };
+    /* Remember the design between visits (small JSON, validated on load by the caller) */
+    G.store = function (key) {
+      var t = null;
+      return {
+        load: function () { try { return JSON.parse(localStorage.getItem(key) || 'null'); } catch (e) { return null; } },
+        save: function (obj) { clearTimeout(t); t = setTimeout(function () { try { localStorage.setItem(key, JSON.stringify(obj)); } catch (e) {} }, 400); },
+        clear: function () { clearTimeout(t); try { localStorage.removeItem(key); } catch (e) {} }
+      };
+    };
+    G.num = function (x, a, b, d) { x = +x; return isFinite(x) ? G.clamp(x, a, b) : d; };
+    /* ----------------------------------------------------------------------- */
+
+    /* ---- shared JSON-LD generator helpers ------------------------------------------ */
+    var S = {}, form = $('sForm');
+    S.el = function (tag, cls, txt) { var x = document.createElement(tag); if (cls) x.className = cls; if (txt != null) x.textContent = txt; return x; };
+    S.v = function (id) { var e = $(id); return e.type === 'checkbox' ? e.checked : e.value.trim(); };
+    S.lines = function (id) { return S.v(id).split(/\r?\n/).map(function (s) { return s.trim(); }).filter(Boolean); };
+    S.list = function (name) {   // rows → objects (completely empty rows are skipped)
+      var out = [];
+      form.querySelectorAll('.ty-rep[data-list="' + name + '"] > .ty-rep-row').forEach(function (r, i) {
+        var o = { _i: i + 1 }, any = false;
+        r.querySelectorAll('[data-f]').forEach(function (f) { var v = f.type === 'checkbox' ? f.checked : f.value.trim(); o[f.getAttribute('data-f')] = v; if (v && f.type !== 'checkbox' && f.tagName !== 'SELECT') any = true; });
+        if (any) out.push(o);
+      });
+      return out;
+    };
+    /* drop empty strings, empty arrays and objects that only hold "@type"/"@context" — so optional fields simply disappear */
+    S.prune = function (x) {
+      if (Array.isArray(x)) { var a = x.map(S.prune).filter(function (v) { return v !== undefined; }); return a.length ? a : undefined; }
+      if (x && typeof x === 'object') {
+        var o = {}, real = false;
+        Object.keys(x).forEach(function (k) { var v = S.prune(x[k]); if (v !== undefined) { o[k] = v; if (k !== '@type' && k !== '@context') real = true; } });
+        return real ? o : undefined;
+      }
+      return x === '' || x == null || x !== x ? undefined : x;
+    };
+    /* a closing script tag or an HTML comment opener inside a value must not end the script element: escape them (still valid JSON) */
+    S.out = function (d) { return S.prune(d) || { '@context': d['@context'], '@type': d['@type'] }; };   // never an empty {}
+    S.safe = function (s) { return s.replace(/<\//g, '<\\/').replace(/\x3c!--/g, '\\u003c!--'); };
+    S.num = function (s) { if (s === '' || s == null) return ''; var n = Number(String(s).replace(',', '.')); return isFinite(n) ? n : s; };
+    S.isUrl = function (s) { if (!/^https?:\/\/[^\s]+$/i.test(s)) return false; try { var u = new URL(s); return !!u.hostname && u.hostname.indexOf('.') > 0; } catch (e) { return false; } };
+    S.isDate = function (s) { var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s); if (!m) return false; var d = new Date(Date.UTC(+m[1], m[2] - 1, +m[3])); return d.getUTCMonth() === m[2] - 1 && d.getUTCDate() === +m[3]; };
+    S.today = function () { var d = new Date(); return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); };
+    S.gtinOk = function (s) {   // GTIN-8/12/13/14 with a valid check digit
+      if (!/^(\d{8}|\d{12}|\d{13}|\d{14})$/.test(s)) return false;
+      var d = s.split('').map(Number), chk = d.pop(), sum = 0;
+      d.reverse().forEach(function (x, i) { sum += x * (i % 2 ? 1 : 3); });
+      return (10 - sum % 10) % 10 === chk;
+    };
+    /* time-zone offset select (+05:30 …) — defaults to this browser's offset */
+    S.tzOptions = function (sel) {
+      var offs = [-720,-660,-600,-570,-540,-480,-420,-360,-300,-240,-210,-180,-120,-60,0,60,120,180,210,240,270,300,330,345,360,390,420,480,525,540,570,600,630,660,720,765,780,840];
+      var mine = -new Date().getTimezoneOffset();
+      if (offs.indexOf(mine) < 0) offs.push(mine), offs.sort(function (a, b) { return a - b; });
+      offs.forEach(function (m) {
+        var s = (m < 0 ? '-' : '+') + ('0' + Math.floor(Math.abs(m) / 60)).slice(-2) + ':' + ('0' + Math.abs(m) % 60).slice(-2);
+        var o = S.el('option', null, 'UTC' + s); o.value = s; if (m === mine) o.defaultSelected = o.selected = true; sel.appendChild(o);
+      });
+    };
+    S.dt = function (v, tz) { if (!v) return ''; if (/^\d{4}-\d{2}-\d{2}$/.test(v)) return v; return (v.length === 16 ? v + ':00' : v) + (tz || ''); };
+
+    /* ---- repeaters -------------------------------------------------------------------- */
+    S.addRow = function (name, values, focus) {
+      var box = form.querySelector('.ty-rep[data-list="' + name + '"]'), tpl = $('tpl-' + name);
+      var rowEl = tpl.content.firstElementChild.cloneNode(true);
+      if (values) rowEl.querySelectorAll('[data-f]').forEach(function (f) { var k = f.getAttribute('data-f'); if (values[k] != null) { if (f.type === 'checkbox') f.checked = !!values[k]; else f.value = values[k]; } });
+      box.appendChild(rowEl); S.renumber(box);
+      if (focus) { var first = rowEl.querySelector('input, textarea'); if (first) first.focus(); }
+      return rowEl;
+    };
+    S.renumber = function (box) {
+      var rows = box.children, item = box.getAttribute('data-item'), min = +box.getAttribute('data-min') || 0;
+      for (var i = 0; i < rows.length; i++) {
+        rows[i].querySelector('.ty-rep-n').textContent = item + ' ' + (i + 1);
+        rows[i].querySelector('[data-act=up]').disabled = i === 0;
+        rows[i].querySelector('[data-act=down]').disabled = i === rows.length - 1;
+        rows[i].querySelector('[data-act=del]').disabled = rows.length <= min;
+      }
+    };
+    S.setRows = function (name, arr) {
+      var box = form.querySelector('.ty-rep[data-list="' + name + '"]'), min = +box.getAttribute('data-min') || 0;
+      box.replaceChildren();
+      (arr || []).forEach(function (v) { S.addRow(name, v); });
+      while (box.children.length < min) S.addRow(name);
+      S.renumber(box);
+    };
+
+    /* ---- model (for saving / restoring) ------------------------------------------------- */
+    S.model = function () {
+      var m = { f: {}, l: {} };
+      form.querySelectorAll('[data-k]').forEach(function (e) { m.f[e.getAttribute('data-k')] = e.type === 'checkbox' ? e.checked : e.value; });
+      form.querySelectorAll('.ty-rep').forEach(function (box) {
+        m.l[box.getAttribute('data-list')] = Array.prototype.map.call(box.children, function (r) {
+          var o = {}; r.querySelectorAll('[data-f]').forEach(function (f) { o[f.getAttribute('data-f')] = f.type === 'checkbox' ? f.checked : f.value; }); return o;
+        });
+      });
+      return m;
+    };
+    S.apply = function (m) {
+      form.querySelectorAll('[data-k]').forEach(function (e) {
+        var k = e.getAttribute('data-k'), v = m && m.f ? m.f[k] : undefined;
+        if (e.type === 'checkbox') e.checked = v === undefined ? e.defaultChecked : !!v;
+        else if (e.tagName === 'SELECT') { e.value = v === undefined ? (e.querySelector('option[selected]') || e.options[0] || {}).value : v; if (e.selectedIndex < 0) e.selectedIndex = 0; }
+        else e.value = v === undefined ? '' : String(v);
+      });
+      form.querySelectorAll('.ty-rep').forEach(function (box) { var n = box.getAttribute('data-list'); S.setRows(n, m && m.l ? m.l[n] : null); });
+    };
+
+    /* ---- checks ------------------------------------------------------------------------- */
+    S.renderChecks = function (list) {
+      var ul = $('checks'), frag = document.createDocumentFragment(), n = { err: 0, warn: 0 };
+      var order = { err: 0, warn: 1, info: 2, ok: 3 };
+      list.sort(function (a, b) { return order[a[0]] - order[b[0]]; });
+      list.forEach(function (c) {
+        if (n[c[0]] != null) n[c[0]]++;
+        var li = S.el('li', 'ty-chk ' + c[0]);
+        li.appendChild(S.el('span', 'ic', c[0] === 'err' ? '✕' : c[0] === 'warn' ? '!' : c[0] === 'info' ? 'i' : '✓'));
+        li.appendChild(S.el('span', 'tx', c[1]));
+        frag.appendChild(li);
+      });
+      ul.replaceChildren(frag);
+      var cc = $('checkCount');
+      cc.textContent = n.err ? n.err + ' error' + (n.err > 1 ? 's' : '') + (n.warn ? ' · ' + n.warn + ' warning' + (n.warn > 1 ? 's' : '') : '') : n.warn ? n.warn + ' warning' + (n.warn > 1 ? 's' : '') : '✓ Valid';
+      cc.className = 'ty-ccount ' + (n.err ? 'err' : n.warn ? 'warn' : 'ok');
+      return n;
+    };
+    S.status = function (kind, text) { var b = $('sStatus'); b.className = 'ty-sstatus ' + (kind || ''); b.textContent = text || ''; b.hidden = !text; };
+
+    /* ---- wiring --------------------------------------------------------------------------
+       cfg: { key, build() → { data, checks:[[level,text]…] }, preview(data, previewEl), example() → model, filename } */
+    S.init = function (cfg) {
+      var out = $('codeOut'), lastText = '', pend = null, timer = null;
+      /* debounced save, flushed when the tab is hidden or closed so the last keystrokes are never lost */
+      function flush() { clearTimeout(timer); if (pend) { try { localStorage.setItem(cfg.key, JSON.stringify(pend)); } catch (e) {} pend = null; } }
+      var store = {
+        load: function () { try { return JSON.parse(localStorage.getItem(cfg.key) || 'null'); } catch (e) { return null; } },
+        save: function (m) { pend = m; clearTimeout(timer); timer = setTimeout(flush, 400); },
+        clear: function () { clearTimeout(timer); pend = null; try { localStorage.removeItem(cfg.key); } catch (e) {} }
+      };
+      window.addEventListener('pagehide', flush);
+      document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'hidden') flush(); });
+      var fmtSeg = TK.segmented($('fmtSeg'), function (v) { try { localStorage.setItem('ty-jsonld-fmt', v); } catch (e) {} render(); });
+      try { var f0 = localStorage.getItem('ty-jsonld-fmt'); if (f0 === 'json' || f0 === 'script') fmtSeg.set(f0, true); } catch (e) {}
+      function text() {
+        var r = cfg.build(), data = S.out(r.data);
+        var json = S.safe(JSON.stringify(data, null, 2));
+        lastText = fmtSeg.get() === 'json' ? json : '\x3cscript type="application/ld+json">\n' + json + '\n\x3c/script>';
+        return r;
+      }
+      function render() {
+        var r = text();
+        G.out(out, lastText);
+        S.renderChecks(r.checks || []);
+        var pv = $('preview'); pv.replaceChildren(); cfg.preview(S.out(r.data), pv, r);
+        store.save(S.model());
+      }
+      var queue = G.frame(render);
+      form.addEventListener('input', queue);
+      form.addEventListener('change', queue);
+      form.addEventListener('click', function (e) {
+        var b = e.target.closest('[data-act]'); if (!b || !form.contains(b)) return;
+        var act = b.getAttribute('data-act');
+        if (act === 'add') { S.addRow(b.getAttribute('data-list'), null, true); queue(); return; }
+        if (cfg.action && cfg.action(act, b)) { queue(); return; }
+        var rowEl = b.closest('.ty-rep-row'); if (!rowEl) return;
+        var box = rowEl.parentNode;
+        if (act === 'del') { if (box.children.length > (+box.getAttribute('data-min') || 0)) rowEl.remove(); }
+        else if (act === 'up' && rowEl.previousElementSibling) box.insertBefore(rowEl, rowEl.previousElementSibling);
+        else if (act === 'down' && rowEl.nextElementSibling) box.insertBefore(rowEl.nextElementSibling, rowEl);
+        S.renumber(box); b.disabled ? (box.querySelector('[data-act=' + act + ']:not(:disabled)') || b).focus() : b.focus();
+        queue();
+      });
+      $('copyBtn').addEventListener('click', function () { TK.copy(lastText, this); });
+      $('dlBtn').addEventListener('click', function () {
+        var js = fmtSeg.get() === 'json';
+        TK.download(lastText, cfg.filename + (js ? '.json' : '.html'), js ? 'application/ld+json' : 'text/html;charset=utf-8', this);
+      });
+      $('exampleBtn').addEventListener('click', function () { S.apply(cfg.example()); render(); });
+      $('resetBtn').addEventListener('click', function () { store.clear(); S.apply(cfg.initial ? cfg.initial() : null); if (cfg.onReset) cfg.onReset(); render(); });
+      if (cfg.setup) cfg.setup();
+      var saved = store.load();
+      S.apply(saved && saved.f ? saved : (cfg.initial ? cfg.initial() : null));
+      render();
+      return { render: render };
+    };
+
+    /* ---- preview helpers (Google-style result) ------------------------------------------ */
+    S.idOf = function (u, frag) { try { var x = new URL(u); x.hash = ''; return x.href + '#' + frag; } catch (e) { return ''; } };
+    S.host = function (u) { try { return new URL(u).hostname.replace(/^www\./, ''); } catch (e) { return ''; } };
+    S.serp = function (o) {   // o: {url, site, title, desc, crumbs:[…], extra: Node, thumb:bool}
+      var card = S.el('div', 'ty-serp ty-sserp'), site = S.el('div', 'site'), fav = S.el('div', 'fav', (o.site || o.host || '?').charAt(0).toUpperCase());
+      var meta = S.el('div'); meta.appendChild(S.el('div', 'sname', o.site || o.host || 'example.com'));
+      meta.appendChild(S.el('div', 'surl', o.crumbs && o.crumbs.length ? o.crumbs.join(' › ') : (o.url || 'https://example.com')));
+      site.append(fav, meta); card.appendChild(site);
+      var body = S.el('div', 'ty-sbody'), txt = S.el('div', 'ty-stxt');
+      txt.appendChild(S.el('div', 'stitle', o.title || 'Page title'));
+      if (o.extra) txt.appendChild(o.extra);
+      if (o.desc) txt.appendChild(S.el('div', 'sdesc', o.desc));
+      body.appendChild(txt);
+      if (o.thumb) body.appendChild(S.el('div', 'ty-sthumb', '🖼'));
+      card.appendChild(body);
+      return card;
+    };
+    S.stars = function (v, best) { best = +best || 5; var x = Math.round(Math.max(0, Math.min(5, (+v / best) * 5))), s = ''; for (var i = 1; i <= 5; i++) s += x >= i ? '★' : '☆'; return s; };
+    // plain text of an HTML answer for the preview (regex + entity map — user HTML is never parsed into the page)
+    S.strip = function (h) {
+      var ent = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ' };
+      return h.replace(/<(br|\/p|\/li|\/h[1-6]|\/div)\s*\/?>/gi, ' ').replace(/<[^>]*>/g, '')
+        .replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, function (m, e) {
+          if (e.charAt(0) === '#') { var c = e.charAt(1).toLowerCase() === 'x' ? parseInt(e.slice(2), 16) : parseInt(e.slice(1), 10); try { return String.fromCodePoint(c); } catch (x) { return m; } }
+          return ent[e.toLowerCase()] != null ? ent[e.toLowerCase()] : m;
+        }).replace(/\s+/g, ' ').trim();
+    };
+
+    S.status('info', 'Breadcrumb rich results are still supported, but Google shows them on desktop results only (since early 2025).');
+    function titleCase(seg) {
+      try { seg = decodeURIComponent(seg); } catch (e) {}
+      seg = seg.replace(/\.(html?|php|aspx?)$/i, '').replace(/[-_+]+/g, ' ').trim();
+      return seg.replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+    }
+    function fill() {
+      var raw = $('fillUrl').value.trim(), inp = $('fillUrl');
+      if (!S.isUrl(raw)) { inp.setAttribute('aria-invalid', 'true'); inp.focus(); return; }
+      inp.removeAttribute('aria-invalid');
+      var u = new URL(raw), segs = u.pathname.split('/').filter(Boolean), rows = [{ name: 'Home', url: u.origin + '/' }], path = '';
+      var trailing = /\/$/.test(u.pathname);
+      segs.forEach(function (s, i) { path += '/' + s; rows.push({ name: titleCase(s) || s, url: u.origin + path + (i < segs.length - 1 || trailing ? '/' : '') }); });
+      S.setRows('crumbs', rows);
+    }
+    $('fillUrl').addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); fill(); form.dispatchEvent(new Event('input')); } });
+    function build() {
+      var rows = S.list('crumbs'), checks = [], hosts = {}, seenUrl = {};
+      rows.forEach(function (r, i) {
+        var n = 'Item ' + r._i, last = i === rows.length - 1;
+        if (!r.name) checks.push(['err', n + ': name is empty.']);
+        if (!r.url && !last) checks.push(['err', n + ': URL is required (only the last item may leave it out).']);
+        if (r.url && !S.isUrl(r.url)) checks.push(['err', n + ': URL must be absolute (https://…).']);
+        if (r.url && S.isUrl(r.url)) {
+          var h = new URL(r.url).hostname.replace(/^www\./, ''); hosts[h] = 1;
+          if (seenUrl[r.url]) checks.push(['warn', n + ' has the same URL as item ' + seenUrl[r.url] + '.']); else seenUrl[r.url] = r._i;
+        }
+      });
+      if (Object.keys(hosts).length > 1) checks.push(['warn', 'The items point to different domains (' + Object.keys(hosts).join(', ') + '). Breadcrumbs should stay on one site.']);
+      if (rows.length < 2) checks.push(['err', 'A breadcrumb needs at least two items.']);
+      if (rows.length && !rows[rows.length - 1].url) checks.push(['info', 'The last item has no URL — allowed for the current page.']);
+      if (rows.length >= 2 && !checks.some(function (c) { return c[0] === 'err' || c[0] === 'warn'; })) checks.push(['ok', rows.length + ' items, positions 1–' + rows.length + '.']);
+      return { data: { '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+        itemListElement: rows.map(function (r, i) { return { '@type': 'ListItem', position: i + 1, name: r.name, item: r.url }; }) }, checks: checks };
+    }
+    function preview(d, el) {
+      var items = d.itemListElement || [], first = items.filter(function (x) { return x.item; })[0], host = first ? S.host(first.item) : '';
+      var crumbs = [host || 'example.com'].concat(items.slice(1).map(function (x) { return x.name || '…'; }));
+      var last = items[items.length - 1];
+      el.appendChild(S.el('div', 'ty-plabel', 'Desktop search result (illustration)'));
+      el.appendChild(S.serp({ site: host, host: host, crumbs: crumbs, title: (last && last.name) || 'Page title', desc: 'Your page description appears here. The path above replaces the raw URL on desktop.' }));
+    }
+    S.init({
+      key: 'ty-breadcrumb-schema', filename: 'breadcrumb-schema', build: build, preview: preview,
+      action: function (act) { if (act === 'fill') { fill(); return true; } return false; },
+      initial: function () { return { f: {}, l: { crumbs: [{}, {}] } }; },
+      onReset: function () { $('fillUrl').value = ''; },
+      example: function () { return { f: {}, l: { crumbs: [
+        { name: 'Home', url: 'https://example.com/' }, { name: 'Books', url: 'https://example.com/books/' },
+        { name: 'Fiction', url: 'https://example.com/books/fiction/' }, { name: 'The Hobbit', url: 'https://example.com/books/fiction/the-hobbit' } ] } }; }
+    });
+
+  })();
+  </script>
+</body>
+</html>

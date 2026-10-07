@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS Box Shadow Generator – Layered Shadows with Live Preview | Toolyard</title>
+  <meta name="description" content="Free CSS box-shadow generator. Design soft, layered, hard and inset shadows with a live preview, presets and exact pixel controls. Copy CSS or a Tailwind class instantly.">
+  <link rel="canonical" href="https://htmltools.nilankubaruah.workers.dev/tools/css/css-box-shadow-generator.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="CSS Box Shadow Generator – Layered Shadows with Live Preview">
+  <meta property="og:description" content="Free CSS box-shadow generator. Design soft, layered, hard and inset shadows with a live preview, presets and exact pixel controls. Copy CSS or a Tailwind class instantly.">
+  <meta property="og:url" content="https://htmltools.nilankubaruah.workers.dev/tools/css/css-box-shadow-generator.html">
+  <meta name="twitter:card" content="summary">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/tools.css">
+  <script src="/js/tools-data.js"></script>
+  <script src="/js/layout.js"></script>
+  <script src="/js/tool-kit.js"></script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "CSS Box Shadow Generator", "url": "https://htmltools.nilankubaruah.workers.dev/tools/css/css-box-shadow-generator.html", "applicationCategory": "DeveloperApplication", "operatingSystem": "Any (runs in your browser)", "description": "Free CSS box-shadow generator. Design soft, layered, hard and inset shadows with a live preview, presets and exact pixel controls. Copy CSS or a Tailwind class instantly.", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How do I make a soft, realistic shadow?", "acceptedAnswer": {"@type": "Answer", "text": "Use a small Y offset, a large blur and low opacity — for example 0 10px 30px rgba(0, 0, 0, 0.12). Even better, add a second tight layer such as 0 2px 4px rgba(0, 0, 0, 0.08). The Layered preset is a good starting point."}}, {"@type": "Question", "name": "What's the difference between blur and spread?", "acceptedAnswer": {"@type": "Answer", "text": "Blur softens the shadow's edge; spread changes the shadow's size before it's blurred. A spread of 0 keeps the shadow the same size as the box."}}, {"@type": "Question", "name": "How do I add a shadow on one side only?", "acceptedAnswer": {"@type": "Answer", "text": "Offset the shadow towards that side and use a negative spread equal to the blur, e.g. 0 8px 6px -6px rgba(0,0,0,.4) for a bottom-only shadow."}}, {"@type": "Question", "name": "Does box-shadow affect performance?", "acceptedAnswer": {"@type": "Answer", "text": "One or two shadows are cheap. Very large blur values on many elements, or animating box-shadow, can slow scrolling on low-end devices. To animate, put the shadow on a pseudo-element and animate its opacity instead."}}, {"@type": "Question", "name": "Why can't I see my shadow on a dark background?", "acceptedAnswer": {"@type": "Answer", "text": "Dark shadows on dark surfaces have almost no contrast. Use a lighter surface colour for the element, or switch to a coloured glow (try the Glow preset)."}}, {"@type": "Question", "name": "How do I use the Tailwind output?", "acceptedAnswer": {"@type": "Answer", "text": "Paste the class (e.g. shadow-[0_8px_24px_rgba(15,23,42,0.18)]) into your element's class list. Spaces are written as underscores, as Tailwind's arbitrary values require."}}, {"@type": "Question", "name": "Can box-shadow follow rounded corners?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. The shadow follows the element's border-radius automatically — set the corner radius in the preview to match your component."}}, {"@type": "Question", "name": "Is my design saved?", "acceptedAnswer": {"@type": "Answer", "text": "Only in your own browser (local storage), so it's still there next time. Press Reset to clear it."}}]}</script>
+</head>
+<body class="ty-tool" data-tool="css-box-shadow-generator">
+
+  <!-- SHARED HEADER, MOBILE MENU & BREADCRUMBS (rendered by /js/layout.js) -->
+  <div id="site-header"></div>
+  <div id="site-breadcrumbs"></div>
+
+  <main>
+  <!-- TOOL INTRO -->
+  <section class="tool-intro">
+    <div class="wrap tool-intro-content">
+      <span class="eyebrow">🎨 CSS · GENERATOR</span>
+      <h1>CSS Box Shadow Generator</h1>
+      <p class="lead">Create beautiful <code>box-shadow</code> effects visually — stack multiple layers, fine-tune offset, blur, spread and opacity, and copy clean CSS or a Tailwind class.</p>
+      <div class="tool-meta-badge"><span class="dot"></span> Multiple layers · Inset · Presets · CSS & Tailwind output</div>
+    </div>
+  </section>
+
+  <!-- WORKSPACE -->
+  <section class="tool-app-section">
+    <div class="wrap">
+      <div class="ty-pair"><span>Tip: your design is remembered on this device until you press Reset.</span><span>Rounding the corners too? <a href="/tools/css/css-border-radius-generator.html">CSS Border Radius Generator →</a></span></div>
+      <div class="tool-workspace ty-gen-ws">
+        <div class="tool-toolbar">
+          <div class="tool-toolbar-left"><span style="font-size:13px; color:var(--ink-soft);">Drag the sliders or type exact values — the CSS updates live.</span></div>
+          <div class="tool-toolbar-right">
+            <button type="button" class="btn btn-ghost btn-sm" id="randomBtn">Random</button>
+            <button type="button" class="btn btn-danger btn-sm" id="resetBtn">Reset</button>
+          </div>
+        </div>
+
+        <div class="tool-grid ty-gen">
+          <div class="ty-gen-main">
+            <div class="tool-pane ty-gen-ctl">
+              <div class="tool-pane-header"><span class="title">Settings</span></div>
+              <div class="ty-ctl" id="ctl">
+                <div class="ty-group"><h3>Presets</h3><div class="ty-presets" id="presets" aria-label="Shadow presets"></div></div>
+                <div class="ty-group"><h3>Shadow layers</h3>
+                  <div class="ty-chips" id="layerChips" role="group" aria-label="Shadow layers"></div>
+                  <div class="ty-line">
+                    <button type="button" class="btn btn-sm btn-outline" id="addLayer">+ Add layer</button>
+                    <button type="button" class="btn btn-sm btn-ghost" id="dupLayer">Duplicate</button>
+                    <button type="button" class="btn btn-sm btn-ghost" id="removeLayer">Remove</button>
+                  </div>
+                  <span style="font-size:12px; color:var(--ink-soft);">Layer 1 is drawn on top. Stacking 2–4 soft layers gives the most natural depth.</span>
+                </div>
+                <div class="ty-group"><h3 id="layerTitle">Layer 1</h3>
+                  <div class="ty-slider"><label for="lx">Offset X <small>px</small></label><input type="range" class="ty-range" data-for="lx" min="-100" max="100" step="1" value="0" aria-label="Offset X"><input type="number" class="ty-num" id="lx" min="-1000" max="1000" step="1" value="0" inputmode="decimal"></div>
+                  <div class="ty-slider"><label for="ly">Offset Y <small>px</small></label><input type="range" class="ty-range" data-for="ly" min="-100" max="100" step="1" value="8" aria-label="Offset Y"><input type="number" class="ty-num" id="ly" min="-1000" max="1000" step="1" value="8" inputmode="decimal"></div>
+                  <div class="ty-slider"><label for="lblur">Blur <small>px</small></label><input type="range" class="ty-range" data-for="lblur" min="0" max="150" step="1" value="24" aria-label="Blur"><input type="number" class="ty-num" id="lblur" min="0" max="2000" step="1" value="24" inputmode="decimal"></div>
+                  <div class="ty-slider"><label for="lspread">Spread <small>px</small></label><input type="range" class="ty-range" data-for="lspread" min="-50" max="100" step="1" value="0" aria-label="Spread"><input type="number" class="ty-num" id="lspread" min="-1000" max="1000" step="1" value="0" inputmode="decimal"></div>
+                  <div class="ty-line"><span class="lbl">Colour</span><span class="ty-color"><input type="color" class="ty-swatch" id="lcolor" value="#0f172a" aria-label="Colour"><input type="text" class="ty-hex" data-hex-for="lcolor" value="#0f172a" maxlength="7" spellcheck="false" autocomplete="off" aria-label="Colour hex value"></span></div>
+                  <div class="ty-slider"><label for="lalpha">Opacity <small>%</small></label><input type="range" class="ty-range" data-for="lalpha" min="0" max="100" step="1" value="18" aria-label="Opacity"><input type="number" class="ty-num" id="lalpha" min="0" max="100" step="1" value="18" inputmode="decimal"></div>
+                  <label class="ty-opt"><input type="checkbox" id="linset"> Inset (shadow inside the box)</label>
+                </div>
+                <div class="ty-group"><h3>Preview box</h3>
+                  <div class="ty-slider"><label for="bw">Width <small>px</small></label><input type="range" class="ty-range" data-for="bw" min="40" max="400" step="1" value="220" aria-label="Width"><input type="number" class="ty-num" id="bw" min="40" max="400" step="1" value="220" inputmode="decimal"></div>
+                  <div class="ty-slider"><label for="bh">Height <small>px</small></label><input type="range" class="ty-range" data-for="bh" min="40" max="400" step="1" value="140" aria-label="Height"><input type="number" class="ty-num" id="bh" min="40" max="400" step="1" value="140" inputmode="decimal"></div>
+                  <div class="ty-slider"><label for="br">Corner radius <small>px</small></label><input type="range" class="ty-range" data-for="br" min="0" max="200" step="1" value="16" aria-label="Corner radius"><input type="number" class="ty-num" id="br" min="0" max="200" step="1" value="16" inputmode="decimal"></div>
+                  <div class="ty-line"><span class="lbl">Box colour</span><span class="ty-color"><input type="color" class="ty-swatch" id="bcolor" value="#ffffff" aria-label="Box colour"><input type="text" class="ty-hex" data-hex-for="bcolor" value="#ffffff" maxlength="7" spellcheck="false" autocomplete="off" aria-label="Box colour hex value"></span></div>
+                </div>
+                <div class="ty-group"><h3>Output</h3>
+                  <div class="ty-line"><span class="lbl">Format</span><div class="ty-seg" id="outSeg" role="group" aria-label="Output format"><button type="button" data-value="css" class="active">CSS</button><button type="button" data-value="tw">Tailwind</button></div></div>
+                  <div class="ty-line"><span class="lbl">Colours</span><div class="ty-seg" id="fmtSeg" role="group" aria-label="Colour format"><button type="button" data-value="rgb" class="active">RGB</button><button type="button" data-value="hex">HEX</button><button type="button" data-value="hsl">HSL</button></div></div>
+                </div>
+              </div>
+            </div>
+            <div class="tool-pane ty-gen-prev">
+              <div class="tool-pane-header"><span class="title">Live preview</span><div class="actions"><div class="ty-seg" id="bgSeg" role="group" aria-label="Preview background"><button type="button" data-value="light" class="active">Light</button><button type="button" data-value="white">White</button><button type="button" data-value="dark">Dark</button></div></div></div>
+              <div class="ty-stage" id="stage" data-bg="light"><div class="ty-subject" id="subject"></div></div>
+            </div>
+          </div>
+          <div class="tool-pane ty-gen-code">
+            <div class="tool-pane-header"><span class="title">CSS</span>
+              <div class="actions"><button type="button" class="btn btn-sm btn-outline" id="copyBtn">Copy CSS</button></div>
+            </div>
+            <textarea class="tool-textarea ty-mono" id="cssOut" readonly spellcheck="false" aria-label="Generated CSS"></textarea>
+          </div>
+        </div>
+        <p class="ty-alert" id="genStatus" role="status" aria-live="polite" hidden></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. ABOUT -->
+  <section class="ty-sec">
+    <div class="wrap">
+      <span class="eyebrow">◆ ABOUT THIS TOOL</span>
+      <h2>What Is box-shadow?</h2>
+      <p class="sub">The CSS property that adds one or more shadows around (or inside) an element's box.</p>
+      <div class="about-grid">
+        <div><p>Each shadow is described by up to six values: <b>horizontal offset</b>, <b>vertical offset</b>, <b>blur radius</b>, <b>spread</b>, <b>colour</b> and the optional <b>inset</b> keyword. Positive offsets move the shadow right and down; blur softens its edge; spread grows or shrinks it before blurring.</p><p>Shadows follow the element's <code>border-radius</code>, don't take up layout space and don't affect neighbouring elements — so you can add them freely without breaking a layout.</p></div>
+        <div><p>Real-world shadows are rarely a single hard blur. Designers stack <b>several layers</b>: a tight, darker shadow for contact and one or more large, faint shadows for ambient light. That's what the <b>Layered</b> preset does, and why this generator supports multiple layers.</p><p>Use low opacity (5–25%) and a dark, slightly tinted colour rather than pure black. On dark backgrounds, shadows are barely visible — use lighter surfaces or a subtle glow instead.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. REFERENCE -->
+  <section class="ty-sec alt">
+    <div class="wrap">
+      <span class="eyebrow">📐 SYNTAX</span>
+      <h2>box-shadow Values Explained</h2>
+      <p class="sub"><code>box-shadow: [inset] x y blur spread colour;</code> — separate multiple shadows with commas.</p>
+      <div class="rules-list">
+        <div class="rule-card"><div class="rule-icon">X</div><div><h3>Offset X</h3><p>Horizontal distance. Positive moves the shadow right, negative left. <code>0</code> centres it horizontally.</p></div></div>
+        <div class="rule-card"><div class="rule-icon">Y</div><div><h3>Offset Y</h3><p>Vertical distance. Positive moves it down — light from above is the most natural look.</p></div></div>
+        <div class="rule-card"><div class="rule-icon">B</div><div><h3>Blur radius</h3><p>How soft the edge is. <code>0</code> gives a hard edge; larger values spread the shadow wider and fainter. Can't be negative.</p></div></div>
+        <div class="rule-card"><div class="rule-icon">S</div><div><h3>Spread</h3><p>Expands (positive) or shrinks (negative) the shadow before blurring. <code>0 0 0 3px</code> draws a crisp ring like a focus outline.</p></div></div>
+        <div class="rule-card"><div class="rule-icon">C</div><div><h3>Colour</h3><p>Use a translucent colour such as <code>rgba(15, 23, 42, 0.15)</code> so the background shows through.</p></div></div>
+        <div class="rule-card"><div class="rule-icon">I</div><div><h3><code>inset</code></h3><p>Draws the shadow inside the box, making it look pressed in — handy for inputs and toggles.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. HOW TO USE -->
+  <section class="how-sec section-navy">
+    <div class="wrap">
+      <span class="eyebrow">◐ THREE STEPS</span>
+      <h2>How to Use the CSS Box Shadow Generator</h2>
+      <p class="sub">Get your result in under ten seconds.</p>
+      <div class="steps">
+        <div class="step" data-n="01">
+          <div class="num">1</div>
+          <h3 style="color:#fff;">Start from a preset</h3>
+          <p>Pick Soft, Layered, Hard or another preset — or start from the default shadow.</p>
+        </div>
+        <div class="step" data-n="02">
+          <div class="num">2</div>
+          <h3 style="color:#fff;">Adjust the layers</h3>
+          <p>Select a layer and drag the sliders. Add layers for depth, toggle inset, and change the box to match your design.</p>
+        </div>
+        <div class="step" data-n="03">
+          <div class="num">3</div>
+          <h3 style="color:#fff;">Copy the code</h3>
+          <p>Choose CSS or Tailwind output and press <b>Copy CSS</b>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. FEATURES -->
+  <section class="ty-sec">
+    <div class="wrap">
+      <span class="eyebrow">✓ FEATURES</span>
+      <h2>Why Use the Toolyard CSS Box Shadow Generator</h2>
+      <p class="sub">Fast, accurate and private — built for developers.</p>
+      <div class="why-grid">
+        <div><div class="why-ico">🧱</div><h3>Multiple layers</h3><p>Stack up to 10 shadows for realistic, smooth depth — the way modern design systems do it.</p></div>
+        <div><div class="why-ico">🎛</div><h3>Exact values</h3><p>Sliders for speed, number boxes for precision — type values beyond the slider range when you need to.</p></div>
+        <div><div class="why-ico">🌀</div><h3>Tailwind output</h3><p>Get a ready-made <code>shadow-[…]</code> arbitrary-value class for Tailwind CSS.</p></div>
+        <div><div class="why-ico">🧾</div><h3>Minimal CSS</h3><p>Zero values and zero spread are left out so the output stays short and readable.</p></div>
+        <div><div class="why-ico">⚡</div><h3>Lag-free</h3><p>Renders once per frame while you drag, so it stays smooth on phones.</p></div>
+        <div><div class="why-ico">🔒</div><h3>Private</h3><p>Runs entirely in your browser — nothing is uploaded.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. FAQ -->
+  <section class="ty-sec alt">
+    <div class="wrap">
+      <div style="text-align:center; margin-bottom:36px;">
+        <span class="eyebrow">FAQ</span>
+        <h2 style="font-size:28px; margin-top:12px;">Frequently Asked Questions</h2>
+      </div>
+      <div class="faq" id="faqList">
+        <div class="faq-item">
+          <button type="button">How do I make a soft, realistic shadow?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Use a small Y offset, a large blur and low opacity — for example <code>0 10px 30px rgba(0, 0, 0, 0.12)</code>. Even better, add a second tight layer such as <code>0 2px 4px rgba(0, 0, 0, 0.08)</code>. The <b>Layered</b> preset is a good starting point.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">What&#x27;s the difference between blur and spread?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Blur softens the shadow's edge; spread changes the shadow's size before it's blurred. A spread of 0 keeps the shadow the same size as the box.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">How do I add a shadow on one side only?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Offset the shadow towards that side and use a negative spread equal to the blur, e.g. <code>0 8px 6px -6px rgba(0,0,0,.4)</code> for a bottom-only shadow.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Does box-shadow affect performance?<span class="plus">+</span></button>
+          <div class="faq-a"><p>One or two shadows are cheap. Very large blur values on many elements, or animating box-shadow, can slow scrolling on low-end devices. To animate, put the shadow on a pseudo-element and animate its opacity instead.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Why can&#x27;t I see my shadow on a dark background?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Dark shadows on dark surfaces have almost no contrast. Use a lighter surface colour for the element, or switch to a coloured glow (try the Glow preset).</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">How do I use the Tailwind output?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Paste the class (e.g. <code>shadow-[0_8px_24px_rgba(15,23,42,0.18)]</code>) into your element's class list. Spaces are written as underscores, as Tailwind's arbitrary values require.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Can box-shadow follow rounded corners?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Yes. The shadow follows the element's <code>border-radius</code> automatically — set the corner radius in the preview to match your component.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Is my design saved?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Only in your own browser (local storage), so it's still there next time. Press <b>Reset</b> to clear it.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. RELATED -->
+  <section class="related-tools-section">
+    <div class="wrap">
+      <div class="section-head" style="margin-bottom:28px;">
+        <div>
+          <span class="eyebrow" style="margin-bottom:12px; display:inline-flex;">📎 RELATED</span>
+          <h2 style="font-size:26px; margin:12px 0 6px;">Related CSS Tools</h2>
+          <p class="desc" style="margin:0;">More free utilities that pair well with this one.</p>
+        </div>
+        <a class="view-all" href="/categories/css/">All CSS Tools →</a>
+      </div>
+      <div class="grid grid-3">
+        <a class="tool-card" href="/tools/css/css-border-radius-generator.html">
+          <div class="top-row"><span class="badge">Generator</span></div>
+          <h3>CSS Border Radius Generator</h3>
+          <p>Shape corners individually and copy the CSS.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/css/css-gradient-generator.html">
+          <div class="top-row"><span class="badge">Generator</span></div>
+          <h3>CSS Gradient Generator</h3>
+          <p>Build linear, radial and conic gradients visually.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/css/css-glassmorphism-generator.html">
+          <div class="top-row"><span class="badge">Generator</span></div>
+          <h3>CSS Glassmorphism Generator</h3>
+          <p>Generate frosted-glass effects with backdrop-filter.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card is-soon" href="/categories/css/#css-neumorphism-generator">
+          <div class="top-row"><span class="badge">Generator</span><span class="status-pill status-soon">Coming soon</span></div>
+          <h3>CSS Neumorphism Generator</h3>
+          <p>Create soft UI extruded and inset surfaces.</p>
+          <span class="open ty-soon-label">Coming soon</span>
+        </a>
+        <a class="tool-card" href="/tools/css/css-clamp-generator.html">
+          <div class="top-row"><span class="badge">Generator</span></div>
+          <h3>CSS clamp() Generator</h3>
+          <p>Generate fluid typography and spacing with clamp().</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/css/css-minifier.html">
+          <div class="top-row"><span class="badge">Minifier</span></div>
+          <h3>CSS Minifier</h3>
+          <p>Compress stylesheets by stripping comments and whitespace.</p>
+          <span class="open">Open tool →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <!-- SHARED FOOTER (rendered by /js/layout.js) -->
+  <div id="site-footer"></div>
+
+  <script>
+  (function () {
+    'use strict';
+    var $ = TK.$;
+    TK.initFaq(document.getElementById('faqList'));
+
+    /* ---- shared visual-generator helpers ---------------------------------- */
+    var G = {};
+    /* Coalesce bursts of input events (slider drags fire 60+ times a second) into one render per frame */
+    G.frame = function (fn) {
+      var queued = false;
+      return function () { if (queued) return; queued = true; requestAnimationFrame(function () { queued = false; fn(); }); };
+    };
+    /* Round for CSS output: max `d` decimals, no trailing zeros, never "-0" */
+    G.n = function (v, d) { var p = Math.pow(10, d == null ? 2 : d), r = Math.round(v * p) / p; return String(r === 0 ? 0 : r); };
+    G.clamp = function (v, a, b) { return Math.min(b, Math.max(a, v)); };
+    G.hex = function (s) {
+      s = String(s == null ? '' : s).trim().toLowerCase();
+      if (s.charAt(0) !== '#') s = '#' + s;
+      if (/^#[0-9a-f]{3}$/.test(s)) s = '#' + s[1] + s[1] + s[2] + s[2] + s[3] + s[3];
+      return /^#[0-9a-f]{6}$/.test(s) ? s : null;
+    };
+    G.rgb = function (hex) { var n = parseInt(hex.slice(1), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; };
+    G.toHex = function (r, g, b) { return '#' + [r, g, b].map(function (x) { return ('0' + G.clamp(Math.round(x), 0, 255).toString(16)).slice(-2); }).join(''); };
+    G.hsl = function (r, g, b) {
+      r /= 255; g /= 255; b /= 255;
+      var mx = Math.max(r, g, b), mn = Math.min(r, g, b), h = 0, s = 0, l = (mx + mn) / 2, d = mx - mn;
+      if (d) {
+        s = l > 0.5 ? d / (2 - mx - mn) : d / (mx + mn);
+        h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4;
+        h *= 60;
+      }
+      return [Math.round(h) % 360, Math.round(s * 100), Math.round(l * 100)];
+    };
+    G.fromHsl = function (h, s, l) {
+      s /= 100; l /= 100;
+      var k = function (n) { return (n + h / 30) % 12; }, a = s * Math.min(l, 1 - l);
+      var f = function (n) { return l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1))); };
+      return G.toHex(f(0) * 255, f(8) * 255, f(4) * 255);
+    };
+    /* A colour in the chosen output format. fmt: 'hex' | 'rgb' | 'hsl'; a: alpha 0–1 */
+    G.color = function (hex, a, fmt) {
+      a = a == null ? 1 : G.clamp(+a, 0, 1);
+      var c = G.rgb(hex), al = G.n(a, 2);
+      if (fmt === 'hsl') { var h = G.hsl(c[0], c[1], c[2]); return a < 1 ? 'hsla(' + h[0] + ', ' + h[1] + '%, ' + h[2] + '%, ' + al + ')' : 'hsl(' + h[0] + ', ' + h[1] + '%, ' + h[2] + '%)'; }
+      if (fmt === 'hex') return a < 1 ? hex + ('0' + Math.round(a * 255).toString(16)).slice(-2) : hex;
+      return a < 1 ? 'rgba(' + c.join(', ') + ', ' + al + ')' : 'rgb(' + c.join(', ') + ')';
+    };
+    G.rand = function (a, b) { return a + Math.floor(Math.random() * (b - a + 1)); };
+
+    /* Number value of a control (falls back to its last valid value while the box is empty/half-typed) */
+    G.v = function (id) {
+      var el = $(id), x = parseFloat(el.value);
+      if (isFinite(x)) return x;
+      x = parseFloat(el.getAttribute('data-last'));
+      return isFinite(x) ? x : parseFloat(el.defaultValue) || 0;
+    };
+    /* Set a slider/number pair (and its range twin) from code */
+    G.set = function (id, val) {
+      var el = $(id); el.value = val; el.setAttribute('data-last', val);
+      var r = el.parentNode.querySelector('input[type="range"][data-for="' + id + '"]'); if (r) r.value = val;
+    };
+    /* Set a colour swatch + its hex box */
+    G.setColor = function (id, hex) {
+      $(id).value = hex;
+      var t = document.querySelector('[data-hex-for="' + id + '"]'); if (t) { t.value = hex; t.classList.remove('bad'); }
+    };
+    /* One delegated listener for every slider pair / colour box in `root` (no per-control listeners to leak) */
+    G.wire = function (root, onChange) {
+      root.addEventListener('input', function (e) {
+        var t = e.target, id = t.getAttribute('data-for'), hx = t.getAttribute('data-hex-for');
+        if (id) { var n = $(id); n.value = t.value; n.setAttribute('data-last', t.value); }
+        else if (t.classList.contains('ty-num')) {
+          var x = parseFloat(t.value), r = root.querySelector('input[type="range"][data-for="' + t.id + '"]');
+          if (isFinite(x)) { t.setAttribute('data-last', x); if (r) r.value = x; }
+        } else if (hx) {
+          var h = G.hex(t.value); t.classList.toggle('bad', !h);
+          if (!h) return;
+          $(hx).value = h;
+        } else if (t.type === 'color') {
+          var tx = root.querySelector('[data-hex-for="' + t.id + '"]'); if (tx) { tx.value = t.value; tx.classList.remove('bad'); }
+        }
+        onChange(e);
+      });
+      root.addEventListener('change', function (e) {
+        var t = e.target;
+        if (t.classList.contains('ty-num')) {        // out of range / empty → clamp or restore on commit
+          var x = parseFloat(t.value), mn = parseFloat(t.min), mx = parseFloat(t.max);
+          if (!isFinite(x)) x = parseFloat(t.getAttribute('data-last')) || parseFloat(t.defaultValue) || 0;
+          if (isFinite(mn)) x = Math.max(mn, x); if (isFinite(mx)) x = Math.min(mx, x);
+          G.set(t.id, x);
+          onChange(e);
+        } else if (t.getAttribute('data-hex-for')) {
+          t.value = $(t.getAttribute('data-hex-for')).value; t.classList.remove('bad');
+        } else if (t.type === 'checkbox' || t.tagName === 'SELECT') onChange(e);
+      });
+    };
+    /* Only touch the code box when the text really changed (keeps selection, avoids repaint) */
+    G.out = function (ta, text) { if (ta.value !== text) { ta.value = text; ta._full = text; } };
+    /* Preview background switch (remembered across generators) */
+    G.stageBg = function () {
+      var stage = $('stage'), key = 'ty-stage-bg';
+      var segc = TK.segmented($('bgSeg'), function (v) { stage.setAttribute('data-bg', v); try { localStorage.setItem(key, v); } catch (e) {} });
+      try { var v = localStorage.getItem(key); if (v && $('bgSeg').querySelector('[data-value="' + v + '"]')) { segc.set(v, true); stage.setAttribute('data-bg', v); } } catch (e) {}
+      return segc;
+    };
+    /* Remember the design between visits (small JSON, validated on load by the caller) */
+    G.store = function (key) {
+      var t = null;
+      return {
+        load: function () { try { return JSON.parse(localStorage.getItem(key) || 'null'); } catch (e) { return null; } },
+        save: function (obj) { clearTimeout(t); t = setTimeout(function () { try { localStorage.setItem(key, JSON.stringify(obj)); } catch (e) {} }, 400); },
+        clear: function () { clearTimeout(t); try { localStorage.removeItem(key); } catch (e) {} }
+      };
+    };
+    G.num = function (x, a, b, d) { x = +x; return isFinite(x) ? G.clamp(x, a, b) : d; };
+    /* ----------------------------------------------------------------------- */
+
+    var subject = $('subject'), out = $('cssOut'), ctl = $('ctl'), chips = $('layerChips'), statusEl = $('genStatus');
+    var MAX = 10;
+    function L(x, y, blur, spread, c, a, inset) { return { x: x, y: y, blur: blur, spread: spread, c: c, a: a, inset: !!inset }; }
+    var DEF = { layers: [L(0, 8, 24, 0, '#0f172a', 0.18)], box: { w: 220, h: 140, r: 16, c: '#ffffff' }, out: 'css', fmt: 'rgb' };
+    var PRESETS = [
+      ['Subtle', [L(0, 1, 3, 0, '#0f172a', 0.12), L(0, 1, 2, 0, '#0f172a', 0.08)]],
+      ['Soft', [L(0, 10, 30, 0, '#0f172a', 0.12)]],
+      ['Medium', [L(0, 4, 6, -1, '#0f172a', 0.1), L(0, 10, 15, -3, '#0f172a', 0.1)]],
+      ['Large', [L(0, 20, 25, -5, '#0f172a', 0.1), L(0, 8, 10, -6, '#0f172a', 0.1)]],
+      ['Layered', [L(0, 1, 1, 0, '#0f172a', 0.08), L(0, 2, 2, 0, '#0f172a', 0.08), L(0, 4, 4, 0, '#0f172a', 0.08), L(0, 8, 8, 0, '#0f172a', 0.08), L(0, 16, 16, 0, '#0f172a', 0.08)]],
+      ['Hard', [L(6, 6, 0, 0, '#000000', 1)]],
+      ['Inset', [L(0, 2, 6, 0, '#0f172a', 0.18, true)]],
+      ['Glow', [L(0, 0, 24, 4, '#f0a93b', 0.55)]],
+      ['Ring', [L(0, 0, 0, 3, '#3b82f6', 0.5)]]
+    ];
+    var store = G.store('ty-gen:css-box-shadow-generator');
+    function clone(o) { return JSON.parse(JSON.stringify(o)); }
+    function valid(o) {
+      if (!o || typeof o !== 'object' || !Array.isArray(o.layers) || !o.layers.length || o.layers.length > MAX) return null;
+      var b = o.box || {};
+      return {
+        layers: o.layers.map(function (l) { l = l || {}; return L(G.num(l.x, -1000, 1000, 0), G.num(l.y, -1000, 1000, 0), G.num(l.blur, 0, 2000, 0), G.num(l.spread, -1000, 1000, 0), G.hex(l.c) || '#000000', G.num(l.a, 0, 1, 0.2), l.inset); }),
+        box: { w: G.num(b.w, 40, 400, 220), h: G.num(b.h, 40, 400, 140), r: G.num(b.r, 0, 200, 16), c: G.hex(b.c) || '#ffffff' },
+        out: o.out === 'tw' ? 'tw' : 'css', fmt: ['rgb', 'hex', 'hsl'].indexOf(o.fmt) >= 0 ? o.fmt : 'rgb'
+      };
+    }
+    var S = valid(store.load()) || clone(DEF), sel = 0;
+
+    function px(v) { return v === 0 ? '0' : G.n(v, 1) + 'px'; }
+    function layerCss(l, fmt) {
+      var parts = [px(l.x), px(l.y)];
+      if (l.blur || l.spread) parts.push(px(l.blur));
+      if (l.spread) parts.push(px(l.spread));
+      parts.push(G.color(l.c, l.a, fmt));
+      return (l.inset ? 'inset ' : '') + parts.join(' ');
+    }
+    function value(fmt) { return S.layers.map(function (l) { return layerCss(l, fmt); }); }
+    function css() {
+      var v = value(S.fmt);
+      if (S.out === 'tw') return 'shadow-[' + v.join(',').replace(/,\s+/g, ',').replace(/ /g, '_') + ']';
+      return v.length === 1 ? 'box-shadow: ' + v[0] + ';' : 'box-shadow:\n  ' + v.join(',\n  ') + ';';
+    }
+
+    function syncChips() {
+      if (chips.children.length !== S.layers.length) {
+        chips.replaceChildren();
+        S.layers.forEach(function (l, i) {
+          var b = document.createElement('button'); b.type = 'button'; b.className = 'ty-chip'; b.setAttribute('data-i', i);
+          chips.appendChild(b);
+        });
+      }
+      Array.prototype.forEach.call(chips.children, function (b, i) {
+        b.textContent = 'Layer ' + (i + 1) + (S.layers[i].inset ? ' · inset' : '');
+        b.setAttribute('aria-pressed', String(i === sel));
+      });
+      $('removeLayer').disabled = S.layers.length <= 1;
+      $('addLayer').disabled = $('dupLayer').disabled = S.layers.length >= MAX;
+      $('layerTitle').textContent = 'Layer ' + (sel + 1) + ' of ' + S.layers.length;
+    }
+    function syncEditor() {
+      var l = S.layers[sel];
+      G.set('lx', l.x); G.set('ly', l.y); G.set('lblur', l.blur); G.set('lspread', l.spread);
+      G.setColor('lcolor', l.c); G.set('lalpha', Math.round(l.a * 100)); $('linset').checked = l.inset;
+    }
+    function render() {
+      subject.style.width = S.box.w + 'px'; subject.style.height = S.box.h + 'px';
+      subject.style.borderRadius = S.box.r + 'px'; subject.style.background = S.box.c;
+      subject.style.boxShadow = value('rgb').join(', ');
+      syncChips();
+      G.out(out, css());
+      store.save(S);
+    }
+    var schedule = G.frame(render);
+    function applyAll() {
+      sel = Math.min(sel, S.layers.length - 1);
+      G.set('bw', S.box.w); G.set('bh', S.box.h); G.set('br', S.box.r); G.setColor('bcolor', S.box.c);
+      outSeg.set(S.out, true); fmtSeg.set(S.fmt, true);
+      syncChips(); syncEditor(); render();
+    }
+
+    G.wire(ctl, function (e) {
+      var id = e.target.id || e.target.getAttribute('data-for') || e.target.getAttribute('data-hex-for'), l = S.layers[sel];
+      switch (id) {
+        case 'lx': l.x = G.v('lx'); break;
+        case 'ly': l.y = G.v('ly'); break;
+        case 'lblur': l.blur = Math.max(0, G.v('lblur')); break;
+        case 'lspread': l.spread = G.v('lspread'); break;
+        case 'lcolor': l.c = $('lcolor').value; break;
+        case 'lalpha': l.a = G.clamp(G.v('lalpha'), 0, 100) / 100; break;
+        case 'linset': l.inset = $('linset').checked; break;
+        case 'bw': S.box.w = G.clamp(G.v('bw'), 40, 400); break;
+        case 'bh': S.box.h = G.clamp(G.v('bh'), 40, 400); break;
+        case 'br': S.box.r = G.clamp(G.v('br'), 0, 200); break;
+        case 'bcolor': S.box.c = $('bcolor').value; break;
+        default: return;
+      }
+      schedule();
+    });
+    var outSeg = TK.segmented($('outSeg'), function (v) { S.out = v; schedule(); });
+    var fmtSeg = TK.segmented($('fmtSeg'), function (v) { S.fmt = v; schedule(); });
+    G.stageBg();
+
+    chips.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-i]'); if (!b) return;
+      sel = +b.getAttribute('data-i'); syncChips(); syncEditor();
+    });
+    function addLayer(l) {
+      if (S.layers.length >= MAX) { TK.status(statusEl, 'Up to ' + MAX + ' shadow layers.', 'warn'); return; }
+      S.layers.splice(sel + 1, 0, l); sel++; syncChips(); syncEditor(); schedule();
+      chips.children[sel].focus({ preventScroll: true });
+    }
+    $('addLayer').addEventListener('click', function () { addLayer(L(0, 16, 32, -8, '#0f172a', 0.12)); });
+    $('dupLayer').addEventListener('click', function () { addLayer(clone(S.layers[sel])); });
+    $('removeLayer').addEventListener('click', function () {
+      if (S.layers.length <= 1) return;
+      S.layers.splice(sel, 1); sel = Math.min(sel, S.layers.length - 1); TK.status(statusEl, ''); syncChips(); syncEditor(); schedule();
+    });
+
+    PRESETS.forEach(function (p, i) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'ty-preset wide'; b.setAttribute('data-p', i);
+      b.textContent = p[0]; $('presets').appendChild(b);
+    });
+    $('presets').addEventListener('click', function (e) {
+      var b = e.target.closest('[data-p]'); if (!b) return;
+      S.layers = clone(PRESETS[+b.getAttribute('data-p')][1]); sel = 0; TK.status(statusEl, ''); applyAll();
+    });
+    $('randomBtn').addEventListener('click', function () {
+      var n = G.rand(1, 3); S.layers = [];
+      for (var i = 0; i < n; i++) { var k = Math.pow(2, i + G.rand(0, 2)); S.layers.push(L(0, k * 2, k * 4, -G.rand(0, k), '#0f172a', G.rand(6, 20) / 100)); }
+      sel = 0; applyAll();
+    });
+    $('resetBtn').addEventListener('click', function () { store.clear(); S = clone(DEF); sel = 0; TK.status(statusEl, ''); applyAll(); });
+    $('copyBtn').addEventListener('click', function () { TK.copy(out.value, this); });
+    applyAll();
+
+  })();
+  </script>
+</body>
+</html>

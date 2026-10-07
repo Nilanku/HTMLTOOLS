@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS clamp() Generator – Fluid Typography &amp; Spacing Calculator | Toolyard</title>
+  <meta name="description" content="Free CSS clamp() generator for fluid typography and spacing. Enter min and max sizes and viewport widths to get an accurate clamp() with rem + vw, a live preview, breakpoint table and accessibility checks.">
+  <link rel="canonical" href="https://htmltools.nilankubaruah.workers.dev/tools/css/css-clamp-generator.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="CSS clamp() Generator – Fluid Typography &amp; Spacing Calculator">
+  <meta property="og:description" content="Free CSS clamp() generator for fluid typography and spacing. Enter min and max sizes and viewport widths to get an accurate clamp() with rem + vw, a live preview, breakpoint table and accessibility checks.">
+  <meta property="og:url" content="https://htmltools.nilankubaruah.workers.dev/tools/css/css-clamp-generator.html">
+  <meta name="twitter:card" content="summary">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/tools.css">
+  <script src="/js/tools-data.js"></script>
+  <script src="/js/layout.js"></script>
+  <script src="/js/tool-kit.js"></script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "CSS clamp() Generator", "url": "https://htmltools.nilankubaruah.workers.dev/tools/css/css-clamp-generator.html", "applicationCategory": "DeveloperApplication", "operatingSystem": "Any (runs in your browser)", "description": "Free CSS clamp() generator for fluid typography and spacing. Enter min and max sizes and viewport widths to get an accurate clamp() with rem + vw, a live preview, breakpoint table and accessibility checks.", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is fluid typography?", "acceptedAnswer": {"@type": "Answer", "text": "Text that scales smoothly with the screen width instead of jumping between fixed sizes at breakpoints. clamp() makes it possible with one line of CSS and keeps the size within your limits."}}, {"@type": "Question", "name": "Why does the output mix rem and vw?", "acceptedAnswer": {"@type": "Answer", "text": "The vw part makes the value scale with the screen; the rem part keeps it tied to the user's font-size setting so it respects browser preferences and zoom better than pure vw."}}, {"@type": "Question", "name": "Is fluid typography accessible?", "acceptedAnswer": {"@type": "Answer", "text": "It can be. Use rem in the formula (this tool does), and keep the maximum within about 2.5× the minimum so text can still be zoomed to 200% (WCAG 1.4.4). The tool warns you if your range is larger."}}, {"@type": "Question", "name": "What screen widths should I use?", "acceptedAnswer": {"@type": "Answer", "text": "A common choice is from about 360–375px (phones) to 1200–1440px (desktop layouts). Below and above that range, the value stays at your minimum and maximum."}}, {"@type": "Question", "name": "Can the value get smaller on larger screens?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Enter a larger minimum than maximum — the slope becomes negative and the generator orders the clamp() limits correctly."}}, {"@type": "Question", "name": "Why is the preview value different from my real browser?", "acceptedAnswer": {"@type": "Answer", "text": "The preview simulates the viewport width you choose with the slider. On your page, vw uses the real browser width (including the scrollbar in most browsers)."}}, {"@type": "Question", "name": "Do I need a fallback for older browsers?", "acceptedAnswer": {"@type": "Answer", "text": "No — clamp() has been supported by all major browsers since 2020. If you must support something older, put a plain value on the line before."}}]}</script>
+</head>
+<body class="ty-tool" data-tool="css-clamp-generator">
+
+  <!-- SHARED HEADER, MOBILE MENU & BREADCRUMBS (rendered by /js/layout.js) -->
+  <div id="site-header"></div>
+  <div id="site-breadcrumbs"></div>
+
+  <main>
+  <!-- TOOL INTRO -->
+  <section class="tool-intro">
+    <div class="wrap tool-intro-content">
+      <span class="eyebrow">🎨 CSS · GENERATOR</span>
+      <h1>CSS clamp() Generator</h1>
+      <p class="lead">Make font sizes and spacing scale smoothly between two screen widths — no media queries. Enter your minimum and maximum, and get an accurate <code>clamp()</code> with a live preview and breakpoint table.</p>
+      <div class="tool-meta-badge"><span class="dot"></span> rem + vw · Grows or shrinks · Breakpoint table · WCAG zoom check</div>
+    </div>
+  </section>
+
+  <!-- WORKSPACE -->
+  <section class="tool-app-section">
+    <div class="wrap">
+      <div class="ty-pair"><span>Tip: your settings are remembered on this device until you press Reset.</span><span>Need classic breakpoints instead? <a href="/categories/css/#css-media-query-generator">CSS Media Query Generator (coming soon)</a></span></div>
+      <div class="tool-workspace ty-gen-ws">
+        <div class="tool-toolbar">
+          <div class="tool-toolbar-left"><span style="font-size:13px; color:var(--ink-soft);">Enter your sizes and screen widths — the clamp() updates live.</span></div>
+          <div class="tool-toolbar-right">
+            <button type="button" class="btn btn-ghost btn-sm" id="randomBtn">Random</button>
+            <button type="button" class="btn btn-danger btn-sm" id="resetBtn">Reset</button>
+          </div>
+        </div>
+
+        <div class="tool-grid ty-gen">
+          <div class="ty-gen-main">
+            <div class="tool-pane ty-gen-ctl">
+              <div class="tool-pane-header"><span class="title">Settings</span></div>
+              <div class="ty-ctl" id="ctl">
+                <div class="ty-group"><h3>Property</h3>
+                  <div class="ty-line">
+                    <select class="ty-input" id="prop" aria-label="CSS property" style="width:auto; padding:6px 10px; font-size:13px;">
+                      <option value="font-size">font-size</option>
+                      <option value="padding">padding</option>
+                      <option value="margin">margin</option>
+                      <option value="gap">gap</option>
+                      <option value="width">width</option>
+                      <option value="max-width">max-width</option>
+                      <option value="height">height</option>
+                      <option value="border-radius">border-radius</option>
+                      <option value="">(value only)</option>
+                    </select>
+                    <div class="ty-seg" id="unitSeg" role="group" aria-label="Input unit"><button type="button" data-value="px" class="active">px</button><button type="button" data-value="rem">rem</button></div>
+                  </div>
+                </div>
+                <div class="ty-group"><h3>Size range</h3>
+                  <div class="ty-slider"><label for="minV">Minimum <small>px</small></label><input type="range" class="ty-range" data-for="minV" min="0" max="120" step="1" value="16" aria-label="Minimum"><input type="number" class="ty-num" id="minV" min="0" max="5000" step="1" value="16" inputmode="decimal"></div>
+                  <div class="ty-slider"><label for="maxV">Maximum <small>px</small></label><input type="range" class="ty-range" data-for="maxV" min="0" max="120" step="1" value="24" aria-label="Maximum"><input type="number" class="ty-num" id="maxV" min="0" max="5000" step="1" value="24" inputmode="decimal"></div>
+                </div>
+                <div class="ty-group"><h3>Viewport range</h3>
+                  <div class="ty-slider"><label for="minW">From width <small>px</small></label><input type="range" class="ty-range" data-for="minW" min="200" max="2560" step="1" value="375" aria-label="From width"><input type="number" class="ty-num" id="minW" min="1" max="10000" step="1" value="375" inputmode="decimal"></div>
+                  <div class="ty-slider"><label for="maxW">To width <small>px</small></label><input type="range" class="ty-range" data-for="maxW" min="200" max="2560" step="1" value="1280" aria-label="To width"><input type="number" class="ty-num" id="maxW" min="1" max="10000" step="1" value="1280" inputmode="decimal"></div>
+                  <div class="ty-line"><span class="lbl">Root font size</span><input type="number" class="ty-num" id="root" min="1" max="100" step="1" value="16" style="width:78px;" aria-label="Root font size in px"><span style="font-size:12px; color:var(--ink-soft);">px (browser default 16)</span></div>
+                </div>
+                <div class="ty-group"><h3>Output</h3>
+                  <div class="ty-line"><span class="lbl">Unit</span><div class="ty-seg" id="outSeg" role="group" aria-label="Output unit"><button type="button" data-value="rem" class="active">rem (recommended)</button><button type="button" data-value="px">px</button></div></div>
+                  <ul class="ty-tips" id="tips" aria-live="polite"></ul>
+                </div>
+                <div class="ty-group"><h3>Preview width</h3>
+                  <div class="ty-slider"><label for="simW">Viewport <small>px</small></label><input type="range" class="ty-range" data-for="simW" min="320" max="1920" step="1" value="768" aria-label="Viewport"><input type="number" class="ty-num" id="simW" min="320" max="1920" step="1" value="768" inputmode="decimal"></div>
+                  <table class="ty-ptable" aria-label="Computed value at common screen widths"><thead><tr><th>Screen width</th><th>Value</th></tr></thead><tbody id="ptable"></tbody></table>
+                </div>
+              </div>
+            </div>
+            <div class="tool-pane ty-gen-prev">
+              <div class="tool-pane-header"><span class="title">Preview</span><div class="actions"><div class="ty-seg" id="bgSeg" role="group" aria-label="Preview background"><button type="button" data-value="white" class="active">White</button><button type="button" data-value="light">Light</button></div></div></div>
+              <div class="ty-stage" id="stage" data-bg="white"><div class="ty-subject" id="subject" style="width:100%; text-align:center; color:#111827;">
+                <div id="sampleText" style="font-family:'Space Grotesk', sans-serif; font-weight:700; line-height:1.2; overflow-wrap:anywhere;">Fluid type scales smoothly</div>
+                <div id="sampleBar" hidden style="height:28px; background:#f0a93b; border-radius:6px; margin:0 auto; max-width:100%;"></div>
+              </div><span class="ty-stage-note" id="stageNote" aria-hidden="true"></span></div>
+            </div>
+          </div>
+          <div class="tool-pane ty-gen-code">
+            <div class="tool-pane-header"><span class="title">CSS</span>
+              <div class="actions"><button type="button" class="btn btn-sm btn-ghost" id="copyVal">Copy value</button><button type="button" class="btn btn-sm btn-outline" id="copyBtn">Copy CSS</button></div>
+            </div>
+            <textarea class="tool-textarea ty-mono" id="cssOut" readonly spellcheck="false" aria-label="Generated CSS"></textarea>
+          </div>
+        </div>
+        <p class="ty-alert" id="genStatus" role="status" aria-live="polite" hidden></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. ABOUT -->
+  <section class="ty-sec">
+    <div class="wrap">
+      <span class="eyebrow">◆ ABOUT THIS TOOL</span>
+      <h2>What Does CSS clamp() Do?</h2>
+      <p class="sub">It keeps a value between a minimum and a maximum while letting it scale fluidly in between.</p>
+      <div class="about-grid">
+        <div><p><code>clamp(MIN, PREFERRED, MAX)</code> returns the preferred value, but never less than MIN or more than MAX. When the preferred value uses viewport units (<code>vw</code>), the result grows smoothly with the screen width and stops at your limits — <b>fluid typography</b> without a single media query.</p><p>The tricky part is the middle value. To hit exactly your minimum at one screen width and your maximum at another, you need a straight line: a <b>slope</b> (how much the value grows per pixel of screen) and an <b>intercept</b>. This generator does that maths for you and writes it as <code>rem + vw</code>.</p></div>
+        <div><p>Using <b>rem</b> for the fixed part matters for accessibility. Pure <code>vw</code> values ignore the user's browser font-size setting and barely change when zooming. Mixing rem and vw means text still responds to user preferences.</p><p>Even so, fluid text grows less than normal text when zoomed. WCAG 1.4.4 requires text to reach 200% on zoom; a common rule of thumb is to keep the maximum within about <b>2.5×</b> the minimum. The tool warns you when you go beyond that.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. REFERENCE -->
+  <section class="ty-sec alt">
+    <div class="wrap">
+      <span class="eyebrow">📐 THE MATHS</span>
+      <h2>How the clamp() Value Is Calculated</h2>
+      <p class="sub">Every number in the output, explained.</p>
+      <div class="rules-list">
+        <div class="rule-card"><div class="rule-icon">m</div><div><h3>Slope</h3><p><code>(max size − min size) ÷ (max width − min width)</code>. How many pixels the value grows for each pixel of screen width.</p></div></div>
+        <div class="rule-card"><div class="rule-icon">vw</div><div><h3>vw part = slope × 100</h3><p>1vw is 1% of the viewport width, so the slope is multiplied by 100 to express it in vw.</p></div></div>
+        <div class="rule-card"><div class="rule-icon">b</div><div><h3>Intercept</h3><p><code>min size − slope × min width</code>, converted to rem by dividing by the root font size (usually 16px).</p></div></div>
+        <div class="rule-card"><div class="rule-icon">↕</div><div><h3>Order of the limits</h3><p><code>clamp()</code> always takes the smaller limit first. If your value shrinks as the screen grows, the tool swaps them for you.</p></div></div>
+        <div class="rule-card"><div class="rule-icon">16</div><div><h3>Root font size</h3><p>rem values are relative to the <code>html</code> font size. If you changed it (e.g. to 62.5% = 10px), enter that here so the numbers match.</p></div></div>
+        <div class="rule-card"><div class="rule-icon">✓</div><div><h3>Browser support</h3><p><code>clamp()</code> works in every modern browser since 2020 — no fallback needed.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. HOW TO USE -->
+  <section class="how-sec section-navy">
+    <div class="wrap">
+      <span class="eyebrow">◐ THREE STEPS</span>
+      <h2>How to Use the CSS clamp() Generator</h2>
+      <p class="sub">Get your result in under ten seconds.</p>
+      <div class="steps">
+        <div class="step" data-n="01">
+          <div class="num">1</div>
+          <h3 style="color:#fff;">Set the sizes</h3>
+          <p>Choose the property, then the smallest and largest value you want (in px or rem).</p>
+        </div>
+        <div class="step" data-n="02">
+          <div class="num">2</div>
+          <h3 style="color:#fff;">Set the screen widths</h3>
+          <p>Pick the screen width where scaling starts and where it stops. Drag the preview width to check every size in between.</p>
+        </div>
+        <div class="step" data-n="03">
+          <div class="num">3</div>
+          <h3 style="color:#fff;">Copy</h3>
+          <p>Press <b>Copy CSS</b> for the full declaration, or <b>Copy value</b> for just the <code>clamp()</code>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. FEATURES -->
+  <section class="ty-sec">
+    <div class="wrap">
+      <span class="eyebrow">✓ FEATURES</span>
+      <h2>Why Use the Toolyard CSS clamp() Generator</h2>
+      <p class="sub">Fast, accurate and private — built for developers.</p>
+      <div class="why-grid">
+        <div><div class="why-ico">🧮</div><h3>Accurate maths</h3><p>Exact slope and intercept, rounded to 4 decimals — your min and max are hit precisely.</p></div>
+        <div><div class="why-ico">♿</div><h3>Accessibility checks</h3><p>rem-based output and a warning when the size range may fail WCAG zoom requirements.</p></div>
+        <div><div class="why-ico">📱</div><h3>Live viewport preview</h3><p>Simulate any screen width and see the real computed size, plus a table of common breakpoints.</p></div>
+        <div><div class="why-ico">🔁</div><h3>Grows or shrinks</h3><p>Works for values that get smaller on bigger screens too — the limits are ordered for you.</p></div>
+        <div><div class="why-ico">🧱</div><h3>Not just fonts</h3><p>Use it for padding, margin, gap, widths and border-radius.</p></div>
+        <div><div class="why-ico">🔒</div><h3>Private</h3><p>Everything runs in your browser.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. FAQ -->
+  <section class="ty-sec alt">
+    <div class="wrap">
+      <div style="text-align:center; margin-bottom:36px;">
+        <span class="eyebrow">FAQ</span>
+        <h2 style="font-size:28px; margin-top:12px;">Frequently Asked Questions</h2>
+      </div>
+      <div class="faq" id="faqList">
+        <div class="faq-item">
+          <button type="button">What is fluid typography?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Text that scales smoothly with the screen width instead of jumping between fixed sizes at breakpoints. <code>clamp()</code> makes it possible with one line of CSS and keeps the size within your limits.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Why does the output mix rem and vw?<span class="plus">+</span></button>
+          <div class="faq-a"><p>The vw part makes the value scale with the screen; the rem part keeps it tied to the user's font-size setting so it respects browser preferences and zoom better than pure vw.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Is fluid typography accessible?<span class="plus">+</span></button>
+          <div class="faq-a"><p>It can be. Use rem in the formula (this tool does), and keep the maximum within about 2.5× the minimum so text can still be zoomed to 200% (WCAG 1.4.4). The tool warns you if your range is larger.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">What screen widths should I use?<span class="plus">+</span></button>
+          <div class="faq-a"><p>A common choice is from about 360–375px (phones) to 1200–1440px (desktop layouts). Below and above that range, the value stays at your minimum and maximum.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Can the value get smaller on larger screens?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Yes. Enter a larger minimum than maximum — the slope becomes negative and the generator orders the clamp() limits correctly.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Why is the preview value different from my real browser?<span class="plus">+</span></button>
+          <div class="faq-a"><p>The preview simulates the viewport width you choose with the slider. On your page, <code>vw</code> uses the real browser width (including the scrollbar in most browsers).</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Do I need a fallback for older browsers?<span class="plus">+</span></button>
+          <div class="faq-a"><p>No — clamp() has been supported by all major browsers since 2020. If you must support something older, put a plain value on the line before.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. RELATED -->
+  <section class="related-tools-section">
+    <div class="wrap">
+      <div class="section-head" style="margin-bottom:28px;">
+        <div>
+          <span class="eyebrow" style="margin-bottom:12px; display:inline-flex;">📎 RELATED</span>
+          <h2 style="font-size:26px; margin:12px 0 6px;">Related CSS Tools</h2>
+          <p class="desc" style="margin:0;">More free utilities that pair well with this one.</p>
+        </div>
+        <a class="view-all" href="/categories/css/">All CSS Tools →</a>
+      </div>
+      <div class="grid grid-3">
+        <a class="tool-card is-soon" href="/categories/css/#css-media-query-generator">
+          <div class="top-row"><span class="badge">Generator</span><span class="status-pill status-soon">Coming soon</span></div>
+          <h3>CSS Media Query Generator</h3>
+          <p>Build responsive breakpoints and media queries.</p>
+          <span class="open ty-soon-label">Coming soon</span>
+        </a>
+        <a class="tool-card" href="/tools/css/css-gradient-generator.html">
+          <div class="top-row"><span class="badge">Generator</span></div>
+          <h3>CSS Gradient Generator</h3>
+          <p>Build linear, radial and conic gradients visually.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/css/css-box-shadow-generator.html">
+          <div class="top-row"><span class="badge">Generator</span></div>
+          <h3>CSS Box Shadow Generator</h3>
+          <p>Design layered box shadows with live preview.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/css/css-border-radius-generator.html">
+          <div class="top-row"><span class="badge">Generator</span></div>
+          <h3>CSS Border Radius Generator</h3>
+          <p>Shape corners individually and copy the CSS.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/css/css-glassmorphism-generator.html">
+          <div class="top-row"><span class="badge">Generator</span></div>
+          <h3>CSS Glassmorphism Generator</h3>
+          <p>Generate frosted-glass effects with backdrop-filter.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card is-soon" href="/categories/css/#css-grid-generator">
+          <div class="top-row"><span class="badge">Generator</span><span class="status-pill status-soon">Coming soon</span></div>
+          <h3>CSS Grid Generator</h3>
+          <p>Draw grid layouts and export template CSS.</p>
+          <span class="open ty-soon-label">Coming soon</span>
+        </a>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <!-- SHARED FOOTER (rendered by /js/layout.js) -->
+  <div id="site-footer"></div>
+
+  <script>
+  (function () {
+    'use strict';
+    var $ = TK.$;
+    TK.initFaq(document.getElementById('faqList'));
+
+    /* ---- shared visual-generator helpers ---------------------------------- */
+    var G = {};
+    /* Coalesce bursts of input events (slider drags fire 60+ times a second) into one render per frame */
+    G.frame = function (fn) {
+      var queued = false;
+      return function () { if (queued) return; queued = true; requestAnimationFrame(function () { queued = false; fn(); }); };
+    };
+    /* Round for CSS output: max `d` decimals, no trailing zeros, never "-0" */
+    G.n = function (v, d) { var p = Math.pow(10, d == null ? 2 : d), r = Math.round(v * p) / p; return String(r === 0 ? 0 : r); };
+    G.clamp = function (v, a, b) { return Math.min(b, Math.max(a, v)); };
+    G.hex = function (s) {
+      s = String(s == null ? '' : s).trim().toLowerCase();
+      if (s.charAt(0) !== '#') s = '#' + s;
+      if (/^#[0-9a-f]{3}$/.test(s)) s = '#' + s[1] + s[1] + s[2] + s[2] + s[3] + s[3];
+      return /^#[0-9a-f]{6}$/.test(s) ? s : null;
+    };
+    G.rgb = function (hex) { var n = parseInt(hex.slice(1), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; };
+    G.toHex = function (r, g, b) { return '#' + [r, g, b].map(function (x) { return ('0' + G.clamp(Math.round(x), 0, 255).toString(16)).slice(-2); }).join(''); };
+    G.hsl = function (r, g, b) {
+      r /= 255; g /= 255; b /= 255;
+      var mx = Math.max(r, g, b), mn = Math.min(r, g, b), h = 0, s = 0, l = (mx + mn) / 2, d = mx - mn;
+      if (d) {
+        s = l > 0.5 ? d / (2 - mx - mn) : d / (mx + mn);
+        h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4;
+        h *= 60;
+      }
+      return [Math.round(h) % 360, Math.round(s * 100), Math.round(l * 100)];
+    };
+    G.fromHsl = function (h, s, l) {
+      s /= 100; l /= 100;
+      var k = function (n) { return (n + h / 30) % 12; }, a = s * Math.min(l, 1 - l);
+      var f = function (n) { return l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1))); };
+      return G.toHex(f(0) * 255, f(8) * 255, f(4) * 255);
+    };
+    /* A colour in the chosen output format. fmt: 'hex' | 'rgb' | 'hsl'; a: alpha 0–1 */
+    G.color = function (hex, a, fmt) {
+      a = a == null ? 1 : G.clamp(+a, 0, 1);
+      var c = G.rgb(hex), al = G.n(a, 2);
+      if (fmt === 'hsl') { var h = G.hsl(c[0], c[1], c[2]); return a < 1 ? 'hsla(' + h[0] + ', ' + h[1] + '%, ' + h[2] + '%, ' + al + ')' : 'hsl(' + h[0] + ', ' + h[1] + '%, ' + h[2] + '%)'; }
+      if (fmt === 'hex') return a < 1 ? hex + ('0' + Math.round(a * 255).toString(16)).slice(-2) : hex;
+      return a < 1 ? 'rgba(' + c.join(', ') + ', ' + al + ')' : 'rgb(' + c.join(', ') + ')';
+    };
+    G.rand = function (a, b) { return a + Math.floor(Math.random() * (b - a + 1)); };
+
+    /* Number value of a control (falls back to its last valid value while the box is empty/half-typed) */
+    G.v = function (id) {
+      var el = $(id), x = parseFloat(el.value);
+      if (isFinite(x)) return x;
+      x = parseFloat(el.getAttribute('data-last'));
+      return isFinite(x) ? x : parseFloat(el.defaultValue) || 0;
+    };
+    /* Set a slider/number pair (and its range twin) from code */
+    G.set = function (id, val) {
+      var el = $(id); el.value = val; el.setAttribute('data-last', val);
+      var r = el.parentNode.querySelector('input[type="range"][data-for="' + id + '"]'); if (r) r.value = val;
+    };
+    /* Set a colour swatch + its hex box */
+    G.setColor = function (id, hex) {
+      $(id).value = hex;
+      var t = document.querySelector('[data-hex-for="' + id + '"]'); if (t) { t.value = hex; t.classList.remove('bad'); }
+    };
+    /* One delegated listener for every slider pair / colour box in `root` (no per-control listeners to leak) */
+    G.wire = function (root, onChange) {
+      root.addEventListener('input', function (e) {
+        var t = e.target, id = t.getAttribute('data-for'), hx = t.getAttribute('data-hex-for');
+        if (id) { var n = $(id); n.value = t.value; n.setAttribute('data-last', t.value); }
+        else if (t.classList.contains('ty-num')) {
+          var x = parseFloat(t.value), r = root.querySelector('input[type="range"][data-for="' + t.id + '"]');
+          if (isFinite(x)) { t.setAttribute('data-last', x); if (r) r.value = x; }
+        } else if (hx) {
+          var h = G.hex(t.value); t.classList.toggle('bad', !h);
+          if (!h) return;
+          $(hx).value = h;
+        } else if (t.type === 'color') {
+          var tx = root.querySelector('[data-hex-for="' + t.id + '"]'); if (tx) { tx.value = t.value; tx.classList.remove('bad'); }
+        }
+        onChange(e);
+      });
+      root.addEventListener('change', function (e) {
+        var t = e.target;
+        if (t.classList.contains('ty-num')) {        // out of range / empty → clamp or restore on commit
+          var x = parseFloat(t.value), mn = parseFloat(t.min), mx = parseFloat(t.max);
+          if (!isFinite(x)) x = parseFloat(t.getAttribute('data-last')) || parseFloat(t.defaultValue) || 0;
+          if (isFinite(mn)) x = Math.max(mn, x); if (isFinite(mx)) x = Math.min(mx, x);
+          G.set(t.id, x);
+          onChange(e);
+        } else if (t.getAttribute('data-hex-for')) {
+          t.value = $(t.getAttribute('data-hex-for')).value; t.classList.remove('bad');
+        } else if (t.type === 'checkbox' || t.tagName === 'SELECT') onChange(e);
+      });
+    };
+    /* Only touch the code box when the text really changed (keeps selection, avoids repaint) */
+    G.out = function (ta, text) { if (ta.value !== text) { ta.value = text; ta._full = text; } };
+    /* Preview background switch (remembered across generators) */
+    G.stageBg = function () {
+      var stage = $('stage'), key = 'ty-stage-bg';
+      var segc = TK.segmented($('bgSeg'), function (v) { stage.setAttribute('data-bg', v); try { localStorage.setItem(key, v); } catch (e) {} });
+      try { var v = localStorage.getItem(key); if (v && $('bgSeg').querySelector('[data-value="' + v + '"]')) { segc.set(v, true); stage.setAttribute('data-bg', v); } } catch (e) {}
+      return segc;
+    };
+    /* Remember the design between visits (small JSON, validated on load by the caller) */
+    G.store = function (key) {
+      var t = null;
+      return {
+        load: function () { try { return JSON.parse(localStorage.getItem(key) || 'null'); } catch (e) { return null; } },
+        save: function (obj) { clearTimeout(t); t = setTimeout(function () { try { localStorage.setItem(key, JSON.stringify(obj)); } catch (e) {} }, 400); },
+        clear: function () { clearTimeout(t); try { localStorage.removeItem(key); } catch (e) {} }
+      };
+    };
+    G.num = function (x, a, b, d) { x = +x; return isFinite(x) ? G.clamp(x, a, b) : d; };
+    /* ----------------------------------------------------------------------- */
+
+    var out = $('cssOut'), ctl = $('ctl'), note = $('stageNote'), text = $('sampleText'), barEl = $('sampleBar'), tips = $('tips'), tbody = $('ptable');
+    var WIDTHS = [320, 375, 768, 1024, 1280, 1440, 1920];
+    var DEF = { prop: 'font-size', unit: 'px', minV: 16, maxV: 24, minW: 375, maxW: 1280, root: 16, out: 'rem', simW: 768 };
+    var PROPS = ['font-size', 'padding', 'margin', 'gap', 'width', 'max-width', 'height', 'border-radius', ''];
+    var store = G.store('ty-gen:css-clamp-generator');
+    function clone(o) { return JSON.parse(JSON.stringify(o)); }
+    function valid(o) {
+      if (!o || typeof o !== 'object') return null;
+      return { prop: PROPS.indexOf(o.prop) >= 0 ? o.prop : 'font-size', unit: o.unit === 'rem' ? 'rem' : 'px',
+               minV: G.num(o.minV, 0, 5000, 16), maxV: G.num(o.maxV, 0, 5000, 24), minW: G.num(o.minW, 1, 10000, 375), maxW: G.num(o.maxW, 1, 10000, 1280),
+               root: G.num(o.root, 1, 100, 16), out: o.out === 'px' ? 'px' : 'rem', simW: G.num(o.simW, 320, 1920, 768) };
+    }
+    var S = valid(store.load()) || clone(DEF);
+
+    /* all maths in px */
+    function px(v) { return S.unit === 'rem' ? v * S.root : v; }
+    function calc() {
+      var a = px(S.minV), b = px(S.maxV), w1 = S.minW, w2 = S.maxW;
+      if (!(w2 > w1)) return { err: 'The “to” width must be larger than the “from” width.' };
+      var slope = (b - a) / (w2 - w1), icpt = a - slope * w1;
+      return { a: a, b: b, lo: Math.min(a, b), hi: Math.max(a, b), slope: slope, icpt: icpt, at: function (w) { return G.clamp(icpt + slope * w, Math.min(a, b), Math.max(a, b)); } };
+    }
+    function len(pxv) {   // a px length in the output unit
+      if (S.out === 'px') return pxv === 0 ? '0' : G.n(pxv, 2) + 'px';
+      var r = pxv / S.root; return r === 0 ? '0' : G.n(r, 4) + 'rem';
+    }
+    function pref(c) {
+      var vw = c.slope * 100, terms = [];
+      var bU = S.out === 'px' ? G.n(c.icpt, 2) : G.n(c.icpt / S.root, 4), vwS = G.n(vw, 4);
+      if (+bU !== 0) terms.push([+bU, bU.replace('-', '') + (S.out === 'px' ? 'px' : 'rem')]);
+      if (+vwS !== 0) terms.push([+vwS, vwS.replace('-', '') + 'vw']);
+      if (!terms.length) return len(c.lo);
+      // conventional order is "rem + vw"; put the vw term first only when the rem term is negative
+      if (terms.length === 2 && terms[0][0] < 0 && terms[1][0] > 0) terms.reverse();
+      return terms.map(function (t, i) { return i === 0 ? (t[0] < 0 ? '-' : '') + t[1] : (t[0] < 0 ? ' - ' : ' + ') + t[1]; }).join('');
+    }
+    function value(c) { return c.lo === c.hi ? len(c.lo) : 'clamp(' + len(c.lo) + ', ' + pref(c) + ', ' + len(c.hi) + ')'; }
+
+    function tip(cls, msg) { var li = document.createElement('li'); if (cls) li.className = cls; li.textContent = msg; tips.appendChild(li); }
+    function render() {
+      var c = calc();
+      tips.replaceChildren(); tbody.replaceChildren();
+      if (c.err) {
+        tip('warn', c.err);
+        G.out(out, '/* ' + c.err + ' */'); out.setAttribute('data-value', ''); note.textContent = ''; store.save(S); return;
+      }
+      var v = value(c);
+      G.out(out, S.prop ? S.prop + ': ' + v + ';' : v);
+      out.setAttribute('data-value', v);
+      // tips
+      if (c.lo === c.hi) tip('warn', 'Minimum and maximum are equal, so there is nothing to scale — a plain value is output.');
+      else {
+        tip('', 'Scales from ' + G.n(c.a, 2) + 'px at ' + S.minW + 'px wide to ' + G.n(c.b, 2) + 'px at ' + S.maxW + 'px wide (' + G.n(c.slope * 100, 3) + 'px per 100px of screen).');
+        if (S.prop === 'font-size' && c.lo > 0 && c.hi / c.lo > 2.5) tip('warn', 'Max is ' + G.n(c.hi / c.lo, 2) + '× the min. Fluid text this wide may not reach 200% when zoomed (WCAG 1.4.4) — keep it within about 2.5×.');
+        if (S.prop === 'font-size' && c.lo < 12) tip('warn', 'The minimum is below 12px — small text is hard to read on phones.');
+        if (S.out === 'px' && S.prop === 'font-size') tip('warn', 'px output ignores the user\'s font-size setting. rem is recommended for text.');
+      }
+      // breakpoint table (current preview width highlighted)
+      var ws = WIDTHS.slice(); if (ws.indexOf(S.simW) < 0) ws.push(S.simW); ws.sort(function (a, b) { return a - b; });
+      ws.forEach(function (w) {
+        var tr = document.createElement('tr'); if (w === S.simW) tr.className = 'cur';
+        var td1 = document.createElement('td'), td2 = document.createElement('td');
+        td1.textContent = w + 'px' + (w === S.simW ? ' (preview)' : ''); td2.textContent = G.n(c.at(w), 2) + 'px';
+        tr.appendChild(td1); tr.appendChild(td2); tbody.appendChild(tr);
+      });
+      // preview
+      var cur = c.at(S.simW), isText = S.prop === 'font-size' || S.prop === '';
+      text.hidden = !isText; barEl.hidden = isText;
+      if (isText) text.style.fontSize = cur + 'px';
+      else { barEl.style.width = Math.min(cur, 4000) + 'px'; }
+      note.textContent = 'At ' + S.simW + 'px wide: ' + G.n(cur, 2) + 'px' + (isText ? '' : ' (bar length)');
+      store.save(S);
+    }
+    var schedule = G.frame(render);
+    function setUnitRanges() {
+      ['minV', 'maxV'].forEach(function (id) {
+        var r = ctl.querySelector('[data-for="' + id + '"]'), n = $(id);
+        r.max = S.unit === 'rem' ? 8 : 120; r.step = n.step = S.unit === 'rem' ? 0.0625 : 1;
+        n.max = S.unit === 'rem' ? 300 : 5000;
+        n.parentNode.querySelector('small').textContent = S.unit;
+      });
+    }
+    function applyAll() {
+      $('prop').value = S.prop; unitSeg.set(S.unit, true); outSeg.set(S.out, true);
+      setUnitRanges();
+      G.set('minV', S.minV); G.set('maxV', S.maxV); G.set('minW', S.minW); G.set('maxW', S.maxW); G.set('simW', S.simW);
+      $('root').value = S.root; $('root').setAttribute('data-last', S.root);
+      render();
+    }
+
+    G.wire(ctl, function (e) {
+      var id = e.target.id || e.target.getAttribute('data-for');
+      switch (id) {
+        case 'prop': S.prop = $('prop').value; break;
+        case 'minV': S.minV = Math.max(0, G.v('minV')); break;
+        case 'maxV': S.maxV = Math.max(0, G.v('maxV')); break;
+        case 'minW': S.minW = Math.max(1, G.v('minW')); break;
+        case 'maxW': S.maxW = Math.max(1, G.v('maxW')); break;
+        case 'root': S.root = G.clamp(G.v('root'), 1, 100); break;
+        case 'simW': S.simW = G.clamp(Math.round(G.v('simW')), 320, 1920); break;
+        default: return;
+      }
+      schedule();
+    });
+    var unitSeg = TK.segmented($('unitSeg'), function (v) {
+      // convert the entered sizes so the result doesn't change when switching unit
+      if (v !== S.unit) { var f = v === 'rem' ? 1 / S.root : S.root; S.minV = +G.n(S.minV * f, 4); S.maxV = +G.n(S.maxV * f, 4); }
+      S.unit = v; applyAll();
+    });
+    var outSeg = TK.segmented($('outSeg'), function (v) { S.out = v; schedule(); });
+    G.stageBg();
+
+    $('randomBtn').addEventListener('click', function () {
+      var a = G.rand(14, 24), k = 1 + G.rand(2, 15) / 10;
+      S.prop = 'font-size'; S.unit = 'px'; S.minV = a; S.maxV = Math.round(a * k); S.minW = [320, 360, 375][G.rand(0, 2)]; S.maxW = [1200, 1280, 1440][G.rand(0, 2)];
+      applyAll();
+    });
+    $('resetBtn').addEventListener('click', function () { store.clear(); S = clone(DEF); applyAll(); });
+    $('copyBtn').addEventListener('click', function () { TK.copy(out.value, this); });
+    $('copyVal').addEventListener('click', function () { TK.copy(out.getAttribute('data-value') || '', this); });
+    applyAll();
+
+  })();
+  </script>
+</body>
+</html>

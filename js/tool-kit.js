@@ -289,7 +289,8 @@
    * Resolves with the result, rejects on error or timeout (the worker is terminated either way).
    */
   TK.runWorker = function (fn, data, timeoutMs) {
-    return new Promise(function (resolve, reject) {
+    var cancel = null;
+    var p = new Promise(function (resolve, reject) {
       // fn may return a value or a Promise (async work such as crypto.subtle)
       var src = 'self.onmessage=function(e){var fail=function(err){self.postMessage({ok:false,e:String(err&&err.message||err)});};' +
         'try{Promise.resolve((' + fn.toString() + ')(e.data)).then(function(r){self.postMessage({ok:true,r:r});},fail);}catch(err){fail(err);}};';
@@ -300,8 +301,12 @@
       function finish() { if (done) return; done = true; clearTimeout(timer); w.terminate(); }
       w.onmessage = function (e) { finish(); e.data.ok ? resolve(e.data.r) : reject(new Error(e.data.e)); };
       w.onerror = function (e) { finish(); reject(new Error(e.message || 'Worker error')); };
+      cancel = function () { if (!done) { finish(); reject(new Error('cancelled')); } };
       w.postMessage(data);
     });
+    // p.cancel() stops a run whose result is no longer needed (e.g. the user kept typing) — frees the CPU at once
+    p.cancel = function () { if (cancel) cancel(); };
+    return p;
   };
 
   /* ------------------------------------------------------------------ *
