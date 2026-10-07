@@ -255,7 +255,7 @@
     var words = q.split(/\s+/);
     var scored = [];
     D.tools.forEach(function (t) {
-      var name = t.name.toLowerCase(), hay = (name + ' ' + t.desc + ' ' + t.badge + ' ' + catBySlug[t.cat].name + ' ' + t.id.replace(/-/g, ' ')).toLowerCase();
+      var name = t.name.toLowerCase(), hay = (name + ' ' + t.desc + ' ' + t.badge + ' ' + catBySlug[t.cat].name + ' ' + t.id.replace(/-/g, ' ') + ' ' + ((D.aliases || {})[t.id] || []).join(' ')).toLowerCase();
       var score = 0;
       for (var i = 0; i < words.length; i++) {
         if (hay.indexOf(words[i]) < 0) return;
@@ -265,6 +265,8 @@
         else score += 1;
       }
       if (name === q) score += 20;
+      // exact old name of a tool that was merged into this one
+      if (((D.aliases || {})[t.id] || []).some(function (n) { return n.toLowerCase() === q; })) score += 15;
       if (isLive(t)) score += 2.5;
       scored.push({ t: t, s: score });
     });
@@ -502,6 +504,15 @@
     function focusHash() {
       var id = decodeURIComponent(location.hash.slice(1));
       if (!id) return;
+      // Old link to a tool that was merged into another one -> go to the replacement
+      var mv = (D.moved || {})[id];
+      if (mv) {
+        var rep = mv.to && toolById[mv.to];
+        if (rep && isLive(rep)) { location.replace(rep.url); return; }
+        if (rep && rep.cat !== slug) { location.replace(catUrl(rep.cat) + '#' + rep.id); return; }
+        if (rep) { history.replaceState(null, '', '#' + rep.id); id = rep.id; }
+        else { history.replaceState(null, '', location.pathname); return; }
+      }
       var card = document.getElementById(id);
       if (!card || !mount.contains(card)) return;
       mount.querySelectorAll('.is-target').forEach(function (x) { x.classList.remove('is-target'); });
