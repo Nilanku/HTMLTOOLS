@@ -179,7 +179,7 @@
       <div class="faq" id="faqList">
         <div class="faq-item">
           <button type="button">Does it change the order of my lines?<span class="plus">+</span></button>
-          <div class="faq-a"><p>No. Lines stay in their original order; only repeated copies are removed. If you want the result sorted, press <b>Use as input</b> and open the <a href="/tools/text/sort-lines">Sort Lines</a> tool, or sort first and de-duplicate after.</p></div>
+          <div class="faq-a"><p>No. Lines stay in their original order; only repeated copies are removed. If you want the result sorted, press <b>Use as input</b> and open the <a href="/tools/text/sort-lines.html">Sort Lines</a> tool, or sort first and de-duplicate after.</p></div>
         </div>
         <div class="faq-item">
           <button type="button">Which copy of a duplicate is kept?<span class="plus">+</span></button>
@@ -245,11 +245,11 @@
           <p>Compare two texts and highlight differences.</p>
           <span class="open">Open tool →</span>
         </a>
-        <a class="tool-card is-soon" href="/categories/text/#remove-extra-spaces">
-          <div class="top-row"><span class="badge">Cleaner</span><span class="status-pill status-soon">Coming soon</span></div>
+        <a class="tool-card" href="/tools/text/remove-extra-spaces.html">
+          <div class="top-row"><span class="badge">Cleaner</span></div>
           <h3>Remove Extra Spaces</h3>
           <p>Collapse repeated spaces and trim lines.</p>
-          <span class="open ty-soon-label">Coming soon</span>
+          <span class="open">Open tool →</span>
         </a>
         <a class="tool-card" href="/tools/text/case-converter.html">
           <div class="top-row"><span class="badge">Converter</span></div>
@@ -340,7 +340,7 @@
       runBtn.addEventListener('click', function () { auto.trigger(); });
       $('useBtn').addEventListener('click', function () { var v = TK.getOutput(out); if (!v) return; input.value = v; auto.check(); auto.trigger(); });
       $('copyBtn').addEventListener('click', function () { TK.copy(TK.getOutput(out), this); });
-      $('downloadBtn').addEventListener('click', function () { TK.download(TK.getOutput(out), cfg.filename, 'text/plain;charset=utf-8', this); });
+      $('downloadBtn').addEventListener('click', function () { if (cfg.download) cfg.download(this); else TK.download(TK.getOutput(out), cfg.filename, 'text/plain;charset=utf-8', this); });
       $('exampleBtn').addEventListener('click', function () { input.value = cfg.example(); auto.check(); auto.trigger(); });
       $('clearBtn').addEventListener('click', function () { input.value = ''; auto.check(); auto.trigger(); input.focus(); });
       attachTextFile(input, $('fileIn'), function () { auto.check(); auto.trigger(); }, statusEl);

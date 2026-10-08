@@ -251,11 +251,11 @@ Lots of pockets" spellcheck="false"></textarea></div><div class="ty-field"><labe
           <p>Generate BreadcrumbList JSON-LD.</p>
           <span class="open">Open tool →</span>
         </a>
-        <a class="tool-card is-soon" href="/categories/seo/#organization-schema-generator">
-          <div class="top-row"><span class="badge">Generator</span><span class="status-pill status-soon">Coming soon</span></div>
+        <a class="tool-card" href="/tools/seo/organization-schema-generator.html">
+          <div class="top-row"><span class="badge">Generator</span></div>
           <h3>Organization Schema Generator</h3>
           <p>Organization JSON-LD with logo and socials.</p>
-          <span class="open ty-soon-label">Coming soon</span>
+          <span class="open">Open tool →</span>
         </a>
         <a class="tool-card" href="/tools/seo/article-schema-generator.html">
           <div class="top-row"><span class="badge">Generator</span></div>
@@ -263,11 +263,11 @@ Lots of pockets" spellcheck="false"></textarea></div><div class="ty-field"><labe
           <p>Create Article and BlogPosting structured data.</p>
           <span class="open">Open tool →</span>
         </a>
-        <a class="tool-card is-soon" href="/categories/seo/#schema-markup-generator">
-          <div class="top-row"><span class="badge">Generator</span><span class="status-pill status-soon">Coming soon</span></div>
+        <a class="tool-card" href="/tools/seo/schema-markup-generator.html">
+          <div class="top-row"><span class="badge">Generator</span></div>
           <h3>Schema Markup Generator</h3>
           <p>Generate JSON-LD structured data for any page.</p>
-          <span class="open ty-soon-label">Coming soon</span>
+          <span class="open">Open tool →</span>
         </a>
         <a class="tool-card" href="/tools/seo/open-graph-generator.html">
           <div class="top-row"><span class="badge">Generator</span></div>
@@ -530,10 +530,15 @@ Lots of pockets" spellcheck="false"></textarea></div><div class="ty-field"><labe
       };
       window.addEventListener('pagehide', flush);
       document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'hidden') flush(); });
-      var fmtSeg = TK.segmented($('fmtSeg'), function (v) { try { localStorage.setItem('ty-jsonld-fmt', v); } catch (e) {} render(); });
-      try { var f0 = localStorage.getItem('ty-jsonld-fmt'); if (f0 === 'json' || f0 === 'script') fmtSeg.set(f0, true); } catch (e) {}
+      var fmtSeg = { get: function () { return 'script'; } };
+      if (!cfg.output && $('fmtSeg')) {
+        fmtSeg = TK.segmented($('fmtSeg'), function (v) { try { localStorage.setItem('ty-jsonld-fmt', v); } catch (e) {} render(); });
+        try { var f0 = localStorage.getItem('ty-jsonld-fmt'); if (f0 === 'json' || f0 === 'script') fmtSeg.set(f0, true); } catch (e) {}
+      }
       function text() {
-        var r = cfg.build(), data = S.out(r.data);
+        var r = cfg.build();
+        if (cfg.output) { lastText = cfg.output(r); return r; }   // plain-text generators (robots.txt …)
+        var data = S.out(r.data);
         var json = S.safe(JSON.stringify(data, null, 2));
         lastText = fmtSeg.get() === 'json' ? json : '\x3cscript type="application/ld+json">\n' + json + '\n\x3c/script>';
         return r;
@@ -542,7 +547,7 @@ Lots of pockets" spellcheck="false"></textarea></div><div class="ty-field"><labe
         var r = text();
         G.out(out, lastText);
         S.renderChecks(r.checks || []);
-        var pv = $('preview'); pv.replaceChildren(); cfg.preview(S.out(r.data), pv, r);
+        var pv = $('preview'); pv.replaceChildren(); cfg.preview(cfg.output ? r : S.out(r.data), pv, r);
         store.save(S.model());
       }
       var queue = G.frame(render);
@@ -563,6 +568,7 @@ Lots of pockets" spellcheck="false"></textarea></div><div class="ty-field"><labe
       });
       $('copyBtn').addEventListener('click', function () { TK.copy(lastText, this); });
       $('dlBtn').addEventListener('click', function () {
+        if (cfg.download) { var dl = typeof cfg.download === 'function' ? cfg.download() : cfg.download; TK.download(lastText, dl.name, dl.mime, this); return; }
         var js = fmtSeg.get() === 'json';
         TK.download(lastText, cfg.filename + (js ? '.json' : '.html'), js ? 'application/ld+json' : 'text/html;charset=utf-8', this);
       });

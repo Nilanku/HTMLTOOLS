@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Robots.txt Generator – Create robots.txt with AI Crawler Rules &amp; URL Tester | Toolyard</title>
+  <meta name="description" content="Free robots.txt generator. Allow or block search engines and AI crawlers (GPTBot, ClaudeBot, Google-Extended, PerplexityBot…), add sitemaps, and test any URL with Google&#x27;s matching rules before you publish.">
+  <link rel="canonical" href="https://htmltools.nilankubaruah.workers.dev/tools/seo/robots-txt-generator.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Robots.txt Generator – Create robots.txt with AI Crawler Rules &amp; URL Tester">
+  <meta property="og:description" content="Free robots.txt generator. Allow or block search engines and AI crawlers (GPTBot, ClaudeBot, Google-Extended, PerplexityBot…), add sitemaps, and test any URL with Google&#x27;s matching rules before you publish.">
+  <meta property="og:url" content="https://htmltools.nilankubaruah.workers.dev/tools/seo/robots-txt-generator.html">
+  <meta name="twitter:card" content="summary">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/tools.css">
+  <script src="/js/tools-data.js"></script>
+  <script src="/js/layout.js"></script>
+  <script src="/js/tool-kit.js"></script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Robots.txt Generator", "url": "https://htmltools.nilankubaruah.workers.dev/tools/seo/robots-txt-generator.html", "applicationCategory": "DeveloperApplication", "operatingSystem": "Any (runs in your browser)", "description": "Free robots.txt generator. Allow or block search engines and AI crawlers (GPTBot, ClaudeBot, Google-Extended, PerplexityBot…), add sitemaps, and test any URL with Google's matching rules before you publish.", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Where do I put robots.txt?", "acceptedAnswer": {"@type": "Answer", "text": "In the root of your site, so it's reachable at https://yourdomain.com/robots.txt. Each subdomain (blog.example.com) and each protocol needs its own file. Crawlers don't look for it in subfolders."}}, {"@type": "Question", "name": "Does Disallow remove a page from Google?", "acceptedAnswer": {"@type": "Answer", "text": "No. Disallow stops crawling, but the URL can still be indexed if other pages link to it. To remove a page from search results, allow crawling and add a noindex meta tag, or protect it with a password."}}, {"@type": "Question", "name": "How do I block AI crawlers but stay in Google?", "acceptedAnswer": {"@type": "Answer", "text": "Choose “Block AI training” or “Block all AI crawlers”. Neither touches Googlebot, so Google Search is unaffected. Blocking Google-Extended stops Gemini training use but doesn't change your Google Search visibility."}}, {"@type": "Question", "name": "Should I block CSS and JavaScript files?", "acceptedAnswer": {"@type": "Answer", "text": "No. Google needs CSS and JavaScript to render pages and judge mobile-friendliness. Blocking them can hurt how your pages are understood and ranked."}}, {"@type": "Question", "name": "What does an empty Disallow mean?", "acceptedAnswer": {"@type": "Answer", "text": "“Disallow:” with no path means nothing is blocked — the crawler may fetch everything. “Disallow: /” blocks the entire site."}}, {"@type": "Question", "name": "Does Google support Crawl-delay?", "acceptedAnswer": {"@type": "Answer", "text": "No, Google ignores it. Bing and Yandex respect it. To slow Googlebot down in an emergency, return 503 or 429 status codes temporarily."}}, {"@type": "Question", "name": "Do all bots obey robots.txt?", "acceptedAnswer": {"@type": "Answer", "text": "Reputable search engines and the major AI companies say they do. Malicious bots ignore it — robots.txt is a request, not security. Use server rules or a firewall to actually block access."}}]}</script>
+</head>
+<body class="ty-tool" data-tool="robots-txt-generator">
+
+  <!-- SHARED HEADER, MOBILE MENU & BREADCRUMBS (rendered by /js/layout.js) -->
+  <div id="site-header"></div>
+  <div id="site-breadcrumbs"></div>
+
+  <main>
+  <!-- TOOL INTRO -->
+  <section class="tool-intro">
+    <div class="wrap tool-intro-content">
+      <span class="eyebrow">🔍 SEO · CRAWLING</span>
+      <h1>Robots.txt Generator</h1>
+      <p class="lead">Create a correct <code>robots.txt</code> in seconds: block private folders, decide what AI crawlers may do, add your sitemap — and <strong>test any URL</strong> against the file with Google's matching rules before it goes live. Dangerous rules are flagged loudly.</p>
+      <div class="tool-meta-badge"><span class="dot"></span> RFC 9309 · AI crawler policies · Built-in URL tester</div>
+    </div>
+  </section>
+
+  <!-- WORKSPACE -->
+  <section class="tool-app-section">
+    <div class="wrap">
+      <div class="ty-pair"><span>Upload the file as <code>robots.txt</code> to the <strong>root</strong> of your site: <code>https://example.com/robots.txt</code>.</span><span>Need the sitemap file itself? <a href="/tools/seo/xml-sitemap-generator.html">XML Sitemap Generator →</a></span></div>
+      <div class="tool-workspace ty-gen-ws">
+        <div class="tool-toolbar">
+          <div class="tool-toolbar-left"><span style="font-size:13px; color:var(--ink-soft);">Fill in the form — the robots.txt and the checks update as you type. </span></div>
+          <div class="tool-toolbar-right">
+            <button type="button" class="btn btn-ghost btn-sm" id="exampleBtn">Load Example</button>
+            <button type="button" class="btn btn-danger btn-sm" id="resetBtn">Reset</button>
+          </div>
+        </div>
+        <div class="tool-grid ty-gen ty-schema">
+          <div class="ty-gen-main">
+            <div class="tool-pane ty-gen-ctl">
+              <div class="tool-pane-header"><span class="title">Details</span><span class="badge">Saved in this browser</span></div>
+              <form class="ty-ctl ty-sform" id="sForm" autocomplete="off" onsubmit="return false">
+<datalist id="uaList"><option value="Googlebot"><option value="Googlebot-Image"><option value="Googlebot-News"><option value="Googlebot-Video"><option value="Storebot-Google"><option value="Google-Extended"><option value="AdsBot-Google"><option value="Bingbot"><option value="Slurp"><option value="DuckDuckBot"><option value="Applebot"><option value="Applebot-Extended"><option value="YandexBot"><option value="Baiduspider"><option value="GPTBot"><option value="OAI-SearchBot"><option value="ChatGPT-User"><option value="ClaudeBot"><option value="Claude-SearchBot"><option value="Claude-User"><option value="PerplexityBot"><option value="Perplexity-User"><option value="CCBot"><option value="Meta-ExternalAgent"><option value="Bytespider"><option value="Amazonbot"><option value="facebookexternalhit"><option value="Twitterbot"><option value="LinkedInBot"><option value="AhrefsBot"><option value="SemrushBot"></datalist>
+<details class="ty-sgroup" open><summary>All crawlers (User-agent: *)</summary><div class="ty-sgbody">
+<div class="ty-field"><label for="base"><span>Default</span></label><select id="base" data-k="base" class="ty-input tool-select"><option value="allow" selected>Allow crawling of the whole site</option><option value="block">Block the whole site (staging / private sites only)</option></select></div>
+<div class="ty-row"><div class="ty-field"><label for="disallow"><span>Disallow paths (one per line)</span></label><textarea id="disallow" data-k="disallow" class="ty-input" rows="4" placeholder="/admin/
+/cart
+/*?sessionid=" spellcheck="false"></textarea></div><div class="ty-field"><label for="allow"><span>Allow paths (one per line)</span></label><textarea id="allow" data-k="allow" class="ty-input" rows="4" placeholder="/admin/public/" spellcheck="false"></textarea><div class="hint">Exceptions inside blocked folders.</div></div></div>
+<div class="ty-field"><label for="delay"><span>Crawl-delay (seconds, optional)</span></label><input type="text" id="delay" data-k="delay" class="ty-input" placeholder="e.g. 5" autocomplete="off" spellcheck="false" inputmode="decimal"><div class="hint">Ignored by Google. Bing and Yandex respect it.</div></div>
+</div></details>
+<details class="ty-sgroup" open><summary>AI crawlers</summary><div class="ty-sgbody">
+<div class="ty-field"><label for="ai"><span>Policy</span></label><select id="ai" data-k="ai" class="ty-input tool-select"><option value="none" selected>No special rules (AI crawlers follow the rules above)</option><option value="training">Block AI training, allow AI search &amp; answers</option><option value="all">Block all AI crawlers</option></select><div class="hint"><span id="aiHint"></span></div></div>
+</div></details>
+<details class="ty-sgroup"><summary>Rules for specific crawlers</summary><div class="ty-sgbody">
+<div class="ty-rep" data-list="groups" data-min="0" data-item="Crawler group"></div>
+<button type="button" class="btn btn-outline btn-sm ty-rep-add" data-act="add" data-list="groups">+ Add crawler group</button>
+<template id="tpl-groups"><div class="ty-rep-row">
+  <div class="ty-rep-head"><span class="ty-rep-n">Crawler group</span><span class="ty-rep-acts">
+    <button type="button" class="ty-ibtn" data-act="up" aria-label="Move up" title="Move up">↑</button><button type="button" class="ty-ibtn" data-act="down" aria-label="Move down" title="Move down">↓</button><button type="button" class="ty-ibtn del" data-act="del" aria-label="Remove" title="Remove">✕</button>
+  </span></div>
+  <div class="ty-rep-body"><label class="ty-field"><span class="lbl">User-agent(s) <span class="ty-need req">Required</span></span><input type="text" data-f="ua" class="ty-input" placeholder="e.g. Bingbot  (comma-separate several)" autocomplete="off" spellcheck="false" list="uaList"></label><div class="ty-row"><label class="ty-field"><span class="lbl">Disallow (one per line)</span><textarea data-f="dis" class="ty-input" rows="3" placeholder="/private/" spellcheck="false"></textarea></label><label class="ty-field"><span class="lbl">Allow (one per line)</span><textarea data-f="al" class="ty-input" rows="3" placeholder="" spellcheck="false"></textarea></label></div><label class="ty-field"><span class="lbl">Crawl-delay (optional)</span><input type="text" data-f="cd" class="ty-input" placeholder="" autocomplete="off" spellcheck="false" inputmode="decimal"></label></div>
+</div></template>
+</div></details>
+<details class="ty-sgroup" open><summary>Sitemaps</summary><div class="ty-sgbody">
+<div class="ty-field"><label for="sitemaps"><span>Sitemap URLs (one per line) <span class="ty-need rec">Recommended</span></span></label><textarea id="sitemaps" data-k="sitemaps" class="ty-input" rows="2" placeholder="https://example.com/sitemap.xml" spellcheck="false"></textarea><div class="hint">Must be full URLs. They apply to all crawlers.</div></div>
+</div></details>
+<details class="ty-sgroup" open><summary>Test a URL</summary><div class="ty-sgbody">
+<div class="ty-row"><div class="ty-field"><label for="tPath"><span>URL or path</span></label><input type="text" id="tPath" data-k="tPath" class="ty-input" placeholder="/admin/settings" autocomplete="off" spellcheck="false" ><div class="hint">Checked against the generated file, using Google's matching rules.</div></div><div class="ty-field"><label for="tUa"><span>Crawler</span></label><select id="tUa" data-k="tUa" class="ty-input tool-select"><option value="Googlebot" selected>Googlebot (Google Search)</option><option value="Googlebot-Image">Googlebot-Image</option><option value="Bingbot">Bingbot</option><option value="Applebot">Applebot</option><option value="DuckDuckBot">DuckDuckBot</option><option value="YandexBot">YandexBot</option><option value="GPTBot">GPTBot (OpenAI training)</option><option value="OAI-SearchBot">OAI-SearchBot (ChatGPT search)</option><option value="ClaudeBot">ClaudeBot (Anthropic training)</option><option value="Claude-SearchBot">Claude-SearchBot</option><option value="PerplexityBot">PerplexityBot</option><option value="Google-Extended">Google-Extended (Gemini training)</option><option value="CCBot">CCBot (Common Crawl)</option></select></div></div>
+</div></details>
+              </form>
+            </div>
+            <div class="tool-pane ty-gen-prev">
+              <div class="tool-pane-header"><span class="title">URL test &amp; checks</span><span class="ty-ccount" id="checkCount" aria-live="polite"></span></div>
+              <div class="ty-sprev" id="sPrev">
+                <div class="ty-sstatus" id="sStatus" hidden></div>
+                <div id="preview"></div>
+                <ul class="ty-slist" id="checks" aria-label="Checks"></ul>
+              </div>
+            </div>
+          </div>
+          <div class="tool-pane ty-gen-code">
+            <div class="tool-pane-header"><span class="title">robots.txt</span>
+              <div class="actions">
+                
+                <button type="button" class="btn btn-sm btn-outline" id="copyBtn">Copy</button>
+                <button type="button" class="btn btn-sm btn-ghost" id="dlBtn">Download</button>
+              </div>
+            </div>
+            <textarea class="tool-textarea ty-mono" id="codeOut" readonly spellcheck="false" aria-label="Generated robots.txt"></textarea>
+            <div class="ty-svalid">After uploading: <a href="https://search.google.com/search-console/settings/robots-txt" target="_blank" rel="noopener">Search Console robots.txt report ↗</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. ABOUT -->
+  <section class="ty-sec">
+    <div class="wrap">
+      <span class="eyebrow">◆ ABOUT THIS TOOL</span>
+      <h2>What Is robots.txt?</h2>
+      <p class="sub">A plain-text file that tells crawlers which parts of your site they may fetch.</p>
+      <div class="about-grid">
+        <div><p><code>robots.txt</code> lives at the root of a site (<code>https://example.com/robots.txt</code>) and follows the Robots Exclusion Protocol (RFC 9309). It contains groups of rules: each group names one or more crawlers with <code>User-agent</code> and lists paths they may not (<code>Disallow</code>) or may (<code>Allow</code>) crawl. It can also point crawlers to your <code>Sitemap</code>.</p><p><strong>Important:</strong> robots.txt controls <em>crawling</em>, not <em>indexing</em>. A blocked page can still appear in Google if other sites link to it — to keep a page out of search results, use a <code>noindex</code> meta tag and let Google crawl it. And robots.txt is public and voluntary: never use it to hide private content.</p></div>
+        <div><p><strong>AI crawlers in 2026.</strong> Most AI companies now run separate crawlers for model <em>training</em> (GPTBot, ClaudeBot, Google-Extended, Applebot-Extended, CCBot…) and for <em>search and answers</em> (OAI-SearchBot, Claude-SearchBot, PerplexityBot…). The “Block AI training” policy blocks the first kind while keeping your site visible in AI search and answer engines. Blocking Google-Extended doesn't affect Google Search.</p><p>A crawler obeys only the most specific group that matches it. If you add a group for Googlebot, Googlebot ignores the <code>User-agent: *</code> rules entirely — the generator warns you when that drops a rule you probably wanted.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. REFERENCE -->
+  <section class="ty-sec alt">
+    <div class="wrap">
+      <span class="eyebrow">✓ SYNTAX</span>
+      <h2>How Google Reads robots.txt</h2>
+      <p class="sub">The matching rules the built-in tester uses.</p>
+      <div class="rules-list">
+        <div class="rule-card"><div class="rule-icon">UA</div><div><h3>One group per crawler</h3><p>The group with the most specific matching <code>User-agent</code> wins; groups aren't combined. <code>*</code> is used only if no other group matches. User-agent names are case-insensitive.</p></div></div>
+        <div class="rule-card"><div class="rule-icon">/</div><div><h3>Longest rule wins</h3><p>When several rules match a URL, the longest path wins. If an Allow and a Disallow are equally long, Allow wins. Paths are case-sensitive and start with <code>/</code>.</p></div></div>
+        <div class="rule-card"><div class="rule-icon">*$</div><div><h3>Wildcards</h3><p><code>*</code> matches any sequence of characters; <code>$</code> marks the end of the URL. <code>/*.pdf$</code> blocks every URL ending in .pdf.</p></div></div>
+        <div class="rule-card"><div class="rule-icon">!</div><div><h3>Not supported by Google</h3><p><code>Crawl-delay</code>, <code>Noindex</code> and <code>Host</code> are ignored by Google. Files over 500 KiB are cut off.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. HOW TO USE -->
+  <section class="how-sec section-navy">
+    <div class="wrap">
+      <span class="eyebrow">◐ THREE STEPS</span>
+      <h2>How to Use the Robots.txt Generator</h2>
+      <p class="sub">Get your result in under ten seconds.</p>
+      <div class="steps">
+        <div class="step" data-n="01">
+          <div class="num">1</div>
+          <h3 style="color:#fff;">Set the defaults</h3>
+          <p>Allow the whole site and list folders to block, like /admin/ or /cart.</p>
+        </div>
+        <div class="step" data-n="02">
+          <div class="num">2</div>
+          <h3 style="color:#fff;">Choose an AI policy</h3>
+          <p>Keep AI crawlers on the default rules, block only training, or block them all. Add groups for other crawlers if needed.</p>
+        </div>
+        <div class="step" data-n="03">
+          <div class="num">3</div>
+          <h3 style="color:#fff;">Test and upload</h3>
+          <p>Test important URLs in the tester, then upload the file as robots.txt to your site's root.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. FEATURES -->
+  <section class="ty-sec">
+    <div class="wrap">
+      <span class="eyebrow">✓ FEATURES</span>
+      <h2>Why Use the Toolyard Robots.txt Generator</h2>
+      <p class="sub">Fast, accurate and private — built for developers.</p>
+      <div class="why-grid">
+        <div><div class="why-ico">🧪</div><h3>URL tester</h3><p>Check any URL against the generated file for Googlebot, Bingbot, GPTBot and more — with the rule that decided it.</p></div>
+        <div><div class="why-ico">🤖</div><h3>AI crawler policies</h3><p>Up-to-date lists of AI training and AI search crawlers, grouped correctly.</p></div>
+        <div><div class="why-ico">⚠</div><h3>Danger warnings</h3><p>Flags rules that block your whole site, CSS/JS or search engines.</p></div>
+        <div><div class="why-ico">✓</div><h3>Valid syntax</h3><p>Paths, wildcards, sitemaps and crawl-delay values are checked.</p></div>
+        <div><div class="why-ico">⬇</div><h3>Ready to upload</h3><p>Download a plain robots.txt file with the right line endings.</p></div>
+        <div><div class="why-ico">🔒</div><h3>Private</h3><p>Runs entirely in your browser.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. FAQ -->
+  <section class="ty-sec alt">
+    <div class="wrap">
+      <div style="text-align:center; margin-bottom:36px;">
+        <span class="eyebrow">FAQ</span>
+        <h2 style="font-size:28px; margin-top:12px;">Frequently Asked Questions</h2>
+      </div>
+      <div class="faq" id="faqList">
+        <div class="faq-item">
+          <button type="button">Where do I put robots.txt?<span class="plus">+</span></button>
+          <div class="faq-a"><p>In the root of your site, so it's reachable at https://yourdomain.com/robots.txt. Each subdomain (blog.example.com) and each protocol needs its own file. Crawlers don't look for it in subfolders.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Does Disallow remove a page from Google?<span class="plus">+</span></button>
+          <div class="faq-a"><p>No. Disallow stops crawling, but the URL can still be indexed if other pages link to it. To remove a page from search results, allow crawling and add a noindex meta tag, or protect it with a password.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">How do I block AI crawlers but stay in Google?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Choose “Block AI training” or “Block all AI crawlers”. Neither touches Googlebot, so Google Search is unaffected. Blocking Google-Extended stops Gemini training use but doesn't change your Google Search visibility.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Should I block CSS and JavaScript files?<span class="plus">+</span></button>
+          <div class="faq-a"><p>No. Google needs CSS and JavaScript to render pages and judge mobile-friendliness. Blocking them can hurt how your pages are understood and ranked.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">What does an empty Disallow mean?<span class="plus">+</span></button>
+          <div class="faq-a"><p>“Disallow:” with no path means nothing is blocked — the crawler may fetch everything. “Disallow: /” blocks the entire site.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Does Google support Crawl-delay?<span class="plus">+</span></button>
+          <div class="faq-a"><p>No, Google ignores it. Bing and Yandex respect it. To slow Googlebot down in an emergency, return 503 or 429 status codes temporarily.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Do all bots obey robots.txt?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Reputable search engines and the major AI companies say they do. Malicious bots ignore it — robots.txt is a request, not security. Use server rules or a firewall to actually block access.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. RELATED -->
+  <section class="related-tools-section">
+    <div class="wrap">
+      <div class="section-head" style="margin-bottom:28px;">
+        <div>
+          <span class="eyebrow" style="margin-bottom:12px; display:inline-flex;">📎 RELATED</span>
+          <h2 style="font-size:26px; margin:12px 0 6px;">Related SEO Tools</h2>
+          <p class="desc" style="margin:0;">More free utilities that pair well with this one.</p>
+        </div>
+        <a class="view-all" href="/categories/seo/">All SEO Tools →</a>
+      </div>
+      <div class="grid grid-3">
+        <a class="tool-card" href="/tools/seo/xml-sitemap-generator.html">
+          <div class="top-row"><span class="badge">Generator</span></div>
+          <h3>XML Sitemap Generator</h3>
+          <p>Generate an XML sitemap from a list of URLs.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/seo/meta-tag-generator.html">
+          <div class="top-row"><span class="badge">Generator</span></div>
+          <h3>Meta Tag Generator</h3>
+          <p>Generate title, description and essential meta tags.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/seo/hreflang-generator.html">
+          <div class="top-row"><span class="badge">Generator</span></div>
+          <h3>Hreflang Generator</h3>
+          <p>Generate hreflang tags for multilingual sites.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/seo/schema-markup-generator.html">
+          <div class="top-row"><span class="badge">Generator</span></div>
+          <h3>Schema Markup Generator</h3>
+          <p>Generate JSON-LD structured data for any page.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/seo/open-graph-generator.html">
+          <div class="top-row"><span class="badge">Generator</span></div>
+          <h3>Open Graph Generator</h3>
+          <p>Create og: tags for rich link previews.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/seo/keyword-density-checker.html">
+          <div class="top-row"><span class="badge">Analyzer</span></div>
+          <h3>Keyword Density Checker</h3>
+          <p>Measure keyword frequency and density.</p>
+          <span class="open">Open tool →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <!-- SHARED FOOTER (rendered by /js/layout.js) -->
+  <div id="site-footer"></div>
+
+  <script>
+  (function () {
+    'use strict';
+    var $ = TK.$;
+    TK.initFaq(document.getElementById('faqList'));
+
+    /* ---- shared visual-generator helpers ---------------------------------- */
+    var G = {};
+    /* Coalesce bursts of input events (slider drags fire 60+ times a second) into one render per frame */
+    G.frame = function (fn) {
+      var queued = false;
+      return function () { if (queued) return; queued = true; requestAnimationFrame(function () { queued = false; fn(); }); };
+    };
+    /* Round for CSS output: max `d` decimals, no trailing zeros, never "-0" */
+    G.n = function (v, d) { var p = Math.pow(10, d == null ? 2 : d), r = Math.round(v * p) / p; return String(r === 0 ? 0 : r); };
+    G.clamp = function (v, a, b) { return Math.min(b, Math.max(a, v)); };
+    G.hex = function (s) {
+      s = String(s == null ? '' : s).trim().toLowerCase();
+      if (s.charAt(0) !== '#') s = '#' + s;
+      if (/^#[0-9a-f]{3}$/.test(s)) s = '#' + s[1] + s[1] + s[2] + s[2] + s[3] + s[3];
+      return /^#[0-9a-f]{6}$/.test(s) ? s : null;
+    };
+    G.rgb = function (hex) { var n = parseInt(hex.slice(1), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; };
+    G.toHex = function (r, g, b) { return '#' + [r, g, b].map(function (x) { return ('0' + G.clamp(Math.round(x), 0, 255).toString(16)).slice(-2); }).join(''); };
+    G.hsl = function (r, g, b) {
+      r /= 255; g /= 255; b /= 255;
+      var mx = Math.max(r, g, b), mn = Math.min(r, g, b), h = 0, s = 0, l = (mx + mn) / 2, d = mx - mn;
+      if (d) {
+        s = l > 0.5 ? d / (2 - mx - mn) : d / (mx + mn);
+        h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4;
+        h *= 60;
+      }
+      return [Math.round(h) % 360, Math.round(s * 100), Math.round(l * 100)];
+    };
+    G.fromHsl = function (h, s, l) {
+      s /= 100; l /= 100;
+      var k = function (n) { return (n + h / 30) % 12; }, a = s * Math.min(l, 1 - l);
+      var f = function (n) { return l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1))); };
+      return G.toHex(f(0) * 255, f(8) * 255, f(4) * 255);
+    };
+    /* A colour in the chosen output format. fmt: 'hex' | 'rgb' | 'hsl'; a: alpha 0–1 */
+    G.color = function (hex, a, fmt) {
+      a = a == null ? 1 : G.clamp(+a, 0, 1);
+      var c = G.rgb(hex), al = G.n(a, 2);
+      if (fmt === 'hsl') { var h = G.hsl(c[0], c[1], c[2]); return a < 1 ? 'hsla(' + h[0] + ', ' + h[1] + '%, ' + h[2] + '%, ' + al + ')' : 'hsl(' + h[0] + ', ' + h[1] + '%, ' + h[2] + '%)'; }
+      if (fmt === 'hex') return a < 1 ? hex + ('0' + Math.round(a * 255).toString(16)).slice(-2) : hex;
+      return a < 1 ? 'rgba(' + c.join(', ') + ', ' + al + ')' : 'rgb(' + c.join(', ') + ')';
+    };
+    G.rand = function (a, b) { return a + Math.floor(Math.random() * (b - a + 1)); };
+
+    /* Number value of a control (falls back to its last valid value while the box is empty/half-typed) */
+    G.v = function (id) {
+      var el = $(id), x = parseFloat(el.value);
+      if (isFinite(x)) return x;
+      x = parseFloat(el.getAttribute('data-last'));
+      return isFinite(x) ? x : parseFloat(el.defaultValue) || 0;
+    };
+    /* Set a slider/number pair (and its range twin) from code */
+    G.set = function (id, val) {
+      var el = $(id); el.value = val; el.setAttribute('data-last', val);
+      var r = el.parentNode.querySelector('input[type="range"][data-for="' + id + '"]'); if (r) r.value = val;
+    };
+    /* Set a colour swatch + its hex box */
+    G.setColor = function (id, hex) {
+      $(id).value = hex;
+      var t = document.querySelector('[data-hex-for="' + id + '"]'); if (t) { t.value = hex; t.classList.remove('bad'); }
+    };
+    /* One delegated listener for every slider pair / colour box in `root` (no per-control listeners to leak) */
+    G.wire = function (root, onChange) {
+      root.addEventListener('input', function (e) {
+        var t = e.target, id = t.getAttribute('data-for'), hx = t.getAttribute('data-hex-for');
+        if (id) { var n = $(id); n.value = t.value; n.setAttribute('data-last', t.value); }
+        else if (t.classList.contains('ty-num')) {
+          var x = parseFloat(t.value), r = root.querySelector('input[type="range"][data-for="' + t.id + '"]');
+          if (isFinite(x)) { t.setAttribute('data-last', x); if (r) r.value = x; }
+        } else if (hx) {
+          var h = G.hex(t.value); t.classList.toggle('bad', !h);
+          if (!h) return;
+          $(hx).value = h;
+        } else if (t.type === 'color') {
+          var tx = root.querySelector('[data-hex-for="' + t.id + '"]'); if (tx) { tx.value = t.value; tx.classList.remove('bad'); }
+        }
+        onChange(e);
+      });
+      root.addEventListener('change', function (e) {
+        var t = e.target;
+        if (t.classList.contains('ty-num')) {        // out of range / empty → clamp or restore on commit
+          var x = parseFloat(t.value), mn = parseFloat(t.min), mx = parseFloat(t.max);
+          if (!isFinite(x)) x = parseFloat(t.getAttribute('data-last')) || parseFloat(t.defaultValue) || 0;
+          if (isFinite(mn)) x = Math.max(mn, x); if (isFinite(mx)) x = Math.min(mx, x);
+          G.set(t.id, x);
+          onChange(e);
+        } else if (t.getAttribute('data-hex-for')) {
+          t.value = $(t.getAttribute('data-hex-for')).value; t.classList.remove('bad');
+        } else if (t.type === 'checkbox' || t.tagName === 'SELECT') onChange(e);
+      });
+    };
+    /* Only touch the code box when the text really changed (keeps selection, avoids repaint) */
+    G.out = function (ta, text) { if (ta.value !== text) { ta.value = text; ta._full = text; } };
+    /* Preview background switch (remembered across generators) */
+    G.stageBg = function () {
+      var stage = $('stage'), key = 'ty-stage-bg';
+      var segc = TK.segmented($('bgSeg'), function (v) { stage.setAttribute('data-bg', v); try { localStorage.setItem(key, v); } catch (e) {} });
+      try { var v = localStorage.getItem(key); if (v && $('bgSeg').querySelector('[data-value="' + v + '"]')) { segc.set(v, true); stage.setAttribute('data-bg', v); } } catch (e) {}
+      return segc;
+    };
+    /* Remember the design between visits (small JSON, validated on load by the caller) */
+    G.store = function (key) {
+      var t = null;
+      return {
+        load: function () { try { return JSON.parse(localStorage.getItem(key) || 'null'); } catch (e) { return null; } },
+        save: function (obj) { clearTimeout(t); t = setTimeout(function () { try { localStorage.setItem(key, JSON.stringify(obj)); } catch (e) {} }, 400); },
+        clear: function () { clearTimeout(t); try { localStorage.removeItem(key); } catch (e) {} }
+      };
+    };
+    G.num = function (x, a, b, d) { x = +x; return isFinite(x) ? G.clamp(x, a, b) : d; };
+    /* ----------------------------------------------------------------------- */
+
+    /* ---- shared JSON-LD generator helpers ------------------------------------------ */
+    var S = {}, form = $('sForm');
+    S.el = function (tag, cls, txt) { var x = document.createElement(tag); if (cls) x.className = cls; if (txt != null) x.textContent = txt; return x; };
+    S.v = function (id) { var e = $(id); return e.type === 'checkbox' ? e.checked : e.value.trim(); };
+    S.lines = function (id) { return S.v(id).split(/\r?\n/).map(function (s) { return s.trim(); }).filter(Boolean); };
+    S.list = function (name) {   // rows → objects (completely empty rows are skipped)
+      var out = [];
+      form.querySelectorAll('.ty-rep[data-list="' + name + '"] > .ty-rep-row').forEach(function (r, i) {
+        var o = { _i: i + 1 }, any = false;
+        r.querySelectorAll('[data-f]').forEach(function (f) { var v = f.type === 'checkbox' ? f.checked : f.value.trim(); o[f.getAttribute('data-f')] = v; if (v && f.type !== 'checkbox' && f.tagName !== 'SELECT') any = true; });
+        if (any) out.push(o);
+      });
+      return out;
+    };
+    /* drop empty strings, empty arrays and objects that only hold "@type"/"@context" — so optional fields simply disappear */
+    S.prune = function (x) {
+      if (Array.isArray(x)) { var a = x.map(S.prune).filter(function (v) { return v !== undefined; }); return a.length ? a : undefined; }
+      if (x && typeof x === 'object') {
+        var o = {}, real = false;
+        Object.keys(x).forEach(function (k) { var v = S.prune(x[k]); if (v !== undefined) { o[k] = v; if (k !== '@type' && k !== '@context') real = true; } });
+        return real ? o : undefined;
+      }
+      return x === '' || x == null || x !== x ? undefined : x;
+    };
+    /* a closing script tag or an HTML comment opener inside a value must not end the script element: escape them (still valid JSON) */
+    S.out = function (d) { return S.prune(d) || { '@context': d['@context'], '@type': d['@type'] }; };   // never an empty {}
+    S.safe = function (s) { return s.replace(/<\//g, '<\\/').replace(/\x3c!--/g, '\\u003c!--'); };
+    S.num = function (s) { if (s === '' || s == null) return ''; var n = Number(String(s).replace(',', '.')); return isFinite(n) ? n : s; };
+    S.isUrl = function (s) { if (!/^https?:\/\/[^\s]+$/i.test(s)) return false; try { var u = new URL(s); return !!u.hostname && u.hostname.indexOf('.') > 0; } catch (e) { return false; } };
+    S.isDate = function (s) { var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s); if (!m) return false; var d = new Date(Date.UTC(+m[1], m[2] - 1, +m[3])); return d.getUTCMonth() === m[2] - 1 && d.getUTCDate() === +m[3]; };
+    S.today = function () { var d = new Date(); return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); };
+    S.gtinOk = function (s) {   // GTIN-8/12/13/14 with a valid check digit
+      if (!/^(\d{8}|\d{12}|\d{13}|\d{14})$/.test(s)) return false;
+      var d = s.split('').map(Number), chk = d.pop(), sum = 0;
+      d.reverse().forEach(function (x, i) { sum += x * (i % 2 ? 1 : 3); });
+      return (10 - sum % 10) % 10 === chk;
+    };
+    /* time-zone offset select (+05:30 …) — defaults to this browser's offset */
+    S.tzOptions = function (sel) {
+      var offs = [-720,-660,-600,-570,-540,-480,-420,-360,-300,-240,-210,-180,-120,-60,0,60,120,180,210,240,270,300,330,345,360,390,420,480,525,540,570,600,630,660,720,765,780,840];
+      var mine = -new Date().getTimezoneOffset();
+      if (offs.indexOf(mine) < 0) offs.push(mine), offs.sort(function (a, b) { return a - b; });
+      offs.forEach(function (m) {
+        var s = (m < 0 ? '-' : '+') + ('0' + Math.floor(Math.abs(m) / 60)).slice(-2) + ':' + ('0' + Math.abs(m) % 60).slice(-2);
+        var o = S.el('option', null, 'UTC' + s); o.value = s; if (m === mine) o.defaultSelected = o.selected = true; sel.appendChild(o);
+      });
+    };
+    S.dt = function (v, tz) { if (!v) return ''; if (/^\d{4}-\d{2}-\d{2}$/.test(v)) return v; return (v.length === 16 ? v + ':00' : v) + (tz || ''); };
+
+    /* ---- repeaters -------------------------------------------------------------------- */
+    S.addRow = function (name, values, focus) {
+      var box = form.querySelector('.ty-rep[data-list="' + name + '"]'), tpl = $('tpl-' + name);
+      var rowEl = tpl.content.firstElementChild.cloneNode(true);
+      if (values) rowEl.querySelectorAll('[data-f]').forEach(function (f) { var k = f.getAttribute('data-f'); if (values[k] != null) { if (f.type === 'checkbox') f.checked = !!values[k]; else f.value = values[k]; } });
+      box.appendChild(rowEl); S.renumber(box);
+      if (focus) { var first = rowEl.querySelector('input, textarea'); if (first) first.focus(); }
+      return rowEl;
+    };
+    S.renumber = function (box) {
+      var rows = box.children, item = box.getAttribute('data-item'), min = +box.getAttribute('data-min') || 0;
+      for (var i = 0; i < rows.length; i++) {
+        rows[i].querySelector('.ty-rep-n').textContent = item + ' ' + (i + 1);
+        rows[i].querySelector('[data-act=up]').disabled = i === 0;
+        rows[i].querySelector('[data-act=down]').disabled = i === rows.length - 1;
+        rows[i].querySelector('[data-act=del]').disabled = rows.length <= min;
+      }
+    };
+    S.setRows = function (name, arr) {
+      var box = form.querySelector('.ty-rep[data-list="' + name + '"]'), min = +box.getAttribute('data-min') || 0;
+      box.replaceChildren();
+      (arr || []).forEach(function (v) { S.addRow(name, v); });
+      while (box.children.length < min) S.addRow(name);
+      S.renumber(box);
+    };
+
+    /* ---- model (for saving / restoring) ------------------------------------------------- */
+    S.model = function () {
+      var m = { f: {}, l: {} };
+      form.querySelectorAll('[data-k]').forEach(function (e) { m.f[e.getAttribute('data-k')] = e.type === 'checkbox' ? e.checked : e.value; });
+      form.querySelectorAll('.ty-rep').forEach(function (box) {
+        m.l[box.getAttribute('data-list')] = Array.prototype.map.call(box.children, function (r) {
+          var o = {}; r.querySelectorAll('[data-f]').forEach(function (f) { o[f.getAttribute('data-f')] = f.type === 'checkbox' ? f.checked : f.value; }); return o;
+        });
+      });
+      return m;
+    };
+    S.apply = function (m) {
+      form.querySelectorAll('[data-k]').forEach(function (e) {
+        var k = e.getAttribute('data-k'), v = m && m.f ? m.f[k] : undefined;
+        if (e.type === 'checkbox') e.checked = v === undefined ? e.defaultChecked : !!v;
+        else if (e.tagName === 'SELECT') { e.value = v === undefined ? (e.querySelector('option[selected]') || e.options[0] || {}).value : v; if (e.selectedIndex < 0) e.selectedIndex = 0; }
+        else e.value = v === undefined ? '' : String(v);
+      });
+      form.querySelectorAll('.ty-rep').forEach(function (box) { var n = box.getAttribute('data-list'); S.setRows(n, m && m.l ? m.l[n] : null); });
+    };
+
+    /* ---- checks ------------------------------------------------------------------------- */
+    S.renderChecks = function (list) {
+      var ul = $('checks'), frag = document.createDocumentFragment(), n = { err: 0, warn: 0 };
+      var order = { err: 0, warn: 1, info: 2, ok: 3 };
+      list.sort(function (a, b) { return order[a[0]] - order[b[0]]; });
+      list.forEach(function (c) {
+        if (n[c[0]] != null) n[c[0]]++;
+        var li = S.el('li', 'ty-chk ' + c[0]);
+        li.appendChild(S.el('span', 'ic', c[0] === 'err' ? '✕' : c[0] === 'warn' ? '!' : c[0] === 'info' ? 'i' : '✓'));
+        li.appendChild(S.el('span', 'tx', c[1]));
+        frag.appendChild(li);
+      });
+      ul.replaceChildren(frag);
+      var cc = $('checkCount');
+      cc.textContent = n.err ? n.err + ' error' + (n.err > 1 ? 's' : '') + (n.warn ? ' · ' + n.warn + ' warning' + (n.warn > 1 ? 's' : '') : '') : n.warn ? n.warn + ' warning' + (n.warn > 1 ? 's' : '') : '✓ Valid';
+      cc.className = 'ty-ccount ' + (n.err ? 'err' : n.warn ? 'warn' : 'ok');
+      return n;
+    };
+    S.status = function (kind, text) { var b = $('sStatus'); b.className = 'ty-sstatus ' + (kind || ''); b.textContent = text || ''; b.hidden = !text; };
+
+    /* ---- wiring --------------------------------------------------------------------------
+       cfg: { key, build() → { data, checks:[[level,text]…] }, preview(data, previewEl), example() → model, filename } */
+    S.init = function (cfg) {
+      var out = $('codeOut'), lastText = '', pend = null, timer = null;
+      /* debounced save, flushed when the tab is hidden or closed so the last keystrokes are never lost */
+      function flush() { clearTimeout(timer); if (pend) { try { localStorage.setItem(cfg.key, JSON.stringify(pend)); } catch (e) {} pend = null; } }
+      var store = {
+        load: function () { try { return JSON.parse(localStorage.getItem(cfg.key) || 'null'); } catch (e) { return null; } },
+        save: function (m) { pend = m; clearTimeout(timer); timer = setTimeout(flush, 400); },
+        clear: function () { clearTimeout(timer); pend = null; try { localStorage.removeItem(cfg.key); } catch (e) {} }
+      };
+      window.addEventListener('pagehide', flush);
+      document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'hidden') flush(); });
+      var fmtSeg = { get: function () { return 'script'; } };
+      if (!cfg.output && $('fmtSeg')) {
+        fmtSeg = TK.segmented($('fmtSeg'), function (v) { try { localStorage.setItem('ty-jsonld-fmt', v); } catch (e) {} render(); });
+        try { var f0 = localStorage.getItem('ty-jsonld-fmt'); if (f0 === 'json' || f0 === 'script') fmtSeg.set(f0, true); } catch (e) {}
+      }
+      function text() {
+        var r = cfg.build();
+        if (cfg.output) { lastText = cfg.output(r); return r; }   // plain-text generators (robots.txt …)
+        var data = S.out(r.data);
+        var json = S.safe(JSON.stringify(data, null, 2));
+        lastText = fmtSeg.get() === 'json' ? json : '\x3cscript type="application/ld+json">\n' + json + '\n\x3c/script>';
+        return r;
+      }
+      function render() {
+        var r = text();
+        G.out(out, lastText);
+        S.renderChecks(r.checks || []);
+        var pv = $('preview'); pv.replaceChildren(); cfg.preview(cfg.output ? r : S.out(r.data), pv, r);
+        store.save(S.model());
+      }
+      var queue = G.frame(render);
+      form.addEventListener('input', queue);
+      form.addEventListener('change', queue);
+      form.addEventListener('click', function (e) {
+        var b = e.target.closest('[data-act]'); if (!b || !form.contains(b)) return;
+        var act = b.getAttribute('data-act');
+        if (act === 'add') { S.addRow(b.getAttribute('data-list'), null, true); queue(); return; }
+        if (cfg.action && cfg.action(act, b)) { queue(); return; }
+        var rowEl = b.closest('.ty-rep-row'); if (!rowEl) return;
+        var box = rowEl.parentNode;
+        if (act === 'del') { if (box.children.length > (+box.getAttribute('data-min') || 0)) rowEl.remove(); }
+        else if (act === 'up' && rowEl.previousElementSibling) box.insertBefore(rowEl, rowEl.previousElementSibling);
+        else if (act === 'down' && rowEl.nextElementSibling) box.insertBefore(rowEl.nextElementSibling, rowEl);
+        S.renumber(box); b.disabled ? (box.querySelector('[data-act=' + act + ']:not(:disabled)') || b).focus() : b.focus();
+        queue();
+      });
+      $('copyBtn').addEventListener('click', function () { TK.copy(lastText, this); });
+      $('dlBtn').addEventListener('click', function () {
+        if (cfg.download) { var dl = typeof cfg.download === 'function' ? cfg.download() : cfg.download; TK.download(lastText, dl.name, dl.mime, this); return; }
+        var js = fmtSeg.get() === 'json';
+        TK.download(lastText, cfg.filename + (js ? '.json' : '.html'), js ? 'application/ld+json' : 'text/html;charset=utf-8', this);
+      });
+      $('exampleBtn').addEventListener('click', function () { S.apply(cfg.example()); render(); });
+      $('resetBtn').addEventListener('click', function () { store.clear(); S.apply(cfg.initial ? cfg.initial() : null); if (cfg.onReset) cfg.onReset(); render(); });
+      if (cfg.setup) cfg.setup();
+      var saved = store.load();
+      S.apply(saved && saved.f ? saved : (cfg.initial ? cfg.initial() : null));
+      render();
+      return { render: render };
+    };
+
+    /* ---- preview helpers (Google-style result) ------------------------------------------ */
+    S.idOf = function (u, frag) { try { var x = new URL(u); x.hash = ''; return x.href + '#' + frag; } catch (e) { return ''; } };
+    S.host = function (u) { try { return new URL(u).hostname.replace(/^www\./, ''); } catch (e) { return ''; } };
+    S.serp = function (o) {   // o: {url, site, title, desc, crumbs:[…], extra: Node, thumb:bool}
+      var card = S.el('div', 'ty-serp ty-sserp'), site = S.el('div', 'site'), fav = S.el('div', 'fav', (o.site || o.host || '?').charAt(0).toUpperCase());
+      var meta = S.el('div'); meta.appendChild(S.el('div', 'sname', o.site || o.host || 'example.com'));
+      meta.appendChild(S.el('div', 'surl', o.crumbs && o.crumbs.length ? o.crumbs.join(' › ') : (o.url || 'https://example.com')));
+      site.append(fav, meta); card.appendChild(site);
+      var body = S.el('div', 'ty-sbody'), txt = S.el('div', 'ty-stxt');
+      txt.appendChild(S.el('div', 'stitle', o.title || 'Page title'));
+      if (o.extra) txt.appendChild(o.extra);
+      if (o.desc) txt.appendChild(S.el('div', 'sdesc', o.desc));
+      body.appendChild(txt);
+      if (o.thumb) body.appendChild(S.el('div', 'ty-sthumb', '🖼'));
+      card.appendChild(body);
+      return card;
+    };
+    S.stars = function (v, best) { best = +best || 5; var x = Math.round(Math.max(0, Math.min(5, (+v / best) * 5))), s = ''; for (var i = 1; i <= 5; i++) s += x >= i ? '★' : '☆'; return s; };
+    // plain text of an HTML answer for the preview (regex + entity map — user HTML is never parsed into the page)
+    S.strip = function (h) {
+      var ent = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ' };
+      return h.replace(/<(br|\/p|\/li|\/h[1-6]|\/div)\s*\/?>/gi, ' ').replace(/<[^>]*>/g, '')
+        .replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, function (m, e) {
+          if (e.charAt(0) === '#') { var c = e.charAt(1).toLowerCase() === 'x' ? parseInt(e.slice(2), 16) : parseInt(e.slice(1), 10); try { return String.fromCodePoint(c); } catch (x) { return m; } }
+          return ent[e.toLowerCase()] != null ? ent[e.toLowerCase()] : m;
+        }).replace(/\s+/g, ' ').trim();
+    };
+
+    var AI_TRAIN = ['GPTBot', 'ClaudeBot', 'anthropic-ai', 'Google-Extended', 'Applebot-Extended', 'CCBot', 'Meta-ExternalAgent', 'Bytespider', 'cohere-ai'];
+    var AI_SEARCH = ['OAI-SearchBot', 'ChatGPT-User', 'Claude-SearchBot', 'Claude-User', 'PerplexityBot', 'Perplexity-User'];
+    var HINTS = { none: 'AI crawlers are treated like every other crawler.',
+      training: 'Blocks ' + AI_TRAIN.join(', ') + '. AI search crawlers (OAI-SearchBot, Claude-SearchBot, PerplexityBot…) keep the default rules.',
+      all: 'Blocks ' + AI_TRAIN.concat(AI_SEARCH).join(', ') + '.' };
+    var enc = function (p) { return p.replace(/[^\x00-\x7F]+/g, function (m) { return encodeURIComponent(m); }); };
+    function paths(s) { return s.split(/\r?\n/).map(function (x) { return x.trim(); }).filter(Boolean); }
+    function build() {
+      var checks = [], groups = [], base = S.v('base'), ai = S.v('ai');
+      $('aiHint').textContent = HINTS[ai];
+      function checkPaths(list, where) {
+        list.forEach(function (p) {
+          if (/\s/.test(p)) checks.push(['err', where + ': “' + p + '” contains a space — encode it as %20.']);
+          else if (p.charAt(0) !== '/' && p.charAt(0) !== '*') checks.push(['err', where + ': “' + p + '” must start with / (or *).']);
+          if (/[^\x00-\x7F]/.test(p)) checks.push(['info', where + ': non-ASCII characters in “' + p + '” are percent-encoded in the file.']);
+          if (/^https?:/i.test(p)) checks.push(['err', where + ': use a path like /folder/, not a full URL.']);
+        });
+      }
+      var dis = paths(S.v('disallow')), al = paths(S.v('allow')), delay = S.v('delay');
+      checkPaths(dis, 'All crawlers'); checkPaths(al, 'All crawlers');
+      if (delay && !/^\d+(\.\d+)?$/.test(delay)) checks.push(['err', 'Crawl-delay must be a number of seconds.']);
+      else if (delay) checks.push(['info', 'Google ignores Crawl-delay. Bing and Yandex respect it.']);
+      var star = { uas: ['*'], dis: base === 'block' ? ['/'] : dis, al: base === 'block' ? [] : al, delay: delay };
+      if (base === 'block') { checks.push(['warn', 'The whole site is blocked for every crawler, including Google and Bing. Use this only for staging or private sites.']); S.status('warn', '⚠ This robots.txt blocks all search engines from your entire site.'); }
+      else S.status('', '');
+      groups.push(star);
+      if (ai !== 'none') groups.push({ uas: ai === 'all' ? AI_TRAIN.concat(AI_SEARCH) : AI_TRAIN.slice(), dis: ['/'], al: [], ai: true });
+      var seen = {};
+      groups.forEach(function (g) { g.uas.forEach(function (u) { seen[u.toLowerCase()] = 1; }); });
+      S.list('groups').forEach(function (r) {
+        var n = 'Crawler group ' + r._i, uas = (r.ua || '').split(',').map(function (x) { return x.trim(); }).filter(Boolean);
+        if (!uas.length) { checks.push(['err', n + ': enter at least one user-agent.']); return; }
+        uas.forEach(function (u) {
+          if (/\s/.test(u)) checks.push(['warn', n + ': “' + u + '” — user-agent names don\u2019t contain spaces. Use the product token, e.g. Googlebot.']);
+          if (u === '*') checks.push(['err', n + ': use the “All crawlers” section for *.']);
+          if (seen[u.toLowerCase()]) checks.push(['warn', n + ': ' + u + ' already has rules — its groups are merged by Google, which can be confusing.']);
+          seen[u.toLowerCase()] = 1;
+        });
+        var d = paths(r.dis || ''), a = paths(r.al || '');
+        checkPaths(d, n); checkPaths(a, n);
+        if (r.cd && !/^\d+(\.\d+)?$/.test(r.cd)) checks.push(['err', n + ': crawl-delay must be a number.']);
+        if (d.indexOf('/') >= 0 && uas.some(function (u) { return /^(googlebot|bingbot)$/i.test(u); })) checks.push(['warn', n + ': this blocks ' + uas.join(', ') + ' from the entire site — your pages will drop out of that search engine.']);
+        if (base !== 'block' && star.dis.length && !d.length && !a.length) checks.push(['warn', n + ': this group has no rules, so ' + uas.join(', ') + ' may crawl everything — including the paths blocked for all crawlers.']);
+        else if (base !== 'block' && star.dis.length && d.indexOf('/') < 0 && star.dis.some(function (p) { return d.indexOf(p) < 0; })) checks.push(['info', n + ': ' + uas.join(', ') + ' ignores the “All crawlers” rules. Repeat any Disallow paths it should also obey.']);
+        groups.push({ uas: uas, dis: d, al: a, delay: r.cd });
+      });
+      groups.forEach(function (g) {
+        if (!g.ai && g.dis.some(function (p) { return /\.(css|js)\$?$|\*\.(css|js)/i.test(p); })) checks.push(['warn', 'Blocking CSS or JavaScript stops Google rendering your pages properly.']);
+        if (g.al.length && !g.dis.length && g.uas[0] === '*') checks.push(['info', 'Allow rules only matter as exceptions to a Disallow rule.']);
+      });
+      var maps = S.lines('sitemaps');
+      maps.forEach(function (m) { if (!S.isUrl(m)) checks.push(['err', 'Sitemap “' + m.slice(0, 60) + '” must be a full URL (https://…).']); });
+      if (!maps.length) checks.push(['info', 'Adding your sitemap URL is recommended.']);
+      if (dis.length || groups.length > 1) checks.push(['info', 'robots.txt controls crawling, not indexing. To keep a page out of Google, use a noindex tag instead.']);
+      if (ai === 'training') checks.push(['info', 'Blocking Google-Extended doesn\u2019t affect Google Search or your ranking.']);
+      /* text */
+      var out = [];
+      groups.forEach(function (g) {
+        if (g.ai) out.push(ai === 'all' ? '# AI crawlers (training and search)' : '# AI training crawlers');
+        g.uas.forEach(function (u) { out.push('User-agent: ' + u); });
+        if (!g.dis.length && !g.al.length) out.push('Disallow:');
+        g.dis.forEach(function (p) { out.push('Disallow: ' + enc(p)); });
+        g.al.forEach(function (p) { out.push('Allow: ' + enc(p)); });
+        if (g.delay) out.push('Crawl-delay: ' + g.delay);
+        out.push('');
+      });
+      maps.forEach(function (m) { out.push('Sitemap: ' + m); });
+      var text = out.join('\n').replace(/\n+$/, '') + '\n';
+      if (text.length > 500 * 1024) checks.push(['warn', 'The file is over 500 KiB — Google ignores everything after that.']);
+      if (!checks.some(function (c) { return c[0] === 'err' || c[0] === 'warn'; })) checks.push(['ok', 'Valid robots.txt (' + groups.length + ' group' + (groups.length > 1 ? 's' : '') + ').']);
+      return { text: text, groups: groups, checks: checks };
+    }
+    /* Google's matching: most specific user-agent group, longest matching path, Allow wins ties */
+    function pattern(p) { var end = /\$$/.test(p); if (end) p = p.slice(0, -1); return new RegExp('^' + p.split('*').map(function (s) { return s.replace(/[.+?^${}()|[\]\\]/g, '\\$&'); }).join('.*') + (end ? '$' : '')); }
+    function test(groups, ua, path) {
+      ua = ua.toLowerCase();
+      var best = -1, sel = [];
+      groups.forEach(function (g) { g.uas.forEach(function (t) { var tl = t.toLowerCase(); if (tl === '*') return; if (ua === tl || ua.indexOf(tl + '-') === 0) { if (tl.length > best) { best = tl.length; sel = [g]; } else if (tl.length === best && sel.indexOf(g) < 0) sel.push(g); } }); });
+      if (!sel.length) sel = groups.filter(function (g) { return g.uas.indexOf('*') >= 0; });
+      if (path === '/robots.txt') return { ok: true, why: '/robots.txt itself is always allowed.', group: sel };
+      var win = null;
+      sel.forEach(function (g) {
+        [['Disallow', g.dis], ['Allow', g.al]].forEach(function (k) {
+          k[1].forEach(function (p) {
+            var pe = enc(p); if (!pattern(pe).test(path)) return;
+            if (!win || pe.length > win.p.length || (pe.length === win.p.length && k[0] === 'Allow')) win = { t: k[0], p: pe };
+          });
+        });
+      });
+      return { ok: !win || win.t === 'Allow', win: win, group: sel };
+    }
+    function preview(r, el) {
+      var raw = S.v('tPath'), ua = S.v('tUa'), path = raw || '/';
+      try { if (/^https?:\/\//i.test(raw)) { var u = new URL(raw); path = u.pathname + u.search; } } catch (e) {}
+      if (path.charAt(0) !== '/') path = '/' + path;
+      path = enc(path);
+      var res = test(r.groups, ua, path), box = S.el('div', 'ty-rtest ' + (res.ok ? 'ok' : 'no'));
+      box.appendChild(S.el('div', 'big', res.ok ? '✓ Allowed' : '✕ Blocked'));
+      var line = S.el('div', 'what'); line.appendChild(S.el('b', null, ua)); line.appendChild(document.createTextNode(' → ' + path)); box.appendChild(line);
+      var why = res.why || (res.win ? 'Rule: ' + res.win.t + ': ' + res.win.p : 'No rule matches, so crawling is allowed.');
+      var gname = res.group.length ? 'Group: User-agent: ' + res.group.map(function (g) { return g.uas.length > 3 ? g.uas.slice(0, 3).join(', ') + '…' : g.uas.join(', '); }).join(' + ') : 'No group applies to this crawler.';
+      box.appendChild(S.el('div', 'why', why)); box.appendChild(S.el('div', 'why', gname));
+      el.appendChild(S.el('div', 'ty-plabel', 'URL test (Google’s matching rules)'));
+      el.appendChild(box);
+    }
+    S.init({
+      key: 'ty-robots-txt', filename: 'robots', build: build, preview: preview,
+      output: function (r) { return r.text; }, download: { name: 'robots.txt', mime: 'text/plain;charset=utf-8' },
+      initial: function () { return { f: { tUa: 'Googlebot' }, l: { groups: [] } }; },
+      example: function () { return { f: { base: 'allow', disallow: '/admin/\n/cart\n/checkout\n/*?sessionid=\n/search', allow: '/admin/public/', ai: 'training',
+        sitemaps: 'https://example.com/sitemap.xml', tPath: '/admin/settings', tUa: 'Googlebot' },
+        l: { groups: [{ ua: 'AhrefsBot, SemrushBot', dis: '/', al: '', cd: '' }] } }; }
+    });
+
+  })();
+  </script>
+</body>
+</html>

@@ -42,7 +42,7 @@
   <!-- WORKSPACE -->
   <section class="tool-app-section">
     <div class="wrap">
-      <div class="ty-pair"><span>Regex runs in a background thread with a time limit, so a bad pattern can never freeze the page.</span><span>Want to test a pattern step by step? <a href="/categories/developer/#regex-tester">Regex Tester (coming soon)</a></span></div>
+      <div class="ty-pair"><span>Regex runs in a background thread with a time limit, so a bad pattern can never freeze the page.</span><span>Want to test a pattern step by step? <a href="/tools/developer/regex-tester.html">Regex Tester →</a></span></div>
       <div class="tool-workspace">
         <div class="tool-toolbar">
           <div class="tool-toolbar-left ty-txtopts">
@@ -224,23 +224,23 @@
         <a class="view-all" href="/categories/text/">All Text Tools →</a>
       </div>
       <div class="grid grid-3">
-        <a class="tool-card is-soon" href="/categories/developer/#regex-tester">
-          <div class="top-row"><span class="badge">Tester</span><span class="status-pill status-soon">Coming soon</span></div>
+        <a class="tool-card" href="/tools/developer/regex-tester.html">
+          <div class="top-row"><span class="badge">Tester</span></div>
           <h3>Regex Tester</h3>
           <p>Test JavaScript regular expressions with live match highlighting and capture-group output.</p>
-          <span class="open ty-soon-label">Coming soon</span>
+          <span class="open">Open tool →</span>
         </a>
-        <a class="tool-card is-soon" href="/categories/developer/#regex-escape">
-          <div class="top-row"><span class="badge">Encoder</span><span class="status-pill status-soon">Coming soon</span></div>
+        <a class="tool-card" href="/tools/developer/regex-escape.html">
+          <div class="top-row"><span class="badge">Encoder</span></div>
           <h3>Regex Escape</h3>
-          <p>Escape special characters for use inside a regex.</p>
-          <span class="open ty-soon-label">Coming soon</span>
+          <p>Escape text for a regex with the exact rules of JavaScript, Python, PHP, Java, .NET or Go.</p>
+          <span class="open">Open tool →</span>
         </a>
-        <a class="tool-card is-soon" href="/categories/text/#remove-extra-spaces">
-          <div class="top-row"><span class="badge">Cleaner</span><span class="status-pill status-soon">Coming soon</span></div>
+        <a class="tool-card" href="/tools/text/remove-extra-spaces.html">
+          <div class="top-row"><span class="badge">Cleaner</span></div>
           <h3>Remove Extra Spaces</h3>
           <p>Collapse repeated spaces and trim lines.</p>
-          <span class="open ty-soon-label">Coming soon</span>
+          <span class="open">Open tool →</span>
         </a>
         <a class="tool-card" href="/tools/text/remove-duplicate-lines.html">
           <div class="top-row"><span class="badge">Cleaner</span></div>
@@ -343,7 +343,7 @@
       runBtn.addEventListener('click', function () { auto.trigger(); });
       $('useBtn').addEventListener('click', function () { var v = TK.getOutput(out); if (!v) return; input.value = v; auto.check(); auto.trigger(); });
       $('copyBtn').addEventListener('click', function () { TK.copy(TK.getOutput(out), this); });
-      $('downloadBtn').addEventListener('click', function () { TK.download(TK.getOutput(out), cfg.filename, 'text/plain;charset=utf-8', this); });
+      $('downloadBtn').addEventListener('click', function () { if (cfg.download) cfg.download(this); else TK.download(TK.getOutput(out), cfg.filename, 'text/plain;charset=utf-8', this); });
       $('exampleBtn').addEventListener('click', function () { input.value = cfg.example(); auto.check(); auto.trigger(); });
       $('clearBtn').addEventListener('click', function () { input.value = ''; auto.check(); auto.trigger(); input.focus(); });
       attachTextFile(input, $('fileIn'), function () { auto.check(); auto.trigger(); }, statusEl);

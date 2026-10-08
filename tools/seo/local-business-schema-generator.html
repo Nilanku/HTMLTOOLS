@@ -42,7 +42,7 @@
   <!-- WORKSPACE -->
   <section class="tool-app-section">
     <div class="wrap">
-      <div class="ty-pair"><span>Paste the code into your home page or location page's <code>&lt;head&gt;</code> or <code>&lt;body&gt;</code>.</span><span>Marking up your company as a whole? <a href="/categories/seo/#organization-schema-generator">Organization Schema Generator (coming soon)</a></span></div>
+      <div class="ty-pair"><span>Paste the code into your home page or location page's <code>&lt;head&gt;</code> or <code>&lt;body&gt;</code>.</span><span>Marking up your company as a whole? <a href="/tools/seo/organization-schema-generator.html">Organization Schema Generator →</a></span></div>
       <div class="tool-workspace ty-gen-ws">
         <div class="tool-toolbar">
           <div class="tool-toolbar-left"><span style="font-size:13px; color:var(--ink-soft);">Fill in the form — the JSON-LD and the checks update as you type. </span></div>
@@ -259,11 +259,11 @@ https://www.instagram.com/example" spellcheck="false"></textarea><div class="hin
         <a class="view-all" href="/categories/seo/">All SEO Tools →</a>
       </div>
       <div class="grid grid-3">
-        <a class="tool-card is-soon" href="/categories/seo/#organization-schema-generator">
-          <div class="top-row"><span class="badge">Generator</span><span class="status-pill status-soon">Coming soon</span></div>
+        <a class="tool-card" href="/tools/seo/organization-schema-generator.html">
+          <div class="top-row"><span class="badge">Generator</span></div>
           <h3>Organization Schema Generator</h3>
           <p>Organization JSON-LD with logo and socials.</p>
-          <span class="open ty-soon-label">Coming soon</span>
+          <span class="open">Open tool →</span>
         </a>
         <a class="tool-card" href="/tools/seo/product-schema-generator.html">
           <div class="top-row"><span class="badge">Generator</span></div>
@@ -283,11 +283,11 @@ https://www.instagram.com/example" spellcheck="false"></textarea><div class="hin
           <p>Build FAQPage JSON-LD for rich results.</p>
           <span class="open">Open tool →</span>
         </a>
-        <a class="tool-card is-soon" href="/categories/seo/#schema-markup-generator">
-          <div class="top-row"><span class="badge">Generator</span><span class="status-pill status-soon">Coming soon</span></div>
+        <a class="tool-card" href="/tools/seo/schema-markup-generator.html">
+          <div class="top-row"><span class="badge">Generator</span></div>
           <h3>Schema Markup Generator</h3>
           <p>Generate JSON-LD structured data for any page.</p>
-          <span class="open ty-soon-label">Coming soon</span>
+          <span class="open">Open tool →</span>
         </a>
         <a class="tool-card" href="/tools/seo/meta-tag-generator.html">
           <div class="top-row"><span class="badge">Generator</span></div>
@@ -550,10 +550,15 @@ https://www.instagram.com/example" spellcheck="false"></textarea><div class="hin
       };
       window.addEventListener('pagehide', flush);
       document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'hidden') flush(); });
-      var fmtSeg = TK.segmented($('fmtSeg'), function (v) { try { localStorage.setItem('ty-jsonld-fmt', v); } catch (e) {} render(); });
-      try { var f0 = localStorage.getItem('ty-jsonld-fmt'); if (f0 === 'json' || f0 === 'script') fmtSeg.set(f0, true); } catch (e) {}
+      var fmtSeg = { get: function () { return 'script'; } };
+      if (!cfg.output && $('fmtSeg')) {
+        fmtSeg = TK.segmented($('fmtSeg'), function (v) { try { localStorage.setItem('ty-jsonld-fmt', v); } catch (e) {} render(); });
+        try { var f0 = localStorage.getItem('ty-jsonld-fmt'); if (f0 === 'json' || f0 === 'script') fmtSeg.set(f0, true); } catch (e) {}
+      }
       function text() {
-        var r = cfg.build(), data = S.out(r.data);
+        var r = cfg.build();
+        if (cfg.output) { lastText = cfg.output(r); return r; }   // plain-text generators (robots.txt …)
+        var data = S.out(r.data);
         var json = S.safe(JSON.stringify(data, null, 2));
         lastText = fmtSeg.get() === 'json' ? json : '\x3cscript type="application/ld+json">\n' + json + '\n\x3c/script>';
         return r;
@@ -562,7 +567,7 @@ https://www.instagram.com/example" spellcheck="false"></textarea><div class="hin
         var r = text();
         G.out(out, lastText);
         S.renderChecks(r.checks || []);
-        var pv = $('preview'); pv.replaceChildren(); cfg.preview(S.out(r.data), pv, r);
+        var pv = $('preview'); pv.replaceChildren(); cfg.preview(cfg.output ? r : S.out(r.data), pv, r);
         store.save(S.model());
       }
       var queue = G.frame(render);
@@ -583,6 +588,7 @@ https://www.instagram.com/example" spellcheck="false"></textarea><div class="hin
       });
       $('copyBtn').addEventListener('click', function () { TK.copy(lastText, this); });
       $('dlBtn').addEventListener('click', function () {
+        if (cfg.download) { var dl = typeof cfg.download === 'function' ? cfg.download() : cfg.download; TK.download(lastText, dl.name, dl.mime, this); return; }
         var js = fmtSeg.get() === 'json';
         TK.download(lastText, cfg.filename + (js ? '.json' : '.html'), js ? 'application/ld+json' : 'text/html;charset=utf-8', this);
       });

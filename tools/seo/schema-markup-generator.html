@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Breadcrumb Schema Generator – BreadcrumbList JSON-LD | Toolyard</title>
-  <meta name="description" content="Free breadcrumb schema generator. Build BreadcrumbList JSON-LD from a URL in one click, reorder items, and check positions, absolute URLs and domains. Live preview of the breadcrumb path in Google.">
-  <link rel="canonical" href="https://htmltools.nilankubaruah.workers.dev/tools/seo/breadcrumb-schema-generator.html">
+  <title>Schema Markup Generator – JSON-LD for WebSite, Person &amp; More | Toolyard</title>
+  <meta name="description" content="Free schema markup generator. Create JSON-LD structured data for WebSite (Google site names) and Person / ProfilePage, with live checks — plus dedicated generators for FAQ, Article, Breadcrumb, Product, Local Business and Organization.">
+  <link rel="canonical" href="https://htmltools.nilankubaruah.workers.dev/tools/seo/schema-markup-generator.html">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Breadcrumb Schema Generator – BreadcrumbList JSON-LD">
-  <meta property="og:description" content="Free breadcrumb schema generator. Build BreadcrumbList JSON-LD from a URL in one click, reorder items, and check positions, absolute URLs and domains. Live preview of the breadcrumb path in Google.">
-  <meta property="og:url" content="https://htmltools.nilankubaruah.workers.dev/tools/seo/breadcrumb-schema-generator.html">
+  <meta property="og:title" content="Schema Markup Generator – JSON-LD for WebSite, Person &amp; More">
+  <meta property="og:description" content="Free schema markup generator. Create JSON-LD structured data for WebSite (Google site names) and Person / ProfilePage, with live checks — plus dedicated generators for FAQ, Article, Breadcrumb, Product, Local Business and Organization.">
+  <meta property="og:url" content="https://htmltools.nilankubaruah.workers.dev/tools/seo/schema-markup-generator.html">
   <meta name="twitter:card" content="summary">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,10 +19,10 @@
   <script src="/js/tools-data.js"></script>
   <script src="/js/layout.js"></script>
   <script src="/js/tool-kit.js"></script>
-  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Breadcrumb Schema Generator", "url": "https://htmltools.nilankubaruah.workers.dev/tools/seo/breadcrumb-schema-generator.html", "applicationCategory": "DeveloperApplication", "operatingSystem": "Any (runs in your browser)", "description": "Free breadcrumb schema generator. Build BreadcrumbList JSON-LD from a URL in one click, reorder items, and check positions, absolute URLs and domains. Live preview of the breadcrumb path in Google.", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true}</script>
-  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Do breadcrumbs still appear in Google?", "acceptedAnswer": {"@type": "Answer", "text": "Yes on desktop. Since early 2025 Google no longer shows breadcrumb paths on mobile results — mobile shows just the site name and domain. The markup is still valid and still used to understand your site structure."}}, {"@type": "Question", "name": "Does the last item need a URL?", "acceptedAnswer": {"@type": "Answer", "text": "No. Google allows the URL of the last item (the page itself) to be left out. Including it is also fine."}}, {"@type": "Question", "name": "Must the trail match my URL structure?", "acceptedAnswer": {"@type": "Answer", "text": "No. It should show a logical path a user would follow, such as Home › Books › Fiction. URL folders are a handy starting point, which is why the Fill trail button uses them."}}, {"@type": "Question", "name": "Should I include the home page?", "acceptedAnswer": {"@type": "Answer", "text": "It's common and recommended to start with Home. The trail still needs at least two items in total."}}, {"@type": "Question", "name": "Can a page have more than one breadcrumb?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. If a product is reachable from two categories, add two separate BreadcrumbList blocks. Generate each trail separately."}}, {"@type": "Question", "name": "What does position mean?", "acceptedAnswer": {"@type": "Answer", "text": "The order of the item in the trail, starting at 1 for the top level. This tool sets it automatically from the order of your items."}}, {"@type": "Question", "name": "Is my data stored?", "acceptedAnswer": {"@type": "Answer", "text": "Only in your browser's localStorage. Press Reset to clear it."}}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Schema Markup Generator", "url": "https://htmltools.nilankubaruah.workers.dev/tools/seo/schema-markup-generator.html", "applicationCategory": "DeveloperApplication", "operatingSystem": "Any (runs in your browser)", "description": "Free schema markup generator. Create JSON-LD structured data for WebSite (Google site names) and Person / ProfilePage, with live checks — plus dedicated generators for FAQ, Article, Breadcrumb, Product, Local Business and Organization.", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is the best format for schema markup?", "acceptedAnswer": {"@type": "Answer", "text": "JSON-LD. Google recommends it because it sits in one script tag, separate from your HTML, and is easy to maintain. All our generators output JSON-LD."}}, {"@type": "Question", "name": "Where does WebSite markup go?", "acceptedAnswer": {"@type": "Answer", "text": "On the home page of your domain or subdomain only — for example https://example.com/ or https://blog.example.com/. Google's site names don't work for subfolders like example.com/shop/."}}, {"@type": "Question", "name": "Can I still get a sitelinks search box?", "acceptedAnswer": {"@type": "Answer", "text": "No. Google retired the sitelinks search box in November 2024, so WebSite markup with a SearchAction no longer triggers anything. Leaving old SearchAction markup in place is harmless."}}, {"@type": "Question", "name": "When should I use ProfilePage?", "acceptedAnswer": {"@type": "Answer", "text": "When the page's main subject is one person — an author page, an about-me page or a team-member profile. The Person goes in ProfilePage's mainEntity."}}, {"@type": "Question", "name": "Can a page have more than one schema type?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. A home page can have WebSite and Organization markup; an article page can have Article and Breadcrumb markup. Add each as its own script tag, or connect them with @id references."}}, {"@type": "Question", "name": "Does schema markup improve rankings?", "acceptedAnswer": {"@type": "Answer", "text": "Not directly. It helps search engines understand your pages and makes them eligible for rich results, which can improve how your listing looks and how often it's clicked."}}, {"@type": "Question", "name": "Is my data stored?", "acceptedAnswer": {"@type": "Answer", "text": "Only in your browser's localStorage. Press Reset to clear it."}}]}</script>
 </head>
-<body class="ty-tool" data-tool="breadcrumb-schema-generator">
+<body class="ty-tool" data-tool="schema-markup-generator">
 
   <!-- SHARED HEADER, MOBILE MENU & BREADCRUMBS (rendered by /js/layout.js) -->
   <div id="site-header"></div>
@@ -33,16 +33,16 @@
   <section class="tool-intro">
     <div class="wrap tool-intro-content">
       <span class="eyebrow">🔍 SEO · STRUCTURED DATA</span>
-      <h1>Breadcrumb Schema Generator</h1>
-      <p class="lead">Create <code>BreadcrumbList</code> JSON-LD that shows your page's place in the site hierarchy. Paste a URL to fill the trail automatically, rename and reorder the items, and copy valid code with positions numbered for you.</p>
-      <div class="tool-meta-badge"><span class="dot"></span> BreadcrumbList JSON-LD · Fill from URL · Automatic positions</div>
+      <h1>Schema Markup Generator</h1>
+      <p class="lead">Generate valid JSON-LD structured data. Create <code>WebSite</code> markup for the site name Google shows, or <code>Person</code> markup for an about or author page — and jump to our dedicated generators for FAQ, Article, Breadcrumb, Product, Local Business and Organization.</p>
+      <div class="tool-meta-badge"><span class="dot"></span> WebSite (site names) · Person / ProfilePage · 6 more dedicated generators</div>
     </div>
   </section>
 
   <!-- WORKSPACE -->
   <section class="tool-app-section">
     <div class="wrap">
-      <div class="ty-pair"><span>Paste the code into the page's <code>&lt;head&gt;</code> or <code>&lt;body&gt;</code>.</span><span>Marking up the article itself? <a href="/tools/seo/article-schema-generator.html">Article Schema Generator →</a></span></div>
+      <div class="ty-pair"><span>Paste the code into the page's <code>&lt;head&gt;</code> or <code>&lt;body&gt;</code>. WebSite markup belongs on the home page only.</span><span>Describing your company? <a href="/tools/seo/organization-schema-generator.html">Organization Schema Generator →</a></span></div>
       <div class="tool-workspace ty-gen-ws">
         <div class="tool-toolbar">
           <div class="tool-toolbar-left"><span style="font-size:13px; color:var(--ink-soft);">Fill in the form — the JSON-LD and the checks update as you type. </span></div>
@@ -51,26 +51,34 @@
             <button type="button" class="btn btn-danger btn-sm" id="resetBtn">Reset</button>
           </div>
         </div>
+        <nav class="ty-hub" aria-label="Other schema generators"><span class="lbl">More schema types:</span><a class="ty-hub-chip" href="/tools/seo/faq-schema-generator.html">FAQ</a><a class="ty-hub-chip" href="/tools/seo/article-schema-generator.html">Article</a><a class="ty-hub-chip" href="/tools/seo/breadcrumb-schema-generator.html">Breadcrumb</a><a class="ty-hub-chip" href="/tools/seo/product-schema-generator.html">Product</a><a class="ty-hub-chip" href="/tools/seo/local-business-schema-generator.html">Local Business</a><a class="ty-hub-chip" href="/tools/seo/organization-schema-generator.html">Organization</a></nav>
         <div class="tool-grid ty-gen ty-schema">
           <div class="ty-gen-main">
             <div class="tool-pane ty-gen-ctl">
               <div class="tool-pane-header"><span class="title">Details</span><span class="badge">Saved in this browser</span></div>
               <form class="ty-ctl ty-sform" id="sForm" autocomplete="off" onsubmit="return false">
-<details class="ty-sgroup" open><summary>Quick start</summary><div class="ty-sgbody">
-<div class="ty-field"><label for="fillUrl"><span>Start from a page URL</span></label>
-<div class="ty-line"><input type="url" id="fillUrl" class="ty-input" placeholder="https://example.com/books/fiction/the-hobbit" autocomplete="off" spellcheck="false" style="flex:1 1 220px;width:auto">
-<button type="button" class="btn btn-outline btn-sm" data-act="fill">Fill trail</button></div>
-<div class="hint">Creates one item per folder in the URL (Home › Books › Fiction › …). Then edit the names — use the labels visitors see on your page.</div></div>
+<details class="ty-sgroup" open><summary>Type</summary><div class="ty-sgbody">
+<div class="ty-field"><span class="lbl" style="font-size:13px;font-weight:600;color:var(--ink)">Schema type</span>
+<div class="ty-seg" id="typeSeg" role="group" aria-label="Schema type"><button type="button" data-value="WebSite" class="active">WebSite</button><button type="button" data-value="Person">Person</button></div>
+<input type="hidden" id="sType" data-k="sType" value="WebSite"></div>
 </div></details>
-<details class="ty-sgroup" open><summary>Breadcrumb trail</summary><div class="ty-sgbody">
-<div class="ty-rep" data-list="crumbs" data-min="2" data-item="Item"></div>
-<button type="button" class="btn btn-outline btn-sm ty-rep-add" data-act="add" data-list="crumbs">+ Add item</button>
-<template id="tpl-crumbs"><div class="ty-rep-row">
-  <div class="ty-rep-head"><span class="ty-rep-n">Item</span><span class="ty-rep-acts">
-    <button type="button" class="ty-ibtn" data-act="up" aria-label="Move up" title="Move up">↑</button><button type="button" class="ty-ibtn" data-act="down" aria-label="Move down" title="Move down">↓</button><button type="button" class="ty-ibtn del" data-act="del" aria-label="Remove" title="Remove">✕</button>
-  </span></div>
-  <div class="ty-rep-body"><label class="ty-field"><span class="lbl">Name <span class="ty-need req">Required</span></span><input type="text" data-f="name" class="ty-input" placeholder="e.g. Books" autocomplete="off" spellcheck="false" ></label><label class="ty-field"><span class="lbl">URL</span><input type="url" data-f="url" class="ty-input" placeholder="https://example.com/books" autocomplete="off" spellcheck="false" ></label></div>
-</div></template>
+<details class="ty-sgroup" id="gWebsite" open><summary>WebSite</summary><div class="ty-sgbody">
+<div class="ty-field"><label for="wName"><span>Site name <span class="ty-need req">Required</span></span></label><input type="text" id="wName" data-k="wName" class="ty-input" placeholder="e.g. Toolyard" autocomplete="off" spellcheck="false" ><div class="hint">The name you want Google to show for your site. Keep it short and consistent with your home page.</div></div>
+<div class="ty-field"><label for="wAlt"><span>Alternate names (one per line)</span></label><textarea id="wAlt" data-k="wAlt" class="ty-input" rows="2" placeholder="e.g. Toolyard Tools
+TY" spellcheck="false"></textarea><div class="hint">Other names people use — an acronym or a shorter version.</div></div>
+<div class="ty-field"><label for="wUrl"><span>Home page URL <span class="ty-need req">Required</span></span></label><input type="url" id="wUrl" data-k="wUrl" class="ty-input" placeholder="https://example.com/" autocomplete="off" spellcheck="false" ><div class="hint">Your domain's home page. Site names only work at the domain or subdomain level, not for subfolders.</div></div>
+<div class="ty-row"><div class="ty-field"><label for="wLang"><span>Language</span></label><input type="text" id="wLang" data-k="wLang" class="ty-input" placeholder="e.g. en" autocomplete="off" spellcheck="false" ><div class="hint">Optional (BCP 47 code: en, hi, as, en-IN…).</div></div><div class="ty-field"><label for="wPub"><span>Publisher (Organization @id or URL)</span></label><input type="text" id="wPub" data-k="wPub" class="ty-input" placeholder="https://example.com/#organization" autocomplete="off" spellcheck="false" ><div class="hint">Optional link to your Organization markup.</div></div></div>
+</div></details>
+<details class="ty-sgroup" id="gPerson" open hidden><summary>Person</summary><div class="ty-sgbody">
+<div class="ty-field"><label for="pName"><span>Full name <span class="ty-need req">Required</span></span></label><input type="text" id="pName" data-k="pName" class="ty-input" placeholder="e.g. Priya Sharma" autocomplete="off" spellcheck="false" ></div>
+<div class="ty-row"><div class="ty-field"><label for="pAlt"><span>Alternate name / handle</span></label><input type="text" id="pAlt" data-k="pAlt" class="ty-input" placeholder="e.g. @nilanku" autocomplete="off" spellcheck="false" ></div><div class="ty-field"><label for="pJob"><span>Job title</span></label><input type="text" id="pJob" data-k="pJob" class="ty-input" placeholder="e.g. Web Developer" autocomplete="off" spellcheck="false" ></div></div>
+<div class="ty-row"><div class="ty-field"><label for="pUrl"><span>Profile / website URL <span class="ty-need rec">Recommended</span></span></label><input type="url" id="pUrl" data-k="pUrl" class="ty-input" placeholder="https://example.com/about" autocomplete="off" spellcheck="false" ></div><div class="ty-field"><label for="pImg"><span>Photo URL <span class="ty-need rec">Recommended</span></span></label><input type="url" id="pImg" data-k="pImg" class="ty-input" placeholder="https://example.com/me.jpg" autocomplete="off" spellcheck="false" ></div></div>
+<div class="ty-row"><div class="ty-field"><label for="pOrg"><span>Works for (organization)</span></label><input type="text" id="pOrg" data-k="pOrg" class="ty-input" placeholder="e.g. Toolyard Labs" autocomplete="off" spellcheck="false" ></div><div class="ty-field"><label for="pOrgUrl"><span>Organization URL</span></label><input type="url" id="pOrgUrl" data-k="pOrgUrl" class="ty-input" placeholder="https://example.com" autocomplete="off" spellcheck="false" ></div></div>
+<div class="ty-field"><label for="pDesc"><span>Short bio</span></label><textarea id="pDesc" data-k="pDesc" class="ty-input" rows="2" placeholder="One or two sentences about the person." spellcheck="false"></textarea></div>
+<div class="ty-field"><label for="pSame"><span>Profiles (one per line) <span class="ty-need rec">Recommended</span></span></label><textarea id="pSame" data-k="pSame" class="ty-input" rows="2" placeholder="https://www.linkedin.com/in/example
+https://github.com/example" spellcheck="false"></textarea><div class="hint">Social and professional profiles — becomes <code>sameAs</code>.</div></div>
+<div class="ty-row"><div class="ty-field"><label for="pKnows"><span>Knows about (comma-separated)</span></label><input type="text" id="pKnows" data-k="pKnows" class="ty-input" placeholder="e.g. JavaScript, SEO, Web performance" autocomplete="off" spellcheck="false" ></div><div class="ty-field"><label for="pAlumni"><span>Alumni of</span></label><input type="text" id="pAlumni" data-k="pAlumni" class="ty-input" placeholder="e.g. Example University" autocomplete="off" spellcheck="false" ></div></div>
+<label class="ty-opt"><input type="checkbox" id="pProfile" data-k="pProfile" checked> Wrap in <code>ProfilePage</code> (for an about-me / author / profile page)</label>
 </div></details>
               </form>
             </div>
@@ -103,11 +111,11 @@
   <section class="ty-sec">
     <div class="wrap">
       <span class="eyebrow">◆ ABOUT THIS TOOL</span>
-      <h2>What Is Breadcrumb Structured Data?</h2>
-      <p class="sub">Show search engines where a page sits in your site — Home › Category › Page.</p>
+      <h2>What Is Schema Markup?</h2>
+      <p class="sub">Structured data that tells search engines exactly what a page is about.</p>
       <div class="about-grid">
-        <div><p>Breadcrumb structured data (<code>BreadcrumbList</code>) describes the trail of links from your home page down to the current page. Each step is a <code>ListItem</code> with a <code>position</code>, a <code>name</code> and the URL of that level (<code>item</code>).</p><p>Google can use it to show a readable path such as <em>example.com › Books › Fiction</em> above your result instead of a raw URL.</p></div>
-        <div><p><strong>Status in 2026:</strong> breadcrumb rich results are still supported, but since early 2025 Google shows them on <strong>desktop</strong> results only; mobile results show just the site name and domain. The markup still helps Google understand your site structure.</p><p>The trail should reflect a typical path a visitor would take to reach the page — it doesn't have to copy your URL folders. Also mark up the main <a href="/tools/seo/article-schema-generator.html">article</a> or <a href="/tools/seo/product-schema-generator.html">product</a> on the page.</p></div>
+        <div><p>Schema markup is code — usually JSON-LD inside a <code>&lt;script type="application/ld+json"&gt;</code> tag — that describes the content of a page using the shared <a href="https://schema.org/" target="_blank" rel="noopener">schema.org</a> vocabulary: a product and its price, an article and its author, a business and its opening hours. Search engines use it to understand pages and to show rich results.</p><p>This page generates two common types. <strong>WebSite</strong> markup on your home page helps Google choose the <strong>site name</strong> shown in search results. <strong>Person</strong> markup describes a person — ideally inside <strong>ProfilePage</strong> markup on an about-me or author page.</p></div>
+        <div><p>For other types, use the dedicated generators — each one knows Google's rules for its type: <a href="/tools/seo/faq-schema-generator.html">FAQ</a>, <a href="/tools/seo/article-schema-generator.html">Article</a>, <a href="/tools/seo/breadcrumb-schema-generator.html">Breadcrumb</a>, <a href="/tools/seo/product-schema-generator.html">Product</a>, <a href="/tools/seo/local-business-schema-generator.html">Local Business</a> and <a href="/tools/seo/organization-schema-generator.html">Organization</a>.</p><p>Note: the <em>sitelinks search box</em> that WebSite markup with <code>SearchAction</code> used to trigger was retired by Google in November 2024, so this generator doesn't add it.</p></div>
       </div>
     </div>
   </section>
@@ -115,14 +123,14 @@
   <!-- 2. REFERENCE -->
   <section class="ty-sec alt">
     <div class="wrap">
-      <span class="eyebrow">✓ RULES</span>
-      <h2>BreadcrumbList Requirements</h2>
-      <p class="sub">From Google's breadcrumb documentation.</p>
+      <span class="eyebrow">◇ TYPES</span>
+      <h2>Which Schema Type Do You Need?</h2>
+      <p class="sub">Pick the type that matches the main content of the page.</p>
       <div class="rules-list">
-        <div class="rule-card"><div class="rule-icon">2+</div><div><h3>At least two items</h3><p>A breadcrumb needs a minimum of two <code>ListItem</code>s. Positions start at 1 and count up — this tool numbers them for you.</p></div></div>
-        <div class="rule-card"><div class="rule-icon">🔗</div><div><h3><code>item</code> URLs</h3><p>Each item links to its page with a full, absolute URL. The URL of the <strong>last</strong> item (the current page) is optional.</p></div></div>
-        <div class="rule-card"><div class="rule-icon">Aa</div><div><h3>Names users see</h3><p>Use the same short labels as the visible breadcrumb on your page, e.g. “Books”, not “books-category”.</p></div></div>
-        <div class="rule-card"><div class="rule-icon">⑂</div><div><h3>Several paths</h3><p>If a page can be reached by different paths, you may add more than one BreadcrumbList. Use this tool once per trail.</p></div></div>
+        <div class="rule-card"><div class="rule-icon">🌐</div><div><h3>WebSite — on this page</h3><p>Home page only. Gives Google your preferred site name (and alternates) for search results.</p></div></div>
+        <div class="rule-card"><div class="rule-icon">👤</div><div><h3>Person — on this page</h3><p>About-me, author and team-member pages. Use ProfilePage when the whole page is about that person.</p></div></div>
+        <div class="rule-card"><div class="rule-icon">🏢</div><div><h3><a href="/tools/seo/organization-schema-generator.html">Organization</a> · <a href="/tools/seo/local-business-schema-generator.html">Local Business</a></h3><p>Your company (logo, profiles, identifiers) — or a physical location with address and opening hours.</p></div></div>
+        <div class="rule-card"><div class="rule-icon">📄</div><div><h3><a href="/tools/seo/article-schema-generator.html">Article</a> · <a href="/tools/seo/product-schema-generator.html">Product</a> · <a href="/tools/seo/faq-schema-generator.html">FAQ</a> · <a href="/tools/seo/breadcrumb-schema-generator.html">Breadcrumb</a></h3><p>Blog posts and news, product pages with price and reviews, Q&amp;A content, and the page's position in your site.</p></div></div>
       </div>
     </div>
   </section>
@@ -131,23 +139,23 @@
   <section class="how-sec section-navy">
     <div class="wrap">
       <span class="eyebrow">◐ THREE STEPS</span>
-      <h2>How to Use the Breadcrumb Schema Generator</h2>
+      <h2>How to Use the Schema Markup Generator</h2>
       <p class="sub">Get your result in under ten seconds.</p>
       <div class="steps">
         <div class="step" data-n="01">
           <div class="num">1</div>
-          <h3 style="color:#fff;">Fill the trail</h3>
-          <p>Paste the page URL and press Fill trail, or add items by hand from Home down to the current page.</p>
+          <h3 style="color:#fff;">Choose the type</h3>
+          <p>WebSite for your home page, Person for a profile page — or open one of the dedicated generators.</p>
         </div>
         <div class="step" data-n="02">
           <div class="num">2</div>
-          <h3 style="color:#fff;">Name the steps</h3>
-          <p>Rename each item to match your visible breadcrumb labels. Reorder with ↑ ↓ if needed.</p>
+          <h3 style="color:#fff;">Fill in the fields</h3>
+          <p>Required and recommended fields are marked; the checks update as you type.</p>
         </div>
         <div class="step" data-n="03">
           <div class="num">3</div>
-          <h3 style="color:#fff;">Copy the code</h3>
-          <p>Copy the script tag into the page and test it with Google's Rich Results Test.</p>
+          <h3 style="color:#fff;">Copy and test</h3>
+          <p>Paste the script tag into the page and check it with the Schema.org Validator or Google's Rich Results Test.</p>
         </div>
       </div>
     </div>
@@ -157,15 +165,15 @@
   <section class="ty-sec">
     <div class="wrap">
       <span class="eyebrow">✓ FEATURES</span>
-      <h2>Why Use the Toolyard Breadcrumb Schema Generator</h2>
+      <h2>Why Use the Toolyard Schema Markup Generator</h2>
       <p class="sub">Fast, accurate and private — built for developers.</p>
       <div class="why-grid">
-        <div><div class="why-ico">⚡</div><h3>One-click trail</h3><p>Builds the items from any URL's folders, with readable names.</p></div>
-        <div><div class="why-ico">#</div><h3>Automatic positions</h3><p>Positions are numbered in order — reorder freely and they update.</p></div>
-        <div><div class="why-ico">🔎</div><h3>Checks</h3><p>Flags relative URLs, other domains, duplicates and trails that are too short.</p></div>
-        <div><div class="why-ico">👀</div><h3>Live preview</h3><p>Shows the breadcrumb path as Google displays it on desktop.</p></div>
-        <div><div class="why-ico">🛡</div><h3>Safe output</h3><p>Escaped JSON that can't break the page.</p></div>
-        <div><div class="why-ico">🔒</div><h3>Private</h3><p>Runs entirely in your browser.</p></div>
+        <div><div class="why-ico">🌐</div><h3>Site names</h3><p>WebSite markup with name and alternate names, as Google's site-name docs describe.</p></div>
+        <div><div class="why-ico">👤</div><h3>ProfilePage</h3><p>Person markup wrapped in ProfilePage for author and about pages.</p></div>
+        <div><div class="why-ico">🧭</div><h3>7 generators</h3><p>This page plus six dedicated generators that know each type's rules.</p></div>
+        <div><div class="why-ico">✓</div><h3>Live checks</h3><p>Absolute URLs, home-page-only rules, language codes and more.</p></div>
+        <div><div class="why-ico">📅</div><h3>Up to date</h3><p>No retired features like the sitelinks search box.</p></div>
+        <div><div class="why-ico">🔒</div><h3>Private</h3><p>Everything runs in your browser.</p></div>
       </div>
     </div>
   </section>
@@ -179,28 +187,28 @@
       </div>
       <div class="faq" id="faqList">
         <div class="faq-item">
-          <button type="button">Do breadcrumbs still appear in Google?<span class="plus">+</span></button>
-          <div class="faq-a"><p>Yes on desktop. Since early 2025 Google no longer shows breadcrumb paths on mobile results — mobile shows just the site name and domain. The markup is still valid and still used to understand your site structure.</p></div>
+          <button type="button">What is the best format for schema markup?<span class="plus">+</span></button>
+          <div class="faq-a"><p>JSON-LD. Google recommends it because it sits in one script tag, separate from your HTML, and is easy to maintain. All our generators output JSON-LD.</p></div>
         </div>
         <div class="faq-item">
-          <button type="button">Does the last item need a URL?<span class="plus">+</span></button>
-          <div class="faq-a"><p>No. Google allows the URL of the last item (the page itself) to be left out. Including it is also fine.</p></div>
+          <button type="button">Where does WebSite markup go?<span class="plus">+</span></button>
+          <div class="faq-a"><p>On the home page of your domain or subdomain only — for example https://example.com/ or https://blog.example.com/. Google's site names don't work for subfolders like example.com/shop/.</p></div>
         </div>
         <div class="faq-item">
-          <button type="button">Must the trail match my URL structure?<span class="plus">+</span></button>
-          <div class="faq-a"><p>No. It should show a logical path a user would follow, such as Home › Books › Fiction. URL folders are a handy starting point, which is why the Fill trail button uses them.</p></div>
+          <button type="button">Can I still get a sitelinks search box?<span class="plus">+</span></button>
+          <div class="faq-a"><p>No. Google retired the sitelinks search box in November 2024, so WebSite markup with a SearchAction no longer triggers anything. Leaving old SearchAction markup in place is harmless.</p></div>
         </div>
         <div class="faq-item">
-          <button type="button">Should I include the home page?<span class="plus">+</span></button>
-          <div class="faq-a"><p>It's common and recommended to start with Home. The trail still needs at least two items in total.</p></div>
+          <button type="button">When should I use ProfilePage?<span class="plus">+</span></button>
+          <div class="faq-a"><p>When the page's main subject is one person — an author page, an about-me page or a team-member profile. The Person goes in ProfilePage's mainEntity.</p></div>
         </div>
         <div class="faq-item">
-          <button type="button">Can a page have more than one breadcrumb?<span class="plus">+</span></button>
-          <div class="faq-a"><p>Yes. If a product is reachable from two categories, add two separate BreadcrumbList blocks. Generate each trail separately.</p></div>
+          <button type="button">Can a page have more than one schema type?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Yes. A home page can have WebSite and Organization markup; an article page can have Article and Breadcrumb markup. Add each as its own script tag, or connect them with @id references.</p></div>
         </div>
         <div class="faq-item">
-          <button type="button">What does position mean?<span class="plus">+</span></button>
-          <div class="faq-a"><p>The order of the item in the trail, starting at 1 for the top level. This tool sets it automatically from the order of your items.</p></div>
+          <button type="button">Does schema markup improve rankings?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Not directly. It helps search engines understand your pages and makes them eligible for rich results, which can improve how your listing looks and how often it's clicked.</p></div>
         </div>
         <div class="faq-item">
           <button type="button">Is my data stored?<span class="plus">+</span></button>
@@ -222,16 +230,10 @@
         <a class="view-all" href="/categories/seo/">All SEO Tools →</a>
       </div>
       <div class="grid grid-3">
-        <a class="tool-card" href="/tools/seo/article-schema-generator.html">
+        <a class="tool-card" href="/tools/seo/organization-schema-generator.html">
           <div class="top-row"><span class="badge">Generator</span></div>
-          <h3>Article Schema Generator</h3>
-          <p>Create Article and BlogPosting structured data.</p>
-          <span class="open">Open tool →</span>
-        </a>
-        <a class="tool-card" href="/tools/seo/product-schema-generator.html">
-          <div class="top-row"><span class="badge">Generator</span></div>
-          <h3>Product Schema Generator</h3>
-          <p>Product structured data with price and reviews.</p>
+          <h3>Organization Schema Generator</h3>
+          <p>Organization JSON-LD with logo and socials.</p>
           <span class="open">Open tool →</span>
         </a>
         <a class="tool-card" href="/tools/seo/faq-schema-generator.html">
@@ -240,22 +242,28 @@
           <p>Build FAQPage JSON-LD for rich results.</p>
           <span class="open">Open tool →</span>
         </a>
+        <a class="tool-card" href="/tools/seo/article-schema-generator.html">
+          <div class="top-row"><span class="badge">Generator</span></div>
+          <h3>Article Schema Generator</h3>
+          <p>Create Article and BlogPosting structured data.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/seo/breadcrumb-schema-generator.html">
+          <div class="top-row"><span class="badge">Generator</span></div>
+          <h3>Breadcrumb Schema Generator</h3>
+          <p>Generate BreadcrumbList JSON-LD.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/seo/product-schema-generator.html">
+          <div class="top-row"><span class="badge">Generator</span></div>
+          <h3>Product Schema Generator</h3>
+          <p>Product structured data with price and reviews.</p>
+          <span class="open">Open tool →</span>
+        </a>
         <a class="tool-card" href="/tools/seo/local-business-schema-generator.html">
           <div class="top-row"><span class="badge">Generator</span></div>
           <h3>Local Business Schema Generator</h3>
           <p>Structured data for local businesses.</p>
-          <span class="open">Open tool →</span>
-        </a>
-        <a class="tool-card" href="/tools/seo/schema-markup-generator.html">
-          <div class="top-row"><span class="badge">Generator</span></div>
-          <h3>Schema Markup Generator</h3>
-          <p>Generate JSON-LD structured data for any page.</p>
-          <span class="open">Open tool →</span>
-        </a>
-        <a class="tool-card" href="/tools/seo/meta-tag-generator.html">
-          <div class="top-row"><span class="badge">Generator</span></div>
-          <h3>Meta Tag Generator</h3>
-          <p>Generate title, description and essential meta tags.</p>
           <span class="open">Open tool →</span>
         </a>
       </div>
@@ -592,57 +600,79 @@
         }).replace(/\s+/g, ' ').trim();
     };
 
-    S.status('info', 'Breadcrumb rich results are still supported, but Google shows them on desktop results only (since early 2025).');
-    function titleCase(seg) {
-      try { seg = decodeURIComponent(seg); } catch (e) {}
-      seg = seg.replace(/\.(html?|php|aspx?)$/i, '').replace(/[-_+]+/g, ' ').trim();
-      return seg.replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+    var typeSeg = TK.segmented($('typeSeg'), function (v) { $('sType').value = v; showType(); form.dispatchEvent(new Event('input')); });
+    function showType() { var p = $('sType').value === 'Person'; $('gPerson').hidden = !p; $('gWebsite').hidden = p; typeSeg.set(p ? 'Person' : 'WebSite', true); }
+    var LANG = /^[a-z]{2,3}(-[A-Z][a-z]{3})?(-([A-Z]{2}|\d{3}))?$/i;
+    function website(checks) {
+      var name = S.v('wName'), url = S.v('wUrl'), alts = S.lines('wAlt'), lang = S.v('wLang'), pub = S.v('wPub');
+      if (!name) checks.push(['err', 'Site name is required.']);
+      else if (name.length > 60) checks.push(['warn', 'Site names should be short — this one is ' + name.length + ' characters.']);
+      if (!url) checks.push(['err', 'Home page URL is required.']);
+      else if (!S.isUrl(url)) checks.push(['err', 'Home page URL must be absolute (https://…).']);
+      else { var u = new URL(url); if (u.pathname !== '/' || u.search) checks.push(['err', 'Use the home page of the domain or subdomain (e.g. ' + u.origin + '/). Site names don\u2019t work for subfolders or pages.']); }
+      if (alts.some(function (a) { return a.toLowerCase() === name.toLowerCase(); })) checks.push(['warn', 'An alternate name repeats the site name.']);
+      if (lang && !LANG.test(lang)) checks.push(['warn', 'Language should be a code like en, hi, as or en-IN.']);
+      if (pub && !(S.isUrl(pub))) checks.push(['err', 'Publisher must be a full URL or @id such as https://example.com/#organization.']);
+      checks.push(['info', 'Place this on your home page only.']);
+      return { '@context': 'https://schema.org', '@type': 'WebSite', '@id': url && S.isUrl(url) ? S.idOf(url, 'website') : '', name: name,
+        alternateName: alts.length === 1 ? alts[0] : alts, url: url, inLanguage: lang, publisher: pub && S.isUrl(pub) ? { '@id': pub } : '' };
     }
-    function fill() {
-      var raw = $('fillUrl').value.trim(), inp = $('fillUrl');
-      if (!S.isUrl(raw)) { inp.setAttribute('aria-invalid', 'true'); inp.focus(); return; }
-      inp.removeAttribute('aria-invalid');
-      var u = new URL(raw), segs = u.pathname.split('/').filter(Boolean), rows = [{ name: 'Home', url: u.origin + '/' }], path = '';
-      var trailing = /\/$/.test(u.pathname);
-      segs.forEach(function (s, i) { path += '/' + s; rows.push({ name: titleCase(s) || s, url: u.origin + path + (i < segs.length - 1 || trailing ? '/' : '') }); });
-      S.setRows('crumbs', rows);
+    function person(checks) {
+      var name = S.v('pName'), url = S.v('pUrl'), img = S.v('pImg'), same = S.lines('pSame'), orgUrl = S.v('pOrgUrl');
+      if (!name) checks.push(['err', 'Name is required.']);
+      [['Profile URL', url], ['Photo URL', img], ['Organization URL', orgUrl]].forEach(function (x) { if (x[1] && !S.isUrl(x[1])) checks.push(['err', x[0] + ' must be absolute (https://…).']); });
+      var bad = same.filter(function (u) { return !S.isUrl(u); });
+      if (bad.length) checks.push(['err', 'Profile links must be full URLs: ' + bad[0].slice(0, 60)]);
+      if (!url) checks.push(['info', 'A profile or website URL is recommended.']);
+      if (!same.length) checks.push(['info', 'Links to social or professional profiles (sameAs) are recommended.']);
+      if (orgUrl && !S.v('pOrg')) checks.push(['warn', 'Add the organization name for “Works for”.']);
+      var split = function (s) { var a = s.split(',').map(function (x) { return x.trim(); }).filter(Boolean); return a.length === 1 ? a[0] : a; };
+      var p = { '@type': 'Person', '@id': url && S.isUrl(url) ? S.idOf(url, 'person') : '', name: name, alternateName: S.v('pAlt'), jobTitle: S.v('pJob'), url: url, image: img,
+        description: S.v('pDesc'), worksFor: S.v('pOrg') ? { '@type': 'Organization', name: S.v('pOrg'), url: orgUrl } : '',
+        sameAs: same.length === 1 ? same[0] : same, knowsAbout: split(S.v('pKnows')), alumniOf: S.v('pAlumni') ? { '@type': 'EducationalOrganization', name: S.v('pAlumni') } : '' };
+      if (S.v('pProfile')) { checks.push(['info', 'ProfilePage: use it when the whole page is about this person.']); return { '@context': 'https://schema.org', '@type': 'ProfilePage', mainEntity: p }; }
+      p['@context'] = 'https://schema.org';
+      var o = { '@context': 'https://schema.org' }; Object.keys(p).forEach(function (k) { if (k !== '@context') o[k] = p[k]; });
+      return o;
     }
-    $('fillUrl').addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); fill(); form.dispatchEvent(new Event('input')); } });
     function build() {
-      var rows = S.list('crumbs'), checks = [], hosts = {}, seenUrl = {};
-      rows.forEach(function (r, i) {
-        var n = 'Item ' + r._i, last = i === rows.length - 1;
-        if (!r.name) checks.push(['err', n + ': name is empty.']);
-        if (!r.url && !last) checks.push(['err', n + ': URL is required (only the last item may leave it out).']);
-        if (r.url && !S.isUrl(r.url)) checks.push(['err', n + ': URL must be absolute (https://…).']);
-        if (r.url && S.isUrl(r.url)) {
-          var h = new URL(r.url).hostname.replace(/^www\./, ''); hosts[h] = 1;
-          if (seenUrl[r.url]) checks.push(['warn', n + ' has the same URL as item ' + seenUrl[r.url] + '.']); else seenUrl[r.url] = r._i;
-        }
-      });
-      if (Object.keys(hosts).length > 1) checks.push(['warn', 'The items point to different domains (' + Object.keys(hosts).join(', ') + '). Breadcrumbs should stay on one site.']);
-      if (rows.length < 2) checks.push(['err', 'A breadcrumb needs at least two items.']);
-      if (rows.length && !rows[rows.length - 1].url) checks.push(['info', 'The last item has no URL — allowed for the current page.']);
-      if (rows.length >= 2 && !checks.some(function (c) { return c[0] === 'err' || c[0] === 'warn'; })) checks.push(['ok', rows.length + ' items, positions 1–' + rows.length + '.']);
-      return { data: { '@context': 'https://schema.org', '@type': 'BreadcrumbList',
-        itemListElement: rows.map(function (r, i) { return { '@type': 'ListItem', position: i + 1, name: r.name, item: r.url }; }) }, checks: checks };
+      var checks = [], data = $('sType').value === 'Person' ? person(checks) : website(checks);
+      if (!checks.some(function (c) { return c[0] === 'err' || c[0] === 'warn'; })) checks.push(['ok', 'Valid ' + ($('sType').value === 'Person' ? 'Person' : 'WebSite') + ' markup.']);
+      return { data: data, checks: checks };
     }
     function preview(d, el) {
-      var items = d.itemListElement || [], first = items.filter(function (x) { return x.item; })[0], host = first ? S.host(first.item) : '';
-      var crumbs = [host || 'example.com'].concat(items.slice(1).map(function (x) { return x.name || '…'; }));
-      var last = items[items.length - 1];
-      el.appendChild(S.el('div', 'ty-plabel', 'Desktop search result (illustration)'));
-      el.appendChild(S.serp({ site: host, host: host, crumbs: crumbs, title: (last && last.name) || 'Page title', desc: 'Your page description appears here. The path above replaces the raw URL on desktop.' }));
+      if (d['@type'] === 'WebSite') {
+        el.appendChild(S.el('div', 'ty-plabel', 'Site name in search results (illustration)'));
+        el.appendChild(S.serp({ url: d.url, site: d.name || 'Your site name', host: S.host(d.url || ''), title: 'Page title', desc: 'Google shows the site name above the URL of every result from your site.' }));
+        return;
+      }
+      var p = d['@type'] === 'ProfilePage' ? (d.mainEntity || {}) : d;
+      var card = S.el('div', 'ty-kp'), head = S.el('div', 'ty-kp-head');
+      head.appendChild(S.el('div', 'ty-kp-logo round', (p.name || '?').charAt(0).toUpperCase()));
+      var t = S.el('div'); t.appendChild(S.el('div', 'ty-kp-name', p.name || 'Full name'));
+      t.appendChild(S.el('div', 'ty-kp-type', [p.jobTitle, p.worksFor && p.worksFor.name].filter(Boolean).join(' at ') || 'Person'));
+      head.appendChild(t); card.appendChild(head);
+      if (p.description) card.appendChild(S.el('p', 'ty-kp-desc', p.description));
+      var prof = [].concat(p.sameAs || []);
+      if (prof.length) { var pl = S.el('div', 'ty-kp-prof'); prof.slice(0, 8).forEach(function (u) { pl.appendChild(S.el('span', 'ty-kp-chip', S.host(u) || u)); }); card.appendChild(pl); }
+      el.appendChild(S.el('div', 'ty-plabel', d['@type'] === 'ProfilePage' ? 'Profile page (illustration)' : 'Person (illustration)'));
+      el.appendChild(card);
     }
     S.init({
-      key: 'ty-breadcrumb-schema', filename: 'breadcrumb-schema', build: build, preview: preview,
-      action: function (act) { if (act === 'fill') { fill(); return true; } return false; },
-      initial: function () { return { f: {}, l: { crumbs: [{}, {}] } }; },
-      onReset: function () { $('fillUrl').value = ''; },
-      example: function () { return { f: {}, l: { crumbs: [
-        { name: 'Home', url: 'https://example.com/' }, { name: 'Books', url: 'https://example.com/books/' },
-        { name: 'Fiction', url: 'https://example.com/books/fiction/' }, { name: 'The Hobbit', url: 'https://example.com/books/fiction/the-hobbit' } ] } }; }
+      key: 'ty-schema-hub', filename: 'schema-markup', build: build, preview: preview,
+      setup: function () {},
+      initial: function () { return { f: { sType: 'WebSite' }, l: {} }; },
+      onReset: showType,
+      example: function () {
+        if ($('sType').value === 'Person') return { f: { sType: 'Person', pName: 'Priya Sharma', pAlt: '@priyasharma', pJob: 'Web Developer', pUrl: 'https://example.com/about',
+          pImg: 'https://example.com/images/priya.jpg', pOrg: 'Toolyard Labs', pOrgUrl: 'https://example.com', pDesc: 'Builds fast, private web tools for developers.',
+          pSame: 'https://www.linkedin.com/in/example\nhttps://github.com/example', pKnows: 'JavaScript, SEO, Web performance', pAlumni: 'Example University', pProfile: true }, l: {} };
+        return { f: { sType: 'WebSite', wName: 'Toolyard', wAlt: 'Toolyard Developer Tools', wUrl: 'https://example.com/', wLang: 'en', wPub: 'https://example.com/#organization' }, l: {} };
+      }
     });
+    showType();
+    $('exampleBtn').addEventListener('click', showType);
+    window.addEventListener('pageshow', showType);
 
   })();
   </script>

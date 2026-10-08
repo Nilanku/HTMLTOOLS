@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Breadcrumb Schema Generator – BreadcrumbList JSON-LD | Toolyard</title>
-  <meta name="description" content="Free breadcrumb schema generator. Build BreadcrumbList JSON-LD from a URL in one click, reorder items, and check positions, absolute URLs and domains. Live preview of the breadcrumb path in Google.">
-  <link rel="canonical" href="https://htmltools.nilankubaruah.workers.dev/tools/seo/breadcrumb-schema-generator.html">
+  <title>Query String Builder – Build URL Parameters with Correct Encoding | Toolyard</title>
+  <meta name="description" content="Free query string builder. Add names and values and get a correctly encoded URL — %20 or + for spaces, repeated names as tag=a&amp;tag=b, tag[]= or comma lists, empty-value handling, sorting and a length check.">
+  <link rel="canonical" href="https://htmltools.nilankubaruah.workers.dev/tools/developer/query-string-builder.html">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Breadcrumb Schema Generator – BreadcrumbList JSON-LD">
-  <meta property="og:description" content="Free breadcrumb schema generator. Build BreadcrumbList JSON-LD from a URL in one click, reorder items, and check positions, absolute URLs and domains. Live preview of the breadcrumb path in Google.">
-  <meta property="og:url" content="https://htmltools.nilankubaruah.workers.dev/tools/seo/breadcrumb-schema-generator.html">
+  <meta property="og:title" content="Query String Builder – Build URL Parameters with Correct Encoding">
+  <meta property="og:description" content="Free query string builder. Add names and values and get a correctly encoded URL — %20 or + for spaces, repeated names as tag=a&amp;tag=b, tag[]= or comma lists, empty-value handling, sorting and a length check.">
+  <meta property="og:url" content="https://htmltools.nilankubaruah.workers.dev/tools/developer/query-string-builder.html">
   <meta name="twitter:card" content="summary">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,10 +19,10 @@
   <script src="/js/tools-data.js"></script>
   <script src="/js/layout.js"></script>
   <script src="/js/tool-kit.js"></script>
-  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Breadcrumb Schema Generator", "url": "https://htmltools.nilankubaruah.workers.dev/tools/seo/breadcrumb-schema-generator.html", "applicationCategory": "DeveloperApplication", "operatingSystem": "Any (runs in your browser)", "description": "Free breadcrumb schema generator. Build BreadcrumbList JSON-LD from a URL in one click, reorder items, and check positions, absolute URLs and domains. Live preview of the breadcrumb path in Google.", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true}</script>
-  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Do breadcrumbs still appear in Google?", "acceptedAnswer": {"@type": "Answer", "text": "Yes on desktop. Since early 2025 Google no longer shows breadcrumb paths on mobile results — mobile shows just the site name and domain. The markup is still valid and still used to understand your site structure."}}, {"@type": "Question", "name": "Does the last item need a URL?", "acceptedAnswer": {"@type": "Answer", "text": "No. Google allows the URL of the last item (the page itself) to be left out. Including it is also fine."}}, {"@type": "Question", "name": "Must the trail match my URL structure?", "acceptedAnswer": {"@type": "Answer", "text": "No. It should show a logical path a user would follow, such as Home › Books › Fiction. URL folders are a handy starting point, which is why the Fill trail button uses them."}}, {"@type": "Question", "name": "Should I include the home page?", "acceptedAnswer": {"@type": "Answer", "text": "It's common and recommended to start with Home. The trail still needs at least two items in total."}}, {"@type": "Question", "name": "Can a page have more than one breadcrumb?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. If a product is reachable from two categories, add two separate BreadcrumbList blocks. Generate each trail separately."}}, {"@type": "Question", "name": "What does position mean?", "acceptedAnswer": {"@type": "Answer", "text": "The order of the item in the trail, starting at 1 for the top level. This tool sets it automatically from the order of your items."}}, {"@type": "Question", "name": "Is my data stored?", "acceptedAnswer": {"@type": "Answer", "text": "Only in your browser's localStorage. Press Reset to clear it."}}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Query String Builder", "url": "https://htmltools.nilankubaruah.workers.dev/tools/developer/query-string-builder.html", "applicationCategory": "DeveloperApplication", "operatingSystem": "Any (runs in your browser)", "description": "Free query string builder. Add names and values and get a correctly encoded URL — %20 or + for spaces, repeated names as tag=a&tag=b, tag[]= or comma lists, empty-value handling, sorting and a length check.", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Should spaces be %20 or +?", "acceptedAnswer": {"@type": "Answer", "text": "Both work for query strings on almost every server. %20 (RFC 3986) is correct anywhere in a URL; + is what HTML forms send and what URLSearchParams produces. If an API's documentation shows one, use that."}}, {"@type": "Question", "name": "How do I send an array or list?", "acceptedAnswer": {"@type": "Answer", "text": "Add the same parameter name several times, then pick the list format your server expects: tag=a&tag=b (most frameworks), tag[]=a&tag[]=b (PHP, Rails) or tag=a,b (some REST APIs)."}}, {"@type": "Question", "name": "What happens to the #fragment of my base URL?", "acceptedAnswer": {"@type": "Answer", "text": "The fragment must always come last, so the builder moves it after the new parameters: /page#top becomes /page?a=1#top. Browsers never send the fragment to the server."}}, {"@type": "Question", "name": "Is there a maximum URL length?", "acceptedAnswer": {"@type": "Answer", "text": "There's no official limit, but many servers and CDNs reject URLs longer than 8 KB, and some tools fail above about 2,000 characters. For large amounts of data, send a POST request instead."}}, {"@type": "Question", "name": "Can I put passwords or API keys in a URL?", "acceptedAnswer": {"@type": "Answer", "text": "Avoid it. URLs are saved in browser history, server logs and analytics, and can leak through the Referer header. The builder warns you when a parameter name looks like a secret."}}, {"@type": "Question", "name": "Is my data uploaded?", "acceptedAnswer": {"@type": "Answer", "text": "No. The URL is built in your browser, and the form is saved only in this browser's local storage — press Reset to clear it."}}]}</script>
 </head>
-<body class="ty-tool" data-tool="breadcrumb-schema-generator">
+<body class="ty-tool" data-tool="query-string-builder">
 
   <!-- SHARED HEADER, MOBILE MENU & BREADCRUMBS (rendered by /js/layout.js) -->
   <div id="site-header"></div>
@@ -32,20 +32,20 @@
   <!-- TOOL INTRO -->
   <section class="tool-intro">
     <div class="wrap tool-intro-content">
-      <span class="eyebrow">🔍 SEO · STRUCTURED DATA</span>
-      <h1>Breadcrumb Schema Generator</h1>
-      <p class="lead">Create <code>BreadcrumbList</code> JSON-LD that shows your page's place in the site hierarchy. Paste a URL to fill the trail automatically, rename and reorder the items, and copy valid code with positions numbered for you.</p>
-      <div class="tool-meta-badge"><span class="dot"></span> BreadcrumbList JSON-LD · Fill from URL · Automatic positions</div>
+      <span class="eyebrow">⌨ DEVELOPER · GENERATOR</span>
+      <h1>Query String Builder</h1>
+      <p class="lead">Build a URL with parameters without worrying about encoding. Type names and values in plain text — spaces, <code>&amp;</code>, <code>=</code>, <code>#</code>, accents and emoji are encoded correctly, and you choose how spaces and lists are written.</p>
+      <div class="tool-meta-badge"><span class="dot"></span> RFC 3986 or form encoding · Lists · Empty values · Sorting · Length check</div>
     </div>
   </section>
 
   <!-- WORKSPACE -->
   <section class="tool-app-section">
     <div class="wrap">
-      <div class="ty-pair"><span>Paste the code into the page's <code>&lt;head&gt;</code> or <code>&lt;body&gt;</code>.</span><span>Marking up the article itself? <a href="/tools/seo/article-schema-generator.html">Article Schema Generator →</a></span></div>
-      <div class="tool-workspace ty-gen-ws">
+      <div class="ty-pair"><span>Tip: values are encoded for you — type <code>Tom &amp; Jerry</code>, not <code>Tom%20%26%20Jerry</code>.</span><span>Need to split a URL into its parts? <a href="/categories/developer/#url-parser">URL Parser (coming soon)</a></span></div>
+      <div class="tool-workspace">
         <div class="tool-toolbar">
-          <div class="tool-toolbar-left"><span style="font-size:13px; color:var(--ink-soft);">Fill in the form — the JSON-LD and the checks update as you type. </span></div>
+          <div class="tool-toolbar-left"><span style="font-size:13px; color:var(--ink-soft);">Fill in the form — the URL and the checks update as you type. </span></div>
           <div class="tool-toolbar-right">
             <button type="button" class="btn btn-ghost btn-sm" id="exampleBtn">Load Example</button>
             <button type="button" class="btn btn-danger btn-sm" id="resetBtn">Reset</button>
@@ -56,26 +56,26 @@
             <div class="tool-pane ty-gen-ctl">
               <div class="tool-pane-header"><span class="title">Details</span><span class="badge">Saved in this browser</span></div>
               <form class="ty-ctl ty-sform" id="sForm" autocomplete="off" onsubmit="return false">
-<details class="ty-sgroup" open><summary>Quick start</summary><div class="ty-sgbody">
-<div class="ty-field"><label for="fillUrl"><span>Start from a page URL</span></label>
-<div class="ty-line"><input type="url" id="fillUrl" class="ty-input" placeholder="https://example.com/books/fiction/the-hobbit" autocomplete="off" spellcheck="false" style="flex:1 1 220px;width:auto">
-<button type="button" class="btn btn-outline btn-sm" data-act="fill">Fill trail</button></div>
-<div class="hint">Creates one item per folder in the URL (Home › Books › Fiction › …). Then edit the names — use the labels visitors see on your page.</div></div>
+<details class="ty-sgroup" open><summary>URL</summary><div class="ty-sgbody">
+<div class="ty-field"><label for="base"><span>Base URL</span></label><input type="text" id="base" data-k="base" class="ty-input" placeholder="https://example.com/search" autocomplete="off" spellcheck="false" ><div class="hint">Optional. Leave empty to get just the query string. An existing ?query is kept and a #fragment is moved to the end.</div></div>
 </div></details>
-<details class="ty-sgroup" open><summary>Breadcrumb trail</summary><div class="ty-sgbody">
-<div class="ty-rep" data-list="crumbs" data-min="2" data-item="Item"></div>
-<button type="button" class="btn btn-outline btn-sm ty-rep-add" data-act="add" data-list="crumbs">+ Add item</button>
-<template id="tpl-crumbs"><div class="ty-rep-row">
-  <div class="ty-rep-head"><span class="ty-rep-n">Item</span><span class="ty-rep-acts">
+<details class="ty-sgroup" open><summary>Parameters</summary><div class="ty-sgbody">
+<div class="ty-rep" data-list="params" data-min="1" data-item="Parameter"></div>
+<button type="button" class="btn btn-outline btn-sm ty-rep-add" data-act="add" data-list="params">+ Add parameter</button>
+<template id="tpl-params"><div class="ty-rep-row">
+  <div class="ty-rep-head"><span class="ty-rep-n">Parameter</span><span class="ty-rep-acts">
     <button type="button" class="ty-ibtn" data-act="up" aria-label="Move up" title="Move up">↑</button><button type="button" class="ty-ibtn" data-act="down" aria-label="Move down" title="Move down">↓</button><button type="button" class="ty-ibtn del" data-act="del" aria-label="Remove" title="Remove">✕</button>
   </span></div>
-  <div class="ty-rep-body"><label class="ty-field"><span class="lbl">Name <span class="ty-need req">Required</span></span><input type="text" data-f="name" class="ty-input" placeholder="e.g. Books" autocomplete="off" spellcheck="false" ></label><label class="ty-field"><span class="lbl">URL</span><input type="url" data-f="url" class="ty-input" placeholder="https://example.com/books" autocomplete="off" spellcheck="false" ></label></div>
-</div></template>
+  <div class="ty-rep-body"><label class="ty-field"><span class="lbl">Name</span><input type="text" data-f="k" class="ty-input" placeholder="q" autocomplete="off" spellcheck="false" ></label><label class="ty-field"><span class="lbl">Value</span><input type="text" data-f="v" class="ty-input" placeholder="red shoes" autocomplete="off" spellcheck="false" ></label></div>
+</div></template><div class="hint" style="margin-top:6px">Add the same name more than once to send a list. Spaces at the start and end of a name or value are ignored.</div>
+</div></details>
+<details class="ty-sgroup" open><summary>Encoding</summary><div class="ty-sgbody">
+<div class="ty-row"><div class="ty-field"><label for="enc"><span>Spaces &amp; special characters</span></label><select id="enc" data-k="enc" class="ty-input tool-select"><option value="rfc" selected>%20 for spaces (RFC 3986)</option><option value="form">+ for spaces (HTML forms)</option></select></div><div class="ty-field"><label for="arr"><span>Repeated names</span></label><select id="arr" data-k="arr" class="ty-input tool-select"><option value="repeat" selected>tag=a&amp;tag=b</option><option value="brackets">tag[]=a&amp;tag[]=b</option><option value="comma">tag=a,b</option></select></div></div><div class="ty-row"><div class="ty-field"><label for="emp"><span>Empty values</span></label><select id="emp" data-k="emp" class="ty-input tool-select"><option value="keep" selected>Keep as name=</option><option value="flag">Name only</option><option value="skip">Leave out</option></select></div></div><label class="ty-opt" title="Sort by name (useful for cache keys and canonical URLs); parameters with the same name keep their order"><input type="checkbox" id="sort" data-k="sort"> Sort parameters A–Z</label>
 </div></details>
               </form>
             </div>
             <div class="tool-pane ty-gen-prev">
-              <div class="tool-pane-header"><span class="title">Preview &amp; checks</span><span class="ty-ccount" id="checkCount" aria-live="polite"></span></div>
+              <div class="tool-pane-header"><span class="title">Parameters &amp; checks</span><span class="ty-ccount" id="checkCount" aria-live="polite"></span></div>
               <div class="ty-sprev" id="sPrev">
                 <div class="ty-sstatus" id="sStatus" hidden></div>
                 <div id="preview"></div>
@@ -84,15 +84,15 @@
             </div>
           </div>
           <div class="tool-pane ty-gen-code">
-            <div class="tool-pane-header"><span class="title">JSON-LD</span>
+            <div class="tool-pane-header"><span class="title">URL</span>
               <div class="actions">
-                <div class="ty-seg" id="fmtSeg" role="group" aria-label="Output format"><button type="button" data-value="script" class="active">&lt;script&gt;</button><button type="button" data-value="json">JSON</button></div>
+                
                 <button type="button" class="btn btn-sm btn-outline" id="copyBtn">Copy</button>
                 <button type="button" class="btn btn-sm btn-ghost" id="dlBtn">Download</button>
               </div>
             </div>
-            <textarea class="tool-textarea ty-mono" id="codeOut" readonly spellcheck="false" aria-label="Generated JSON-LD"></textarea>
-            <div class="ty-svalid">Validate: <a href="https://search.google.com/test/rich-results" target="_blank" rel="noopener">Google Rich Results Test ↗</a> · <a href="https://validator.schema.org/" target="_blank" rel="noopener">Schema.org Validator ↗</a></div>
+            <textarea class="tool-textarea ty-mono" id="codeOut" readonly spellcheck="false" aria-label="Generated URL"></textarea>
+            
           </div>
         </div>
       </div>
@@ -103,11 +103,11 @@
   <section class="ty-sec">
     <div class="wrap">
       <span class="eyebrow">◆ ABOUT THIS TOOL</span>
-      <h2>What Is Breadcrumb Structured Data?</h2>
-      <p class="sub">Show search engines where a page sits in your site — Home › Category › Page.</p>
+      <h2>How Query Strings Work</h2>
+      <p class="sub">The part after the ? that passes data to a page.</p>
       <div class="about-grid">
-        <div><p>Breadcrumb structured data (<code>BreadcrumbList</code>) describes the trail of links from your home page down to the current page. Each step is a <code>ListItem</code> with a <code>position</code>, a <code>name</code> and the URL of that level (<code>item</code>).</p><p>Google can use it to show a readable path such as <em>example.com › Books › Fiction</em> above your result instead of a raw URL.</p></div>
-        <div><p><strong>Status in 2026:</strong> breadcrumb rich results are still supported, but since early 2025 Google shows them on <strong>desktop</strong> results only; mobile results show just the site name and domain. The markup still helps Google understand your site structure.</p><p>The trail should reflect a typical path a visitor would take to reach the page — it doesn't have to copy your URL folders. Also mark up the main <a href="/tools/seo/article-schema-generator.html">article</a> or <a href="/tools/seo/product-schema-generator.html">product</a> on the page.</p></div>
+        <div><p>A query string is the part of a URL after the <code>?</code>: <code>?q=red+shoes&amp;size=42</code>. Each parameter is a <code>name=value</code> pair, and pairs are separated by <code>&amp;</code>. Because <code>&amp;</code>, <code>=</code>, <code>#</code>, <code>?</code> and spaces have special meanings, they must be <em>percent-encoded</em> inside names and values — <code>&amp;</code> becomes <code>%26</code>, for example.</p><p>This builder encodes every name and value for you. Choose <b>%20 for spaces</b> (RFC 3986, safe everywhere) or <b>+ for spaces</b> (the format HTML forms and <code>URLSearchParams</code> use). Both are decoded the same way by almost every server.</p></div>
+        <div><p><strong>Lists.</strong> There's no single standard for sending several values under one name. Most servers (Express, Django, Flask, Go, ASP.NET, Java) read repeated names: <code>tag=a&amp;tag=b</code>. PHP and Rails expect <code>tag[]=a&amp;tag[]=b</code> (written as <code>tag%5B%5D</code>, since brackets must be encoded). Some APIs want a comma list: <code>tag=a,b</code>.</p><p><strong>Length.</strong> Browsers handle very long URLs, but servers, proxies and CDNs often cut off at 8 KB or less, and some tools still break above about 2,000 characters. The builder warns you when a URL gets that long.</p></div>
       </div>
     </div>
   </section>
@@ -115,15 +115,20 @@
   <!-- 2. REFERENCE -->
   <section class="ty-sec alt">
     <div class="wrap">
-      <span class="eyebrow">✓ RULES</span>
-      <h2>BreadcrumbList Requirements</h2>
-      <p class="sub">From Google's breadcrumb documentation.</p>
-      <div class="rules-list">
-        <div class="rule-card"><div class="rule-icon">2+</div><div><h3>At least two items</h3><p>A breadcrumb needs a minimum of two <code>ListItem</code>s. Positions start at 1 and count up — this tool numbers them for you.</p></div></div>
-        <div class="rule-card"><div class="rule-icon">🔗</div><div><h3><code>item</code> URLs</h3><p>Each item links to its page with a full, absolute URL. The URL of the <strong>last</strong> item (the current page) is optional.</p></div></div>
-        <div class="rule-card"><div class="rule-icon">Aa</div><div><h3>Names users see</h3><p>Use the same short labels as the visible breadcrumb on your page, e.g. “Books”, not “books-category”.</p></div></div>
-        <div class="rule-card"><div class="rule-icon">⑂</div><div><h3>Several paths</h3><p>If a page can be reached by different paths, you may add more than one BreadcrumbList. Use this tool once per trail.</p></div></div>
-      </div>
+      <span class="eyebrow">⌘ REFERENCE</span>
+      <h2>How Characters Are Encoded</h2>
+      <p class="sub">In names and values.</p>
+      <div class="ty-ref-wrap"><table class="ty-ref-table">
+        <thead><tr><th>Character</th><th>%20 mode (RFC 3986)</th><th>+ mode (forms)</th></tr></thead>
+        <tbody>
+          <tr><td>Space</td><td><code>%20</code></td><td><code>+</code></td></tr>
+          <tr><td><code>&amp;</code> <code>=</code> <code>#</code> <code>?</code> <code>+</code></td><td><code>%26 %3D %23 %3F %2B</code></td><td><code>%26 %3D %23 %3F %2B</code></td></tr>
+          <tr><td><code>/</code> <code>:</code> <code>@</code> <code>,</code></td><td><code>%2F %3A %40 %2C</code></td><td><code>%2F %3A %40 %2C</code></td></tr>
+          <tr><td><code>! ' ( ) *</code></td><td><code>%21 %27 %28 %29 %2A</code></td><td><code>%21 %27 %28 %29</code> and <code>*</code></td></tr>
+          <tr><td><code>- . _ ~</code></td><td>unchanged</td><td><code>- . _</code> unchanged, <code>~</code> → <code>%7E</code></td></tr>
+          <tr><td>é, ₹, 😀</td><td colspan="2">UTF-8 bytes: <code>%C3%A9</code>, <code>%E2%82%B9</code>, <code>%F0%9F%98%80</code></td></tr>
+        </tbody>
+      </table></div>
     </div>
   </section>
 
@@ -131,23 +136,23 @@
   <section class="how-sec section-navy">
     <div class="wrap">
       <span class="eyebrow">◐ THREE STEPS</span>
-      <h2>How to Use the Breadcrumb Schema Generator</h2>
+      <h2>How to Use the Query String Builder</h2>
       <p class="sub">Get your result in under ten seconds.</p>
       <div class="steps">
         <div class="step" data-n="01">
           <div class="num">1</div>
-          <h3 style="color:#fff;">Fill the trail</h3>
-          <p>Paste the page URL and press Fill trail, or add items by hand from Home down to the current page.</p>
+          <h3 style="color:#fff;">Enter the base URL</h3>
+          <p>Optional — leave it empty for just the query string.</p>
         </div>
         <div class="step" data-n="02">
           <div class="num">2</div>
-          <h3 style="color:#fff;">Name the steps</h3>
-          <p>Rename each item to match your visible breadcrumb labels. Reorder with ↑ ↓ if needed.</p>
+          <h3 style="color:#fff;">Add parameters</h3>
+          <p>Plain names and values; repeat a name for a list.</p>
         </div>
         <div class="step" data-n="03">
           <div class="num">3</div>
-          <h3 style="color:#fff;">Copy the code</h3>
-          <p>Copy the script tag into the page and test it with Google's Rich Results Test.</p>
+          <h3 style="color:#fff;">Copy the URL</h3>
+          <p>Encoded and checked, ready to paste.</p>
         </div>
       </div>
     </div>
@@ -157,15 +162,15 @@
   <section class="ty-sec">
     <div class="wrap">
       <span class="eyebrow">✓ FEATURES</span>
-      <h2>Why Use the Toolyard Breadcrumb Schema Generator</h2>
+      <h2>Why Use the Toolyard Query String Builder</h2>
       <p class="sub">Fast, accurate and private — built for developers.</p>
       <div class="why-grid">
-        <div><div class="why-ico">⚡</div><h3>One-click trail</h3><p>Builds the items from any URL's folders, with readable names.</p></div>
-        <div><div class="why-ico">#</div><h3>Automatic positions</h3><p>Positions are numbered in order — reorder freely and they update.</p></div>
-        <div><div class="why-ico">🔎</div><h3>Checks</h3><p>Flags relative URLs, other domains, duplicates and trails that are too short.</p></div>
-        <div><div class="why-ico">👀</div><h3>Live preview</h3><p>Shows the breadcrumb path as Google displays it on desktop.</p></div>
-        <div><div class="why-ico">🛡</div><h3>Safe output</h3><p>Escaped JSON that can't break the page.</p></div>
-        <div><div class="why-ico">🔒</div><h3>Private</h3><p>Runs entirely in your browser.</p></div>
+        <div><div class="why-ico">%</div><h3>Correct encoding</h3><p>Every name and value is percent-encoded — no broken & or # ever.</p></div>
+        <div><div class="why-ico">+</div><h3>Two styles</h3><p>RFC 3986 %20 or HTML-form + for spaces.</p></div>
+        <div><div class="why-ico">[ ]</div><h3>Lists your way</h3><p>Repeated names, PHP-style tag[] or comma lists.</p></div>
+        <div><div class="why-ico">?#</div><h3>Keeps the base</h3><p>An existing query is kept and the #fragment stays at the end.</p></div>
+        <div><div class="why-ico">⚠</div><h3>Checks</h3><p>Missing names, invalid base URLs, duplicates and over-long URLs.</p></div>
+        <div><div class="why-ico">🔒</div><h3>Private</h3><p>Runs in your browser; your form is saved only on this device.</p></div>
       </div>
     </div>
   </section>
@@ -179,32 +184,28 @@
       </div>
       <div class="faq" id="faqList">
         <div class="faq-item">
-          <button type="button">Do breadcrumbs still appear in Google?<span class="plus">+</span></button>
-          <div class="faq-a"><p>Yes on desktop. Since early 2025 Google no longer shows breadcrumb paths on mobile results — mobile shows just the site name and domain. The markup is still valid and still used to understand your site structure.</p></div>
+          <button type="button">Should spaces be %20 or +?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Both work for query strings on almost every server. <code>%20</code> (RFC 3986) is correct anywhere in a URL; <code>+</code> is what HTML forms send and what <code>URLSearchParams</code> produces. If an API's documentation shows one, use that.</p></div>
         </div>
         <div class="faq-item">
-          <button type="button">Does the last item need a URL?<span class="plus">+</span></button>
-          <div class="faq-a"><p>No. Google allows the URL of the last item (the page itself) to be left out. Including it is also fine.</p></div>
+          <button type="button">How do I send an array or list?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Add the same parameter name several times, then pick the list format your server expects: <code>tag=a&amp;tag=b</code> (most frameworks), <code>tag[]=a&amp;tag[]=b</code> (PHP, Rails) or <code>tag=a,b</code> (some REST APIs).</p></div>
         </div>
         <div class="faq-item">
-          <button type="button">Must the trail match my URL structure?<span class="plus">+</span></button>
-          <div class="faq-a"><p>No. It should show a logical path a user would follow, such as Home › Books › Fiction. URL folders are a handy starting point, which is why the Fill trail button uses them.</p></div>
+          <button type="button">What happens to the #fragment of my base URL?<span class="plus">+</span></button>
+          <div class="faq-a"><p>The fragment must always come last, so the builder moves it after the new parameters: <code>/page#top</code> becomes <code>/page?a=1#top</code>. Browsers never send the fragment to the server.</p></div>
         </div>
         <div class="faq-item">
-          <button type="button">Should I include the home page?<span class="plus">+</span></button>
-          <div class="faq-a"><p>It's common and recommended to start with Home. The trail still needs at least two items in total.</p></div>
+          <button type="button">Is there a maximum URL length?<span class="plus">+</span></button>
+          <div class="faq-a"><p>There's no official limit, but many servers and CDNs reject URLs longer than 8 KB, and some tools fail above about 2,000 characters. For large amounts of data, send a POST request instead.</p></div>
         </div>
         <div class="faq-item">
-          <button type="button">Can a page have more than one breadcrumb?<span class="plus">+</span></button>
-          <div class="faq-a"><p>Yes. If a product is reachable from two categories, add two separate BreadcrumbList blocks. Generate each trail separately.</p></div>
+          <button type="button">Can I put passwords or API keys in a URL?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Avoid it. URLs are saved in browser history, server logs and analytics, and can leak through the Referer header. The builder warns you when a parameter name looks like a secret.</p></div>
         </div>
         <div class="faq-item">
-          <button type="button">What does position mean?<span class="plus">+</span></button>
-          <div class="faq-a"><p>The order of the item in the trail, starting at 1 for the top level. This tool sets it automatically from the order of your items.</p></div>
-        </div>
-        <div class="faq-item">
-          <button type="button">Is my data stored?<span class="plus">+</span></button>
-          <div class="faq-a"><p>Only in your browser's localStorage. Press Reset to clear it.</p></div>
+          <button type="button">Is my data uploaded?<span class="plus">+</span></button>
+          <div class="faq-a"><p>No. The URL is built in your browser, and the form is saved only in this browser's local storage — press Reset to clear it.</p></div>
         </div>
       </div>
     </div>
@@ -216,46 +217,46 @@
       <div class="section-head" style="margin-bottom:28px;">
         <div>
           <span class="eyebrow" style="margin-bottom:12px; display:inline-flex;">📎 RELATED</span>
-          <h2 style="font-size:26px; margin:12px 0 6px;">Related SEO Tools</h2>
+          <h2 style="font-size:26px; margin:12px 0 6px;">Related Developer Tools</h2>
           <p class="desc" style="margin:0;">More free utilities that pair well with this one.</p>
         </div>
-        <a class="view-all" href="/categories/seo/">All SEO Tools →</a>
+        <a class="view-all" href="/categories/developer/">All Developer Tools →</a>
       </div>
       <div class="grid grid-3">
-        <a class="tool-card" href="/tools/seo/article-schema-generator.html">
-          <div class="top-row"><span class="badge">Generator</span></div>
-          <h3>Article Schema Generator</h3>
-          <p>Create Article and BlogPosting structured data.</p>
+        <a class="tool-card" href="/tools/developer/url-encoder.html">
+          <div class="top-row"><span class="badge">Encoder</span></div>
+          <h3>URL Encoder</h3>
+          <p>Percent-encode text for safe use in URLs.</p>
           <span class="open">Open tool →</span>
         </a>
-        <a class="tool-card" href="/tools/seo/product-schema-generator.html">
-          <div class="top-row"><span class="badge">Generator</span></div>
-          <h3>Product Schema Generator</h3>
-          <p>Product structured data with price and reviews.</p>
+        <a class="tool-card" href="/tools/developer/url-decoder.html">
+          <div class="top-row"><span class="badge">Decoder</span></div>
+          <h3>URL Decoder</h3>
+          <p>Decode percent-encoded URL strings.</p>
           <span class="open">Open tool →</span>
         </a>
-        <a class="tool-card" href="/tools/seo/faq-schema-generator.html">
-          <div class="top-row"><span class="badge">Generator</span></div>
-          <h3>FAQ Schema Generator</h3>
-          <p>Build FAQPage JSON-LD for rich results.</p>
+        <a class="tool-card is-soon" href="/categories/developer/#url-parser">
+          <div class="top-row"><span class="badge">Parser</span><span class="status-pill status-soon">Coming soon</span></div>
+          <h3>URL Parser</h3>
+          <p>Break a URL into protocol, host, path and hash — with a decoded table of every query-string parameter.</p>
+          <span class="open ty-soon-label">Coming soon</span>
+        </a>
+        <a class="tool-card" href="/tools/text/extract-urls.html">
+          <div class="top-row"><span class="badge">Extractor</span></div>
+          <h3>Extract URLs</h3>
+          <p>Find every link in text, HTML or Markdown — trailing punctuation handled correctly.</p>
           <span class="open">Open tool →</span>
         </a>
-        <a class="tool-card" href="/tools/seo/local-business-schema-generator.html">
-          <div class="top-row"><span class="badge">Generator</span></div>
-          <h3>Local Business Schema Generator</h3>
-          <p>Structured data for local businesses.</p>
+        <a class="tool-card" href="/tools/developer/base64-encoder.html">
+          <div class="top-row"><span class="badge">Encoder</span></div>
+          <h3>Base64 Encoder</h3>
+          <p>Encode text or data to Base64.</p>
           <span class="open">Open tool →</span>
         </a>
-        <a class="tool-card" href="/tools/seo/schema-markup-generator.html">
-          <div class="top-row"><span class="badge">Generator</span></div>
-          <h3>Schema Markup Generator</h3>
-          <p>Generate JSON-LD structured data for any page.</p>
-          <span class="open">Open tool →</span>
-        </a>
-        <a class="tool-card" href="/tools/seo/meta-tag-generator.html">
-          <div class="top-row"><span class="badge">Generator</span></div>
-          <h3>Meta Tag Generator</h3>
-          <p>Generate title, description and essential meta tags.</p>
+        <a class="tool-card" href="/tools/developer/jwt-decoder.html">
+          <div class="top-row"><span class="badge">Decoder</span></div>
+          <h3>JWT Decoder</h3>
+          <p>Decode JWT payloads and inspect claims and expiry.</p>
           <span class="open">Open tool →</span>
         </a>
       </div>
@@ -592,56 +593,84 @@
         }).replace(/\s+/g, ' ').trim();
     };
 
-    S.status('info', 'Breadcrumb rich results are still supported, but Google shows them on desktop results only (since early 2025).');
-    function titleCase(seg) {
-      try { seg = decodeURIComponent(seg); } catch (e) {}
-      seg = seg.replace(/\.(html?|php|aspx?)$/i, '').replace(/[-_+]+/g, ' ').trim();
-      return seg.replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+    function wf(s) {   // replace unpaired surrogates (encodeURIComponent would throw) with U+FFFD, as URLSearchParams does
+      return s.replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDFFF]/g, function (m) { return m.length === 2 ? m : '\uFFFD'; });
     }
-    function fill() {
-      var raw = $('fillUrl').value.trim(), inp = $('fillUrl');
-      if (!S.isUrl(raw)) { inp.setAttribute('aria-invalid', 'true'); inp.focus(); return; }
-      inp.removeAttribute('aria-invalid');
-      var u = new URL(raw), segs = u.pathname.split('/').filter(Boolean), rows = [{ name: 'Home', url: u.origin + '/' }], path = '';
-      var trailing = /\/$/.test(u.pathname);
-      segs.forEach(function (s, i) { path += '/' + s; rows.push({ name: titleCase(s) || s, url: u.origin + path + (i < segs.length - 1 || trailing ? '/' : '') }); });
-      S.setRows('crumbs', rows);
-    }
-    $('fillUrl').addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); fill(); form.dispatchEvent(new Event('input')); } });
+    function encRfc(s) { return encodeURIComponent(wf(s)).replace(/[!'()*]/g, function (c) { return '%' + c.charCodeAt(0).toString(16).toUpperCase(); }); }
+    function encForm(s) { return new URLSearchParams([['', wf(s)]]).toString().slice(1); }
+    var SECRET = /password|passwd|^pwd$|^pass$|secret|token|api[_-]?key|access[_-]?key|private[_-]?key|session[_-]?id|^sid$|^auth$/i;
     function build() {
-      var rows = S.list('crumbs'), checks = [], hosts = {}, seenUrl = {};
-      rows.forEach(function (r, i) {
-        var n = 'Item ' + r._i, last = i === rows.length - 1;
-        if (!r.name) checks.push(['err', n + ': name is empty.']);
-        if (!r.url && !last) checks.push(['err', n + ': URL is required (only the last item may leave it out).']);
-        if (r.url && !S.isUrl(r.url)) checks.push(['err', n + ': URL must be absolute (https://…).']);
-        if (r.url && S.isUrl(r.url)) {
-          var h = new URL(r.url).hostname.replace(/^www\./, ''); hosts[h] = 1;
-          if (seenUrl[r.url]) checks.push(['warn', n + ' has the same URL as item ' + seenUrl[r.url] + '.']); else seenUrl[r.url] = r._i;
-        }
+      var base = S.v('base'), enc = S.v('enc') === 'form' ? encForm : encRfc, arr = S.v('arr'), emp = S.v('emp'), checks = [];
+      var rows = S.list('params'), items = [];
+      rows.forEach(function (r) {
+        if (!r.k) { checks.push(['err', 'Parameter ' + r._i + ' has a value but no name — it was left out.']); return; }
+        if (!r.v && emp === 'skip') return;
+        items.push({ k: r.k, v: r.v || '' });
       });
-      if (Object.keys(hosts).length > 1) checks.push(['warn', 'The items point to different domains (' + Object.keys(hosts).join(', ') + '). Breadcrumbs should stay on one site.']);
-      if (rows.length < 2) checks.push(['err', 'A breadcrumb needs at least two items.']);
-      if (rows.length && !rows[rows.length - 1].url) checks.push(['info', 'The last item has no URL — allowed for the current page.']);
-      if (rows.length >= 2 && !checks.some(function (c) { return c[0] === 'err' || c[0] === 'warn'; })) checks.push(['ok', rows.length + ' items, positions 1–' + rows.length + '.']);
-      return { data: { '@context': 'https://schema.org', '@type': 'BreadcrumbList',
-        itemListElement: rows.map(function (r, i) { return { '@type': 'ListItem', position: i + 1, name: r.name, item: r.url }; }) }, checks: checks };
+      if (S.v('sort')) items = items.map(function (x, i) { return [x, i]; }).sort(function (a, b) { return a[0].k < b[0].k ? -1 : a[0].k > b[0].k ? 1 : a[1] - b[1]; }).map(function (p) { return p[0]; });
+      var count = Object.create(null);
+      items.forEach(function (x) { count[x.k] = (count[x.k] || 0) + 1; });
+      var parts = [], done = Object.create(null);
+      items.forEach(function (x) {
+        var multi = count[x.k] > 1, ek = enc(x.k);
+        if (arr === 'comma' && multi) {
+          if (done[x.k]) return; done[x.k] = 1;
+          var vals = items.filter(function (y) { return y.k === x.k; }).map(function (y) { return enc(y.v); });
+          parts.push(ek + '=' + vals.join(',')); return;
+        }
+        if (arr === 'brackets' && multi && !/\[\]$/.test(x.k)) ek = enc(x.k + '[]');
+        parts.push(!x.v && emp === 'flag' ? ek : ek + '=' + enc(x.v));
+      });
+      var qs = parts.join('&'), url = qs, okBase = true;
+      if (base) {
+        var h = base.indexOf('#'), frag = h >= 0 ? base.slice(h) : '', b = h >= 0 ? base.slice(0, h) : base;
+        if (/^[a-z][a-z0-9+.\-]*:/i.test(b)) { try { new URL(b); } catch (e) { okBase = false; } } else if (!/^[\/?.]/.test(b)) okBase = false;
+        if (!okBase) checks.push(['err', 'The base URL isn\u2019t valid. Use a full URL like https://example.com/page or a path like /search.']);
+        if (/\s/.test(b)) checks.push(['warn', 'The base URL contains spaces — they should be encoded as %20.']);
+        var q = b.indexOf('?'), existing = q >= 0 ? b.slice(q + 1) : '';
+        b = q >= 0 ? b.slice(0, q) : b;
+        var all = [existing, qs].filter(Boolean).join('&');
+        url = b + (all ? '?' + all : '') + frag;
+        if (existing) {
+          var have = Object.create(null);
+          existing.split('&').forEach(function (p) { if (!p) return; var k = p.split('=')[0]; try { k = decodeURIComponent(k.replace(/\+/g, ' ')); } catch (e) {} have[k] = 1; });
+          var dup = Object.keys(count).filter(function (k) { return have[k]; });
+          if (dup.length) checks.push(['warn', 'The base URL already has ' + dup.map(function (k) { return '\u201c' + k + '\u201d'; }).join(', ') + ' — the name will appear twice.']);
+          checks.push(['info', 'The base URL\u2019s existing query (' + existing.split('&').filter(Boolean).length + ' parameter' + (existing.split('&').filter(Boolean).length === 1 ? '' : 's') + ') was kept as it is.']);
+        }
+        if (frag) checks.push(['info', 'The #fragment was moved after the parameters (it is never sent to the server).']);
+      }
+      var multiKeys = Object.keys(count).filter(function (k) { return count[k] > 1; });
+      if (multiKeys.length) checks.push(['info', 'Sent as a list (' + { repeat: 'repeated name', brackets: 'name[]', comma: 'comma-separated' }[arr] + '): ' + multiKeys.join(', ') + '.']);
+      var sec = Object.keys(count).filter(function (k) { return SECRET.test(k); });
+      if (sec.length) checks.push(['warn', '\u201c' + sec.join('\u201d, \u201c') + '\u201d looks like a secret. URLs are stored in browser history and server logs — avoid putting passwords, tokens or keys in them.']);
+      if (url.length > 8000) checks.push(['err', 'The URL is ' + url.length.toLocaleString('en-US') + ' characters — many servers and CDNs reject URLs over 8 KB. Send the data in a POST body instead.']);
+      else if (url.length > 2000) checks.push(['warn', 'The URL is ' + url.length.toLocaleString('en-US') + ' characters — some tools and older systems fail above about 2,000.']);
+      if (!items.length) checks.push(['info', 'Add a parameter name and value to start.']);
+      else checks.push(['ok', items.length + ' parameter' + (items.length > 1 ? 's' : '') + ' encoded \u00b7 ' + url.length.toLocaleString('en-US') + ' characters.']);
+      return { text: url, items: items, enc: enc, arr: arr, checks: checks };
     }
-    function preview(d, el) {
-      var items = d.itemListElement || [], first = items.filter(function (x) { return x.item; })[0], host = first ? S.host(first.item) : '';
-      var crumbs = [host || 'example.com'].concat(items.slice(1).map(function (x) { return x.name || '…'; }));
-      var last = items[items.length - 1];
-      el.appendChild(S.el('div', 'ty-plabel', 'Desktop search result (illustration)'));
-      el.appendChild(S.serp({ site: host, host: host, crumbs: crumbs, title: (last && last.name) || 'Page title', desc: 'Your page description appears here. The path above replaces the raw URL on desktop.' }));
+    function preview(r, el) {
+      if (!r.items.length) { el.appendChild(S.el('p', 'ty-pempty', 'Your parameters will be listed here.')); return; }
+      var wrap = S.el('div', 'ty-scroll'), t = S.el('table', 'ty-kdtable'), th = S.el('thead'), hr = S.el('tr');
+      ['Name', 'Value', 'Encoded value'].forEach(function (h) { var c = S.el('th', null, h); c.scope = 'col'; hr.appendChild(c); });
+      th.appendChild(hr); t.appendChild(th);
+      var tb = S.el('tbody');
+      r.items.slice(0, 200).forEach(function (x) {
+        var tr = S.el('tr');
+        tr.appendChild(S.el('td', 'kw', x.k));
+        tr.appendChild(S.el('td', 'kw', x.v === '' ? '(empty)' : x.v));
+        tr.appendChild(S.el('td', 'kw ty-mono', r.enc(x.v)));
+        tb.appendChild(tr);
+      });
+      t.appendChild(tb); wrap.appendChild(t); el.appendChild(wrap);
     }
     S.init({
-      key: 'ty-breadcrumb-schema', filename: 'breadcrumb-schema', build: build, preview: preview,
-      action: function (act) { if (act === 'fill') { fill(); return true; } return false; },
-      initial: function () { return { f: {}, l: { crumbs: [{}, {}] } }; },
-      onReset: function () { $('fillUrl').value = ''; },
-      example: function () { return { f: {}, l: { crumbs: [
-        { name: 'Home', url: 'https://example.com/' }, { name: 'Books', url: 'https://example.com/books/' },
-        { name: 'Fiction', url: 'https://example.com/books/fiction/' }, { name: 'The Hobbit', url: 'https://example.com/books/fiction/the-hobbit' } ] } }; }
+      key: 'ty-query-string-builder', filename: 'url', build: build, preview: preview,
+      output: function (r) { return r.text; }, download: { name: 'url.txt', mime: 'text/plain;charset=utf-8' },
+      initial: function () { return { f: {}, l: { params: [{}] } }; },
+      example: function () { return { f: { base: 'https://shop.example.com/search?ref=home#results', enc: 'rfc', arr: 'repeat', emp: 'keep', sort: false },
+        l: { params: [{ k: 'q', v: 'red shoes & socks' }, { k: 'size', v: '42' }, { k: 'color', v: 'red' }, { k: 'color', v: 'navy blue' }, { k: 'price', v: '₹500–₹2000' }, { k: 'sale', v: '' }] } }; }
     });
 
   })();

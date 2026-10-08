@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unicode Unescape – Decode \uXXXX, \u{…}, \x, &amp;amp;#x…; and U+ to Text | Toolyard</title>
+  <meta name="description" content="Free Unicode unescape tool. Decode \u00e9, surrogate pairs like \ud83d\ude00, ES6 \u{1F600}, Python \U and \x UTF-8 bytes, HTML &amp;amp;#x…; and CSS escapes back into readable text, with clear warnings for invalid codes.">
+  <link rel="canonical" href="https://htmltools.nilankubaruah.workers.dev/tools/developer/unicode-unescape.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Unicode Unescape – Decode \uXXXX, \u{…}, \x, &amp;amp;#x…; and U+ to Text">
+  <meta property="og:description" content="Free Unicode unescape tool. Decode \u00e9, surrogate pairs like \ud83d\ude00, ES6 \u{1F600}, Python \U and \x UTF-8 bytes, HTML &amp;amp;#x…; and CSS escapes back into readable text, with clear warnings for invalid codes.">
+  <meta property="og:url" content="https://htmltools.nilankubaruah.workers.dev/tools/developer/unicode-unescape.html">
+  <meta name="twitter:card" content="summary">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/tools.css">
+  <script src="/js/tools-data.js"></script>
+  <script src="/js/layout.js"></script>
+  <script src="/js/tool-kit.js"></script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Unicode Unescape", "url": "https://htmltools.nilankubaruah.workers.dev/tools/developer/unicode-unescape.html", "applicationCategory": "DeveloperApplication", "operatingSystem": "Any (runs in your browser)", "description": "Free Unicode unescape tool. Decode \\u00e9, surrogate pairs like \\ud83d\\ude00, ES6 \\u{1F600}, Python \\U and \\x UTF-8 bytes, HTML &amp;#x…; and CSS escapes back into readable text, with clear warnings for invalid codes.", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Why is \\xc3\\xa9 decoded as é and not Ã©?", "acceptedAnswer": {"@type": "Answer", "text": "Those two bytes are the UTF-8 encoding of é. The tool reads each run of \\x bytes as UTF-8 first, and only falls back to one-byte Latin-1 characters when the bytes aren't valid UTF-8."}}, {"@type": "Question", "name": "What happens to an invalid escape?", "acceptedAnswer": {"@type": "Answer", "text": "It's kept exactly as written and counted under Invalid — for example \\u{110000} (beyond the last Unicode code point) or a lone surrogate like \\uD83D without its partner."}}, {"@type": "Question", "name": "Why are \\b and \\f not decoded when CSS escapes are on?", "acceptedAnswer": {"@type": "Answer", "text": "In CSS, \\b and \\f are hex escapes (U+000B and U+000F). With Decode CSS escapes on, hex digits after a backslash are read the CSS way. Leave it off for JSON and JavaScript text."}}, {"@type": "Question", "name": "My text still has \\u escapes after decoding. Why?", "acceptedAnswer": {"@type": "Answer", "text": "It was probably escaped twice (\\\\u00e9). The first pass turns \\\\ into \\; paste the result in again to decode the rest."}}, {"@type": "Question", "name": "Is my text uploaded?", "acceptedAnswer": {"@type": "Answer", "text": "No. Everything runs in your browser."}}]}</script>
+</head>
+<body class="ty-tool" data-tool="unicode-unescape">
+
+  <!-- SHARED HEADER, MOBILE MENU & BREADCRUMBS (rendered by /js/layout.js) -->
+  <div id="site-header"></div>
+  <div id="site-breadcrumbs"></div>
+
+  <main>
+  <!-- TOOL INTRO -->
+  <section class="tool-intro">
+    <div class="wrap tool-intro-content">
+      <span class="eyebrow">⌨ DEVELOPER · DECODER</span>
+      <h1>Unicode Unescape</h1>
+      <p class="lead">Turn <code>\u00e9</code>, <code>\uD83D\uDE00</code>, <code>\u{1F600}</code>, <code>\xc3\xa9</code> or <code>&amp;#x20AC;</code> back into readable text. Paste a JSON string, a log line, Python output or a list of U+ code points — every common escape style is recognised automatically, even when they're mixed.</p>
+      <div class="tool-meta-badge"><span class="dot"></span> \u · \u{} · \U · \x UTF-8 · &amp;#x; · CSS · U+ lists · Surrogate pairs</div>
+    </div>
+  </section>
+
+  <!-- WORKSPACE -->
+  <section class="tool-app-section">
+    <div class="wrap">
+      <div class="ty-pair"><span>Tip: seeing <code>\\u00e9</code> with two backslashes? The text was escaped twice — run the result through once more.</span><span>Need to encode instead? <a href="/tools/developer/unicode-escape.html">Unicode Escape →</a></span></div>
+      <div class="tool-workspace">
+        <div class="tool-toolbar">
+          <div class="tool-toolbar-left ty-txtopts">
+            <label class="ty-opt" title="Decode simple escapes too: \n \r \t \b \f \v \0 \\ \&quot; \' \/ — as in JSON and JavaScript strings"><input type="checkbox" id="optSimple" checked> Also decode \n \t \" \\ …</label>
+            <label class="ty-opt" title="Decode numeric HTML character references (the semicolon is required)"><input type="checkbox" id="optHtml" checked> Decode &amp;#x…; and &amp;#…;</label>
+            <label class="ty-opt" title="Decode CSS hex escapes: a backslash followed by 1–6 hex digits and an optional space. Takes priority over \b, \f and \0"><input type="checkbox" id="optCss"> Decode CSS escapes (\E9)</label>
+          </div>
+          <div class="tool-toolbar-right">
+            <button type="button" class="btn btn-amber btn-sm" id="runBtn">Run</button>
+            <label class="btn btn-outline btn-sm" title="Open a text file (or drop it on the input)">Open file<input type="file" id="fileIn" accept=".txt,.csv,.tsv,.log,.md,.json,.xml,.html,.css,.js,.ts,.sql,.yml,.yaml,.ini,.env,text/*" hidden></label>
+            <button type="button" class="btn btn-outline btn-sm" id="useBtn" title="Move the result into the input">⇄ Use as input</button>
+            <button type="button" class="btn btn-ghost btn-sm" id="exampleBtn">Load Example</button>
+            <button type="button" class="btn btn-danger btn-sm" id="clearBtn">Clear</button>
+          </div>
+        </div>
+
+        <div class="tool-grid ty-ed">
+          <div class="tool-pane">
+            <div class="tool-pane-header">
+              <span class="title">Escaped text</span>
+              <span class="badge">Any escape style</span>
+            </div>
+            <textarea id="txtIn" class="tool-textarea ty-mono" style="word-break:normal;" placeholder="Paste escapes, e.g. Caf\u00e9 \ud83d\ude00 or U+0048 U+0069" spellcheck="false" aria-label="Escaped text"></textarea>
+          </div>
+          <div class="tool-pane">
+            <div class="tool-pane-header">
+              <span class="title">Decoded text</span>
+              <div class="actions">
+                <button type="button" class="btn btn-sm btn-outline" id="copyBtn">Copy</button>
+                <button type="button" class="btn btn-sm btn-ghost" id="downloadBtn">Download .txt</button>
+              </div>
+            </div>
+            <textarea id="txtOut" class="tool-textarea ty-mono is-empty" style="word-break:normal;" readonly placeholder="Decoded text appears here…" aria-label="Decoded text"></textarea>
+            <div class="ty-note" id="txtNote" hidden></div>
+          </div>
+        </div>
+        <p class="ty-alert" id="txtStatus" role="status" aria-live="polite" hidden></p>
+
+        <div class="tool-stats-bar">
+          <div class="tool-stats-items">
+            <div class="tool-stat-badge">Escapes decoded: <b id="stN">–</b></div>
+            <div class="tool-stat-badge">Invalid: <b id="stBad">–</b></div>
+            <div class="tool-stat-badge">Output: <b id="stOut">–</b></div>
+            <div class="tool-stat-badge">Time: <b id="stTime">–</b></div>
+          </div>
+          <div>Auto-detects mixed formats · 100% Client-Side</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. ABOUT -->
+  <section class="ty-sec">
+    <div class="wrap">
+      <span class="eyebrow">◆ ABOUT THIS TOOL</span>
+      <h2>How Unicode Unescaping Works</h2>
+      <p class="sub">Every escape sequence becomes the character it stands for.</p>
+      <div class="about-grid">
+        <div><p>Escape sequences appear wherever text passes through code: JSON from an API (<code>Caf\u00e9</code>), JavaScript source, Python's <code>repr()</code> (<code>\xe9</code>, <code>\U0001f600</code>), byte dumps in logs (<code>\xc3\xa9</code>), HTML (<code>&amp;#233;</code>) and CSS (<code>content: "\2014"</code>). This tool reads the text from left to right and replaces each escape with its character, leaving everything else untouched.</p><p><strong>Surrogate pairs</strong> such as <code>\uD83D\uDE00</code> are combined into one character (😀). A half pair on its own isn't a valid character, so it's left as it is and reported.</p></div>
+        <div><p><strong>\x bytes.</strong> A run of <code>\xHH</code> escapes is first read as UTF-8 (so <code>\xc3\xa9</code> is é and <code>\xf0\x9f\x98\x80</code> is 😀). If the bytes aren't valid UTF-8, each one is read as a Latin-1 character instead, the way Python's <code>\xe9</code> means é.</p><p><strong>U+ lists.</strong> If the input contains nothing but U+ code points (<code>U+0048 U+0069</code>), they're joined into text. Inside normal text, U+ notation is left alone.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. REFERENCE -->
+  <section class="ty-sec alt">
+    <div class="wrap">
+      <span class="eyebrow">⌘ REFERENCE</span>
+      <h2>Recognised Escape Formats</h2>
+      <p class="sub">All decoded automatically, even when mixed.</p>
+      <div class="ty-ref-wrap"><table class="ty-ref-table">
+        <thead><tr><th>Format</th><th>Example</th><th>Result</th><th>Used by</th></tr></thead>
+        <tbody>
+          <tr><td><code>\uXXXX</code></td><td><code>\u00e9</code>, <code>\uD83D\uDE00</code></td><td>é, 😀</td><td>JavaScript, JSON, Java, C#</td></tr>
+          <tr><td><code>\u{X…}</code></td><td><code>\u{1F600}</code></td><td>😀</td><td>ES6 JavaScript, Rust, Swift</td></tr>
+          <tr><td><code>\UXXXXXXXX</code></td><td><code>\U0001F600</code></td><td>😀</td><td>Python, C, C++</td></tr>
+          <tr><td><code>\xHH</code></td><td><code>\xc3\xa9</code> / <code>\xe9</code></td><td>é</td><td>Python, PHP, C, logs</td></tr>
+          <tr><td><code>&amp;#xX;</code> / <code>&amp;#N;</code></td><td><code>&amp;#x20AC;</code>, <code>&amp;#8364;</code></td><td>€</td><td>HTML, XML</td></tr>
+          <tr><td><code>\X</code> (optional)</td><td><code>\2014</code></td><td>—</td><td>CSS</td></tr>
+          <tr><td><code>U+X</code></td><td><code>U+0048 U+0069</code></td><td>Hi</td><td>Unicode charts</td></tr>
+          <tr><td>Simple escapes</td><td><code>\n \t \" \\</code></td><td>line break, tab, " \</td><td>JSON, JavaScript, Python</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <!-- 3. HOW TO USE -->
+  <section class="how-sec section-navy">
+    <div class="wrap">
+      <span class="eyebrow">◐ THREE STEPS</span>
+      <h2>How to Use the Unicode Unescape</h2>
+      <p class="sub">Get your result in under ten seconds.</p>
+      <div class="steps">
+        <div class="step" data-n="01">
+          <div class="num">1</div>
+          <h3 style="color:#fff;">Paste the escaped text</h3>
+          <p>JSON, source code, logs, Python output or U+ lists.</p>
+        </div>
+        <div class="step" data-n="02">
+          <div class="num">2</div>
+          <h3 style="color:#fff;">Check the options</h3>
+          <p>Simple escapes, HTML references and CSS escapes.</p>
+        </div>
+        <div class="step" data-n="03">
+          <div class="num">3</div>
+          <h3 style="color:#fff;">Copy the text</h3>
+          <p>Invalid escapes are kept and reported, never silently dropped.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. FEATURES -->
+  <section class="ty-sec">
+    <div class="wrap">
+      <span class="eyebrow">✓ FEATURES</span>
+      <h2>Why Use the Toolyard Unicode Unescape</h2>
+      <p class="sub">Fast, accurate and private — built for developers.</p>
+      <div class="why-grid">
+        <div><div class="why-ico">⇄</div><h3>Mixed formats</h3><p>\u, \u{}, \U, \x, &amp;#x; and U+ in one pass.</p></div>
+        <div><div class="why-ico">😀</div><h3>Surrogate pairs</h3><p>\uD83D\uDE00 is combined correctly; half pairs are reported.</p></div>
+        <div><div class="why-ico">\x</div><h3>UTF-8 bytes</h3><p>\xc3\xa9 becomes é, not Ã©.</p></div>
+        <div><div class="why-ico">⚠</div><h3>Clear warnings</h3><p>Out-of-range and broken escapes are kept and counted.</p></div>
+        <div><div class="why-ico">⚡</div><h3>Fast</h3><p>Large inputs are decoded in a background thread.</p></div>
+        <div><div class="why-ico">🔒</div><h3>Private</h3><p>Runs entirely in your browser.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. FAQ -->
+  <section class="ty-sec alt">
+    <div class="wrap">
+      <div style="text-align:center; margin-bottom:36px;">
+        <span class="eyebrow">FAQ</span>
+        <h2 style="font-size:28px; margin-top:12px;">Frequently Asked Questions</h2>
+      </div>
+      <div class="faq" id="faqList">
+        <div class="faq-item">
+          <button type="button">Why is \xc3\xa9 decoded as é and not Ã©?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Those two bytes are the UTF-8 encoding of é. The tool reads each run of <code>\x</code> bytes as UTF-8 first, and only falls back to one-byte Latin-1 characters when the bytes aren't valid UTF-8.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">What happens to an invalid escape?<span class="plus">+</span></button>
+          <div class="faq-a"><p>It's kept exactly as written and counted under <b>Invalid</b> — for example <code>\u{110000}</code> (beyond the last Unicode code point) or a lone surrogate like <code>\uD83D</code> without its partner.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Why are \b and \f not decoded when CSS escapes are on?<span class="plus">+</span></button>
+          <div class="faq-a"><p>In CSS, <code>\b</code> and <code>\f</code> are hex escapes (U+000B and U+000F). With <b>Decode CSS escapes</b> on, hex digits after a backslash are read the CSS way. Leave it off for JSON and JavaScript text.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">My text still has \u escapes after decoding. Why?<span class="plus">+</span></button>
+          <div class="faq-a"><p>It was probably escaped twice (<code>\\u00e9</code>). The first pass turns <code>\\</code> into <code>\</code>; paste the result in again to decode the rest.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Is my text uploaded?<span class="plus">+</span></button>
+          <div class="faq-a"><p>No. Everything runs in your browser.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. RELATED -->
+  <section class="related-tools-section">
+    <div class="wrap">
+      <div class="section-head" style="margin-bottom:28px;">
+        <div>
+          <span class="eyebrow" style="margin-bottom:12px; display:inline-flex;">📎 RELATED</span>
+          <h2 style="font-size:26px; margin:12px 0 6px;">Related Developer Tools</h2>
+          <p class="desc" style="margin:0;">More free utilities that pair well with this one.</p>
+        </div>
+        <a class="view-all" href="/categories/developer/">All Developer Tools →</a>
+      </div>
+      <div class="grid grid-3">
+        <a class="tool-card" href="/tools/developer/unicode-escape.html">
+          <div class="top-row"><span class="badge">Encoder</span></div>
+          <h3>Unicode Escape</h3>
+          <p>Turn text and emoji into Unicode escapes: \uXXXX, \u{…}, \U0001F600, U+XXXX, &amp;#x…; and CSS.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/json-data/json-escape-unescape.html">
+          <div class="top-row"><span class="badge">Encoder</span></div>
+          <h3>JSON Escape/Unescape</h3>
+          <p>Escape JSON for embedding in strings, or reverse it.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/html/html-entity-decoder.html">
+          <div class="top-row"><span class="badge">Decoder</span></div>
+          <h3>HTML Entity Decoder</h3>
+          <p>Decode &amp;amp;, &amp;lt;, &amp;#8217; and all 2,231 HTML5 named entities back to text.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/developer/url-decoder.html">
+          <div class="top-row"><span class="badge">Decoder</span></div>
+          <h3>URL Decoder</h3>
+          <p>Decode percent-encoded URL strings.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/developer/base64-decoder.html">
+          <div class="top-row"><span class="badge">Decoder</span></div>
+          <h3>Base64 Decoder</h3>
+          <p>Decode Base64 strings back to text.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/developer/regex-escape.html">
+          <div class="top-row"><span class="badge">Encoder</span></div>
+          <h3>Regex Escape</h3>
+          <p>Escape text for a regex with the exact rules of JavaScript, Python, PHP, Java, .NET or Go.</p>
+          <span class="open">Open tool →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <!-- SHARED FOOTER (rendered by /js/layout.js) -->
+  <div id="site-footer"></div>
+
+  <script>
+  (function () {
+    'use strict';
+    var $ = TK.$;
+    TK.initFaq(document.getElementById('faqList'));
+
+    var TEXT_WORKER_FROM = 256 * 1024, TEXT_MAX_FILE = 50 * 1024 * 1024, TEXT_MAX_LIVE = 3 * 1024 * 1024;
+    function el(tag, cls, text) { var x = document.createElement(tag); if (cls) x.className = cls; if (text != null) x.textContent = text; return x; }
+    // small input → main thread; large → Web Worker (with timeout). Always returns a cancellable promise.
+    function textJob(fn, data, size, timeoutMs, forceWorker) {
+      if (!forceWorker && size <= TEXT_WORKER_FROM) { var p = new Promise(function (res) { res(fn(data)); }); p.cancel = function () {}; return p; }
+      return TK.runWorker(fn, data, timeoutMs || 30000);
+    }
+    function textErr(e) {
+      var m = e && e.message || String(e);
+      if (m === 'timeout') return 'Processing took too long and was stopped.';
+      if (/memory|allocation|Invalid string length/i.test(m)) return 'Not enough memory to process this text in the browser.';
+      return m;
+    }
+    // lines in a text, not counting one trailing newline (a final "\n" ends the last line, it doesn't start a new one)
+    function countLines(t) {
+      if (!t) return 0;
+      var c = 1, k = -1; while ((k = t.indexOf('\n', k + 1)) !== -1) c++;
+      return /\n$/.test(t) ? c - 1 : c;
+    }
+    function attachTextFile(ta, fileInput, onLoad, statusEl) {
+      function load(f) {
+        if (!f) return;
+        if (f.size > TEXT_MAX_FILE) { TK.status(statusEl, '“' + f.name + '” is ' + TK.formatBytes(f.size) + '. The maximum is 50 MB.', 'error'); return; }
+        TK.readFile(f, 'text').then(function (t) { ta.value = t; onLoad(f); }, function () { TK.status(statusEl, 'Could not read “' + f.name + '”.', 'error'); });
+      }
+      if (fileInput) fileInput.addEventListener('change', function () { load(fileInput.files[0]); fileInput.value = ''; });
+      ta.addEventListener('dragover', function (e) { if (e.dataTransfer && Array.prototype.indexOf.call(e.dataTransfer.types, 'Files') >= 0) e.preventDefault(); });
+      ta.addEventListener('drop', function (e) { if (e.dataTransfer && e.dataTransfer.files.length) { e.preventDefault(); load(e.dataTransfer.files[0]); } });
+    }
+    function showBtn(b, on) { b.style.display = on ? '' : 'none'; }   // .btn sets display, so [hidden] alone is not enough
+
+    /* Driver for "text in → text out" tools.
+       cfg: { fn (self-contained worker-safe job), opts() → options object, stats(result|null, ms), example, filename,
+              segs: [TK.segmented controls…] (call cfg.rerun on change), also: [inputs whose change re-runs] } */
+    function textTool(cfg) {
+      var input = $('txtIn'), out = $('txtOut'), note = $('txtNote'), statusEl = $('txtStatus'), runBtn = $('runBtn');
+      var cur = null, runId = 0;
+      function run() {
+        var text = input.value, id = ++runId;
+        if (cur) { cur.cancel(); cur = null; }
+        if (!text) { TK.setOutput(out, '', { noteEl: note }); TK.status(statusEl, ''); cfg.stats(null); return; }
+        var o = cfg.opts(), t0 = performance.now();
+        if (cfg.check) { var msg = cfg.check(o, text); if (msg) { TK.setOutput(out, msg.out == null ? '' : msg.out, { noteEl: note }); TK.status(statusEl, msg.text, msg.type || 'info'); cfg.stats(null); return; } }
+        var size = text.length, worker = cfg.worker ? cfg.worker(o, size) : false;
+        if (size > TEXT_WORKER_FROM) TK.status(statusEl, 'Processing ' + TK.formatBytes(size) + ' in the background…', 'info');
+        var job = cur = textJob(cfg.fn, { text: text, o: o }, size, cfg.timeout ? cfg.timeout(o, size) : 30000, worker);
+        job.then(function (r) {
+          if (id !== runId) return;
+          cur = null;
+          TK.setOutput(out, r.out, { noteEl: note });
+          TK.status(statusEl, r.msg || '', r.msgType || 'info');
+          cfg.stats(r, performance.now() - t0);
+        }, function (e) {
+          if (id !== runId || (e && e.message === 'cancelled')) return;
+          cur = null;
+          TK.setOutput(out, '', { noteEl: note }); cfg.stats(null);
+          TK.status(statusEl, cfg.error ? cfg.error(e, o) : textErr(e), 'error');
+        });
+      }
+      var auto = TK.autoRun({
+        input: input, run: run, delay: cfg.delay || 200, maxAuto: TEXT_MAX_LIVE, also: cfg.also || [],
+        onLarge: function (large) { showBtn(runBtn, large); TK.status(statusEl, large ? 'Large text — live mode paused. Click Run to process it.' : '', 'info'); }
+      });
+      function rerun() { if (auto.isLarge()) return; auto.trigger(); }
+      (cfg.liveInputs || []).forEach(function (x) { x.addEventListener('input', TK.debounce(rerun, cfg.delay || 200)); });
+      showBtn(runBtn, false);
+      runBtn.addEventListener('click', function () { auto.trigger(); });
+      $('useBtn').addEventListener('click', function () { var v = TK.getOutput(out); if (!v) return; input.value = v; auto.check(); auto.trigger(); });
+      $('copyBtn').addEventListener('click', function () { TK.copy(TK.getOutput(out), this); });
+      $('downloadBtn').addEventListener('click', function () { if (cfg.download) cfg.download(this); else TK.download(TK.getOutput(out), cfg.filename, 'text/plain;charset=utf-8', this); });
+      $('exampleBtn').addEventListener('click', function () { input.value = cfg.example(); auto.check(); auto.trigger(); });
+      $('clearBtn').addEventListener('click', function () { input.value = ''; auto.check(); auto.trigger(); input.focus(); });
+      attachTextFile(input, $('fileIn'), function () { auto.check(); auto.trigger(); }, statusEl);
+      return { run: run, rerun: rerun, auto: auto };
+    }
+    function setStat(id, v) { $(id).textContent = v == null ? '–' : (typeof v === 'number' ? TK.formatNumber(v) : v); }
+
+    function unJob(d) {
+      var o = d.o, s = d.text, n = 0, bad = 0, out = [], i = 0, L = s.length;
+      var SIMPLE = { n: '\n', r: '\r', t: '\t', b: '\b', f: '\f', v: '\v', '0': '\0', '\\': '\\', '"': '"', "'": "'", '/': '/' };
+      function isHex(c) { return /^[0-9a-fA-F]$/.test(c); }
+      function hexRun(at, max) { var j = at; while (j < L && j - at < max && isHex(s.charAt(j))) j++; return j; }
+      function ok(cp) { return cp <= 0x10FFFF && !(cp >= 0xD800 && cp <= 0xDFFF); }
+      var trimmed = s.trim();
+      if (/^(?:U\+[0-9a-fA-F]{1,6}[\s,;]*)+$/i.test(trimmed)) {
+        var cps = trimmed.match(/U\+([0-9a-fA-F]{1,6})/gi), r = '';
+        cps.forEach(function (t) { var cp = parseInt(t.slice(2), 16); if (ok(cp)) { r += String.fromCodePoint(cp); n++; } else { r += t; bad++; } });
+        return { out: r, n: n, bad: bad, msg: bad ? bad + ' invalid code point' + (bad > 1 ? 's were' : ' was') + ' kept as written.' : '', msgType: bad ? 'warn' : 'info' };
+      }
+      while (i < L) {
+        var c = s.charAt(i);
+        if (c === '&' && o.html && s.charAt(i + 1) === '#') {
+          var m = /^&#(?:[xX]([0-9a-fA-F]{1,8})|([0-9]{1,9}));/.exec(s.slice(i, i + 13));
+          if (m) {
+            var cp = m[1] != null ? parseInt(m[1], 16) : parseInt(m[2], 10);
+            if (ok(cp) && cp > 0) { out.push(String.fromCodePoint(cp)); n++; } else { out.push(m[0]); bad++; }
+            i += m[0].length; continue;
+          }
+          out.push(c); i++; continue;
+        }
+        if (c !== '\\' || i + 1 >= L) { out.push(c); i++; continue; }
+        var e = s.charAt(i + 1);
+        if (e === 'u' && s.charAt(i + 2) === '{') {
+          var a = i + 3, b = hexRun(a, 6);
+          if (b > a && s.charAt(b) === '}') { var cp2 = parseInt(s.slice(a, b), 16); if (ok(cp2)) { out.push(String.fromCodePoint(cp2)); n++; } else { out.push(s.slice(i, b + 1)); bad++; } i = b + 1; continue; }
+        } else if (e === 'u' && hexRun(i + 2, 4) === i + 6) {
+          var u = parseInt(s.slice(i + 2, i + 6), 16);
+          if (u >= 0xD800 && u <= 0xDBFF && s.charAt(i + 6) === '\\' && s.charAt(i + 7) === 'u' && hexRun(i + 8, 4) === i + 12) {
+            var lo = parseInt(s.slice(i + 8, i + 12), 16);
+            if (lo >= 0xDC00 && lo <= 0xDFFF) { out.push(String.fromCharCode(u, lo)); n++; i += 12; continue; }
+          }
+          if (u >= 0xD800 && u <= 0xDFFF) { out.push(s.slice(i, i + 6)); bad++; } else { out.push(String.fromCharCode(u)); n++; }
+          i += 6; continue;
+        } else if (e === 'U' && hexRun(i + 2, 8) === i + 10) {
+          var U = parseInt(s.slice(i + 2, i + 10), 16);
+          if (ok(U)) { out.push(String.fromCodePoint(U)); n++; } else { out.push(s.slice(i, i + 10)); bad++; }
+          i += 10; continue;
+        } else if (e === 'x' && hexRun(i + 2, 2) === i + 4) {
+          var bytes = [], j = i;
+          while (s.charAt(j) === '\\' && s.charAt(j + 1) === 'x' && hexRun(j + 2, 2) === j + 4) { bytes.push(parseInt(s.slice(j + 2, j + 4), 16)); j += 4; }
+          var txt = null;
+          if (bytes.some(function (x) { return x > 0x7F; })) { try { txt = new TextDecoder('utf-8', { fatal: true }).decode(new Uint8Array(bytes)); } catch (er) { txt = null; } }
+          if (txt === null) txt = String.fromCharCode.apply(null, bytes);
+          out.push(txt); n += bytes.length; i = j; continue;
+        }
+        if (o.css && isHex(e)) {
+          var cb = hexRun(i + 1, 6), ccp = parseInt(s.slice(i + 1, cb), 16), nx = cb;
+          if (s.charAt(nx) === '\r' && s.charAt(nx + 1) === '\n') nx += 2; else if (/[ \t\n\r\f]/.test(s.charAt(nx))) nx++;
+          if (ok(ccp) && ccp > 0) { out.push(String.fromCodePoint(ccp)); n++; } else { out.push('\uFFFD'); bad++; }
+          i = nx; continue;
+        }
+        if (o.simple && Object.prototype.hasOwnProperty.call(SIMPLE, e)) { out.push(SIMPLE[e]); n++; i += 2; continue; }
+        if (e === '\\') { out.push('\\\\'); i += 2; continue; }            // an escaped backslash never starts an escape
+        out.push(c); i++;
+      }
+      var r2 = out.join(''), msg = [], type = 'info';
+      if (bad) { type = 'warn'; msg.push(bad + ' invalid escape' + (bad > 1 ? 's' : '') + (o.css ? '' : ' (out of range or an unpaired surrogate)') + ' kept as written.'); }
+      if (!n && !bad) msg.push('No escape sequences found — the text is unchanged.');
+      else if (/\\u[0-9a-fA-F]{4}|\\u\{[0-9a-fA-F]+\}|\\x[0-9a-fA-F]{2}/.test(r2) && /\\\\(?:u|x)/.test(s)) msg.push('The result still contains escapes — the text was probably escaped twice. Decode it again.');
+      return { out: r2, n: n, bad: bad, msg: msg.join(' '), msgType: type };
+    }
+    var tool = textTool({
+      fn: unJob, filename: 'unescaped.txt', also: [$('optSimple'), $('optHtml'), $('optCss')],
+      opts: function () { return { simple: $('optSimple').checked, html: $('optHtml').checked, css: $('optCss').checked }; },
+      stats: function (r, ms) {
+        setStat('stN', r && r.n); setStat('stBad', r && r.bad); setStat('stOut', r && r.out.length);
+        setStat('stTime', r ? (ms < 1 ? '<1 ms' : Math.round(ms) + ' ms') : null);
+      },
+      example: function () { return ['JSON: Caf\\u00e9 \\u2615 costs \\u20ac3.50\\nNew line!', 'Emoji: \\ud83d\\ude00 or ES6 \\u{1F600}', 'Python: \\U0001F680 and bytes \\xc3\\xa9t\\xc3\\xa9', 'HTML: &#x20B9;499 &#8212; done', 'Broken: \\u{110000} \\uD83D alone'].join('\n'); }
+    });
+
+  })();
+  </script>
+</body>
+</html>

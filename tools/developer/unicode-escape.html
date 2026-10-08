@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unicode Escape – Convert Text to \uXXXX, \u{…}, &amp;amp;#x…; and U+ Codes | Toolyard</title>
+  <meta name="description" content="Free Unicode escape tool. Convert text, emoji and accented letters to JavaScript/JSON \uXXXX (with surrogate pairs), ES6 \u{…}, Python \U, HTML &amp;amp;#x…; and &amp;amp;#…;, CSS escapes or a U+ code-point list.">
+  <link rel="canonical" href="https://htmltools.nilankubaruah.workers.dev/tools/developer/unicode-escape.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Unicode Escape – Convert Text to \uXXXX, \u{…}, &amp;amp;#x…; and U+ Codes">
+  <meta property="og:description" content="Free Unicode escape tool. Convert text, emoji and accented letters to JavaScript/JSON \uXXXX (with surrogate pairs), ES6 \u{…}, Python \U, HTML &amp;amp;#x…; and &amp;amp;#…;, CSS escapes or a U+ code-point list.">
+  <meta property="og:url" content="https://htmltools.nilankubaruah.workers.dev/tools/developer/unicode-escape.html">
+  <meta name="twitter:card" content="summary">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/tools.css">
+  <script src="/js/tools-data.js"></script>
+  <script src="/js/layout.js"></script>
+  <script src="/js/tool-kit.js"></script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Unicode Escape", "url": "https://htmltools.nilankubaruah.workers.dev/tools/developer/unicode-escape.html", "applicationCategory": "DeveloperApplication", "operatingSystem": "Any (runs in your browser)", "description": "Free Unicode escape tool. Convert text, emoji and accented letters to JavaScript/JSON \\uXXXX (with surrogate pairs), ES6 \\u{…}, Python \\U, HTML &amp;#x…; and &amp;#…;, CSS escapes or a U+ code-point list.", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Why does one emoji become two \\u escapes?", "acceptedAnswer": {"@type": "Answer", "text": "JavaScript and JSON \\u escapes always have four hex digits, which only reach U+FFFF. Characters beyond that, like most emoji, are written as two escapes — a surrogate pair. \\uD83D\\uDE00 is one character, 😀. Use the ES6 format (\\u{1F600}) for a single escape in modern JavaScript."}}, {"@type": "Question", "name": "Is the JavaScript format valid JSON?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. JSON uses the same \\uXXXX escapes, including surrogate pairs, so the output can go straight into a JSON string. (Quotes and backslashes in your text aren't escaped by this tool — use the JSON Escape tool for a complete JSON string.)"}}, {"@type": "Question", "name": "What does “Non-ASCII only” escape?", "acceptedAnswer": {"@type": "Answer", "text": "Every character above U+007E (accented letters, symbols, other scripts, emoji) plus invisible control characters. Letters, digits, punctuation, spaces, tabs and line breaks stay as they are."}}, {"@type": "Question", "name": "Why is there a space after some CSS escapes?", "acceptedAnswer": {"@type": "Answer", "text": "In CSS, a hex escape ends at the first non-hex character, and one space after it is swallowed. So \\E9 t is “ét”, while \\E9t would read the t as text but \\E9a would read “E9A”. The tool adds the space only when needed."}}, {"@type": "Question", "name": "Does a combined character like é count as one?", "acceptedAnswer": {"@type": "Answer", "text": "It depends how it's stored. A precomposed é is one code point (U+00E9); an e followed by a combining accent is two (U+0065 U+0301). The tool escapes code points exactly as they are in your text."}}, {"@type": "Question", "name": "Is my text uploaded?", "acceptedAnswer": {"@type": "Answer", "text": "No. Everything runs in your browser."}}]}</script>
+</head>
+<body class="ty-tool" data-tool="unicode-escape">
+
+  <!-- SHARED HEADER, MOBILE MENU & BREADCRUMBS (rendered by /js/layout.js) -->
+  <div id="site-header"></div>
+  <div id="site-breadcrumbs"></div>
+
+  <main>
+  <!-- TOOL INTRO -->
+  <section class="tool-intro">
+    <div class="wrap tool-intro-content">
+      <span class="eyebrow">⌨ DEVELOPER · ENCODER</span>
+      <h1>Unicode Escape</h1>
+      <p class="lead">Convert any text — accented letters, symbols, emoji, Hindi, Chinese — into Unicode escape sequences for JavaScript, JSON, Python, HTML or CSS, or list each character's U+ code point. Keep ASCII readable and escape only the rest, or escape everything.</p>
+      <div class="tool-meta-badge"><span class="dot"></span> 7 formats · Correct surrogate pairs · Emoji-safe · ASCII kept readable</div>
+    </div>
+  </section>
+
+  <!-- WORKSPACE -->
+  <section class="tool-app-section">
+    <div class="wrap">
+      <div class="ty-pair"><span>Tip: <b>JavaScript / JSON</b> output can be pasted straight into a JSON string or a .js file with any file encoding.</span><span>Need to decode instead? <a href="/tools/developer/unicode-unescape.html">Unicode Unescape →</a></span></div>
+      <div class="tool-workspace">
+        <div class="tool-toolbar">
+          <div class="tool-toolbar-left ty-txtopts">
+            <label class="ty-opt" title="Escape style">Format <select id="optFmt" class="ty-input" style="width:auto;padding:4px 8px;font-size:13px"><option value="js" selected>JavaScript / JSON  \uXXXX</option><option value="es6">ES6  \u{X}</option><option value="py">Python  \u / \U</option><option value="hex">HTML hex  &amp;#xX;</option><option value="dec">HTML decimal  &amp;#N;</option><option value="css">CSS  \X</option><option value="uplus">Code points  U+XXXX</option></select></label>
+            <div class="ty-seg" id="scopeSeg" role="group" aria-label="Escape"><button type="button" data-value="non" class="active">Non-ASCII only</button><button type="button" data-value="all">All characters</button></div>
+            <span class="ty-sep"></span>
+            <label class="ty-opt" title="\u00E9 instead of \u00e9"><input type="checkbox" id="optUpper" checked> Uppercase hex</label>
+          </div>
+          <div class="tool-toolbar-right">
+            <button type="button" class="btn btn-amber btn-sm" id="runBtn">Run</button>
+            <label class="btn btn-outline btn-sm" title="Open a text file (or drop it on the input)">Open file<input type="file" id="fileIn" accept=".txt,.csv,.tsv,.log,.md,.json,.xml,.html,.css,.js,.ts,.sql,.yml,.yaml,.ini,.env,text/*" hidden></label>
+            <button type="button" class="btn btn-outline btn-sm" id="useBtn" title="Move the result into the input">⇄ Use as input</button>
+            <button type="button" class="btn btn-ghost btn-sm" id="exampleBtn">Load Example</button>
+            <button type="button" class="btn btn-danger btn-sm" id="clearBtn">Clear</button>
+          </div>
+        </div>
+
+        <div class="tool-grid ty-ed">
+          <div class="tool-pane">
+            <div class="tool-pane-header">
+              <span class="title">Text</span>
+              <span class="badge">Any Unicode text</span>
+            </div>
+            <textarea id="txtIn" class="tool-textarea ty-mono" style="word-break:normal;" placeholder="Type or paste text, e.g. Café ☕ — नमस्ते 😀" spellcheck="false" aria-label="Text"></textarea>
+          </div>
+          <div class="tool-pane">
+            <div class="tool-pane-header">
+              <span class="title">Escaped</span>
+              <div class="actions">
+                <button type="button" class="btn btn-sm btn-outline" id="copyBtn">Copy</button>
+                <button type="button" class="btn btn-sm btn-ghost" id="downloadBtn">Download .txt</button>
+              </div>
+            </div>
+            <textarea id="txtOut" class="tool-textarea ty-mono is-empty" style="word-break:normal;" readonly placeholder="Escape sequences appear here…" aria-label="Escaped"></textarea>
+            <div class="ty-note" id="txtNote" hidden></div>
+          </div>
+        </div>
+        <p class="ty-alert" id="txtStatus" role="status" aria-live="polite" hidden></p>
+
+        <div class="tool-stats-bar">
+          <div class="tool-stats-items">
+            <div class="tool-stat-badge">Characters: <b id="stChars">–</b></div>
+            <div class="tool-stat-badge">Escaped: <b id="stEsc">–</b></div>
+            <div class="tool-stat-badge">Output: <b id="stOut">–</b></div>
+            <div class="tool-stat-badge">Time: <b id="stTime">–</b></div>
+          </div>
+          <div>Unicode 15+ · 100% Client-Side</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. ABOUT -->
+  <section class="ty-sec">
+    <div class="wrap">
+      <span class="eyebrow">◆ ABOUT THIS TOOL</span>
+      <h2>What Is a Unicode Escape?</h2>
+      <p class="sub">A way to write any character using only plain ASCII.</p>
+      <div class="about-grid">
+        <div><p>Every character has a Unicode <em>code point</em> — a number written as <code>U+00E9</code> (é) or <code>U+1F600</code> (😀). An escape sequence writes that number in the syntax of a programming language, so source code and data files can contain any character while staying pure ASCII. That avoids broken characters when a file's encoding is wrong.</p><p>Each language has its own syntax. JavaScript and JSON use <code>\uXXXX</code> with exactly four hex digits, so characters above U+FFFF — most emoji — become two escapes called a <em>surrogate pair</em> (<code>😀</code> → <code>\uD83D\uDE00</code>). This tool calculates those for you.</p></div>
+        <div><p><strong>Other formats.</strong> ES6 JavaScript accepts <code>\u{1F600}</code>, Python uses <code>\u00e9</code> and <code>\U0001F600</code>, HTML uses <code>&amp;#xE9;</code> or <code>&amp;#233;</code>, and CSS uses <code>\E9</code> — the tool adds the required space when a hex digit or space follows.</p><p><strong>Non-ASCII only</strong> (default) escapes characters above U+007E plus invisible control characters, so normal text stays readable. Tabs and line breaks are kept as they are.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. REFERENCE -->
+  <section class="ty-sec alt">
+    <div class="wrap">
+      <span class="eyebrow">⌘ REFERENCE</span>
+      <h2>Escape Formats Side by Side</h2>
+      <p class="sub">The same three characters in every format.</p>
+      <div class="ty-ref-wrap"><table class="ty-ref-table">
+        <thead><tr><th>Format</th><th style="text-transform:none">é (U+00E9)</th><th style="text-transform:none">€ (U+20AC)</th><th style="text-transform:none">😀 (U+1F600)</th></tr></thead>
+        <tbody>
+          <tr><td>JavaScript / JSON</td><td><code>\u00E9</code></td><td><code>\u20AC</code></td><td><code>\uD83D\uDE00</code></td></tr>
+          <tr><td>ES6 JavaScript</td><td><code>\u{E9}</code></td><td><code>\u{20AC}</code></td><td><code>\u{1F600}</code></td></tr>
+          <tr><td>Python</td><td><code>\u00E9</code></td><td><code>\u20AC</code></td><td><code>\U0001F600</code></td></tr>
+          <tr><td>HTML hex</td><td><code>&amp;#xE9;</code></td><td><code>&amp;#x20AC;</code></td><td><code>&amp;#x1F600;</code></td></tr>
+          <tr><td>HTML decimal</td><td><code>&amp;#233;</code></td><td><code>&amp;#8364;</code></td><td><code>&amp;#128512;</code></td></tr>
+          <tr><td>CSS</td><td><code>\E9</code></td><td><code>\20AC</code></td><td><code>\1F600</code></td></tr>
+          <tr><td>Code points</td><td><code>U+00E9</code></td><td><code>U+20AC</code></td><td><code>U+1F600</code></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <!-- 3. HOW TO USE -->
+  <section class="how-sec section-navy">
+    <div class="wrap">
+      <span class="eyebrow">◐ THREE STEPS</span>
+      <h2>How to Use the Unicode Escape</h2>
+      <p class="sub">Get your result in under ten seconds.</p>
+      <div class="steps">
+        <div class="step" data-n="01">
+          <div class="num">1</div>
+          <h3 style="color:#fff;">Paste your text</h3>
+          <p>Any language, symbols or emoji.</p>
+        </div>
+        <div class="step" data-n="02">
+          <div class="num">2</div>
+          <h3 style="color:#fff;">Choose a format</h3>
+          <p>JavaScript/JSON, ES6, Python, HTML, CSS or U+ code points.</p>
+        </div>
+        <div class="step" data-n="03">
+          <div class="num">3</div>
+          <h3 style="color:#fff;">Copy the escapes</h3>
+          <p>Pure ASCII output, safe in any file encoding.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. FEATURES -->
+  <section class="ty-sec">
+    <div class="wrap">
+      <span class="eyebrow">✓ FEATURES</span>
+      <h2>Why Use the Toolyard Unicode Escape</h2>
+      <p class="sub">Fast, accurate and private — built for developers.</p>
+      <div class="why-grid">
+        <div><div class="why-ico">😀</div><h3>Emoji-safe</h3><p>Characters above U+FFFF get correct surrogate pairs or full code points.</p></div>
+        <div><div class="why-ico">7</div><h3>Seven formats</h3><p>JavaScript, JSON, ES6, Python, HTML hex/decimal, CSS and U+ lists.</p></div>
+        <div><div class="why-ico">Aa</div><h3>Readable output</h3><p>Escape only non-ASCII characters, or everything if you prefer.</p></div>
+        <div><div class="why-ico">\E9␣</div><h3>CSS-correct</h3><p>Adds the separating space CSS needs before hex digits and spaces.</p></div>
+        <div><div class="why-ico">⚡</div><h3>Fast</h3><p>Large texts are processed in a background thread.</p></div>
+        <div><div class="why-ico">🔒</div><h3>Private</h3><p>Runs entirely in your browser.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. FAQ -->
+  <section class="ty-sec alt">
+    <div class="wrap">
+      <div style="text-align:center; margin-bottom:36px;">
+        <span class="eyebrow">FAQ</span>
+        <h2 style="font-size:28px; margin-top:12px;">Frequently Asked Questions</h2>
+      </div>
+      <div class="faq" id="faqList">
+        <div class="faq-item">
+          <button type="button">Why does one emoji become two \u escapes?<span class="plus">+</span></button>
+          <div class="faq-a"><p>JavaScript and JSON <code>\u</code> escapes always have four hex digits, which only reach U+FFFF. Characters beyond that, like most emoji, are written as two escapes — a surrogate pair. <code>\uD83D\uDE00</code> is one character, 😀. Use the ES6 format (<code>\u{1F600}</code>) for a single escape in modern JavaScript.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Is the JavaScript format valid JSON?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Yes. JSON uses the same <code>\uXXXX</code> escapes, including surrogate pairs, so the output can go straight into a JSON string. (Quotes and backslashes in your text aren't escaped by this tool — use the JSON Escape tool for a complete JSON string.)</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">What does “Non-ASCII only” escape?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Every character above U+007E (accented letters, symbols, other scripts, emoji) plus invisible control characters. Letters, digits, punctuation, spaces, tabs and line breaks stay as they are.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Why is there a space after some CSS escapes?<span class="plus">+</span></button>
+          <div class="faq-a"><p>In CSS, a hex escape ends at the first non-hex character, and one space after it is swallowed. So <code>\E9 t</code> is “ét”, while <code>\E9t</code> would read the t as text but <code>\E9a</code> would read “E9A”. The tool adds the space only when needed.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Does a combined character like é count as one?<span class="plus">+</span></button>
+          <div class="faq-a"><p>It depends how it's stored. A precomposed é is one code point (U+00E9); an e followed by a combining accent is two (U+0065 U+0301). The tool escapes code points exactly as they are in your text.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Is my text uploaded?<span class="plus">+</span></button>
+          <div class="faq-a"><p>No. Everything runs in your browser.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. RELATED -->
+  <section class="related-tools-section">
+    <div class="wrap">
+      <div class="section-head" style="margin-bottom:28px;">
+        <div>
+          <span class="eyebrow" style="margin-bottom:12px; display:inline-flex;">📎 RELATED</span>
+          <h2 style="font-size:26px; margin:12px 0 6px;">Related Developer Tools</h2>
+          <p class="desc" style="margin:0;">More free utilities that pair well with this one.</p>
+        </div>
+        <a class="view-all" href="/categories/developer/">All Developer Tools →</a>
+      </div>
+      <div class="grid grid-3">
+        <a class="tool-card" href="/tools/developer/unicode-unescape.html">
+          <div class="top-row"><span class="badge">Decoder</span></div>
+          <h3>Unicode Unescape</h3>
+          <p>Decode \uXXXX, \u{…}, \U…, U+XXXX, &amp;#x…; and CSS escapes back into readable text.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/json-data/json-escape-unescape.html">
+          <div class="top-row"><span class="badge">Encoder</span></div>
+          <h3>JSON Escape/Unescape</h3>
+          <p>Escape JSON for embedding in strings, or reverse it.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/html/html-entity-encoder.html">
+          <div class="top-row"><span class="badge">Encoder</span></div>
+          <h3>HTML Entity Encoder</h3>
+          <p>Encode special characters into HTML entities.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/developer/url-encoder.html">
+          <div class="top-row"><span class="badge">Encoder</span></div>
+          <h3>URL Encoder</h3>
+          <p>Percent-encode text for safe use in URLs.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/developer/base64-encoder.html">
+          <div class="top-row"><span class="badge">Encoder</span></div>
+          <h3>Base64 Encoder</h3>
+          <p>Encode text or data to Base64.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/developer/regex-escape.html">
+          <div class="top-row"><span class="badge">Encoder</span></div>
+          <h3>Regex Escape</h3>
+          <p>Escape text for a regex with the exact rules of JavaScript, Python, PHP, Java, .NET or Go.</p>
+          <span class="open">Open tool →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <!-- SHARED FOOTER (rendered by /js/layout.js) -->
+  <div id="site-footer"></div>
+
+  <script>
+  (function () {
+    'use strict';
+    var $ = TK.$;
+    TK.initFaq(document.getElementById('faqList'));
+
+    var TEXT_WORKER_FROM = 256 * 1024, TEXT_MAX_FILE = 50 * 1024 * 1024, TEXT_MAX_LIVE = 3 * 1024 * 1024;
+    function el(tag, cls, text) { var x = document.createElement(tag); if (cls) x.className = cls; if (text != null) x.textContent = text; return x; }
+    // small input → main thread; large → Web Worker (with timeout). Always returns a cancellable promise.
+    function textJob(fn, data, size, timeoutMs, forceWorker) {
+      if (!forceWorker && size <= TEXT_WORKER_FROM) { var p = new Promise(function (res) { res(fn(data)); }); p.cancel = function () {}; return p; }
+      return TK.runWorker(fn, data, timeoutMs || 30000);
+    }
+    function textErr(e) {
+      var m = e && e.message || String(e);
+      if (m === 'timeout') return 'Processing took too long and was stopped.';
+      if (/memory|allocation|Invalid string length/i.test(m)) return 'Not enough memory to process this text in the browser.';
+      return m;
+    }
+    // lines in a text, not counting one trailing newline (a final "\n" ends the last line, it doesn't start a new one)
+    function countLines(t) {
+      if (!t) return 0;
+      var c = 1, k = -1; while ((k = t.indexOf('\n', k + 1)) !== -1) c++;
+      return /\n$/.test(t) ? c - 1 : c;
+    }
+    function attachTextFile(ta, fileInput, onLoad, statusEl) {
+      function load(f) {
+        if (!f) return;
+        if (f.size > TEXT_MAX_FILE) { TK.status(statusEl, '“' + f.name + '” is ' + TK.formatBytes(f.size) + '. The maximum is 50 MB.', 'error'); return; }
+        TK.readFile(f, 'text').then(function (t) { ta.value = t; onLoad(f); }, function () { TK.status(statusEl, 'Could not read “' + f.name + '”.', 'error'); });
+      }
+      if (fileInput) fileInput.addEventListener('change', function () { load(fileInput.files[0]); fileInput.value = ''; });
+      ta.addEventListener('dragover', function (e) { if (e.dataTransfer && Array.prototype.indexOf.call(e.dataTransfer.types, 'Files') >= 0) e.preventDefault(); });
+      ta.addEventListener('drop', function (e) { if (e.dataTransfer && e.dataTransfer.files.length) { e.preventDefault(); load(e.dataTransfer.files[0]); } });
+    }
+    function showBtn(b, on) { b.style.display = on ? '' : 'none'; }   // .btn sets display, so [hidden] alone is not enough
+
+    /* Driver for "text in → text out" tools.
+       cfg: { fn (self-contained worker-safe job), opts() → options object, stats(result|null, ms), example, filename,
+              segs: [TK.segmented controls…] (call cfg.rerun on change), also: [inputs whose change re-runs] } */
+    function textTool(cfg) {
+      var input = $('txtIn'), out = $('txtOut'), note = $('txtNote'), statusEl = $('txtStatus'), runBtn = $('runBtn');
+      var cur = null, runId = 0;
+      function run() {
+        var text = input.value, id = ++runId;
+        if (cur) { cur.cancel(); cur = null; }
+        if (!text) { TK.setOutput(out, '', { noteEl: note }); TK.status(statusEl, ''); cfg.stats(null); return; }
+        var o = cfg.opts(), t0 = performance.now();
+        if (cfg.check) { var msg = cfg.check(o, text); if (msg) { TK.setOutput(out, msg.out == null ? '' : msg.out, { noteEl: note }); TK.status(statusEl, msg.text, msg.type || 'info'); cfg.stats(null); return; } }
+        var size = text.length, worker = cfg.worker ? cfg.worker(o, size) : false;
+        if (size > TEXT_WORKER_FROM) TK.status(statusEl, 'Processing ' + TK.formatBytes(size) + ' in the background…', 'info');
+        var job = cur = textJob(cfg.fn, { text: text, o: o }, size, cfg.timeout ? cfg.timeout(o, size) : 30000, worker);
+        job.then(function (r) {
+          if (id !== runId) return;
+          cur = null;
+          TK.setOutput(out, r.out, { noteEl: note });
+          TK.status(statusEl, r.msg || '', r.msgType || 'info');
+          cfg.stats(r, performance.now() - t0);
+        }, function (e) {
+          if (id !== runId || (e && e.message === 'cancelled')) return;
+          cur = null;
+          TK.setOutput(out, '', { noteEl: note }); cfg.stats(null);
+          TK.status(statusEl, cfg.error ? cfg.error(e, o) : textErr(e), 'error');
+        });
+      }
+      var auto = TK.autoRun({
+        input: input, run: run, delay: cfg.delay || 200, maxAuto: TEXT_MAX_LIVE, also: cfg.also || [],
+        onLarge: function (large) { showBtn(runBtn, large); TK.status(statusEl, large ? 'Large text — live mode paused. Click Run to process it.' : '', 'info'); }
+      });
+      function rerun() { if (auto.isLarge()) return; auto.trigger(); }
+      (cfg.liveInputs || []).forEach(function (x) { x.addEventListener('input', TK.debounce(rerun, cfg.delay || 200)); });
+      showBtn(runBtn, false);
+      runBtn.addEventListener('click', function () { auto.trigger(); });
+      $('useBtn').addEventListener('click', function () { var v = TK.getOutput(out); if (!v) return; input.value = v; auto.check(); auto.trigger(); });
+      $('copyBtn').addEventListener('click', function () { TK.copy(TK.getOutput(out), this); });
+      $('downloadBtn').addEventListener('click', function () { if (cfg.download) cfg.download(this); else TK.download(TK.getOutput(out), cfg.filename, 'text/plain;charset=utf-8', this); });
+      $('exampleBtn').addEventListener('click', function () { input.value = cfg.example(); auto.check(); auto.trigger(); });
+      $('clearBtn').addEventListener('click', function () { input.value = ''; auto.check(); auto.trigger(); input.focus(); });
+      attachTextFile(input, $('fileIn'), function () { auto.check(); auto.trigger(); }, statusEl);
+      return { run: run, rerun: rerun, auto: auto };
+    }
+    function setStat(id, v) { $(id).textContent = v == null ? '–' : (typeof v === 'number' ? TK.formatNumber(v) : v); }
+
+    function escJob(d) {
+      var o = d.o, f = o.fmt, all = o.scope === 'all', s = d.text, out = [], chars = 0, esc = 0;
+      function hx(n, w) { var h = n.toString(16); if (o.upper) h = h.toUpperCase(); while (h.length < w) h = '0' + h; return h; }
+      if (f === 'uplus') {
+        for (var c of s) { out.push('U+' + hx(c.codePointAt(0), 4)); chars++; }
+        return { out: out.join(' '), chars: chars, esc: chars };
+      }
+      var cps = [];
+      for (var ch of s) cps.push(ch.codePointAt(0));
+      for (var i = 0; i < cps.length; i++) {
+        var cp = cps[i]; chars++;
+        var need = all || cp > 0x7E || (cp < 0x20 && cp !== 9 && cp !== 10 && cp !== 13);
+        if (!need) { out.push(String.fromCodePoint(cp)); continue; }
+        esc++;
+        switch (f) {
+          case 'js':
+            if (cp > 0xFFFF) { var v = cp - 0x10000; out.push('\\u' + hx(0xD800 + (v >> 10), 4) + '\\u' + hx(0xDC00 + (v & 0x3FF), 4)); }
+            else out.push('\\u' + hx(cp, 4));
+            break;
+          case 'es6': out.push('\\u{' + hx(cp, 1) + '}'); break;
+          case 'py': out.push(cp > 0xFFFF ? '\\U' + hx(cp, 8) : '\\u' + hx(cp, 4)); break;
+          case 'hex': out.push('&#x' + hx(cp, 1) + ';'); break;
+          case 'dec': out.push('&#' + cp + ';'); break;
+          case 'css':
+            var nx = i + 1 < cps.length ? cps[i + 1] : -1, nextRaw = nx >= 0 && !(all || nx > 0x7E || (nx < 0x20 && nx !== 9 && nx !== 10 && nx !== 13));
+            var e = '\\' + hx(cp, 1);
+            if (nextRaw && /[0-9a-fA-F \t\n\r\f]/.test(String.fromCharCode(nx))) e += ' ';
+            out.push(e); break;
+        }
+      }
+      var msg = !esc ? 'Nothing to escape — the text is plain ASCII. Choose “All characters” to escape everything.' : '';
+      return { out: out.join(''), chars: chars, esc: esc, msg: msg, msgType: 'info' };
+    }
+    var scopeSeg = TK.segmented($('scopeSeg'), function () { tool.rerun(); });
+    var tool = textTool({
+      fn: escJob, filename: 'escaped.txt', also: [$('optFmt'), $('optUpper')],
+      opts: function () { return { fmt: $('optFmt').value, scope: scopeSeg.get(), upper: $('optUpper').checked }; },
+      stats: function (r, ms) {
+        setStat('stChars', r && r.chars); setStat('stEsc', r && r.esc); setStat('stOut', r && r.out.length);
+        setStat('stTime', r ? (ms < 1 ? '<1 ms' : Math.round(ms) + ' ms') : null);
+      },
+      example: function () { return 'Café ☕ costs €3.50 — नमस्ते 😀 “quoted” ©2026'; }
+    });
+
+  })();
+  </script>
+</body>
+</html>

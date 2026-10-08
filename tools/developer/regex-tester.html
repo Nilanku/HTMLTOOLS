@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Regex Tester – Test JavaScript Regular Expressions Online | Toolyard</title>
+  <meta name="description" content="Free online regex tester for JavaScript. Live match highlighting, capture and named groups, match positions, replace preview and all flags (g i m s u v y d) — runs safely in your browser and stops runaway patterns.">
+  <link rel="canonical" href="https://htmltools.nilankubaruah.workers.dev/tools/developer/regex-tester.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Regex Tester – Test JavaScript Regular Expressions Online">
+  <meta property="og:description" content="Free online regex tester for JavaScript. Live match highlighting, capture and named groups, match positions, replace preview and all flags (g i m s u v y d) — runs safely in your browser and stops runaway patterns.">
+  <meta property="og:url" content="https://htmltools.nilankubaruah.workers.dev/tools/developer/regex-tester.html">
+  <meta name="twitter:card" content="summary">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/tools.css">
+  <script src="/js/tools-data.js"></script>
+  <script src="/js/layout.js"></script>
+  <script src="/js/tool-kit.js"></script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Regex Tester", "url": "https://htmltools.nilankubaruah.workers.dev/tools/developer/regex-tester.html", "applicationCategory": "DeveloperApplication", "operatingSystem": "Any (runs in your browser)", "description": "Free online regex tester for JavaScript. Live match highlighting, capture and named groups, match positions, replace preview and all flags (g i m s u v y d) — runs safely in your browser and stops runaway patterns.", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Which regex flavour does this tester use?", "acceptedAnswer": {"@type": "Answer", "text": "JavaScript (ECMAScript), using the RegExp engine built into your browser — the same one Node.js, Deno and Chrome-based browsers use. Most everyday syntax is shared with Python, PHP, Java and .NET, but some features differ, so test patterns for those languages in their own environment."}}, {"@type": "Question", "name": "Why does it only find one match?", "acceptedAnswer": {"@type": "Answer", "text": "Turn on the g (global) flag. Without it, JavaScript stops after the first match — that's how exec(), match() and replace() behave in your code too."}}, {"@type": "Question", "name": "What is catastrophic backtracking?", "acceptedAnswer": {"@type": "Answer", "text": "Patterns with nested repetition, such as (a+)+$ or (\\w+\\s?)+$, can try an exponential number of ways to match when the text almost-but-doesn't match. A few dozen characters can take minutes. This tester stops a run after about 2 seconds and warns you. Fix it by removing the nested quantifier or making the alternatives unambiguous."}}, {"@type": "Question", "name": "How do I use capture groups in the replacement?", "acceptedAnswer": {"@type": "Answer", "text": "Use $1, $2… for numbered groups, $<name> for named groups, $& for the whole match and $$ for a literal dollar sign. With the g flag every match is replaced; without it only the first."}}, {"@type": "Question", "name": "What's the difference between the u and v flags?", "acceptedAnswer": {"@type": "Answer", "text": "Both turn on full Unicode mode (\\u{1F600}, \\p{…}, emoji counted as one character). v is newer and adds set operations inside brackets, like [\\p{L}--[a-z]], and stricter escaping rules. You can't use both at once. If your browser is too old for v, its button is disabled."}}, {"@type": "Question", "name": "Are the match positions in characters?", "acceptedAnswer": {"@type": "Answer", "text": "They are JavaScript string indexes (UTF-16 code units) — exactly what match.index returns in your code. Emoji and some rare characters count as 2."}}, {"@type": "Question", "name": "Is my test text stored or uploaded?", "acceptedAnswer": {"@type": "Answer", "text": "No. Everything runs in your browser. The text, pattern and results are never sent anywhere or saved, and they're gone when you close the page."}}]}</script>
+</head>
+<body class="ty-tool" data-tool="regex-tester">
+
+  <!-- SHARED HEADER, MOBILE MENU & BREADCRUMBS (rendered by /js/layout.js) -->
+  <div id="site-header"></div>
+  <div id="site-breadcrumbs"></div>
+
+  <main>
+  <!-- TOOL INTRO -->
+  <section class="tool-intro">
+    <div class="wrap tool-intro-content">
+      <span class="eyebrow">⌨ DEVELOPER · TESTER</span>
+      <h1>Regex Tester</h1>
+      <p class="lead">Type a regular expression and some test text to see every match highlighted as you type — with capture groups, named groups, positions and a live replace preview. It uses your browser's own JavaScript regex engine, so what matches here matches in your code.</p>
+      <div class="tool-meta-badge"><span class="dot"></span> JavaScript (ECMAScript) regex · Flags g i m s u v y d · Groups &amp; replace · Runaway patterns stopped</div>
+    </div>
+  </section>
+
+  <!-- WORKSPACE -->
+  <section class="tool-app-section">
+    <div class="wrap">
+      
+      <div class="tool-workspace">
+        <div class="tool-toolbar">
+          <div class="tool-toolbar-left ty-txtopts">
+            <span class="ty-rx-flavour" title="Matches are found by your browser's built-in RegExp engine">JavaScript regex</span>
+            <div class="ty-rx-flags" id="rxFlags" role="group" aria-label="Flags">
+              <button type="button" data-flag="g" aria-pressed="true" title="g — global: find all matches, not just the first">g</button>
+              <button type="button" data-flag="i" aria-pressed="false" title="i — ignore case">i</button>
+              <button type="button" data-flag="m" aria-pressed="false" title="m — multiline: ^ and $ match at line breaks">m</button>
+              <button type="button" data-flag="s" aria-pressed="false" title="s — dotAll: . also matches line breaks">s</button>
+              <button type="button" data-flag="u" aria-pressed="false" title="u — Unicode: full code points, \u{…} and \p{…}">u</button>
+              <button type="button" data-flag="v" aria-pressed="false" title="v — Unicode sets: like u, plus set operations in [ ] (can't be used with u)">v</button>
+              <button type="button" data-flag="y" aria-pressed="false" title="y — sticky: each match must start exactly where the last one ended">y</button>
+              <button type="button" data-flag="d" aria-pressed="false" title="d — indices: report where each group starts and ends">d</button>
+            </div>
+          </div>
+          <div class="tool-toolbar-right">
+            <button type="button" class="btn btn-outline btn-sm" id="copyLitBtn" title="Copy the pattern as a JavaScript literal, e.g. /\d+/g">Copy as /regex/</button>
+            <button type="button" class="btn btn-ghost btn-sm" id="exampleBtn">Load Example</button>
+            <button type="button" class="btn btn-danger btn-sm" id="clearBtn">Clear</button>
+          </div>
+        </div>
+        <div class="ty-rx-bar">
+          <div class="ty-rx-field">
+            <label for="rxPat">Pattern</label>
+            <div class="ty-rx-pat"><span class="sl" aria-hidden="true">/</span><input type="text" id="rxPat" class="ty-mono" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="e.g. (\w+)@(\w+)\.com  — or paste /pattern/flags"><span class="sl" aria-hidden="true">/</span><span class="fl" id="rxFlagsTxt" aria-hidden="true">g</span></div>
+          </div>
+          <div class="ty-rx-field">
+            <label for="rxRep">Replace with <span class="opt">(optional — $1, $&lt;name&gt;, $&amp;)</span></label>
+            <input type="text" id="rxRep" class="ty-input ty-mono" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="e.g. $2 ($1)">
+          </div>
+        </div>
+        <p class="ty-alert" id="rxStatus" role="status" aria-live="polite" hidden></p>
+
+        <div class="tool-grid ty-ed">
+          <div class="tool-pane">
+            <div class="tool-pane-header">
+              <span class="title">Test text</span>
+              <span class="badge">Never stored</span>
+            </div>
+            <textarea id="txtIn" class="tool-textarea ty-mono" style="word-break:normal;" placeholder="Paste or type the text to test the pattern against." spellcheck="false" aria-label="Test text"></textarea>
+          </div>
+          <div class="tool-pane">
+            <div class="tool-pane-header">
+              <div class="ty-seg" id="viewSeg" role="group" aria-label="Result view"><button type="button" data-value="hl" class="active">Highlight</button><button type="button" data-value="list">Matches</button><button type="button" data-value="rep">Replace</button></div>
+              <div class="actions">
+                <button type="button" class="btn btn-sm btn-outline" id="copyBtn">Copy</button>
+              </div>
+            </div>
+            <div id="rxHl" class="tool-output-box ty-rx-view ty-rx-hl" aria-label="Highlighted matches"><span class="ty-rx-ph">Matches will be highlighted here.</span></div>
+            <div id="rxList" class="ty-scroll ty-rx-view ty-rx-list" aria-label="Match details" hidden><p class="ty-rx-ph">Every match, with its position and groups, will be listed here.</p></div>
+            <textarea id="rxRepOut" class="tool-textarea ty-mono ty-rx-view is-empty" style="word-break:normal;" readonly hidden placeholder="Type a replacement above to preview the result." aria-label="Replace result"></textarea>
+            <div class="ty-note" id="rxNote" hidden></div>
+          </div>
+        </div>
+
+        <div class="tool-stats-bar">
+          <div class="tool-stats-items">
+            <div class="tool-stat-badge">Matches: <b id="stMatches">–</b></div>
+            <div class="tool-stat-badge">Groups: <b id="stGroups">–</b></div>
+            <div class="tool-stat-badge">Time: <b id="stTime">–</b></div>
+            <div class="tool-stat-badge">Text: <b id="stLen">–</b></div>
+          </div>
+          <div>Runs in a background worker · runaway patterns are stopped</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. ABOUT -->
+  <section class="ty-sec">
+    <div class="wrap">
+      <span class="eyebrow">◆ ABOUT THIS TOOL</span>
+      <h2>How This Regex Tester Works</h2>
+      <p class="sub">Your browser's own JavaScript engine — so results match your code.</p>
+      <div class="about-grid">
+        <div><p>Type a pattern without the surrounding slashes, pick flags with the buttons, and type or paste your test text. Every match is highlighted as you type. Switch to <b>Matches</b> to see each match with its position, numbered groups and named groups, or to <b>Replace</b> to preview <code>text.replace(regex, replacement)</code>.</p><p>You can also paste a whole JavaScript literal such as <code>/^\d{3}-\d{4}$/gm</code> into the pattern box — it's split into the pattern and its flags automatically. <b>Copy as /regex/</b> does the reverse, escaping any <code>/</code> in the pattern for you.</p></div>
+        <div><p><strong>Safe with any pattern.</strong> Some patterns, like <code>(a+)+$</code>, take exponentially long on certain text — this is called catastrophic backtracking, and it can freeze a page or a server. Here each test runs in a background worker. If it takes more than about 2 seconds it is stopped and you get a warning, and your browser stays responsive.</p><p><strong>JavaScript only.</strong> Regex flavours differ: Python, PHP (PCRE), Java and .NET support features JavaScript doesn't, such as possessive quantifiers or inline <code>(?x)</code> comments, and vice versa. Test those patterns in their own language. Your test text is never stored or sent anywhere.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. REFERENCE -->
+  <section class="ty-sec alt">
+    <div class="wrap">
+      <span class="eyebrow">⌘ REFERENCE</span>
+      <h2>JavaScript Regex Cheat Sheet</h2>
+      <p class="sub">The most-used syntax. All of it works in this tester.</p>
+      <div class="ty-ref-wrap"><table class="ty-ref-table">
+        <thead><tr><th>Syntax</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td><code>.</code></td><td>Any character except line breaks (any character at all with the <code>s</code> flag)</td></tr>
+          <tr><td><code>\d \w \s</code></td><td>Digit 0–9 · word character A–Z a–z 0–9 _ · whitespace. Uppercase (<code>\D \W \S</code>) means “not”.</td></tr>
+          <tr><td><code>[abc] [^abc] [a-z]</code></td><td>One of a, b, c · anything except a, b, c · a range</td></tr>
+          <tr><td><code>^ $</code></td><td>Start · end of the text (of each line with the <code>m</code> flag)</td></tr>
+          <tr><td><code>\b \B</code></td><td>Word boundary · not a word boundary</td></tr>
+          <tr><td><code>* + ?</code></td><td>0 or more · 1 or more · 0 or 1. Add <code>?</code> to make them lazy: <code>*? +? ??</code></td></tr>
+          <tr><td><code>{3} {2,} {2,5}</code></td><td>Exactly 3 · 2 or more · 2 to 5</td></tr>
+          <tr><td><code>(…) (?:…)</code></td><td>Capturing group · non-capturing group</td></tr>
+          <tr><td><code>(?&lt;name&gt;…) \k&lt;name&gt;</code></td><td>Named group · back-reference to it (<code>\1</code> for numbered groups)</td></tr>
+          <tr><td><code>a|b</code></td><td>a or b</td></tr>
+          <tr><td><code>(?=…) (?!…)</code></td><td>Lookahead · negative lookahead</td></tr>
+          <tr><td><code>(?&lt;=…) (?&lt;!…)</code></td><td>Lookbehind · negative lookbehind</td></tr>
+          <tr><td><code>\p{L} \p{Emoji}</code></td><td>Unicode property, e.g. any letter (needs the <code>u</code> or <code>v</code> flag)</td></tr>
+          <tr><td><code>$1 $&lt;name&gt; $&amp; $$</code></td><td>In the replacement: group 1 · a named group · the whole match · a literal $. Also <code>$`</code> (text before) and <code>$'</code> (text after).</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <!-- 3. HOW TO USE -->
+  <section class="how-sec section-navy">
+    <div class="wrap">
+      <span class="eyebrow">◐ THREE STEPS</span>
+      <h2>How to Use the Regex Tester</h2>
+      <p class="sub">Get your result in under ten seconds.</p>
+      <div class="steps">
+        <div class="step" data-n="01">
+          <div class="num">1</div>
+          <h3 style="color:#fff;">Type a pattern</h3>
+          <p>Without slashes — or paste a whole /pattern/flags literal.</p>
+        </div>
+        <div class="step" data-n="02">
+          <div class="num">2</div>
+          <h3 style="color:#fff;">Add test text</h3>
+          <p>Matches are highlighted as you type.</p>
+        </div>
+        <div class="step" data-n="03">
+          <div class="num">3</div>
+          <h3 style="color:#fff;">Inspect or replace</h3>
+          <p>See groups and positions, or preview a replacement.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. FEATURES -->
+  <section class="ty-sec">
+    <div class="wrap">
+      <span class="eyebrow">✓ FEATURES</span>
+      <h2>Why Use the Toolyard Regex Tester</h2>
+      <p class="sub">Fast, accurate and private — built for developers.</p>
+      <div class="why-grid">
+        <div><div class="why-ico">⚡</div><h3>Live results</h3><p>Highlighting updates as you type, even on long text.</p></div>
+        <div><div class="why-ico">()</div><h3>Groups</h3><p>Numbered and named groups for every match, with positions.</p></div>
+        <div><div class="why-ico">$1</div><h3>Replace preview</h3><p>See the result of replace() with $1, $&lt;name&gt; and $&amp;.</p></div>
+        <div><div class="why-ico">🛡</div><h3>Runaway-safe</h3><p>Catastrophic backtracking is stopped after about 2 seconds.</p></div>
+        <div><div class="why-ico">/g</div><h3>All flags</h3><p>g, i, m, s, u, v, y and d — the full JavaScript set.</p></div>
+        <div><div class="why-ico">🔒</div><h3>Private</h3><p>Your text stays in your browser and is never stored.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. FAQ -->
+  <section class="ty-sec alt">
+    <div class="wrap">
+      <div style="text-align:center; margin-bottom:36px;">
+        <span class="eyebrow">FAQ</span>
+        <h2 style="font-size:28px; margin-top:12px;">Frequently Asked Questions</h2>
+      </div>
+      <div class="faq" id="faqList">
+        <div class="faq-item">
+          <button type="button">Which regex flavour does this tester use?<span class="plus">+</span></button>
+          <div class="faq-a"><p>JavaScript (ECMAScript), using the RegExp engine built into your browser — the same one Node.js, Deno and Chrome-based browsers use. Most everyday syntax is shared with Python, PHP, Java and .NET, but some features differ, so test patterns for those languages in their own environment.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Why does it only find one match?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Turn on the <b>g</b> (global) flag. Without it, JavaScript stops after the first match — that's how <code>exec()</code>, <code>match()</code> and <code>replace()</code> behave in your code too.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">What is catastrophic backtracking?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Patterns with nested repetition, such as <code>(a+)+$</code> or <code>(\w+\s?)+$</code>, can try an exponential number of ways to match when the text almost-but-doesn't match. A few dozen characters can take minutes. This tester stops a run after about 2 seconds and warns you. Fix it by removing the nested quantifier or making the alternatives unambiguous.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">How do I use capture groups in the replacement?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Use <code>$1</code>, <code>$2</code>… for numbered groups, <code>$&lt;name&gt;</code> for named groups, <code>$&amp;</code> for the whole match and <code>$$</code> for a literal dollar sign. With the <b>g</b> flag every match is replaced; without it only the first.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">What&#x27;s the difference between the u and v flags?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Both turn on full Unicode mode (<code>\u{1F600}</code>, <code>\p{…}</code>, emoji counted as one character). <b>v</b> is newer and adds set operations inside brackets, like <code>[\p{L}--[a-z]]</code>, and stricter escaping rules. You can't use both at once. If your browser is too old for <b>v</b>, its button is disabled.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Are the match positions in characters?<span class="plus">+</span></button>
+          <div class="faq-a"><p>They are JavaScript string indexes (UTF-16 code units) — exactly what <code>match.index</code> returns in your code. Emoji and some rare characters count as 2.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Is my test text stored or uploaded?<span class="plus">+</span></button>
+          <div class="faq-a"><p>No. Everything runs in your browser. The text, pattern and results are never sent anywhere or saved, and they're gone when you close the page.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. RELATED -->
+  <section class="related-tools-section">
+    <div class="wrap">
+      <div class="section-head" style="margin-bottom:28px;">
+        <div>
+          <span class="eyebrow" style="margin-bottom:12px; display:inline-flex;">📎 RELATED</span>
+          <h2 style="font-size:26px; margin:12px 0 6px;">Related Developer Tools</h2>
+          <p class="desc" style="margin:0;">More free utilities that pair well with this one.</p>
+        </div>
+        <a class="view-all" href="/categories/developer/">All Developer Tools →</a>
+      </div>
+      <div class="grid grid-3">
+        <a class="tool-card" href="/tools/developer/regex-escape.html">
+          <div class="top-row"><span class="badge">Encoder</span></div>
+          <h3>Regex Escape</h3>
+          <p>Escape text for a regex with the exact rules of JavaScript, Python, PHP, Java, .NET or Go.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/text/find-and-replace.html">
+          <div class="top-row"><span class="badge">Utility</span></div>
+          <h3>Find &amp; Replace</h3>
+          <p>Find and replace text with optional regex support.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/text/extract-emails.html">
+          <div class="top-row"><span class="badge">Extractor</span></div>
+          <h3>Extract Emails</h3>
+          <p>Pull every email address out of any text — real domain endings only, duplicates removed.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/text/extract-urls.html">
+          <div class="top-row"><span class="badge">Extractor</span></div>
+          <h3>Extract URLs</h3>
+          <p>Find every link in text, HTML or Markdown — trailing punctuation handled correctly.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/text/text-diff-checker.html">
+          <div class="top-row"><span class="badge">Checker</span></div>
+          <h3>Text Diff Checker</h3>
+          <p>Compare two texts and highlight differences.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/json-data/json-validator.html">
+          <div class="top-row"><span class="badge">Validator</span></div>
+          <h3>JSON Validator</h3>
+          <p>Validate JSON and pinpoint syntax errors by line.</p>
+          <span class="open">Open tool →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <!-- SHARED FOOTER (rendered by /js/layout.js) -->
+  <div id="site-footer"></div>
+
+  <script>
+  (function () {
+    'use strict';
+    var $ = TK.$;
+    TK.initFaq(document.getElementById('faqList'));
+
+    var patIn = $('rxPat'), repIn = $('rxRep'), input = $('txtIn'), statusEl = $('rxStatus');
+    var hlBox = $('rxHl'), listBox = $('rxList'), repOut = $('rxRepOut'), note = $('rxNote');
+    var flagWrap = $('rxFlags'), flagTxt = $('rxFlagsTxt');
+    var DETAIL_CAP = 5000, COUNT_CAP = 1000000, HL_MATCHES = 3000, HL_CHARS = 200000, SHOW_CHARS = 300;
+    var cur = null, runId = 0, last = null, view = 'hl';
+
+    function el(tag, cls, text) { var x = document.createElement(tag); if (cls) x.className = cls; if (text != null) x.textContent = text; return x; }
+    var vSupported = true; try { new RegExp('', 'v'); } catch (e) { vSupported = false; }
+    var flagBtns = {};
+    Array.prototype.forEach.call(flagWrap.querySelectorAll('button[data-flag]'), function (b) { flagBtns[b.getAttribute('data-flag')] = b; });
+    if (!vSupported) { flagBtns.v.disabled = true; flagBtns.v.title = 'v — Unicode sets: not supported by this browser'; }
+    function flags() { var s = ''; 'dgimsuvy'.split('').forEach(function (f) { if (flagBtns[f].getAttribute('aria-pressed') === 'true') s += f; }); return s; }
+    function setFlag(f, on) { flagBtns[f].setAttribute('aria-pressed', on ? 'true' : 'false'); }
+    function setFlags(str) { 'dgimsuvy'.split('').forEach(function (f) { setFlag(f, str.indexOf(f) >= 0 && !(f === 'v' && !vSupported)); }); showFlags(); }
+    function showFlags() { flagTxt.textContent = flags(); }
+    flagWrap.addEventListener('click', function (e) {
+      var b = e.target.closest('button[data-flag]'); if (!b || b.disabled) return;
+      var f = b.getAttribute('data-flag'), on = b.getAttribute('aria-pressed') !== 'true';
+      setFlag(f, on);
+      if (on && f === 'u') setFlag('v', false);   // u and v can't be combined
+      if (on && f === 'v') setFlag('u', false);
+      showFlags(); schedule(true);
+    });
+
+    // Paste a whole literal "/pattern/flags" → split it
+    patIn.addEventListener('paste', function (e) {
+      var t = (e.clipboardData || window.clipboardData); t = t && t.getData('text');
+      if (!t) return;
+      var whole = patIn.selectionStart === 0 && patIn.selectionEnd === patIn.value.length;
+      var m = /^\s*\/([\s\S]+)\/([a-z]*)\s*$/.exec(t);
+      if (!whole || !m || !/^(?!.*(.).*\1)[dgimsuvy]*$/.test(m[2]) || (m[2].indexOf('u') >= 0 && m[2].indexOf('v') >= 0)) return;
+      e.preventDefault();
+      patIn.value = m[1].replace(/\r?\n/g, '');
+      setFlags(m[2]);
+      if (m[2].indexOf('v') >= 0 && !vSupported) { TK.status(statusEl, 'Your browser does not support the v flag, so it was left off.', 'warn'); }
+      schedule(true);
+    });
+
+    // Labels for capture groups: null = numbered only, string = named. Only used for display.
+    function groupLabels(src, vmode) {
+      var labels = [], i = 0, n = src.length, depth = 0;
+      while (i < n) {
+        var c = src.charAt(i);
+        if (c === '\\') { i += 2; continue; }
+        if (depth) { if (c === '[' && vmode) depth++; else if (c === ']') depth--; i++; continue; }
+        if (c === '[') { depth = 1; i++; continue; }
+        if (c === '(') {
+          if (src.charAt(i + 1) !== '?') labels.push(null);
+          else if (src.charAt(i + 2) === '<' && src.charAt(i + 3) !== '=' && src.charAt(i + 3) !== '!') {
+            var e = src.indexOf('>', i + 3); labels.push(e > 0 ? src.slice(i + 3, e) : null);
+          }
+        }
+        i++;
+      }
+      return labels;
+    }
+
+    // Runs in a Web Worker (self-contained: no outer variables).
+    function rxJob(d) {
+      var t0 = Date.now(), re;
+      try { re = new RegExp(d.src, d.flags); } catch (e) { return { err: e.message }; }
+      var text = d.text, list = [], count = 0, capped = false, unicode = /[uv]/.test(d.flags), MAXG = 2000;
+      function cut(s) { return s == null ? null : (s.length > MAXG ? { s: s.slice(0, MAXG), more: s.length - MAXG } : s); }
+      function pack(m) {
+        var o = { i: m.index, l: m[0].length, s: m[0], g: [] };
+        for (var k = 1; k < m.length; k++) o.g.push(cut(m[k]));
+        if (m.indices) { o.ix = []; for (var j = 1; j < m.indices.length; j++) o.ix.push(m.indices[j] ? [m.indices[j][0], m.indices[j][1]] : null); }
+        return o;
+      }
+      function adv(s, i) {
+        if (!unicode || i + 1 >= s.length) return i + 1;
+        var c = s.charCodeAt(i);
+        if (c < 0xD800 || c > 0xDBFF) return i + 1;
+        var c2 = s.charCodeAt(i + 1);
+        return (c2 >= 0xDC00 && c2 <= 0xDFFF) ? i + 2 : i + 1;
+      }
+      var m;
+      if (!re.global) { m = re.exec(text); if (m) { count = 1; list.push(pack(m)); } }
+      else {
+        re.lastIndex = 0;
+        while ((m = re.exec(text)) !== null) {
+          count++;
+          if (list.length < d.detail) list.push(pack(m));
+          if (m[0].length === 0) re.lastIndex = adv(text, re.lastIndex);
+          if (count >= d.maxCount) { capped = true; break; }
+        }
+      }
+      var ng = 0;
+      try { ng = new RegExp('(?:' + d.src + ')|', d.flags.replace(/[gyd]/g, '')).exec('').length - 1; } catch (e) { ng = list.length ? list[0].g.length : 0; }
+      var rep = null, repErr = null;
+      if (d.rep != null) {
+        try { rep = text.replace(new RegExp(d.src, d.flags), d.rep); } catch (e) { repErr = /Invalid string length|allocation/i.test(e.message) ? 'The result would be too large to build in the browser.' : e.message; }
+      }
+      return { list: list, count: count, capped: capped, ng: ng, rep: rep, repErr: repErr, ms: Date.now() - t0 };
+    }
+
+    function stats(r) {
+      $('stMatches').textContent = r ? (r.capped ? TK.formatNumber(r.count) + '+' : TK.formatNumber(r.count)) : '–';
+      $('stGroups').textContent = r ? String(r.ng) : '–';
+      $('stTime').textContent = r ? (r.ms < 1 ? '<1 ms' : r.ms + ' ms') : '–';
+      $('stLen').textContent = input.value ? TK.formatNumber(input.value.length) + ' chars' : '–';
+    }
+    function placeholder(box, msg) { box.replaceChildren(el(box === listBox ? 'p' : 'span', 'ty-rx-ph', msg)); }
+    function clearOut(msgHl) {
+      last = null;
+      placeholder(hlBox, msgHl || 'Matches will be highlighted here.');
+      placeholder(listBox, 'Every match, with its position and groups, will be listed here.');
+      TK.setOutput(repOut, '', {}); note.hidden = true; note.textContent = '';
+    }
+
+    function renderHl(r, text) {
+      var frag = document.createDocumentFragment(), pos = 0, shown = 0, stopAt = Math.min(text.length, HL_CHARS);
+      for (var k = 0; k < r.list.length && shown < HL_MATCHES; k++) {
+        var m = r.list[k];
+        if (m.i > stopAt) break;
+        if (m.i > pos) frag.appendChild(document.createTextNode(text.slice(pos, m.i)));
+        var mk = el('mark', m.l ? (k % 2 ? 'b' : 'a') : 'z', m.l ? text.slice(m.i, m.i + m.l) : null);
+        mk.title = 'Match ' + (k + 1) + ' · ' + m.i + (m.l ? '–' + (m.i + m.l) : ' (empty match)');
+        frag.appendChild(mk);
+        pos = Math.max(pos, m.i + m.l); shown++;
+      }
+      var end = Math.max(pos, stopAt);
+      if (end > pos) frag.appendChild(document.createTextNode(text.slice(pos, end)));
+      hlBox.replaceChildren(frag);
+      var notes = [];
+      if (end < text.length || shown < r.list.length || r.capped || r.count > r.list.length) {
+        notes.push('Highlighting shows the first ' + TK.formatNumber(shown) + ' match' + (shown === 1 ? '' : 'es') + (end < text.length ? ' and the first ' + TK.formatNumber(end) + ' characters' : '') + '.');
+      }
+      return notes;
+    }
+
+    function valueNode(v, cls) {
+      if (v == null) return el('span', 'ty-rx-undef', 'undefined (did not take part)');
+      var s = typeof v === 'string' ? v : v.s, more = typeof v === 'string' ? 0 : v.more;
+      if (s === '') return el('span', 'ty-rx-undef', '(empty string)');
+      var box = el('span', cls || 'ty-rx-val');
+      if (s.length > SHOW_CHARS) { more += s.length - SHOW_CHARS; s = s.slice(0, SHOW_CHARS); }
+      box.textContent = s;
+      if (more) box.appendChild(el('span', 'ty-rx-more', ' … +' + TK.formatNumber(more) + ' more characters'));
+      return box;
+    }
+
+    function renderList(r, labels) {
+      if (!r.list.length) { placeholder(listBox, 'No matches.'); return; }
+      var frag = document.createDocumentFragment();
+      r.list.forEach(function (m, k) {
+        var row = el('div', 'ty-rx-m');
+        var head = el('div', 'ty-rx-mh');
+        head.appendChild(el('b', null, 'Match ' + (k + 1)));
+        head.appendChild(el('span', null, m.l ? 'index ' + m.i + '–' + (m.i + m.l) + ' · length ' + m.l : 'index ' + m.i + ' · empty match'));
+        row.appendChild(head);
+        row.appendChild(valueNode(m.s));
+        if (m.g.length) {
+          var tb = el('table', 'ty-rx-g'), body = el('tbody');
+          m.g.forEach(function (g, j) {
+            var tr = el('tr'), lab = labels && labels[j] ? (j + 1) + ' ‹' + labels[j] + '›' : 'Group ' + (j + 1);
+            if (m.ix && m.ix[j]) lab += '  @' + m.ix[j][0] + '–' + m.ix[j][1];
+            tr.appendChild(el('th', null, lab));
+            var td = el('td'); td.appendChild(valueNode(g)); tr.appendChild(td);
+            body.appendChild(tr);
+          });
+          tb.appendChild(body); row.appendChild(tb);
+        }
+        frag.appendChild(row);
+      });
+      if (r.count > r.list.length) frag.appendChild(el('p', 'ty-rx-ph', 'Details are shown for the first ' + TK.formatNumber(r.list.length) + ' of ' + TK.formatNumber(r.count) + (r.capped ? '+' : '') + ' matches.'));
+      listBox.replaceChildren(frag);
+    }
+
+    // The note under the result box belongs to the visible view only.
+    function renderView() {
+      if (view === 'rep') { showRep(); return; }
+      var notes = (view === 'hl' && last) ? last.hlNotes : [];
+      note.hidden = !notes.length; note.textContent = notes.join(' ');
+    }
+    function showView(v) {
+      view = v;
+      hlBox.hidden = v !== 'hl'; listBox.hidden = v !== 'list'; repOut.hidden = v !== 'rep';
+      if (v === 'list' && last && !last.listDone) { renderList(last.r, last.labels); last.listDone = true; }
+      renderView();
+    }
+    var viewSeg = TK.segmented($('viewSeg'), showView);
+    function showRep() {
+      var r = last && last.r;
+      if (!r || r.rep == null) { TK.setOutput(repOut, '', { noteEl: note }); return; }
+      TK.setOutput(repOut, r.rep, { noteEl: note });
+    }
+
+    function run() {
+      var src = patIn.value, text = input.value, fl = flags(), id = ++runId;
+      if (cur) { cur.cancel(); cur = null; }
+      patIn.removeAttribute('aria-invalid');
+      stats(null);
+      if (!src) { clearOut(); TK.status(statusEl, text ? 'Type a pattern to start.' : ''); return; }
+      var re;
+      try { re = new RegExp(src, fl); }
+      catch (e) { clearOut('Fix the pattern to see matches.'); patIn.setAttribute('aria-invalid', 'true'); TK.status(statusEl, e.message, 'error'); return; }
+      if (!text) { clearOut(); TK.status(statusEl, 'Now add some test text.', 'info'); return; }
+      var labels = groupLabels(src, fl.indexOf('v') >= 0);
+      var timeout = 2000 + Math.min(8000, Math.floor(text.length / 1048576) * 1000);
+      var rep = repIn.value === '' ? null : repIn.value;
+      TK.status(statusEl, '');
+      var job = cur = TK.runWorker(rxJob, { src: src, flags: fl, text: text, rep: rep, detail: DETAIL_CAP, maxCount: COUNT_CAP }, timeout);
+      var slow = setTimeout(function () { if (id === runId && cur) TK.status(statusEl, 'Testing…', 'info'); }, 300);
+      job.then(function (r) {
+        clearTimeout(slow);
+        if (id !== runId) return;
+        cur = null;
+        if (r.err) { clearOut('Fix the pattern to see matches.'); TK.status(statusEl, r.err, 'error'); return; }
+        if (labels.length !== r.ng) labels = null;
+        last = { r: r, labels: labels, listDone: false, hlNotes: [] };
+        last.hlNotes = r.count ? renderHl(r, text) : [];
+        if (!r.count) placeholder(hlBox, 'No matches.');
+        if (view === 'list') { renderList(r, labels); last.listDone = true; } else placeholder(listBox, '');
+        stats(r);
+        var msg = '', type = 'info';
+        if (!r.count) msg = 'No matches.';
+        else if (r.capped) { msg = 'Stopped counting at ' + TK.formatNumber(COUNT_CAP) + ' matches.'; type = 'warn'; }
+        else if (!/g/.test(fl) && r.count === 1) msg = 'Showing the first match only — turn on the g flag to find all matches.';
+        if (r.repErr) { msg = 'Replace failed: ' + r.repErr; type = 'error'; }
+        TK.status(statusEl, msg, type);
+        renderView();
+      }, function (e) {
+        clearTimeout(slow);
+        if (id !== runId || (e && e.message === 'cancelled')) return;
+        cur = null; clearOut('No result — see the message above.');
+        if (e && e.message === 'timeout') TK.status(statusEl, 'Stopped after ' + (timeout / 1000) + ' seconds. This pattern is too slow on this text — most likely catastrophic backtracking from nested repetition such as (a+)+ or (\\w+\\s?)+. Make the repeated parts unambiguous.', 'error');
+        else TK.status(statusEl, (e && e.message) || 'Something went wrong.', 'error');
+      });
+    }
+
+    var deb = TK.debounce(run, 150);
+    function schedule(now) { if (cur) { cur.cancel(); cur = null; } if (now) { deb.cancel(); run(); } else deb(); }
+    patIn.addEventListener('input', function () { schedule(false); });
+    repIn.addEventListener('input', function () { schedule(false); });
+    input.addEventListener('input', function () { $('stLen').textContent = input.value ? TK.formatNumber(input.value.length) + ' chars' : '–'; schedule(false); });
+
+    $('copyBtn').addEventListener('click', function () {
+      var b = $('copyBtn');
+      if (!last) { TK.copy('', b); return; }
+      if (view === 'rep') { TK.copy(last.r.rep || '', b); return; }
+      TK.copy(last.r.list.map(function (m) { return m.s; }).join('\n'), b);
+    });
+    $('copyLitBtn').addEventListener('click', function () {
+      var b = $('copyLitBtn');
+      if (!patIn.value) { TK.copy('', b); return; }
+      try { var re = new RegExp(patIn.value, flags()); TK.copy('/' + re.source + '/' + re.flags, b); }
+      catch (e) { TK.flash(b, 'Invalid pattern'); }
+    });
+    $('exampleBtn').addEventListener('click', function () {
+      patIn.value = '(?<year>\\d{4})-(?<month>\\d{2})-(?<day>\\d{2})';
+      setFlags('g');
+      repIn.value = '$<day>/$<month>/$<year>';
+      input.value = 'Release notes\nv2.4.0 shipped on 2026-03-14 after the beta on 2026-02-28.\nThe next review is planned for 2026-10-01.\nNot a date: 2026-1-5 or 26-10-08.';
+      $('stLen').textContent = TK.formatNumber(input.value.length) + ' chars';
+      schedule(true);
+    });
+    $('clearBtn').addEventListener('click', function () {
+      if (cur) { cur.cancel(); cur = null; }
+      deb.cancel(); runId++;
+      patIn.value = ''; repIn.value = ''; input.value = '';
+      setFlags('g'); clearOut(); stats(null); TK.status(statusEl, ''); patIn.removeAttribute('aria-invalid');
+      viewSeg.set('hl');
+    });
+    showFlags();
+
+  })();
+  </script>
+</body>
+</html>

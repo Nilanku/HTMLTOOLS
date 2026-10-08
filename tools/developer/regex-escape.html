@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Regex Escape – Escape Special Characters for JavaScript, Python, PHP, Java, C# &amp; Go | Toolyard</title>
+  <meta name="description" content="Free regex escape tool. Escape special characters so text matches literally in a regular expression — exact rules for JavaScript, Python re.escape, PHP preg_quote, Java, .NET Regex.Escape and Go QuoteMeta, inside or outside [ ], as a pattern or ready-to-paste code string.">
+  <link rel="canonical" href="https://htmltools.nilankubaruah.workers.dev/tools/developer/regex-escape.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Regex Escape – Escape Special Characters for JavaScript, Python, PHP, Java, C# &amp; Go">
+  <meta property="og:description" content="Free regex escape tool. Escape special characters so text matches literally in a regular expression — exact rules for JavaScript, Python re.escape, PHP preg_quote, Java, .NET Regex.Escape and Go QuoteMeta, inside or outside [ ], as a pattern or ready-to-paste code string.">
+  <meta property="og:url" content="https://htmltools.nilankubaruah.workers.dev/tools/developer/regex-escape.html">
+  <meta name="twitter:card" content="summary">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/tools.css">
+  <script src="/js/tools-data.js"></script>
+  <script src="/js/layout.js"></script>
+  <script src="/js/tool-kit.js"></script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Regex Escape", "url": "https://htmltools.nilankubaruah.workers.dev/tools/developer/regex-escape.html", "applicationCategory": "DeveloperApplication", "operatingSystem": "Any (runs in your browser)", "description": "Free regex escape tool. Escape special characters so text matches literally in a regular expression — exact rules for JavaScript, Python re.escape, PHP preg_quote, Java, .NET Regex.Escape and Go QuoteMeta, inside or outside [ ], as a pattern or ready-to-paste code string.", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Which characters need escaping in a regex?", "acceptedAnswer": {"@type": "Answer", "text": "Outside a character class: \\ ^ $ . | ? * + ( ) [ ] { } in almost every flavour. Inside [ ]: only \\ ] ^ - (and [ in some flavours). Some languages escape more, such as / in JavaScript literals or # and spaces in Python and .NET."}}, {"@type": "Question", "name": "Why doesn't the JavaScript output escape - or #?", "acceptedAnswer": {"@type": "Answer", "text": "With JavaScript's u or v flag, escaping a character that isn't special (like \\- outside a class) is a syntax error. This tool escapes only syntax characters, so the result works with and without those flags."}}, {"@type": "Question", "name": "Why does the Java code string have double backslashes?", "acceptedAnswer": {"@type": "Answer", "text": "In Java source code, the regex is inside a string literal, and string literals use backslash escapes too. The regex \\. must be written as \"\\\\.\". Choose Code string to get that automatically."}}, {"@type": "Question", "name": "Is the result the same as Pattern.quote() in Java?", "acceptedAnswer": {"@type": "Answer", "text": "It matches exactly the same text. Pattern.quote() wraps the string in \\Q…\\E; this tool uses backslashes, which is easier to read and to combine with other pattern parts."}}, {"@type": "Question", "name": "Can I escape a list of keywords?", "acceptedAnswer": {"@type": "Answer", "text": "Yes: turn on Each line separately and Join lines with |. Put longer words first if one word is the start of another (e.g. cats|cat)."}}, {"@type": "Question", "name": "Is my text uploaded?", "acceptedAnswer": {"@type": "Answer", "text": "No. Everything runs in your browser."}}]}</script>
+</head>
+<body class="ty-tool" data-tool="regex-escape">
+
+  <!-- SHARED HEADER, MOBILE MENU & BREADCRUMBS (rendered by /js/layout.js) -->
+  <div id="site-header"></div>
+  <div id="site-breadcrumbs"></div>
+
+  <main>
+  <!-- TOOL INTRO -->
+  <section class="tool-intro">
+    <div class="wrap tool-intro-content">
+      <span class="eyebrow">⌨ DEVELOPER · ENCODER</span>
+      <h1>Regex Escape</h1>
+      <p class="lead">Make any text safe to use inside a regular expression. Characters like <code>. * + ? ( ) [ ] { } ^ $ |</code> are escaped with the exact rules of your language — JavaScript, Python, PHP, Java, .NET or Go — so the pattern matches the text literally.</p>
+      <div class="tool-meta-badge"><span class="dot"></span> 6 languages · Inside or outside [ ] · Pattern or code string · Line-by-line &amp; alternation</div>
+    </div>
+  </section>
+
+  <!-- WORKSPACE -->
+  <section class="tool-app-section">
+    <div class="wrap">
+      <div class="ty-pair"><span>Tip: escaping a list of words? Turn on <b>Each line separately</b> and <b>Join lines with |</b> to get <code>word1|word2|word3</code>.</span><span>Testing the pattern next? <a href="/tools/developer/regex-tester.html">Regex Tester →</a></span></div>
+      <div class="tool-workspace">
+        <div class="tool-toolbar">
+          <div class="tool-toolbar-left ty-txtopts">
+            <label class="ty-opt" title="Regex flavour — each language escapes slightly different characters">Language <select id="optLang" class="ty-input" style="width:auto;padding:4px 8px;font-size:13px"><option value="js" selected>JavaScript</option><option value="py">Python</option><option value="php">PHP</option><option value="java">Java</option><option value="net">.NET / C#</option><option value="go">Go</option></select></label>
+            <div class="ty-seg" id="ctxSeg" role="group" aria-label="Where"><button type="button" data-value="any" class="active">In a pattern</button><button type="button" data-value="class">Inside [ ]</button></div>
+            <div class="ty-seg" id="formSeg" role="group" aria-label="Output"><button type="button" data-value="pattern" class="active">Pattern</button><button type="button" data-value="code">Code string</button></div>
+            <span class="ty-sep"></span>
+            <label class="ty-opt" title="Escape every line on its own (otherwise the whole text, including line breaks, becomes one pattern)"><input type="checkbox" id="optLines"> Each line separately</label>
+            <label class="ty-opt" title="Turn the lines into alternatives: apple|banana|cherry (empty lines are skipped)"><input type="checkbox" id="optAlt"> Join lines with |</label>
+          </div>
+          <div class="tool-toolbar-right">
+            <button type="button" class="btn btn-amber btn-sm" id="runBtn">Run</button>
+            <label class="btn btn-outline btn-sm" title="Open a text file (or drop it on the input)">Open file<input type="file" id="fileIn" accept=".txt,.csv,.tsv,.log,.md,.json,.xml,.html,.css,.js,.ts,.sql,.yml,.yaml,.ini,.env,text/*" hidden></label>
+            <button type="button" class="btn btn-outline btn-sm" id="useBtn" title="Move the result into the input">⇄ Use as input</button>
+            <button type="button" class="btn btn-ghost btn-sm" id="exampleBtn">Load Example</button>
+            <button type="button" class="btn btn-danger btn-sm" id="clearBtn">Clear</button>
+          </div>
+        </div>
+
+        <div class="tool-grid ty-ed">
+          <div class="tool-pane">
+            <div class="tool-pane-header">
+              <span class="title">Literal text</span>
+              <span class="badge">Plain text</span>
+            </div>
+            <textarea id="txtIn" class="tool-textarea ty-mono" style="word-break:normal;" placeholder="Paste the text to match literally, e.g. price: $9.99 (USD)" spellcheck="false" aria-label="Literal text"></textarea>
+          </div>
+          <div class="tool-pane">
+            <div class="tool-pane-header">
+              <span class="title">Escaped regex</span>
+              <div class="actions">
+                <button type="button" class="btn btn-sm btn-outline" id="copyBtn">Copy</button>
+                <button type="button" class="btn btn-sm btn-ghost" id="downloadBtn">Download .txt</button>
+              </div>
+            </div>
+            <textarea id="txtOut" class="tool-textarea ty-mono is-empty" style="word-break:normal;" readonly placeholder="The escaped pattern appears here…" aria-label="Escaped regex"></textarea>
+            <div class="ty-note" id="txtNote" hidden></div>
+          </div>
+        </div>
+        <p class="ty-alert" id="txtStatus" role="status" aria-live="polite" hidden></p>
+
+        <div class="tool-stats-bar">
+          <div class="tool-stats-items">
+            <div class="tool-stat-badge">Input: <b id="stIn">–</b></div>
+            <div class="tool-stat-badge">Escaped: <b id="stEsc">–</b></div>
+            <div class="tool-stat-badge">Output: <b id="stOut">–</b></div>
+            <div class="tool-stat-badge">Time: <b id="stTime">–</b></div>
+          </div>
+          <div>Per-language rules · 100% Client-Side</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. ABOUT -->
+  <section class="ty-sec">
+    <div class="wrap">
+      <span class="eyebrow">◆ ABOUT THIS TOOL</span>
+      <h2>Why Escape Text for a Regex?</h2>
+      <p class="sub">Some characters have a special meaning in regular expressions.</p>
+      <div class="about-grid">
+        <div><p>In a regular expression, <code>.</code> means “any character”, <code>*</code> means “repeat”, <code>( )</code> make a group and so on. If you build a pattern from user input or a fixed string — say, to find <code>$9.99</code> — those characters must be escaped with a backslash, or the regex will match the wrong things or fail to compile.</p><p>Each language escapes slightly differently. This tool follows the actual rules of each one: <code>re.escape</code> in Python 3.7+, <code>preg_quote</code> in PHP 7.3+, <code>Regex.Escape</code> in .NET and <code>regexp.QuoteMeta</code> in Go. For JavaScript and Java it escapes exactly the regex syntax characters, so the JavaScript result works with or without the <code>u</code> and <code>v</code> flags.</p></div>
+        <div><p><strong>Inside [ ].</strong> Inside a character class, only <code>\ ] [ ^ -</code> are special (plus <code>&amp;</code> in Java, and <code>( ) { } / |</code> with JavaScript's <code>v</code> flag). Choose <b>Inside [ ]</b> to escape just those. With the <code>v</code> flag, also avoid doubled punctuation such as <code>&amp;&amp;</code> inside [ ] — it's reserved there.</p><p><strong>Code string.</strong> In Java, C# and other languages a regex is usually written inside a string literal, so the backslashes must be escaped again. <b>Code string</b> gives you a ready-to-paste literal: <code>/…/</code> for JavaScript, <code>r'…'</code> for Python, <code>'/…/'</code> for PHP, <code>"…"</code> for Java, <code>@"…"</code> for C# and <code>`…`</code> for Go.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. REFERENCE -->
+  <section class="ty-sec alt">
+    <div class="wrap">
+      <span class="eyebrow">⌘ REFERENCE</span>
+      <h2>What Each Language Escapes</h2>
+      <p class="sub">Characters escaped in “In a pattern” mode.</p>
+      <div class="ty-ref-wrap"><table class="ty-ref-table">
+        <thead><tr><th>Language</th><th>Escaped characters</th><th>Built-in equivalent</th></tr></thead>
+        <tbody>
+          <tr><td>JavaScript</td><td><code>\ ^ $ . * + ? ( ) [ ] { } | /</code></td><td>Safe for literals, <code>new RegExp()</code> and the u / v flags</td></tr>
+          <tr><td>Python</td><td><code>( ) [ ] { } ? * + - | ^ $ \ . &amp; ~ #</code>, space and \t \n \r \v \f</td><td><code>re.escape()</code> (3.7+)</td></tr>
+          <tr><td>PHP</td><td><code>. \ + * ? [ ^ ] $ ( ) { } = ! &lt; &gt; | : - # /</code>, NUL → <code>\000</code></td><td><code>preg_quote($s, '/')</code></td></tr>
+          <tr><td>Java</td><td><code>\ ^ $ . | ? * + ( ) [ ] { }</code></td><td>Same result as <code>Pattern.quote()</code></td></tr>
+          <tr><td>.NET / C#</td><td><code>\ * + ? | { [ ( ) ^ $ . #</code>, space → <code>\ </code>, tab/newline → <code>\t \n \r \f</code></td><td><code>Regex.Escape()</code></td></tr>
+          <tr><td>Go</td><td><code>\ . + * ? ( ) | [ ] { } ^ $</code></td><td><code>regexp.QuoteMeta()</code></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <!-- 3. HOW TO USE -->
+  <section class="how-sec section-navy">
+    <div class="wrap">
+      <span class="eyebrow">◐ THREE STEPS</span>
+      <h2>How to Use the Regex Escape</h2>
+      <p class="sub">Get your result in under ten seconds.</p>
+      <div class="steps">
+        <div class="step" data-n="01">
+          <div class="num">1</div>
+          <h3 style="color:#fff;">Paste the literal text</h3>
+          <p>The exact text the regex should match.</p>
+        </div>
+        <div class="step" data-n="02">
+          <div class="num">2</div>
+          <h3 style="color:#fff;">Pick language &amp;amp; position</h3>
+          <p>Your regex flavour, and whether it goes inside [ ].</p>
+        </div>
+        <div class="step" data-n="03">
+          <div class="num">3</div>
+          <h3 style="color:#fff;">Copy the pattern</h3>
+          <p>As a bare pattern, or as a ready-to-paste code string.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. FEATURES -->
+  <section class="ty-sec">
+    <div class="wrap">
+      <span class="eyebrow">✓ FEATURES</span>
+      <h2>Why Use the Toolyard Regex Escape</h2>
+      <p class="sub">Fast, accurate and private — built for developers.</p>
+      <div class="why-grid">
+        <div><div class="why-ico">6</div><h3>Six flavours</h3><p>JavaScript, Python, PHP, Java, .NET and Go — each with its own exact rules.</p></div>
+        <div><div class="why-ico">[ ]</div><h3>Character classes</h3><p>A separate mode that escapes only what's special inside [ ].</p></div>
+        <div><div class="why-ico">"…"</div><h3>Code strings</h3><p>Backslashes doubled where the language needs it — no more \\\\ guesswork.</p></div>
+        <div><div class="why-ico">|</div><h3>Word lists</h3><p>Escape many lines at once and join them into one alternation.</p></div>
+        <div><div class="why-ico">✓</div><h3>Verified</h3><p>Outputs are tested against the languages' own escape functions.</p></div>
+        <div><div class="why-ico">🔒</div><h3>Private</h3><p>Runs entirely in your browser.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. FAQ -->
+  <section class="ty-sec alt">
+    <div class="wrap">
+      <div style="text-align:center; margin-bottom:36px;">
+        <span class="eyebrow">FAQ</span>
+        <h2 style="font-size:28px; margin-top:12px;">Frequently Asked Questions</h2>
+      </div>
+      <div class="faq" id="faqList">
+        <div class="faq-item">
+          <button type="button">Which characters need escaping in a regex?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Outside a character class: <code>\ ^ $ . | ? * + ( ) [ ] { }</code> in almost every flavour. Inside <code>[ ]</code>: only <code>\ ] ^ -</code> (and <code>[</code> in some flavours). Some languages escape more, such as <code>/</code> in JavaScript literals or <code>#</code> and spaces in Python and .NET.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Why doesn&#x27;t the JavaScript output escape - or #?<span class="plus">+</span></button>
+          <div class="faq-a"><p>With JavaScript's <code>u</code> or <code>v</code> flag, escaping a character that isn't special (like <code>\-</code> outside a class) is a syntax error. This tool escapes only syntax characters, so the result works with and without those flags.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Why does the Java code string have double backslashes?<span class="plus">+</span></button>
+          <div class="faq-a"><p>In Java source code, the regex is inside a string literal, and string literals use backslash escapes too. The regex <code>\.</code> must be written as <code>"\\."</code>. Choose <b>Code string</b> to get that automatically.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Is the result the same as Pattern.quote() in Java?<span class="plus">+</span></button>
+          <div class="faq-a"><p>It matches exactly the same text. <code>Pattern.quote()</code> wraps the string in <code>\Q…\E</code>; this tool uses backslashes, which is easier to read and to combine with other pattern parts.</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Can I escape a list of keywords?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Yes: turn on <b>Each line separately</b> and <b>Join lines with |</b>. Put longer words first if one word is the start of another (e.g. <code>cats|cat</code>).</p></div>
+        </div>
+        <div class="faq-item">
+          <button type="button">Is my text uploaded?<span class="plus">+</span></button>
+          <div class="faq-a"><p>No. Everything runs in your browser.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. RELATED -->
+  <section class="related-tools-section">
+    <div class="wrap">
+      <div class="section-head" style="margin-bottom:28px;">
+        <div>
+          <span class="eyebrow" style="margin-bottom:12px; display:inline-flex;">📎 RELATED</span>
+          <h2 style="font-size:26px; margin:12px 0 6px;">Related Developer Tools</h2>
+          <p class="desc" style="margin:0;">More free utilities that pair well with this one.</p>
+        </div>
+        <a class="view-all" href="/categories/developer/">All Developer Tools →</a>
+      </div>
+      <div class="grid grid-3">
+        <a class="tool-card" href="/tools/developer/regex-tester.html">
+          <div class="top-row"><span class="badge">Tester</span></div>
+          <h3>Regex Tester</h3>
+          <p>Test JavaScript regular expressions with live match highlighting and capture-group output.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/developer/unicode-escape.html">
+          <div class="top-row"><span class="badge">Encoder</span></div>
+          <h3>Unicode Escape</h3>
+          <p>Turn text and emoji into Unicode escapes: \uXXXX, \u{…}, \U0001F600, U+XXXX, &amp;#x…; and CSS.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/developer/url-encoder.html">
+          <div class="top-row"><span class="badge">Encoder</span></div>
+          <h3>URL Encoder</h3>
+          <p>Percent-encode text for safe use in URLs.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/html/html-entity-encoder.html">
+          <div class="top-row"><span class="badge">Encoder</span></div>
+          <h3>HTML Entity Encoder</h3>
+          <p>Encode special characters into HTML entities.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/text/find-and-replace.html">
+          <div class="top-row"><span class="badge">Utility</span></div>
+          <h3>Find &amp; Replace</h3>
+          <p>Find and replace text with optional regex support.</p>
+          <span class="open">Open tool →</span>
+        </a>
+        <a class="tool-card" href="/tools/json-data/json-escape-unescape.html">
+          <div class="top-row"><span class="badge">Encoder</span></div>
+          <h3>JSON Escape/Unescape</h3>
+          <p>Escape JSON for embedding in strings, or reverse it.</p>
+          <span class="open">Open tool →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <!-- SHARED FOOTER (rendered by /js/layout.js) -->
+  <div id="site-footer"></div>
+
+  <script>
+  (function () {
+    'use strict';
+    var $ = TK.$;
+    TK.initFaq(document.getElementById('faqList'));
+
+    var TEXT_WORKER_FROM = 256 * 1024, TEXT_MAX_FILE = 50 * 1024 * 1024, TEXT_MAX_LIVE = 3 * 1024 * 1024;
+    function el(tag, cls, text) { var x = document.createElement(tag); if (cls) x.className = cls; if (text != null) x.textContent = text; return x; }
+    // small input → main thread; large → Web Worker (with timeout). Always returns a cancellable promise.
+    function textJob(fn, data, size, timeoutMs, forceWorker) {
+      if (!forceWorker && size <= TEXT_WORKER_FROM) { var p = new Promise(function (res) { res(fn(data)); }); p.cancel = function () {}; return p; }
+      return TK.runWorker(fn, data, timeoutMs || 30000);
+    }
+    function textErr(e) {
+      var m = e && e.message || String(e);
+      if (m === 'timeout') return 'Processing took too long and was stopped.';
+      if (/memory|allocation|Invalid string length/i.test(m)) return 'Not enough memory to process this text in the browser.';
+      return m;
+    }
+    // lines in a text, not counting one trailing newline (a final "\n" ends the last line, it doesn't start a new one)
+    function countLines(t) {
+      if (!t) return 0;
+      var c = 1, k = -1; while ((k = t.indexOf('\n', k + 1)) !== -1) c++;
+      return /\n$/.test(t) ? c - 1 : c;
+    }
+    function attachTextFile(ta, fileInput, onLoad, statusEl) {
+      function load(f) {
+        if (!f) return;
+        if (f.size > TEXT_MAX_FILE) { TK.status(statusEl, '“' + f.name + '” is ' + TK.formatBytes(f.size) + '. The maximum is 50 MB.', 'error'); return; }
+        TK.readFile(f, 'text').then(function (t) { ta.value = t; onLoad(f); }, function () { TK.status(statusEl, 'Could not read “' + f.name + '”.', 'error'); });
+      }
+      if (fileInput) fileInput.addEventListener('change', function () { load(fileInput.files[0]); fileInput.value = ''; });
+      ta.addEventListener('dragover', function (e) { if (e.dataTransfer && Array.prototype.indexOf.call(e.dataTransfer.types, 'Files') >= 0) e.preventDefault(); });
+      ta.addEventListener('drop', function (e) { if (e.dataTransfer && e.dataTransfer.files.length) { e.preventDefault(); load(e.dataTransfer.files[0]); } });
+    }
+    function showBtn(b, on) { b.style.display = on ? '' : 'none'; }   // .btn sets display, so [hidden] alone is not enough
+
+    /* Driver for "text in → text out" tools.
+       cfg: { fn (self-contained worker-safe job), opts() → options object, stats(result|null, ms), example, filename,
+              segs: [TK.segmented controls…] (call cfg.rerun on change), also: [inputs whose change re-runs] } */
+    function textTool(cfg) {
+      var input = $('txtIn'), out = $('txtOut'), note = $('txtNote'), statusEl = $('txtStatus'), runBtn = $('runBtn');
+      var cur = null, runId = 0;
+      function run() {
+        var text = input.value, id = ++runId;
+        if (cur) { cur.cancel(); cur = null; }
+        if (!text) { TK.setOutput(out, '', { noteEl: note }); TK.status(statusEl, ''); cfg.stats(null); return; }
+        var o = cfg.opts(), t0 = performance.now();
+        if (cfg.check) { var msg = cfg.check(o, text); if (msg) { TK.setOutput(out, msg.out == null ? '' : msg.out, { noteEl: note }); TK.status(statusEl, msg.text, msg.type || 'info'); cfg.stats(null); return; } }
+        var size = text.length, worker = cfg.worker ? cfg.worker(o, size) : false;
+        if (size > TEXT_WORKER_FROM) TK.status(statusEl, 'Processing ' + TK.formatBytes(size) + ' in the background…', 'info');
+        var job = cur = textJob(cfg.fn, { text: text, o: o }, size, cfg.timeout ? cfg.timeout(o, size) : 30000, worker);
+        job.then(function (r) {
+          if (id !== runId) return;
+          cur = null;
+          TK.setOutput(out, r.out, { noteEl: note });
+          TK.status(statusEl, r.msg || '', r.msgType || 'info');
+          cfg.stats(r, performance.now() - t0);
+        }, function (e) {
+          if (id !== runId || (e && e.message === 'cancelled')) return;
+          cur = null;
+          TK.setOutput(out, '', { noteEl: note }); cfg.stats(null);
+          TK.status(statusEl, cfg.error ? cfg.error(e, o) : textErr(e), 'error');
+        });
+      }
+      var auto = TK.autoRun({
+        input: input, run: run, delay: cfg.delay || 200, maxAuto: TEXT_MAX_LIVE, also: cfg.also || [],
+        onLarge: function (large) { showBtn(runBtn, large); TK.status(statusEl, large ? 'Large text — live mode paused. Click Run to process it.' : '', 'info'); }
+      });
+      function rerun() { if (auto.isLarge()) return; auto.trigger(); }
+      (cfg.liveInputs || []).forEach(function (x) { x.addEventListener('input', TK.debounce(rerun, cfg.delay || 200)); });
+      showBtn(runBtn, false);
+      runBtn.addEventListener('click', function () { auto.trigger(); });
+      $('useBtn').addEventListener('click', function () { var v = TK.getOutput(out); if (!v) return; input.value = v; auto.check(); auto.trigger(); });
+      $('copyBtn').addEventListener('click', function () { TK.copy(TK.getOutput(out), this); });
+      $('downloadBtn').addEventListener('click', function () { if (cfg.download) cfg.download(this); else TK.download(TK.getOutput(out), cfg.filename, 'text/plain;charset=utf-8', this); });
+      $('exampleBtn').addEventListener('click', function () { input.value = cfg.example(); auto.check(); auto.trigger(); });
+      $('clearBtn').addEventListener('click', function () { input.value = ''; auto.check(); auto.trigger(); input.focus(); });
+      attachTextFile(input, $('fileIn'), function () { auto.check(); auto.trigger(); }, statusEl);
+      return { run: run, rerun: rerun, auto: auto };
+    }
+    function setStat(id, v) { $(id).textContent = v == null ? '–' : (typeof v === 'number' ? TK.formatNumber(v) : v); }
+
+    function rxJob(d) {
+      var o = d.o, f = o.lang, cls = o.ctx === 'class';
+      var SET = {
+        js:   cls ? '\\]^-[(){}/|' : '\\^$.*+?()[]{}|/',
+        py:   '()[]{}?*+-|^$\\.&~# \t\n\r\v\f',
+        php:  '.\\+*?[^]$(){}=!<>|:-#/',
+        java: cls ? '\\[]^-&' : '\\^$.|?*+()[]{}',
+        net:  cls ? '\\*+?|{[()^$.# \t\n\r\f]-' : '\\*+?|{[()^$.# \t\n\r\f',
+        go:   cls ? '\\.+*?()|[]{}^$-' : '\\.+*?()|[]{}^$'
+      }[f];
+      var NET = { '\t': '\\t', '\n': '\\n', '\r': '\\r', '\f': '\\f' }, n = 0;
+      function esc(s) {
+        var r = '';
+        for (var i = 0; i < s.length; i++) {
+          var c = s.charAt(i);
+          if (f === 'php' && c === '\0') { r += '\\000'; n++; continue; }
+          if (SET.indexOf(c) < 0) { r += c; continue; }
+          n++;
+          r += f === 'net' && NET[c] ? NET[c] : '\\' + c;
+        }
+        return r;
+      }
+      var text = d.text.replace(/\r\n/g, '\n'), p;
+      if (o.lines || o.alt) {
+        var lines = text.split('\n'); if (lines.length > 1 && lines[lines.length - 1] === '') lines.pop();
+        if (o.alt) p = lines.filter(function (l) { return l !== ''; }).map(esc).join('|');
+        else p = lines.map(esc).join('\n');
+      } else p = esc(text);
+      var out = p;
+      if (o.form === 'code') {
+        var parts = o.lines && !o.alt ? p.split('\n') : [p];
+        out = parts.map(function (x) { return lit(x); }).join('\n');
+      }
+      function lit(x) {
+        function bs(s, q) { return s.replace(/\\/g, '\\\\').split(q).join('\\' + q).replace(/\n/g, '\\n').replace(/\r/g, '\\r').replace(/\t/g, '\\t'); }
+        switch (f) {
+          case 'js': return '/' + (cls ? x.replace(/\//g, '\\/') : x).replace(/\n/g, '\\n').replace(/\r/g, '\\r').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029') + '/';
+          case 'py':
+            var odd = /(^|[^\\])(\\\\)*\\$/.test(x);
+            if (!odd && !/[\n\r]/.test(x)) { if (x.indexOf("'") < 0) return "r'" + x + "'"; if (x.indexOf('"') < 0) return 'r"' + x + '"'; }
+            return "'" + bs(x, "'") + "'";
+          case 'php': return "'" + o.delim + x.replace(/\\/g, '\\\\').replace(/'/g, "\\'") + o.delim + "'";
+          case 'java': return '"' + bs(x, '"') + '"';
+          case 'net': return '@"' + x.replace(/"/g, '""') + '"';
+          case 'go': return x.indexOf('`') < 0 && x.indexOf('\r') < 0 ? '`' + x + '`' : '"' + bs(x, '"') + '"';
+        }
+      }
+      return { out: out, n: n, inLen: d.text.length, msg: n ? '' : 'Nothing to escape — this text has no special characters for ' + o.langName + (cls ? ' character classes.' : '.'), msgType: 'info' };
+    }
+    var ctxSeg = TK.segmented($('ctxSeg'), function () { tool.rerun(); });
+    var formSeg = TK.segmented($('formSeg'), function () { tool.rerun(); });
+    var tool = textTool({
+      fn: rxJob, filename: 'regex.txt', also: [$('optLang'), $('optLines'), $('optAlt')],
+      opts: function () { var l = $('optLang'); return { lang: l.value, langName: l.options[l.selectedIndex].text, ctx: ctxSeg.get(), form: formSeg.get(), lines: $('optLines').checked, alt: $('optAlt').checked, delim: '/' }; },
+      stats: function (r, ms) {
+        setStat('stIn', r && r.inLen); setStat('stEsc', r && r.n); setStat('stOut', r && r.out.length);
+        setStat('stTime', r ? (ms < 1 ? '<1 ms' : Math.round(ms) + ' ms') : null);
+      },
+      example: function () { return 'Price: $9.99 (USD) [sale] + tax? path/to/file.txt ^_^ a|b {1,2} C:\\temp #tag ~home & more'; }
+    });
+
+  })();
+  </script>
+</body>
+</html>
